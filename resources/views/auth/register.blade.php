@@ -96,12 +96,12 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <label class="btn btn-default btn-block">
-                                        <input type="radio" name="account_type" value="skill"> Find Work
+                                        <input type="radio" name="account_type" value="1"> Find Work
                                     </label>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="btn btn-default btn-block">
-                                        <input type="radio" name="account_type" value="hire"> Hire Someone
+                                        <input type="radio" name="account_type" value="0"> Hire Someone
                                     </label>
                                 </div>
                             </div>

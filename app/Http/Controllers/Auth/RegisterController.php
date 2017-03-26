@@ -55,7 +55,7 @@ class RegisterController extends Controller
             'password'      => 'required|min:6|confirmed',
             'first_name'    => 'required|min:3|max:32',
             'last_name'     => 'required|min:3|max:32',
-            'account_type'  => 'required|in:skill,hire'
+            'account_type'  => 'required|in:1,0'
         ]);
     }
 
