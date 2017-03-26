@@ -98,11 +98,11 @@
                                         <i class="glyphicon glyphicon-plus"></i> Add Portfolio
                                     </a>
                                 </li>
-                                <li>
+                                <!-- <li>
                                     <a href="/blog/add" class="bold">
                                         <i class="fa fa-edit"></i> Write
                                     </a>
-                                </li>
+                                </li> -->
                             @endif
 
                         @endif

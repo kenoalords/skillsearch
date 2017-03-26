@@ -24,25 +24,25 @@
 <div id="how">
     <div class="container text-center padded">
         <h2>How it works</h2>
-        <div class="col-md-3">
+        <div class="col-sm-6 col-md-3">
             <!-- <img src="{{asset('public/signup.png')}}" alt="" class="img-responsive"> -->
             <i class="fa fa-id-badge"></i>
             <h4 class="text-uppercase">Create a free profile</h4>
             <p>It takes less than 30 seconds to setup an account.</p>
         </div>
-        <div class="col-md-3">
+        <div class="col-sm-6 col-md-3">
             <!-- <img src="{{asset('public/select-skills.png')}}" alt="" class="img-responsive"> -->
             <i class="fa fa-vcard"></i>
             <h4 class="text-uppercase">Select your skills</h4>
             <p>Choose from a wide range of categories that match your skills.</p>
         </div>
-        <div class="col-md-3">
+        <div class="col-sm-6 col-md-3">
             <!-- <img src="{{asset('public/upload.png')}}" alt="" class="img-responsive"> -->
             <i class="fa fa-image"></i>
             <h4 class="text-uppercase">Upload portfolio</h4>
             <p>Show us what you can do by uploading your past works.</p>
         </div>
-        <div class="col-md-3">
+        <div class="col-sm-6 col-md-3">
             <!-- <img src="{{asset('public/offers.png')}}" alt="" class="img-responsive"> -->
             <i class="fa fa-briefcase"></i>
             <h4 class="text-uppercase">Receive offers</h4>
@@ -58,7 +58,7 @@
         <hr>
         @foreach($skills as $skill)
         <div class="col-lg-3 col-md-3 col-sm-4">
-            <a href="#"> {{ $skill->skill }} </a>
+            <a href="/search?term={{ urlencode($skill->skill) }}"> {{ $skill->skill }} </a>
         </div>
         @endforeach
     </div>

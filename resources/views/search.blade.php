@@ -7,8 +7,6 @@
 
 	<div class="row">
 		@each('profile.person-tag', $profiles, 'profile')
-
-		
 	</div>
     
 </div>

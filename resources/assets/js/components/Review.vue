@@ -100,7 +100,7 @@
             },
 
             getImage: function (image){
-                return window.Laravel.url + '/' + image;
+                return window.skillsearch.s3images + '/' + image;
             },
 
             getRatings(count){

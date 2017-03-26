@@ -27744,7 +27744,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
         getImage: function getImage(image) {
-            return window.Laravel.url + '/' + image;
+            return window.skillsearch.s3images + '/' + image;
         },
 
         getRatings: function getRatings(count) {
