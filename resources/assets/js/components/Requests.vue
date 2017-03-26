@@ -97,7 +97,7 @@
 
         methods: {
             getAvatar(image){
-                return window.Laravel.url + '/' + image;
+                return window.skillsearch.s3images + '/' + image;
             },
 
             loadRequest(request){
@@ -111,7 +111,6 @@
                 axios.get('/profile/response/' + request.id).then( (response) => {
                     _this.isLoadingResponse = true;
                     _this.responses = response.data;
-                    console.log(_this.responses);
                 });
             },
 
@@ -126,9 +125,7 @@
                 });
             },
 
-            getAvatar(avatar){
-                return window.Laravel.url + '/' + avatar;
-            }
+            
         },
 
         props: {

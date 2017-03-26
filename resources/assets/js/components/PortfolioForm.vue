@@ -41,26 +41,26 @@
                         <label>Portfolio type</label>
 
                         <div class="row">
-                            <div class="col-xs-6 col-sm-3">
+                            <div class="col-xs-12 col-sm-4">
                                 <label class="btn btn-default btn-block">
                                     <input type="radio" v-model="type" value="images" :disabled="uploadedImages.length > 0 ? true : false"> Images
                                 </label>
                             </div>
-                            <div class="col-xs-6 col-sm-3">
+                            <div class="col-xs-12 col-sm-4">
                                 <label class=" btn btn-default btn-block">
                                     <input type="radio" v-model="type" value="video" :disabled="uploadedImages.length > 0 ? true : false"> Video
                                 </label>
                             </div>
-                            <div class="col-xs-6 col-sm-3">
+                            <div class="col-xs-12 col-sm-4">
                                 <label class=" btn btn-default btn-block">
                                     <input type="radio" v-model="type" value="audio" :disabled="uploadedImages.length > 0 ? true : false"> Audio
                                 </label>
                             </div>
-                            <div class="col-xs-6 col-sm-3">
+                            <!-- <div class="col-xs-6 col-sm-3">
                                 <label class=" btn btn-default btn-block">
                                     <input type="radio" v-model="type" value="document" :disabled="uploadedImages.length > 0 ? true : false"> Document
                                 </label>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>

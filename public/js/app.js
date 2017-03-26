@@ -27497,8 +27497,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 //
 //
 //
@@ -27597,9 +27595,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
 
 
-    methods: _defineProperty({
+    methods: {
         getAvatar: function getAvatar(image) {
-            return window.Laravel.url + '/' + image;
+            return window.skillsearch.s3images + '/' + image;
         },
         loadRequest: function loadRequest(request) {
             this.reading = request;
@@ -27611,7 +27609,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             axios.get('/profile/response/' + request.id).then(function (response) {
                 _this.isLoadingResponse = true;
                 _this.responses = response.data;
-                console.log(_this.responses);
             });
         },
         submitResponse: function submitResponse(request) {
@@ -27624,9 +27621,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 _this.responses.push(response.data);
             });
         }
-    }, 'getAvatar', function getAvatar(avatar) {
-        return window.Laravel.url + '/' + avatar;
-    }),
+    },
 
     props: {
         requests: null
@@ -61923,7 +61918,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "role": "alert"
     }
-  }, [_vm._v("\n        " + _vm._s(_vm.status) + "\n    ")]) : _vm._e(), _vm._v(" "), _vm._l((_vm.formErrors), function(error) {
+  }, [_vm._v("\n        {!! status !!}\n    ")]) : _vm._e(), _vm._v(" "), _vm._l((_vm.formErrors), function(error) {
     return (_vm.formErrors) ? _c('div', {
       staticClass: "alert alert-danger",
       attrs: {
@@ -62439,7 +62434,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('hr'), _vm._v(" "), _c('label', [_vm._v("Portfolio type")]), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
-    staticClass: "col-xs-6 col-sm-3"
+    staticClass: "col-xs-12 col-sm-4"
   }, [_c('label', {
     staticClass: "btn btn-default btn-block"
   }, [_c('input', {
@@ -62463,7 +62458,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }), _vm._v(" Images\n                                ")])]), _vm._v(" "), _c('div', {
-    staticClass: "col-xs-6 col-sm-3"
+    staticClass: "col-xs-12 col-sm-4"
   }, [_c('label', {
     staticClass: " btn btn-default btn-block"
   }, [_c('input', {
@@ -62487,7 +62482,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }), _vm._v(" Video\n                                ")])]), _vm._v(" "), _c('div', {
-    staticClass: "col-xs-6 col-sm-3"
+    staticClass: "col-xs-12 col-sm-4"
   }, [_c('label', {
     staticClass: " btn btn-default btn-block"
   }, [_c('input', {
@@ -62510,31 +62505,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.type = "audio"
       }
     }
-  }), _vm._v(" Audio\n                                ")])]), _vm._v(" "), _c('div', {
-    staticClass: "col-xs-6 col-sm-3"
-  }, [_c('label', {
-    staticClass: " btn btn-default btn-block"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.type),
-      expression: "type"
-    }],
-    attrs: {
-      "type": "radio",
-      "value": "document",
-      "disabled": _vm.uploadedImages.length > 0 ? true : false
-    },
-    domProps: {
-      "checked": _vm._q(_vm.type, "document")
-    },
-    on: {
-      "click": function($event) {
-        _vm.type = "document"
-      }
-    }
-  }), _vm._v(" Document\n                                ")])])])])])]), _vm._v(" "), _vm._l((_vm.formErrors), function(error) {
+  }), _vm._v(" Audio\n                                ")])])])])])]), _vm._v(" "), _vm._l((_vm.formErrors), function(error) {
     return (_vm.formErrors) ? _c('div', {
       staticClass: "alert alert-danger",
       attrs: {

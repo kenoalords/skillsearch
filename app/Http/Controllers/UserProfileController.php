@@ -13,6 +13,7 @@ use App\Http\Requests\UserProfileRequest;
 use App\Http\Requests\SocialUserProfileRequest;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
+use App\Jobs\DeleteFileFromS3Storage;
 
 class UserProfileController extends Controller
 {
@@ -80,23 +81,23 @@ class UserProfileController extends Controller
     	$profile->save();
 
     	$profile = $request->user()->profile;
-    	$states = State::all();
     	// dd($profile);
     	return view('profile.edit')->with([
     		'profile' 	=> $profile,
-    		'states'	=> $states
     	]);
     }
 
-    public function phoneIndex(){
+    public function phoneIndex(Request $request){
     	$phones = Auth::user()->phone()->get();
+        $profile = $request->user()->profile;
     	// dd($phones);
-    	return view('profile.phone')->with('phones', $phones);
+    	return view('profile.phone')->with(['phones' => $phones, 'profile' => $profile]);
     }
 
-    public function phoneAdd(){
+    public function phoneAdd(Request $request){
     	// dd($phones);
-    	return view('profile.phone_add');
+        $profile = $request->user()->profile;
+    	return view('profile.phone_add')->with('profile', $profile);
     }
 
     public function phoneAddNew(Request $request){
@@ -176,6 +177,28 @@ class UserProfileController extends Controller
         $status = $request->user()->profile()->first()->is_public;
         $status = ($status == 0) ? false : true;
         return response()->json(['status' => $status], 200);
+    }
+
+    // Delete user account
+    public function deleteAccount(Request $request)
+    {
+        return view('profile.delete')->with('user', $request->user);
+    }
+
+    // Confirm delete 
+    public function deleteAccountConfirm(Request $request)
+    {
+        $portfolio = $request->user()->portfolio;
+
+        $portfolio->map(function($item){
+            $files = $item->files;
+            $files->each(function ($file, $key){
+                dispatch(new DeleteFileFromS3Storage($file->file));
+            });
+        });
+
+        $request->user()->delete();
+        return redirect('/');
     }
 }
 

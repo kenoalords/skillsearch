@@ -96,6 +96,10 @@ Route::group(['middleware'=>'auth'], function(){
 		// Profile Privacy Control
 		Route::get('/set/{option}', 'UserProfileController@setAccountPrivacy');
 		Route::get('/get-privacy', 'UserProfileController@getAccountPrivacy');
+
+		// Delete Account
+		Route::get('/delete', 'UserProfileController@deleteAccount');
+		Route::get('/delete/proceed', 'UserProfileController@deleteAccountConfirm');
 	});
 
 	// Send Message Routes
