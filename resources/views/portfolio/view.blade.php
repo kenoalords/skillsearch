@@ -6,12 +6,15 @@
     <div class="row padded">
         
         <div class="col-md-10 col-md-offset-1">
-            @if($portfolio['is_public'] === 0)
+
+            @if($portfolio['is_public'] === 0 )
             <div class="alert alert-info">
                 <i class="glyphicon glyphicon-eye-close"></i>
-                <span>This portfolio is currently set to <strong>Private</strong>. Only you can view it.</span>
+                <span>This portfolio is currently set to <strong>Private</strong></span>
             </div>
             @endif
+
+            @if($portfolio['is_public'] === 1 || (Auth::user() && Auth::user()->id === $portfolio['user_id']))
             <div class="row">
                 <div class="col-md-3">
                     <img src="{{asset($portfolio['thumbnail'])}}" alt="" class="img-circle img-responsive">
@@ -79,13 +82,18 @@
             @endif
 
             <portfolio-comments uid="{{ $portfolio['uid'] }}"></portfolio-comments>
+            @endif
+
+            
         </div>
     </div>
 
     @if(count($others))
         <div class="row" id="showcase">
-            <h4 class="thin text-center">Other portfolio items by {{$portfolio['user_profile']['fullname']}}</h4>
-            <hr>
+            <div class="col-md-12">
+                <h4 class="bold">Other portfolio items by {{$portfolio['user_profile']['fullname']}}</h4>
+                <hr>
+            </div>      
             @each('includes.portfolio', $others, 'portfolio')
         </div>
     @endif

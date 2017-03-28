@@ -24,14 +24,4 @@ class PortfolioPolicy
     {
         return $user->id === $portfolio->user_id;
     }
-
-    public function view(User $user, Portfolio $portfolio)
-    {
-        if($portfolio->is_public === 0 && $user->id === $portfolio->user_id){
-            return true;
-        }
-        if($portfolio->is_public === 1){
-            return true;
-        }
-    }
 }
