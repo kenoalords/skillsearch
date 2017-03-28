@@ -48,12 +48,7 @@ class Profile extends Model
 
     public function getIdentityAttribute()
     {
-        $identity = VerifyIdentity::where('user_id', $this->user_id)->get()->first();
-        if ( $identity && $identity->status == true ){
-            return true;
-        } else {
-            return false;
-        }
+        return VerifyIdentity::where('user_id', $this->user_id)->get()->first();
     }
 
     // public function getPortfolioAttribute($value)
@@ -125,5 +120,11 @@ class Profile extends Model
     public function scopeIsPublic($query)
     {
         return $query->where('is_public', 1);
+    }
+
+    public function getVerified()
+    {
+        $id = VerifyIdentity::where('user_id', $this->id)->first();
+        return ($id && $id->status === 1) ? true : false;
     }
 }

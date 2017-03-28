@@ -38,7 +38,7 @@ function getRatings($count){
 
 function identity_check($i=false){
     if($i){
-        return ' <i class="glyphicon glyphicon-ok-sign text-success"></i>';
+        return ' <i class="glyphicon glyphicon-ok-sign text-primary" style="font-size:87.50%"></i>';
     }
 }
 

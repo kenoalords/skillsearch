@@ -27581,6 +27581,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
     data: function data() {
@@ -27628,7 +27630,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     mounted: function mounted() {
-        // console.log(this.serviceRequests);
+        console.log(this.serviceRequests);
     }
 };
 
@@ -61336,12 +61338,8 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return (_vm.isLoaded) ? _c('div', [_c('ul', {
-    attrs: {
-      "id": "f-stats"
-    }
-  }, [_c('li', [_c('strong', [_vm._v(_vm._s(_vm.followers))]), _vm._v(" Followers")]), _vm._v(" "), _c('li', [_c('strong', [_vm._v(_vm._s(_vm.following))]), _vm._v(" Following")]), _vm._v(" "), (!_vm.is_self && _vm.isUserLoggedIn) ? _c('li', [_c('button', {
-    staticClass: "btn",
+  return (_vm.isLoaded) ? _c('div', [(!_vm.is_self && _vm.isUserLoggedIn) ? _c('div', [_c('button', {
+    staticClass: "btn btn-sm",
     class: {
       'btn-default': _vm.can_follow, 'btn-primary': !_vm.can_follow
     },
@@ -61354,9 +61352,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('i', {
     staticClass: "glyphicon ",
     class: {
-      'glyphicon-plus': _vm.can_follow, 'glyphicon-ok': !_vm.can_follow
+      'glyphicon-user': _vm.can_follow, 'glyphicon-ok': !_vm.can_follow
     }
-  }), _vm._v("\n                " + _vm._s(_vm.can_follow ? 'Follow' : 'Following') + "\n            ")])]) : _vm._e()])]) : _vm._e()
+  }), _vm._v("\n            " + _vm._s(_vm.can_follow ? 'Follow' : 'Following') + "\n        ")])]) : _vm._e()]) : _vm._e()
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -61750,41 +61748,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "media"
     }, [_c('div', {
       staticClass: "media-left media-middle"
-    }, [(serviceRequest.user_id === _vm.userId) ? _c('a', {
-      attrs: {
-        "href": "#"
-      }
     }, [_c('img', {
       staticClass: "img-circle",
       attrs: {
-        "src": _vm.getAvatar(serviceRequest.receiver_profile.avatar),
+        "src": serviceRequest.sender_profile.avatar,
         "alt": "",
-        "width": "40",
-        "height": "40"
+        "width": "24",
+        "height": "24"
       }
-    })]) : (serviceRequest.user_id !== _vm.userId) ? _c('a', {
-      attrs: {
-        "href": "#"
-      }
-    }, [_c('img', {
-      staticClass: "img-circle",
-      attrs: {
-        "src": _vm.getAvatar(serviceRequest.sender_profile.avatar),
-        "alt": "",
-        "width": "40",
-        "height": "40"
-      }
-    })]) : _vm._e()]), _vm._v(" "), _c('div', {
-      staticClass: "media-body"
-    }, [_c('small', [_vm._v(_vm._s(serviceRequest.receiver_profile.first_name) + " " + _vm._s(serviceRequest.receiver_profile.last_name))]), _vm._v(" "), _c('h4', {
-      staticClass: "media-heading"
+    })]), _vm._v(" "), _c('div', {
+      staticClass: "media-body media-middle"
+    }, [_c('h5', {
+      staticClass: "media-heading pull-left"
     }, [_vm._v(_vm._s(serviceRequest.subject))]), _vm._v(" "), _c('small', {
       staticClass: "pull-right"
     }, [_c('em', {
       staticClass: "text-muted"
-    }, [_vm._v(_vm._s(serviceRequest.date))])]), _vm._v(" - "), _c('small', {
-      staticClass: "text-muted"
-    }, [_c('em', [_vm._v(_vm._s(serviceRequest.skills))])])])])])
+    }, [_vm._v(_vm._s(serviceRequest.date))])])])])])
   }))]), _vm._v(" "), _c('div', {
     staticClass: "col-md-8"
   }, [(_vm.reading) ? _c('div', [_c('small', [_vm._v(_vm._s(_vm.reading.date))]), _vm._v(" "), _c('h3', [_vm._v(_vm._s(_vm.reading.subject))]), _vm._v(" "), _c('h5', [_vm._v("Services Requested: " + _vm._s(_vm.reading.skills))]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('p', [_vm._v(_vm._s(_vm.reading.body))]), _vm._v(" "), (_vm.isLoadingResponse) ? _c('div', {
@@ -61801,7 +61781,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('img', {
       staticClass: "media-object img-circle",
       attrs: {
-        "src": _vm.getAvatar(response.profile.avatar),
+        "src": response.profile.avatar,
         "width": "50",
         "height": "50"
       }

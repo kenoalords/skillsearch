@@ -6,17 +6,19 @@
                 <a v-on:click.prevent="loadRequest(serviceRequest)" class="list-group-item" v-for="serviceRequest in serviceRequests">
                     <div class="media">
                         <div class="media-left media-middle">
-                            <a href="#" v-if="serviceRequest.user_id === userId">
-                                <img v-bind:src="getAvatar(serviceRequest.receiver_profile.avatar)" alt="" width="40" height="40" class="img-circle">
+                            <!-- <a href="#" v-if="serviceRequest.user_id === userId">
+                                <img v-bind:src="serviceRequest.receiver_profile.avatar" alt="" width="40" height="40" class="img-circle">
                             </a>
                             <a href="#" v-else-if="serviceRequest.user_id !== userId">
-                                <img v-bind:src="getAvatar(serviceRequest.sender_profile.avatar)" alt="" width="40" height="40" class="img-circle">
-                            </a>
+                                <img v-bind:src="serviceRequest.sender_profile.avatar" alt="" width="40" height="40" class="img-circle">
+                            </a> -->
+                            <img v-bind:src="serviceRequest.sender_profile.avatar" alt="" width="24" height="24" class="img-circle">
                         </div>
-                        <div class="media-body">
-                            <small>{{serviceRequest.receiver_profile.first_name}} {{serviceRequest.receiver_profile.last_name}}</small> 
-                            <h4 class="media-heading">{{ serviceRequest.subject }}</h4>
-                            <small class="pull-right"><em class="text-muted">{{ serviceRequest.date }}</em></small> - <small class="text-muted"><em>{{ serviceRequest.skills }}</em></small>
+                        <div class="media-body media-middle">
+                            <!-- <small>{{serviceRequest.receiver_profile.first_name}} {{serviceRequest.receiver_profile.last_name}}</small>  -->
+                            <h5 class="media-heading pull-left">{{ serviceRequest.subject }}</h5>
+                            <small class="pull-right"><em class="text-muted">{{ serviceRequest.date }}</em></small> 
+                            <!-- - <small class="text-muted"><em>{{ serviceRequest.skills }}</em></small> -->
                         </div>
                     </div>
                 </a>
@@ -38,7 +40,7 @@
                         <hr>
                         <div class="media" v-for="response in responses">
                             <div class="media-left">
-                                <img :src="getAvatar(response.profile.avatar)" class="media-object img-circle" width="50" height="50">
+                                <img :src="response.profile.avatar" class="media-object img-circle" width="50" height="50">
                             </div>
                             <div class="media-body">
                                 <h5 class="media-heading">
@@ -133,7 +135,7 @@
         },
 
         mounted() {
-            // console.log(this.serviceRequests);
+            console.log(this.serviceRequests);
         }
     }
 </script>

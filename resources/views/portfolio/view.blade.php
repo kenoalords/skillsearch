@@ -1,42 +1,45 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="row" id="user-badge">
-    <div class="container">
-        <div class="col-md-10 col-md-offset-1">
-            <div class="clearfix">
-                <a href="{{ route('view_profile', ['user'=>$portfolio['user']]) }}" class="pull-left">
-                    <img src="{{ $portfolio['user_profile']['avatar'] }}" class="img-circle" width="36" height="36">
-                </a>
-                <h5 class="pull-left bold" style="margin-left: 1em">
-                    <a href="{{ route('view_profile', ['user'=>$portfolio['user']]) }}">
-                        {{$portfolio['user_profile']['fullname']}}
-                    </a>
-                </h5>
-                
-                <div class="pull-right">
-                    <follow username="{{$portfolio['user']}}"></follow>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
 <div class="container">
     <div class="row padded">
         
-        <div class="col-md-12">
+        <div class="col-md-10 col-md-offset-1">
+            @if($portfolio['is_public'] === 0)
+            <div class="alert alert-info">
+                <i class="glyphicon glyphicon-eye-close"></i>
+                <span>This portfolio is currently set to <strong>Private</strong>. Only you can view it.</span>
+            </div>
+            @endif
             <div class="row">
                 <div class="col-md-3">
-                    <img src="{{asset($portfolio['thumbnail'])}}" alt="" class="thumbnail img-responsive">
+                    <img src="{{asset($portfolio['thumbnail'])}}" alt="" class="img-circle img-responsive">
                 </div>
                 <div class="col-md-9">
+                    
                     <h3 class="bold">{{ $portfolio['title'] }}</h3>
                     <ul class="list-inline" style="font-weight: 700; font-size: 12px;">
+                        <li>
+                            <div class="clearfix">
+                                <a href="/{{$portfolio['user']}}">
+                                    <img src="{{$portfolio['user_profile']['avatar']}}" alt="{{$portfolio['user_profile']['fullname']}}" class="img-circle" width="24" height="24">
+                                </a>
+                                <a href="/{{$portfolio['user']}}">
+                                    {{$portfolio['user_profile']['fullname']}}
+                                </a>
+                            </div>
+                        </li>
                         <li><i class="glyphicon glyphicon-heart"></i> {{ $portfolio['likes_count'] }} {{ str_plural('Like', $portfolio['likes_count'])}}</li>
-                        <li><i class="glyphicon glyphicon-eye-open"></i> {{ $portfolio['views'] }} {{ str_plural('View', $portfolio['views'])}}</li>
                         <li> {{ $portfolio['date'] }}</li>
+                        <li><i class="glyphicon glyphicon-eye-open"></i> {{ $portfolio['views'] }} {{ str_plural('View', $portfolio['views'])}}</li>
+                        @if($portfolio['url'] !== '')
+                            <li><a href="{{$portfolio['url']}}" target="_blank" class="bold">Link <i class="glyphicon glyphicon-new-window"></i></a></li>
+                        @endif
                     </ul>
-                    <p>{{ $portfolio['description'] }}</p>    
+                    <p>{{ $portfolio['description'] }}</p>
+
+                    <follow username="{{$portfolio['user']}}"></follow>  
                 </div>
             </div>
             

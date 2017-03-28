@@ -207,6 +207,7 @@ class PortfolioController extends Controller
 
     public function view(User $user, Portfolio $portfolio)
     {
+        $this->authorize('view', $portfolio);
         $info = fractal()->item($portfolio)
                         ->transformWith(new PortfolioTransformer)
                         ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())

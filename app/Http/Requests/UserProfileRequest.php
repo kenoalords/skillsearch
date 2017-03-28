@@ -24,7 +24,7 @@ class UserProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'bio'           => 'required|min:200|max:3200',
+            'bio'           => 'required|max:3200',
             'user_location' => 'required|min:3|max:32',
             'gender'        => 'in:male,female',
         ];

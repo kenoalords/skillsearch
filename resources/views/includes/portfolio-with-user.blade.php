@@ -26,7 +26,7 @@
                 <img src="{{ $portfolio['user_profile']['avatar'] }}" alt="" width="24" height="24" class="img-circle">
             </div>
             <div class="media-body">
-                <div class="media-heading pull-left"><a href="/{{ $portfolio['user'] }}">{{ $portfolio['user_profile']['first_name'] }}</a></div>
+                <div class="media-heading pull-left"><a href="/{{ $portfolio['user'] }}">{{ $portfolio['user_profile']['first_name'] }} {!! identity_check($portfolio['verified']) !!}</a></div>
                 <ul class="list-inline pull-right text-muted">
                 <li>
                     <small><i class="glyphicon glyphicon-heart"></i> 

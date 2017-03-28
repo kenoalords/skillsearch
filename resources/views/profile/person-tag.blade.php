@@ -10,10 +10,10 @@
         <div class="media-body">
             <h4 class="media-heading">
                 <a href="{{ route('view_profile', ['user'=>$profile->user->name]) }}">
-                    {{ $profile->first_name }} {{ $profile->last_name }} {!! identity_check($profile->identity) !!}
+                    {{ $profile->first_name }} {{ $profile->last_name }} {!! identity_check($profile->getVerified()) !!}
                 </a>
             </h4>
-            {!! getRatings($profile->rating) !!}
+           
             @if($profile->skills->count())
             <div>
                 @foreach ($profile->skills as $skill)

@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div class="row">
 
     @include('includes.profile-head')
@@ -10,9 +11,13 @@
             @include('includes.sidebar')
         </div>
         <div class="col-md-9">
+            
+
             @if(!$profile->identity)
                     <p class="text-info"><i class="glyphicon glyphicon-info-sign"></i> Verify your identity and increase your ranking instantly and improve your credibility score <strong><a href="{{ route('verify_identity') }}" class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-info-sign"></i> Verify my identity</a></strong></p>
-
+            @endif
+            @if($profile->identity && $profile->identity->status === 0)
+                    <p class="alert alert-info"><i class="glyphicon glyphicon-info-sign"></i> We are processing your identity verification request. You will be notified via email once it has been verified</p>
             @endif
             <h3><i class="glyphicon glyphicon-graph"></i> Activity Feed</h3>
             <hr>

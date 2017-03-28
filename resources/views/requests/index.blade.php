@@ -9,11 +9,11 @@
 			<h2 class="pull-right"><small style="font-size: 14px"><a href="/home">Back to profile</a></small></h2>
 		</div>
 		<hr>
-		@if($requests->count())
-			<requests requests="{{ $requests }}"></requests>
+		@if($requests)
+			<requests requests="{{ $requests->getContent() }}"></requests>
 		@endif
 
-		@if(!$requests->count())
+		@if(!$requests)
 			<div class="padded text-center">
                 <p style="font-size:3em"><i class="glyphicon glyphicon-thumbs-down"></i></p>
                 <p>You have not received any service request yet</p>

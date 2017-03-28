@@ -75,8 +75,7 @@
 
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
-                                        <a href="/home">Home</a>
-                                        <a href="{{ route('edit_profile') }}">Profile</a>
+                                        <a href="/home">My Account</a>
                                         <a href="{{ route('requests') }}">Requests</a>
                                         <a href="/profile/portfolio">Portfolio</a>
                                         <a href="{{ route('logout') }}"

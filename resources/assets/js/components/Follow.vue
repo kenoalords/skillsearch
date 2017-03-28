@@ -1,16 +1,16 @@
 <template>
     <div v-if="isLoaded">
-        <ul id="f-stats">
+        <!-- <ul id="f-stats">
             <li><strong>{{followers}}</strong> Followers</li>
             <li><strong>{{following}}</strong> Following</li>
-            <li v-if="!is_self && isUserLoggedIn">
-                <button v-bind:class="{'btn-default': can_follow, 'btn-primary' : !can_follow}" class="btn" v-on:click.prevent="handle">
-                    <i class="glyphicon " v-bind:class="{'glyphicon-plus': can_follow, 'glyphicon-ok' : !can_follow}"></i>
-                    {{ can_follow ? 'Follow' : 'Following' }}
-                </button>
-            </li>
-        </ul>
-
+            
+        </ul> -->
+        <div v-if="!is_self && isUserLoggedIn">
+            <button v-bind:class="{'btn-default': can_follow, 'btn-primary' : !can_follow}" class="btn btn-sm" v-on:click.prevent="handle">
+                <i class="glyphicon " v-bind:class="{'glyphicon-user': can_follow, 'glyphicon-ok' : !can_follow}"></i>
+                {{ can_follow ? 'Follow' : 'Following' }}
+            </button>
+        </div>
     </div>
 </template>
 

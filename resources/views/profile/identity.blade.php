@@ -10,7 +10,7 @@
                 <div class="panel-heading"><i class="glyphicon glyphicon-ok-sign text-primary"></i> Verify Your Identity</div>
                 <div class="panel-body">
                     @if(!$user)
-                        <p>We are bulding a safe community for people to interact and meet new clients and verifing your identity is just one of those steps we are taking to ensure safety</p>
+                        <p>We are building a safe community for people to interact and meet new clients and verifing your identity is just one of those steps we are taking to ensure safety</p>
                         <hr>
                         <h4>How it works!</h4>
                         <p>Simply upload a scanned copy of a government issued identity card like;</p>
@@ -50,6 +50,8 @@
                                 <p>Congratulations!!! Your identity has been verified. Continue browsing and meeting new clients</p>
                             @endif
                         </div>
+
+                        <p><a href="/home">Go back to your profile</a></p>
                     @endif
                 </div>
             </div>

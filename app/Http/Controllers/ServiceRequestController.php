@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Mail\RequestServiceNotification;
 use App\Mail\RequestServiceResponseNotification;
+use App\Transformers\ServiceRequestTransformer;
+use App\Transformers\ServiceRequestResponseTransformer;
+use League\Fractal\Resource\Collection;
 
 class ServiceRequestController extends Controller
 {
@@ -39,13 +42,19 @@ class ServiceRequestController extends Controller
     {
     	$user = Auth::user();
     	$requests = $serviceRequest->allRequests($user)->get();
-     	return view('requests.index')->with('requests', $requests);
+        $data = response()->json(fractal()->collection($requests)->transformWith(new ServiceRequestTransformer)
+                        ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                        ->toArray());
+        // dd($data);
+     	return view('requests.index')->with(['requests' => $data]);
     }
 
     public function getServiceRequestResponses(Request $request, ServiceRequestResponse $response)
     {
     	$requestResponses = $response->where('request_id', $request->request_id)->get();
-    	return response()->json($requestResponses, 200);
+    	return response()->json(fractal()->collection($requestResponses)->transformWith(new ServiceRequestResponseTransformer)
+                        ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                        ->toArray(), 200);
     }
 
     public function postServiceRequestResponses(Request $request)

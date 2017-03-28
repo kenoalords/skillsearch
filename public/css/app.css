@@ -9992,6 +9992,7 @@ div.progress {
   margin: .5em 0 0 0;
   padding: 0;
   font-size: 14px;
+  margin-bottom: 1em;
 }
 
 #f-stats li {
@@ -10028,8 +10029,7 @@ div.progress {
 #profile-back {
   position: relative;
   overflow: hidden;
-  margin-bottom: 3em;
-  padding-top: 25em;
+  padding: 7em 0;
 }
 
 #profile-back .user-background {
@@ -10042,7 +10042,7 @@ div.progress {
 
 #profile-back .user-background:before {
   content: "";
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.5);
   position: absolute;
   width: 100%;
   height: 100%;
@@ -10059,17 +10059,22 @@ div.progress {
   z-index: 2;
   padding: 1em;
   color: #fff;
-  background: rgba(0, 0, 0, 0.7);
 }
 
 #profile-back .container img {
-  width: 50px;
+  width: 100px;
   height: auto;
 }
 
 #profile-back .container h1 {
-  margin: 15px 0 0 0;
-  font-size: 1.3em;
+  margin: 15px 0 15px 0;
+  font-size: 1.6em;
+}
+
+#selectedSkills,
+#skills {
+  font-size: 14px;
+  font-weight: 700;
 }
 
 .thin {

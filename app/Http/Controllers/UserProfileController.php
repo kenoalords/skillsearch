@@ -81,7 +81,7 @@ class UserProfileController extends Controller
     	$profile->save();
 
     	$profile = $request->user()->profile;
-    	// dd($profile);
+    	$request->session()->flash('status', 'Your profile was saved successfully');
     	return view('profile.edit')->with([
     		'profile' 	=> $profile,
     	]);
