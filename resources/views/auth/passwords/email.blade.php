@@ -22,7 +22,7 @@
                             <!-- <label for="email" class="col-md-4 control-label">E-Mail Address</label> -->
 
                             <div>
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required placeholder="Enter your password">
+                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required placeholder="Enter your email address">
 
                                 @if ($errors->has('email'))
                                     <span class="help-block">

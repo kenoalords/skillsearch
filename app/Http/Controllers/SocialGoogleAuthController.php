@@ -33,25 +33,44 @@ class SocialGoogleAuthController extends Controller
 
 
     	} else {
-    		$name = $social->getName();
-    		$username = str_replace( '-', '', str_slug( $name ) );
-    		if(User::where('name', $username)->get()->count()){
-    			$username = uniqid(true);
-    		}
-    		// insert a new user record
-    		$user = User::create([
-    					'name'		=> $username,
-    					'email'		=> $social->getEmail(),
-    					'password' 	=> bcrypt(uniqid(true)),
-    				]);
-    		if($user){
-    			$user->social()->create([
-    				'provider_user_id' 	=> $social->getId(),
-    				'provider'			=> 'google'
-    			]);
-    			Auth::login($user, true);
-    			return redirect()->to('/home/start')->with(['name' => $username, 'fullname' => $name ]);
-    		}
+            $email = $social->getEmail();
+            $name = $social->getName();
+            $social_id = $social->getId();
+            $provider = 'google';
+            // dd($email);
+            // Check is user has signed up before
+            $user = User::where('email', $email)->first();
+            
+            if($user){
+                // Yes! Have them confirm their password and link their social account
+                return redirect()->route('merge_account', [
+                    'name'      => $name,
+                    'user'      => $user,
+                    'email'     => $email,
+                    'social_id' => $social_id,
+                    'provider'  => $provider
+                ]);
+            } else {
+
+        		$username = str_replace( '-', '', str_slug( $name ) );
+        		if(User::where('name', $username)->get()->count()){
+        			$username = uniqid(true);
+        		}
+        		// insert a new user record
+        		$user = User::create([
+        					'name'		=> $username,
+        					'email'		=> $email,
+        					'password' 	=> bcrypt(uniqid(true)),
+        				]);
+        		if($user){
+        			$user->social()->create([
+        				'provider_user_id' 	=> $social_id,
+        				'provider'			=> 'google'
+        			]);
+        			Auth::login($user, true);
+        			return redirect()->to('/home/start')->with(['name' => $username, 'fullname' => $name ]);
+        		}
+            }
 
     	}
 

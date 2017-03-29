@@ -11,6 +11,7 @@
             @include('includes.sidebar')
         </div>
         <div class="col-md-9">
+            @include('includes.status');
             @if(!$profile->identity)
                     <p class="text-info"><i class="glyphicon glyphicon-info-sign"></i> Verify your identity and increase your ranking instantly and improve your credibility score <strong><a href="{{ route('verify_identity') }}" class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-info-sign"></i> Verify my identity</a></strong></p>
             @endif

@@ -19,7 +19,7 @@ class SocialAuthController extends Controller
     {
     	$social = Socialite::driver('facebook')->user();
 
-    	// dd($social->getEmail());
+    	// dd($social);
 
     	$account = SocialAccount::where([
     					'provider_user_id' 	=> $social->getId(),
@@ -34,31 +34,48 @@ class SocialAuthController extends Controller
 
 
     	} else {
+            $email = $social->getEmail();
             $name = $social->getName();
-            $username = str_replace( '-', '', str_slug( $name ) );
-            if(User::where('name', $username)->get()){
-                $username = uniqid(true);
+            $social_id = $social->getId();
+            $provider = 'facebook';
+            // dd($email);
+            // Check is user has signed up before
+            $user = User::where('email', $email)->first();
+            
+            if($user){
+                // Yes! Have them confirm their password and link their social account
+                return redirect()->route('merge_account', [
+                    'name'      => $name,
+                    'user'      => $user,
+                    'email'     => $email,
+                    'social_id' => $social_id,
+                    'provider'  => $provider
+                ]);
+            } else {
+                // Setup a new account for them on the site
+                $username = str_replace( '-', '', str_slug( $name ) );
+                if(User::where('name', $username)->get()){
+                    $username = uniqid(true);
+                }
+                // insert a new user record
+                $user = User::create([
+                            'name'      => $username,
+                            'email'     => $email,
+                            'password'  => bcrypt(uniqid(true)),
+                        ]);
+                if($user){
+                    $user->social()->create([
+                        'provider_user_id'  => $social_id,
+                        'provider'          => $provider
+                    ]);
+                    Auth::login($user, true);
+                    return redirect()->to('/home/start')->with(['name' => $username, 'fullname' => $name ]);
+                }
             }
-    		// insert a new user record
-    		$user = User::create([
-    					'name'		=> $username,
-    					'email'		=> $social->getEmail(),
-    					'password' 	=> bcrypt(uniqid(true)),
-    				]);
-    		if($user){
-    			$user->social()->create([
-    				'provider_user_id' 	=> $social->getId(),
-    				'provider'			=> 'facebook'
-    			]);
-    			Auth::login($user, true);
-    			return redirect()->to('/home/start')->with(['name' => $username, 'fullname' => $name ]);
-    		}
-
     	}
 
         // $user = $service->createOrGetUser(Socialite::driver('facebook')->user());
         // auth()->login($user);
         // return redirect()->to('/home');
     }
-
 }
