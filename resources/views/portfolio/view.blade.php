@@ -16,10 +16,10 @@
 
             @if($portfolio['is_public'] === 1 || (Auth::user() && Auth::user()->id === $portfolio['user_id']))
             <div class="row">
-                <div class="col-md-3">
-                    <img src="{{asset($portfolio['thumbnail'])}}" alt="" class="img-circle img-responsive">
+                <div class="col-xs-4 col-sm-3">
+                    <img src="{{asset($portfolio['thumbnail'])}}" alt="" class="thumbnail img-responsive">
                 </div>
-                <div class="col-md-9">
+                <div class="col-xs-8 col-sm-9">
                     
                     <h3 class="bold">{{ $portfolio['title'] }}</h3>
                     <ul class="list-inline" style="font-weight: 700; font-size: 12px;">

@@ -3,9 +3,8 @@
 @section('content')
 <div class="container">
     <div class="row padded">
-        <div class="col-md-6 col-md-offset-3">
+        <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
             <h3 class="text-center">Create Account</h3>
-            <hr>
             <div class="panel panel-default boxed">
                 <div class="panel-body">
                     <a href="{{route('google')}}" class="btn btn-block btn-danger">Sign in with Google</a>

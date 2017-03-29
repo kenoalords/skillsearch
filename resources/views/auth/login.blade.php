@@ -3,9 +3,9 @@
 @section('content')
 <div class="container">
     <div class="row padded">
-        <div class="col-md-4 col-md-offset-4">
+        <div class="col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
             <h3 class="text-center">Login</h3>
-            <hr>
+
             <div class="panel panel-default boxed">
                 
                 <div class="panel-body">

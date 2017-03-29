@@ -9,7 +9,7 @@
     </div>
 </div>
 <hr>
-<div class="list-group">
+<div class="list-group hidden-xs">
     <!-- <a href="/home" class="list-group-item"><i class="glyphicon glyphicon-home"></i> Home</a> -->
     <!-- <a href="{{ route('edit_profile') }}" class="list-group-item"><i class="glyphicon glyphicon-user"></i> Profile</a> -->
     <!-- <a href="{{ route('phone') }}" class="list-group-item"><i class="glyphicon glyphicon-phone"></i> Phone</a> -->

@@ -5,6 +5,7 @@
     <div class="container">
         <div class="col-md-8 col-md-offset-2 text-center">
             <h3 class="thin">Showcase &amp; Discover Skilled People in Nigeria.</h3>
+            <br>
             @if(!Auth::user())
             <p>
                 <a href="/register" class="btn btn-primary bold">Signup</a>
@@ -57,7 +58,7 @@
         <h4 class="bold">Browse top skills</h4>
         <hr>
         @foreach($skills as $skill)
-        <div class="col-lg-3 col-md-3 col-sm-4">
+        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
             <a href="/search?term={{ urlencode($skill->skill) }}"> {{ $skill->skill }} </a>
         </div>
         @endforeach

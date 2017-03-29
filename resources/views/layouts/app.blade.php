@@ -35,7 +35,7 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-default navbar-static-top navbar-inverse">
+        <nav class="navbar navbar-default navbar-static-top navbar-inverse row">
             <div class="col-md-12">
                 <div class="navbar-header">
 
@@ -56,7 +56,7 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        <li><a href="{{ route('people') }}">People</a></li>
+                        <!-- <li><a href="{{ route('people') }}">People</a></li> -->
                         <!-- <li><a href="{{ route('tasks') }}">Tasks</a></li> -->
                     </ul>
 
@@ -115,7 +115,7 @@
 
     <footer id="site-footer" class="padded">
         <div class="container" id="sub-footer">
-            <div class="col-md-4">
+            <div class="col-xs-6 col-sm-6 col-md-4">
                 <h4>Company Info</h4>
                 <ul>
                     <li><a href="#">About Us</a></li>
@@ -123,7 +123,7 @@
                     <li><a href="#">Contact Us</a></li>
                 </ul>
             </div>
-            <div class="col-md-4">
+            <div class="col-xs-6 col-sm-6 col-md-4">
                 <h4>Legal</h4>
                 <ul>
                     <li><a href="#">Privacy Policy</a></li>
@@ -131,7 +131,7 @@
                     <li><a href="#">Report Abuse</a></li>
                 </ul>
             </div>
-            <div class="col-md-4">
+            <div class="col-xs-12 col-sm-12 col-md-4">
                 <h4>Disclaimer</h4>
                 <p>
                     Skillsearch Nigeria is designed to help skilled and talented people in Nigeria showcase their works. We are not laible for what content users post on the platform.

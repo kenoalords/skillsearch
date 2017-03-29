@@ -1,19 +1,19 @@
 <div class="row">
     @if($portfolio['type'] == 'images')
-    <div class="col-sm-3">
+    <div class="col-sm-5">
         <a href="{{ $portfolio['link']['url'] }}">
             <img src="{{ $portfolio['thumbnail'] }}" alt="{{$portfolio['title']}}" class="img-responsive">
         </a>
     </div>
     @endif
     @if($portfolio['type'] == 'audio')
-    <div class="col-sm-3">
+    <div class="col-sm-5">
         <a href="{{ $portfolio['link']['url'] }}">
             <img src="{{ $portfolio['thumbnail'] }}" alt="{{$portfolio['title']}}" class="img-responsive">
         </a>
     </div>
     @endif
-    <div class="col-sm-9">
+    <div class="col-sm-7">
         <h5 class="bold"><a href="{{ $portfolio['link']['url'] }}">{{ str_limit($portfolio['title'], 20) }}</a></h5>
         <div class="clearfix">
             <ul class="list-inline pull-left text-muted">

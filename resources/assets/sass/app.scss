@@ -708,5 +708,44 @@ ul.profile-meta{
 	}
 }
 
+@media screen and (min-width: 540px) and (max-width: 768px)
+{
+	.container{
+		width: 90%;
+	}
+}
+
+@media screen and (min-width:320px) and (max-width:539px)
+{
+	.container{
+		width: 90%;
+	}
+
+	#profile-back{
+		padding: 1em 0;
+
+		.container{
+			h1{
+				font-size: 1.3em;
+				font-weight: 700;
+			}
+			img.avatar{
+				width: 64px;
+			}
+		}
+	}
+
+	#profile-edit{
+		height: 200px;
+	}
+
+	.boxed{
+		padding:0;
+	}
+
+	.white-boxed{
+		padding: 1em;
+	}
+}
 
 
