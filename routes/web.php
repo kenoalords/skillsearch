@@ -43,14 +43,18 @@ Route::group(['middleware'=>'auth'], function(){
 		Route::post('/start-twitter', 'UserProfileController@saveTwitterSocialUserProfile');
 
 		Route::get('/start/skills', 'UserProfileController@setupUserSkills');
+		Route::get('/users-verify', 'UserProfileController@verifyUserAccounts')->name('verify_user_accounts');
+		Route::get('/users', 'UserProfileController@getVerifyUserAccounts');
+		Route::post('/users/cancel', 'UserProfileController@cancelUserVerifyRequest');
+		Route::post('/users/ok', 'UserProfileController@approveUserVerifyRequest');
 	});
 	
 	Route::post('/home/upload', 'HomeController@uploadBackgroundImage');
 
 	// BLOG ROUTES
-	Route::get('/blog/add', 'BlogController@addBlogPost');
-	Route::post('/blog/add', 'BlogController@submitBlogPost');
-	Route::post('/blog/add/image', 'BlogController@submitBlogPostImage');
+	// Route::get('/blog/add', 'BlogController@addBlogPost');
+	// Route::post('/blog/add', 'BlogController@submitBlogPost');
+	// Route::post('/blog/add/image', 'BlogController@submitBlogPostImage');
 
 	Route::group(['prefix'=>'profile'], function(){
 
@@ -69,6 +73,8 @@ Route::group(['middleware'=>'auth'], function(){
 		Route::post('/portfolio/thumbnail', 'PortfolioController@savePortfolioThumbnail');
 		Route::get('/portfolio/{portfolio}/edit', 'PortfolioController@edit')->name('edit_portfolio');
 		Route::put('/portfolio/{portfolio}/update', 'PortfolioController@update')->name('update_portfolio');
+		Route::get('/portfolio/{portfolio}/delete', 'PortfolioController@delete')->name('delete_portfolio');
+		Route::get('/portfolio/{portfolio}/delete/ok', 'PortfolioController@deletePortfolio');
 		Route::delete('/files/{file}', 'FileController@deleteFile');
 
 		// Message Routes

@@ -48,7 +48,7 @@
             <a href="{{route('edit_portfolio', ['portfolio'=>$portfolio['uid']])}}" class="">
                 <small>Edit</small>
             </a>
-            <a href="#" class="">
+            <a href="{{route('delete_portfolio', ['portfolio'=>$portfolio['uid']])}}" class="">
                 <small class="">Delete</small>
             </a>
         </strong>

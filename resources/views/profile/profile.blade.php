@@ -11,7 +11,7 @@
     <div class="container">
         <div class="col-md-6 col-md-offset-3 text-center">
             <div style="margin-bottom: 1em">
-                <img src="{{ $profile->getAvatar() }}" width="150" height="150" class="img-circle" style="margin-bottom: 0">
+                <img src="{{ $profile->getAvatar() }}" width="150" height="150" class="img-circle avatar" style="margin-bottom: 0">
             </div>
             <div>
                 <h1>{{ $profile->first_name }} {{ $profile->last_name }} {!! identity_check($profile->getVerified()) !!}</h1>

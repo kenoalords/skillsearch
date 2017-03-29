@@ -145,7 +145,7 @@ div.progress{
 		padding: 1em;
 		color: #fff;
 
-		img{
+		img.avatar{
 			width: 100px;
 			height: auto;
 		}
@@ -561,6 +561,10 @@ ul.profile-meta{
 	padding:2em;
 	background-color:#fff;
 	border:1px solid #d3e0e9;
+}
+
+.small{
+	font-size: 75%;
 }
 
 #activities{

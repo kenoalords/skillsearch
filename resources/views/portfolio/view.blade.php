@@ -34,11 +34,11 @@
                             </div>
                         </li>
                         <li><i class="glyphicon glyphicon-heart"></i> {{ $portfolio['likes_count'] }} {{ str_plural('Like', $portfolio['likes_count'])}}</li>
-                        <li> {{ $portfolio['date'] }}</li>
                         <li><i class="glyphicon glyphicon-eye-open"></i> {{ $portfolio['views'] }} {{ str_plural('View', $portfolio['views'])}}</li>
                         @if($portfolio['url'] !== '')
                             <li><a href="{{$portfolio['url']}}" target="_blank" class="bold">Link <i class="glyphicon glyphicon-new-window"></i></a></li>
                         @endif
+                        <li> {{ $portfolio['date'] }}</li>
                     </ul>
                     <p>{{ $portfolio['description'] }}</p>
 
@@ -89,7 +89,7 @@
     </div>
 
     @if(count($others))
-        <div class="row" id="showcase">
+        <div id="showcase">
             <div class="col-md-12">
                 <h4 class="bold">Other portfolio items by {{$portfolio['user_profile']['fullname']}}</h4>
                 <hr>

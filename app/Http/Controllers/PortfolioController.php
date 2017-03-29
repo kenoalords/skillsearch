@@ -13,6 +13,7 @@ use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use App\Transformers\PortfolioTransformer;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
+use App\Jobs\DeleteFileFromS3Storage;
 
 
 class PortfolioController extends Controller
@@ -35,7 +36,8 @@ class PortfolioController extends Controller
     	return view('portfolio.add')->with('skills', $skills);
     }
 
-    public function edit(Request $request, Portfolio $portfolio){
+    public function edit(Request $request, Portfolio $portfolio)
+    {
         $this->authorize('edit', $portfolio);
     	$files = $portfolio->files()->get();
         $skills = $request->user()->skills()->get();
@@ -150,11 +152,6 @@ class PortfolioController extends Controller
         if($request->uid !== "null")
         {
             $portfolio = $request->user()->portfolio()->where('uid', $request->uid)->first();
-            // if($portfolio->thumbnail){
-            //     Storage::delete($portfolio->thumbnail);
-            // }
-            // $portfolio->thumbnail = $thumbnail;
-            // $portfolio->save();
             event(new PortfolioImageUploadEvent($portfolio, $thumbnail, $portfolio->thumbnail));
             $url = config('app.url').'/'.$thumbnail;
             return response()->json(['thumbnail'=>$url], 200);
@@ -177,7 +174,7 @@ class PortfolioController extends Controller
     {
         $this->authorize('edit', $portfolio);
     	$this->validate($request, [
-    		'title'	=> 'required|min:6|max:255'
+    		'title'	=> 'required|max:255'
     	]);
     	$portfolio->title = $request->title;
     	$portfolio->description = $request->description;
@@ -197,6 +194,43 @@ class PortfolioController extends Controller
         }
     }
 
+    public function delete(Portfolio $portfolio)
+    {
+        return view('portfolio.delete')->with('portfolio', $portfolio);
+    }
+
+    public function deletePortfolio(Request $request, Portfolio $portfolio)
+    {
+        // DeleteFileFromS3Storage
+        $this->authorize('edit', $portfolio);
+        $files = $portfolio->files()->get();
+        $comments = $portfolio->comments()->get();
+        $likes = $portfolio->likes()->get();
+
+        // Delete all files from s3 storage to free up space
+        $files->each(function($file, $key){
+            dispatch(new DeleteFileFromS3Storage($file->file));
+            $file->delete();
+        });
+
+        // Delete portfolio and thumbnail
+        dispatch(new DeleteFileFromS3Storage($portfolio->thumbnail));
+        $portfolio->delete();
+
+        // Delete comments
+        $comments->each(function($comment, $key){
+            $comment->delete();
+        });
+
+        // Delete Likes
+        $likes->each(function($like, $key){
+            $like->delete();
+        });
+
+        // Send confirmation message and redirect the user
+        $request->session()->flash('status', $portfolio->title . ' has been successfully deleted');
+        return redirect('/profile/portfolio');
+    }
 
     // Get portfolio items endpoint
     public function getPortfolioItems(User $user)

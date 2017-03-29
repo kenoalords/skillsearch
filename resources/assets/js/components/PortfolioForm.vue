@@ -154,10 +154,7 @@
                     <div class="row">                        
                         <div class="col-sm-6">
                             <label for="url">Portfolio link <span class="text-muted">(optional)</span></label>
-                            <div class="input-group">
-                                <span class="input-group-addon">http://</span>
-                                <input type="text" v-model="portfolioUrl" class="form-control">
-                            </div>
+                            <input type="url" v-model="portfolioUrl" class="form-control" placeholder="http://example.com">
                             <small>Enter an external url this portfolio links to</small>
                         </div>
                         <div class="col-sm-6">

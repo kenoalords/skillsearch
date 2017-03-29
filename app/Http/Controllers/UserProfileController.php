@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Mail;
 use App\Models\User;
 use App\Models\Profile;
 use App\Models\Activity;
 use App\Models\Phone;
+use App\Models\VerifyIdentity;
 use App\Jobs\UserImageJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +16,8 @@ use App\Http\Requests\SocialUserProfileRequest;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use App\Jobs\DeleteFileFromS3Storage;
+use App\Mail\CancelVerifyNotification;
+use App\Mail\ApproveVerifyNotification;
 
 class UserProfileController extends Controller
 {
@@ -199,6 +203,37 @@ class UserProfileController extends Controller
 
         $request->user()->delete();
         return redirect('/');
+    }
+
+    public function verifyUserAccounts()
+    {
+        return view('verify-accounts');
+    }
+
+    public function getVerifyUserAccounts(Request $request)
+    {
+        $req = VerifyIdentity::where('status', 0)->get();
+        return response()->json($req, 200);
+    }
+
+    public function cancelUserVerifyRequest(Request $request)
+    {
+        $user = User::where('id', $request->user_id)->first();
+        $identity = VerifyIdentity::where('id', $request->id)->first();
+        dispatch(new DeleteFileFromS3Storage($identity->scan_link));
+        $identity->delete();
+        Mail::to($user)->queue(new CancelVerifyNotification($user, $request->message));
+        return response()->json(null, 200);
+    }
+
+    public function approveUserVerifyRequest(Request $request)
+    {
+        $user = User::where('id', $request->user_id)->first();
+        $identity = VerifyIdentity::where('id', $request->id)->first();
+        $identity->status = 1;
+        $identity->save();
+        Mail::to($user)->queue(new ApproveVerifyNotification($user));
+        return response()->json(null, 200);
     }
 }
 

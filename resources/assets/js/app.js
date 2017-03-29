@@ -32,6 +32,7 @@ Vue.component('portfolio-comments', require('./components/PortfolioComments.vue'
 Vue.component('register-view', require('./components/Views.vue'));
 Vue.component('video-player', require('./components/VideoPlayer.vue'));
 Vue.component('blog-form', require('./components/BlogForm.vue'));
+Vue.component('verify-users', require('./components/VerifyUsers.vue'));
 
 const app = new Vue({
     el: '#app'

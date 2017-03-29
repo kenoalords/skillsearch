@@ -10061,7 +10061,7 @@ div.progress {
   color: #fff;
 }
 
-#profile-back .container img {
+#profile-back .container img.avatar {
   width: 100px;
   height: auto;
 }
@@ -10519,6 +10519,10 @@ ul.profile-meta li {
   padding: 2em;
   background-color: #fff;
   border: 1px solid #d3e0e9;
+}
+
+.small {
+  font-size: 75%;
 }
 
 #activities {

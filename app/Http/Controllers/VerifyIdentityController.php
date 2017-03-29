@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Image;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Jobs\UserImageJob;
 
 class VerifyIdentityController extends Controller
 {
@@ -20,9 +22,14 @@ class VerifyIdentityController extends Controller
     	]);
 
     	$file = $request->file('identity-card')->store('public');
+        Image::make(storage_path() . '/app/' . $file)->resize(640, null, function($constraint){
+            $constraint->aspectRatio();
+        })->save();
+
     	$request->user()->identity()->create([
     		'scan_link' => $file
     	]);
+        dispatch(new UserImageJob($file));
     	return redirect()->route('verify_identity');
     }
 }

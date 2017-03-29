@@ -3,6 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row padded">
+        @include('includes.status')
         <h2><span class="bold">Portfolio</span> <span class="thin">| Showcase your work</span></h2>
         <p>Create your portfolio and share with friends</p>
         <br>
@@ -16,7 +17,7 @@
         
         @if ($portfolios)
             <div class="row">
-                @each('includes.portfolio', $portfolios, 'portfolio')
+                @each('includes.portfolio-owner', $portfolios, 'portfolio')
             </div>
             <!-- <p><a href="/profile/portfolio/add" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Add item</a></p> -->
         @else
