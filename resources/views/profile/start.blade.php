@@ -8,23 +8,23 @@
             <hr>
 
             <form action="{{ route('start') }}" method="POST">
-
-                <div class="panel panel-default boxed">
-                    <div class="panel-body">
-                        <div class="input-group">
-                            <span class="input-group-addon">{{ config('app.url') }}/</span>
-                            <input type="text" name="username" class="form-control" value="{{ $name }}">
-                        </div>
-                        <small>Change your username</small>
-                    </div>
-                </div>
-
                 <div class="panel panel-default boxed">
                     <div class="panel-body">
                         {{ csrf_field() }}
+                        <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
+                            <div class="input-group">
+                                <span class="input-group-addon">{{ config('app.url') }}/</span>
+                                <input type="text" name="username" class="form-control" value="{{ old('username') ? old('username') : $name  }}">
+                            </div>
+                            <small>Change your username</small>
+                            @if ($errors->has('username'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('username') }}</strong>
+                                </span>
+                            @endif
+                        </div>
                         <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
                             <input type="text" class="form-control" name="first_name" value="{{old('first_name')}}" placeholder="First Name">
-
                             @if ($errors->has('first_name'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('first_name') }}</strong>
@@ -66,13 +66,9 @@
                                 </span>
                             @endif
                         </div>
-                    </div>
-                </div>
 
-                <div class="panel panel-default boxed">
-                    <div class="panel-body">
                         <div class="form-group {{ $errors->has('bio') ? ' has-error' : '' }}">
-                            <textarea name="bio" class="form-control" rows="7" placeholder="Tell us a little bit about yourself">{{old('bio')}}</textarea>
+                            <textarea name="bio" class="form-control" rows="3" placeholder="Tell us a little bit about yourself, please keep it short">{{old('bio')}}</textarea>
                             @if ($errors->has('bio'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('bio') }}</strong>

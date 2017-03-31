@@ -28,7 +28,7 @@ class SocialUserProfileRequest extends FormRequest
             'last_name' => 'required|min:3|max:32',
             'gender'    => 'required|in:male,female',
             'location'  => 'required|min:3|max:32',
-            'bio'       => 'required|min:120|max:2500',
+            'bio'       => 'required|max:120',
             'account_type' => 'required|in:1,0'
         ];
     }
