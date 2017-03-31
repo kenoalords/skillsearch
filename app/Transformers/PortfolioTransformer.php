@@ -31,6 +31,7 @@ class PortfolioTransformer extends TransformerAbstract
 					'url'	=> '/' . $portfolio->user->name . '/portfolio/' . $portfolio->uid,
 					'href'	=> config('app.url') . '/' . $portfolio->user->name . '/portfolio/' . $portfolio->uid,
 				],
+			'share_count'=> $portfolio->shares()->count(),
 			'user_profile'	=> [
 				'first_name'	=> $portfolio->user->profile->first_name,
 				'last_name'		=> $portfolio->user->profile->last_name,

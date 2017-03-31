@@ -9,7 +9,7 @@
 
 <div id="user-badge">
     <div class="container">
-        <div class="col-md-10 col-md-offset-1">
+        <div class="col-md-12">
             <a href="/{{$portfolio['user']}}" class="pull-left" style="margin-right: 1em">
                 <img src="{{$portfolio['user_profile']['avatar']}}" alt="{{$portfolio['user_profile']['fullname']}}" class="img-circle" width="64" height="64">
             </a>
@@ -30,8 +30,23 @@
 </div>
 <div class="container">
     <div class="row padded">
+        <div class="col-md-3">
+            <div class="affix">
+                <div>{{$portfolio['description']}}</div>
+                @if($portfolio['description'])
+                <hr>
+                @endif
+                <div>
+                    @include('includes.share.portfolio', ['url'=>Request::url()])
+                </div>
+
+                <div style="padding: 2em 0">
+                    <like-button id="{{$portfolio['uid']}}"></like-button>
+                </div>
+            </div>
+        </div>
         
-        <div class="col-md-10 col-md-offset-1">
+        <div class="col-md-9">
 
             @if($portfolio['is_public'] === 0 )
             <div class="alert alert-info">
@@ -68,9 +83,7 @@
                 @endforeach
             @endif
 
-            <div style="padding: 2em 0">
-                <like-button id="{{$portfolio['uid']}}"></like-button>
-            </div>
+
             
             @if(!Auth::user())
             <a href="/login" class="btn btn-primary">Login or Register</a> to comment or like

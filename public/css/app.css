@@ -10713,3 +10713,13 @@ ul.profile-meta li {
     padding: 1em;
   }
 }
+
+.share-links li a {
+  color: #333;
+  opacity: .5;
+  font-size: 1.5em;
+}
+
+.share-links li a:hover {
+  opacity: 1;
+}

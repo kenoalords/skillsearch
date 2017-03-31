@@ -41,6 +41,11 @@ class Portfolio extends Model
       return $this->files()->get();
     }
 
+    public function shares()
+    {
+      return $this->morphMany(SocialShare::class, 'shareable');
+    }
+
     public function getUserAttribute()
     {
       return User::where('id', $this->user_id)->get()->first();

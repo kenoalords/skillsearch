@@ -144,6 +144,8 @@ Route::post('/account-merge', 'SocialAccountLinkupController@mergeAccounts');
 // External Links
 Route::get('/external-link', 'ExternalLinkController@index')->name('external_link');
 
+Route::get('/social/{portfolio}/share', 'SocialShareController@portfolio')->name('portfolio_share');
+
 Route::get('/{user}', 'People@profile')->name('view_profile');
 Route::get('/{user}/hire', 'People@hire')->name('hire');
 Route::get('/{user}/portfolio/{portfolio}', 'PortfolioController@view')->name('view_portfolio');

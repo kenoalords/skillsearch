@@ -748,4 +748,17 @@ ul.profile-meta{
 	}
 }
 
+.share-links{
+	li{
+		a{
+			color: #333;
+			opacity: .5;
+			font-size: 1.5em;
+			&:hover{
+				opacity: 1;
+			}
+		}
+	}
+}
+
 
