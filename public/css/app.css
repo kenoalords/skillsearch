@@ -10525,6 +10525,10 @@ ul.profile-meta li {
   font-size: 75%;
 }
 
+.small-header {
+  font-size: 1.2em;
+}
+
 #activities {
   background: #fff;
   padding: 2em;
