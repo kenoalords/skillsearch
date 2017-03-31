@@ -141,6 +141,9 @@ Route::get('/people', 'People@index')->name('people');
 Route::get('/account-merge', 'SocialAccountLinkupController@index')->name('merge_account');
 Route::post('/account-merge', 'SocialAccountLinkupController@mergeAccounts');
 
+// External Links
+Route::get('/external-link', 'ExternalLinkController@index')->name('external_link');
+
 Route::get('/{user}', 'People@profile')->name('view_profile');
 Route::get('/{user}/hire', 'People@hire')->name('hire');
 Route::get('/{user}/portfolio/{portfolio}', 'PortfolioController@view')->name('view_portfolio');
@@ -160,6 +163,7 @@ Route::get('/follower/{user}', 'FollowerController@getFollowers');
 
 // Likes Route
 Route::get('/likes/{portfolio}', 'LikesController@get');
+
 
 
 

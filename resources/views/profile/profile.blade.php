@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
-@section('title', $profile->first_name . ' ' . $profile->last_name . ' - ')
+@section('title', $profile->first_name . ' ' . $profile->last_name)
+@section('metadescription', e(str_limit($profile->bio, 100)))
+@section('thumbnail', $profile->getAvatar())
+@section('type', 'article')
 
 @section('content')
 

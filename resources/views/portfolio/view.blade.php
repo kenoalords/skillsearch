@@ -1,7 +1,33 @@
 @extends('layouts.app')
 
+@section('title', $portfolio['user_profile']['fullname'] . ' Portfolio')
+@section('metadescription', e(str_limit($portfolio['description'], 100)))
+@section('thumbnail', $portfolio['thumbnail'])
+@section('type', 'portfolio')
+
 @section('content')
 
+<div id="user-badge">
+    <div class="container">
+        <div class="col-md-10 col-md-offset-1">
+            <a href="/{{$portfolio['user']}}" class="pull-left" style="margin-right: 1em">
+                <img src="{{$portfolio['user_profile']['avatar']}}" alt="{{$portfolio['user_profile']['fullname']}}" class="img-circle" width="64" height="64">
+            </a>
+            <div class="pull-left">
+                <h4 class="bold">{{ $portfolio['title'] }}</h4>
+                <ul class="list-inline" style="font-weight: 700; font-size: 12px;">
+                    <li>by <a href="/{{$portfolio['user']}}">{{$portfolio['user_profile']['fullname']}}</a></li>
+                    <li><i class="glyphicon glyphicon-heart"></i> {{ $portfolio['likes_count'] }} {{ str_plural('Like', $portfolio['likes_count'])}}</li>
+                    <li><i class="glyphicon glyphicon-eye-open"></i> {{ $portfolio['views'] }} {{ str_plural('View', $portfolio['views'])}}</li>
+                    @if($portfolio['url'] !== '')
+                        <li><a href="{{route('external_link', ['url'=>$portfolio['url']])}}" target="_blank" class="bold">Link <i class="glyphicon glyphicon-new-window"></i></a></li>
+                    @endif
+                    <li> {{ $portfolio['date'] }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="container">
     <div class="row padded">
         
@@ -15,62 +41,31 @@
             @endif
 
             @if($portfolio['is_public'] === 1 || (Auth::user() && Auth::user()->id === $portfolio['user_id']))
-            <div class="row">
-                <div class="col-xs-4 col-sm-3">
-                    <img src="{{asset($portfolio['thumbnail'])}}" alt="" class="thumbnail img-responsive">
-                </div>
-                <div class="col-xs-8 col-sm-9">
-                    
-                    <h3 class="bold">{{ $portfolio['title'] }}</h3>
-                    <ul class="list-inline" style="font-weight: 700; font-size: 12px;">
-                        <li>
-                            <div class="clearfix">
-                                <a href="/{{$portfolio['user']}}">
-                                    <img src="{{$portfolio['user_profile']['avatar']}}" alt="{{$portfolio['user_profile']['fullname']}}" class="img-circle" width="24" height="24">
-                                </a>
-                                <a href="/{{$portfolio['user']}}">
-                                    {{$portfolio['user_profile']['fullname']}}
-                                </a>
-                            </div>
-                        </li>
-                        <li><i class="glyphicon glyphicon-heart"></i> {{ $portfolio['likes_count'] }} {{ str_plural('Like', $portfolio['likes_count'])}}</li>
-                        <li><i class="glyphicon glyphicon-eye-open"></i> {{ $portfolio['views'] }} {{ str_plural('View', $portfolio['views'])}}</li>
-                        @if($portfolio['url'] !== '')
-                            <li><a href="{{$portfolio['url']}}" target="_blank" class="bold">Link <i class="glyphicon glyphicon-new-window"></i></a></li>
-                        @endif
-                        <li> {{ $portfolio['date'] }}</li>
-                    </ul>
-                    <p>{{ $portfolio['description'] }}</p>
-
-                    <follow username="{{$portfolio['user']}}"></follow>  
-                </div>
-            </div>
             
-            <hr>
             @if($portfolio['type'] === 'images')
                 
-            @foreach ($files as $file)
-                <img src="{{asset($file->getFile())}}" alt="{{ $portfolio['title'] }} Image" class="img-responsive thumbnail">
-            @endforeach
+                @foreach ($files as $file)
+                    <img src="{{asset($file->getFile())}}" alt="{{ $portfolio['title'] }} Image" class="img-responsive thumbnail">
+                @endforeach
 
             @endif
 
             @if($portfolio['type'] === 'audio')
-            @foreach ($files as $file)
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <audio controls preload>
-                            <source src="{{asset($file->getFile())}}"></audio>
-                        </audio>
+                @foreach ($files as $file)
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <audio controls preload>
+                                <source src="{{asset($file->getFile())}}"></audio>
+                            </audio>
+                        </div>
                     </div>
-                </div>
-            @endforeach
+                @endforeach
             @endif
 
             @if($portfolio['type'] === 'video')
-            @foreach ($files as $file)
-                <video-player video-url="{{$file->getFile()}}"></video-player>
-            @endforeach
+                @foreach ($files as $file)
+                    <video-player video-url="{{$file->getFile()}}"></video-player>
+                @endforeach
             @endif
 
             <div style="padding: 2em 0">

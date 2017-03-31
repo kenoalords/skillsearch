@@ -12,7 +12,9 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => 'Skillsearch Nigeria',
+    'name'          => 'Skillsearch Nigeria',
+    'description'   => 'Hire The Best Skilled People In Nigeria',
+    // 'thumbnail'     => asset('public/skillsearc-nigeria-social-image.jpg'),
 
     /*
     |--------------------------------------------------------------------------

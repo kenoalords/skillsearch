@@ -1,24 +1,27 @@
 @extends('layouts.app')
 
+@section('title', 'Create Account')
+@section('metadescription', 'Create a Free account and start promoting your works on Skillsearch Nigeria')
+@section('thumbnail', config('app.thumbnail'))
+@section('type', 'portfolio')
+
 @section('content')
 <div class="container">
     <div class="row padded">
-        <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+        <div class="col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
             <h3 class="text-center">Create Account</h3>
             <div class="panel panel-default boxed">
                 <div class="panel-body">
                     <a href="{{route('google')}}" class="btn btn-block btn-danger">Sign in with Google</a>
-                    <br>
+                    
                     <a href="{{route('facebook')}}" class="btn btn-block btn-primary">Sign in with Facebook</a>
                     <hr>
                     <form class="" role="form" method="POST" action="{{ route('register') }}">
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                            <label for="name" class="control-label">Username</label>
-
                             <div>
-                                <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus>
+                                <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus placeholder="Username">
                                 <p><small>Only alphanumeric characters are allowed</small></p>
                                 @if ($errors->has('name'))
                                     <span class="help-block">
@@ -29,10 +32,8 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
-                            <label for="first_name" class="control-label">First Name</label>
-
                             <div>
-                                <input id="first_name" type="text" class="form-control" name="first_name" value="{{ old('first_name') }}" required autofocus>
+                                <input id="first_name" type="text" class="form-control" name="first_name" value="{{ old('first_name') }}" required autofocus placeholder="First Name">
                                 @if ($errors->has('first_name'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('first_name') }}</strong>
@@ -42,10 +43,8 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
-                            <label for="last_name" class="control-label">Last Name</label>
-
                             <div>
-                                <input id="last_name" type="text" class="form-control" name="last_name" value="{{ old('last_name') }}" required autofocus>
+                                <input id="last_name" type="text" class="form-control" name="last_name" value="{{ old('last_name') }}" required autofocus placeholder="Last Name">
                                 @if ($errors->has('last_name'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('last_name') }}</strong>
@@ -55,10 +54,8 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="control-label">E-Mail Address</label>
-
                             <div>
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
+                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required placeholder="E-Mail Address">
 
                                 @if ($errors->has('email'))
                                     <span class="help-block">
@@ -69,10 +66,8 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="control-label">Password</label>
-
                             <div>
-                                <input id="password" type="password" class="form-control" name="password" required>
+                                <input id="password" type="password" class="form-control" name="password" required placeholder="Password">
 
                                 @if ($errors->has('password'))
                                     <span class="help-block">
@@ -83,14 +78,13 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="password-confirm" class="control-label">Confirm Password</label>
                             <div>
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required placeholder="Confirm Password">
                             </div>
                         </div>
 
                         <div class="form-group {{ $errors->has('account_type') ? ' has-error' : '' }}">
-                            <h3 class="text-center">I Want To</h3>
+                            <h4 class="text-center">I Want To</h4>
                             <hr>
                             <div class="row">
                                 <div class="col-md-6">

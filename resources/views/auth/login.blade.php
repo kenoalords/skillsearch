@@ -1,5 +1,10 @@
 @extends('layouts.app')
 
+@section('title', 'Login')
+@section('metadescription', 'Login or signup to join hundreds of people using Skillsearch Nigeria to promote their works')
+@section('thumbnail', config('app.thumbnail'))
+@section('type', 'portfolio')
+
 @section('content')
 <div class="container">
     <div class="row padded">
@@ -14,10 +19,8 @@
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="control-label">E-Mail Address</label>
-
                             <div class="">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
+                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus placeholder="E-Mail Address">
 
                                 @if ($errors->has('email'))
                                     <span class="help-block">
@@ -28,10 +31,8 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class=" control-label">Password</label>
-
                             <div class="">
-                                <input id="password" type="password" class="form-control" name="password" required>
+                                <input id="password" type="password" class="form-control" name="password" required placeholder="Password">
 
                                 @if ($errors->has('password'))
                                     <span class="help-block">
@@ -61,11 +62,15 @@
                             </p>
                         </div>
                     </form>
+
                     <hr>
                     <a href="{{route('google')}}" class="btn btn-block btn-danger">Sign in with Google</a>
-                    <br>
+                    
                     <a href="{{route('facebook')}}" class="btn btn-block btn-primary">Sign in with Facebook</a>
                 </div>
+            </div>
+            <div class="text-center">
+                <h4 class="thin">Don't have an account? <a href="/register" class="bold">Sign up</a></h4>
             </div>
         </div>
     </div>

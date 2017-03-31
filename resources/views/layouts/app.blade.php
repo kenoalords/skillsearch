@@ -3,12 +3,34 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title') {{ config('app.name', 'Laravel') }}</title>
+    <!-- SEO META TAGS -->
+    <meta name="description" content="@yield('metadescription')">
+
+
+    <title>@yield('title') {{ config('app.name', 'Skillsearch Nigeria') }} | {{ config('app.description') }}</title>
+    @yield('seometa')
+
+    <meta name="twitter:card" content="@yield('metadescription')">
+    <meta name="twitter:site" content="@skillsearchng">
+    <meta name="twitter:title" content="@yield('title')">
+    <meta name="twitter:description" content="@yield('metadescription')">
+    <meta name="twitter:creator" content="@skillsearchng">
+    <!-- Twitter Summary card images must be at least 120x120px -->
+    <meta name="twitter:image" content="@yield('thumbnail')">
+
+    <!-- Open Graph data -->
+    <meta property="og:title" content="@yield('title')" />
+    <meta property="og:type" content="@yield('type')" />
+    <meta property="og:url" content="{{Request::url()}}" />
+    <meta property="og:image" content="@yield('thumbnail')" />
+    <meta property="og:description" content="@yield('metadescription')" /> 
+    <meta property="og:site_name" content="{{config('app.name')}}" />
+
 
     <!-- Styles -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
