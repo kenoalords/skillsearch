@@ -19,7 +19,7 @@
                     <li>by <a href="/{{$portfolio['user']}}">{{$portfolio['user_profile']['fullname']}}</a></li>
                     <li><i class="glyphicon glyphicon-heart"></i> {{ $portfolio['likes_count'] }} {{ str_plural('Like', $portfolio['likes_count'])}}</li>
                     <li><i class="glyphicon glyphicon-eye-open"></i> {{ $portfolio['views'] }} {{ str_plural('View', $portfolio['views'])}}</li>
-                    @if($portfolio['url'] !== '')
+                    @if($portfolio['url'] !== null)
                         <li><a href="{{route('external_link', ['url'=>$portfolio['url']])}}" target="_blank" class="bold">Link <i class="glyphicon glyphicon-new-window"></i></a></li>
                     @endif
                     <li> {{ $portfolio['date'] }}</li>
@@ -34,7 +34,10 @@
             <div class="">
                 <div>{{$portfolio['description']}}</div>
                 @if($portfolio['description'])
-                <hr>
+                    @if($portfolio['url'] !== null)
+                        <p><a href="{{route('external_link', ['url'=>$portfolio['url']])}}" target="_blank" class="bold">Link <i class="glyphicon glyphicon-new-window"></i></a></p>
+                    @endif
+                    <hr>
                 @endif
                 <div>
                     @include('includes.share.portfolio', ['url'=>Request::url()])

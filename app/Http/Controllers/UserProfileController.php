@@ -63,6 +63,7 @@ class UserProfileController extends Controller
             'account_type'  => $request->account_type,
             'location'      => $request->location,
         ]);
+
         if($request->account_type == 1){
             return redirect('/home/start/skills');
         } else {

@@ -21,6 +21,18 @@
                 width: 100% !important;
             }
         }
+        #social-links{
+            list-style: none;
+            text-align: center;
+            padding: 1em 0;
+        }
+        #social-links li{
+            display: inline-block;
+        }
+        #social-links li a img{
+            width: 32px;
+            height: auto;
+        }
     </style>
 
     <table class="wrapper" width="100%" cellpadding="0" cellspacing="0">

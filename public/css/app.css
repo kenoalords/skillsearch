@@ -10716,14 +10716,16 @@ ul.profile-meta li {
 
 .share-links li a {
   color: #333;
-  opacity: .5;
-  width: 48px;
-  height: 48px;
+  opacity: .7;
+  width: 36px;
+  height: 36px;
   display: table-cell;
   background: #ddd;
   text-align: center;
-  border-radius: 48px;
+  border-radius: 36px;
   vertical-align: middle;
+  -webkit-transition: all .3s ease-in-out;
+  transition: all .3s ease-in-out;
 }
 
 .share-links li a:hover {

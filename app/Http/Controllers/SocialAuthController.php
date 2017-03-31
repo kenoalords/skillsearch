@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Mail;
 use App\Models\SocialAccount;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Socialite;
 use Illuminate\Support\Facades\Auth;
+use App\Mail\UserRegistrationNotification;
 
 class SocialAuthController extends Controller
 {
@@ -68,6 +70,7 @@ class SocialAuthController extends Controller
                         'provider_user_id'  => $social_id,
                         'provider'          => $provider
                     ]);
+                    Mail::to($user)->queue(new UserRegistrationNotification($name));
                     Auth::login($user, true);
                     return redirect()->to('/home/start')->with(['name' => $username, 'fullname' => $name ]);
                 }
