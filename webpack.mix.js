@@ -11,9 +11,7 @@ const { mix } = require('laravel-mix');
  |
  */
 
-mix.js('vendor/kartik-v/bootstrap-star-rating/js/star-rating.js', 'public/js')
-	.js('resources/assets/js/app.js', 'public/js')
+mix..js('resources/assets/js/app.js', 'public/js')
 	.js('node_modules/video.js/dist/video.min.js', 'public/js')
-	.copy('vendor/kartik-v/bootstrap-star-rating/css/star-rating.min.css', 'public/css/')
    .sass('resources/assets/sass/app.scss', 'public/css');
 
