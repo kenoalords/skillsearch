@@ -7,7 +7,7 @@
 
 @section('content')
 
-<div id="user-badge">
+<div id="user-badge" class="">
     <div class="container">
         <div class="col-md-12">
             <a href="/{{$portfolio['user']}}" class="pull-left" style="margin-right: 1em">
@@ -31,7 +31,7 @@
 <div class="container">
     <div class="row padded">
         <div class="col-md-3">
-            <div class="affix">
+            <div class="">
                 <div>{{$portfolio['description']}}</div>
                 @if($portfolio['description'])
                 <hr>
@@ -98,11 +98,13 @@
 
     @if(count($others))
         <div id="showcase">
-            <div class="col-md-12">
+            <div class="row">
                 <h4 class="bold">Other portfolio items by {{$portfolio['user_profile']['fullname']}}</h4>
                 <hr>
-            </div>      
-            @each('includes.portfolio', $others, 'portfolio')
+            </div> 
+            <div class="row">     
+                @each('includes.portfolio', $others, 'portfolio')
+            </div>
         </div>
     @endif
 </div>

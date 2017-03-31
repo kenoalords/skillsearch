@@ -206,6 +206,7 @@ class PortfolioController extends Controller
         $files = $portfolio->files()->get();
         $comments = $portfolio->comments()->get();
         $likes = $portfolio->likes()->get();
+        $activities = $portfolio->activity()->get();
 
         // Delete all files from s3 storage to free up space
         $files->each(function($file, $key){
@@ -220,6 +221,11 @@ class PortfolioController extends Controller
         // Delete comments
         $comments->each(function($comment, $key){
             $comment->delete();
+        });
+
+        // Delete Activity
+        $activities->each(function($activity, $key){
+            $activity->delete();
         });
 
         // Delete Likes

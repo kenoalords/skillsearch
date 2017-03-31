@@ -191,9 +191,12 @@
             autocomplete = new google.maps.places.Autocomplete(inputState, options);
         }
 
-        $('#user-badge').affix({
+        $('.afix').affix({
             offset: {
-                top: 50,
+                top: 0,
+                bottom: function () {
+                  return (this.bottom = $('#showcase').outerHeight(true))
+                }
             },
             target: window
         })

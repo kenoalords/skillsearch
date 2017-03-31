@@ -32,7 +32,16 @@ class FollowersTransformer extends TransformerAbstract
 
 	public function includePortfolio(Activity $activity)
 	{
-		if($activity->type === 'portfolio')
-			return $this->item(Portfolio::find($activity->activable_id), new PortfolioTransformer);
+		if($activity->type === 'portfolio'){
+			$portfolio = Portfolio::where('id',$activity->activable_id)->first();
+			// dd($portfolio);
+			if($portfolio !== null){
+				return $this->item($portfolio, new PortfolioTransformer);
+			} else {
+				return null;
+			}
+		} else {
+			return;
+		}
 	}
 }

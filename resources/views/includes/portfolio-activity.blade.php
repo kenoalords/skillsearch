@@ -1,3 +1,4 @@
+@if($portfolio)
 <div class="row">
     @if($portfolio['type'] == 'images')
     <div class="col-sm-5">
@@ -43,3 +44,4 @@
         @endif
     </div>
 </div>
+@endif

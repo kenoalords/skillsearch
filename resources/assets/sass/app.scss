@@ -753,9 +753,18 @@ ul.profile-meta{
 		a{
 			color: #333;
 			opacity: .5;
-			font-size: 1.5em;
-			&:hover{
+			width: 48px;
+		    height: 48px;
+		    display: table-cell;
+		    background: #ddd;
+		    text-align: center;
+		    border-radius: 48px;
+		    vertical-align: middle;	
+		    transition: all .3s ease-in-out;		
+		    &:hover{
 				opacity: 1;
+				background: #3097D1;
+				color: #fff;
 			}
 		}
 	}

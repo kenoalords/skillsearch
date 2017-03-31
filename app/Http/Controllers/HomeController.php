@@ -37,12 +37,16 @@ class HomeController extends Controller
     {   
         $following = $request->user()->followers()->pluck('following_id');
         $activities = Activity::whereIn('user_id', $following)->latestFirst()->get();
-        $activities = fractal()->collection($activities)
+        // dd($activities);
+        if($activities){
+            $activities = fractal()->collection($activities)
                                 ->transformWith(new FollowersTransformer)
                                 ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                                 ->toArray();
+        } else {
+            $activities = null;
+        }
 
-        // dd($activities);
 
         return view('home')->with([
             'user'      => $request->user(),

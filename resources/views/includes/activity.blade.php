@@ -21,8 +21,6 @@
 					@include('includes.portfolio-activity', ['portfolio' => $activity['portfolio']])
 				</div>
 			@endif
-
-
 			<p></p>
 		</div>
 	</div>
