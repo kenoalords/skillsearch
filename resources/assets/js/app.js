@@ -38,4 +38,5 @@ const app = new Vue({
     el: '#app'
 });
 
+var bLazy = new Blazy();
 

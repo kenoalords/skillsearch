@@ -11,7 +11,7 @@
     <div class="container">
         <div class="col-md-12">
             <a href="/{{$portfolio['user']}}" class="pull-left" style="margin-right: 1em">
-                <img src="{{$portfolio['user_profile']['avatar']}}" alt="{{$portfolio['user_profile']['fullname']}}" class="img-circle" width="64" height="64">
+                <img src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="{{$portfolio['user_profile']['avatar']}}" alt="{{$portfolio['user_profile']['fullname']}}" class="img-circle b-lazy" width="64" height="64">
             </a>
             <div class="pull-left">
                 <h4 class="bold">{{ $portfolio['title'] }}</h4>
@@ -63,7 +63,7 @@
             @if($portfolio['type'] === 'images')
                 
                 @foreach ($files as $file)
-                    <img src="{{asset($file->getFile())}}" alt="{{ $portfolio['title'] }} Image" class="img-responsive thumbnail">
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=" data-src="{{asset($file->getFile())}}" alt="{{ $portfolio['title'] }} Image" class="img-responsive thumbnail b-lazy">
                 @endforeach
 
             @endif
@@ -106,7 +106,7 @@
                 <hr>
             </div> 
             <div class="row">     
-                @each('includes.portfolio', $others, 'portfolio')
+                @each('includes.portfolio-others', $others, 'portfolio')
             </div>
         </div>
     @endif

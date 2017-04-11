@@ -72,14 +72,16 @@
 
             <div class="panel panel-default" v-if="type == 'images'">
                 <div class="panel-heading">Upload/Add Images</div>
+
                 <div class="panel-body" v-if="type == 'images'">
                     <div class="progress" v-if="isUploading && !uploadingComplete">
                         <div class="progress-bar" role="progressbar" v-bind:style="{ width: progress + '%'}"></div>
                     </div>
-                    <label class="btn btn-primary btn-lg btn-block">
+                    <label class="btn btn-primary btn-lg btn-block" v-if="uploadedImages.length < 10">
                         <i class="glyphicon glyphicon-plus"></i> Select image
                         <input type="file" id="fileUpload" style="display:none" v-on:change="uploadImage">
                     </label>
+                    <p class="text-center bold"><small><em>{{ uploadedImages.length }} out of 10 images</em></small></p>
                     <div class="list-group" v-if="uploadedImages" style="margin-top:2em">
                         <div class="list-group-item" v-for="image in uploadedImages">
                             <img v-bind:src=" image.link " style="width:auto; height: 70px;">

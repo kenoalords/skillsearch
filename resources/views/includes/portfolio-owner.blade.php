@@ -2,7 +2,7 @@
 
     <div class="image-wrapper">
         <a href="{{ $portfolio['link']['url'] }}">
-            <img src="{{ $portfolio['thumbnail'] }}" alt="{{$portfolio['title']}}" class="img-responsive">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" data-src="{{ $portfolio['thumbnail'] }}" alt="{{$portfolio['title']}}" class="img-responsive b-lazy">
         </a>
         <div class="p-content clearfix">
             <div class="clearfix">

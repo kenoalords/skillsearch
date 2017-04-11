@@ -180,6 +180,7 @@
     <!-- Scripts -->
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyASRW46rAvktIC7IsJFva1gKbPKBYlrpQo&libraries=places&region=ng"></script>
     <script src="{{ asset('js/app.js') }}"></script>
+
     <script>
         var inputState = document.getElementById('geolocation');
         if(inputState){
@@ -200,7 +201,6 @@
             },
             target: window
         });
-
     </script>
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

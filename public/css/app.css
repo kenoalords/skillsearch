@@ -9944,6 +9944,17 @@ body {
   height: auto;
 }
 
+.b-lazy {
+  -webkit-transition: opacity 500ms ease-in-out;
+  transition: opacity 500ms ease-in-out;
+  max-width: 100%;
+  opacity: 0;
+}
+
+.b-lazy.b-loaded {
+  opacity: 1;
+}
+
 .rating-md {
   font-size: 1.5em;
 }
@@ -9973,10 +9984,6 @@ body {
 
 .full-width {
   width: 100% !important;
-}
-
-div.progress {
-  height: 2px;
 }
 
 #messageViewer {
@@ -10215,7 +10222,7 @@ small {
 }
 
 #user-badge {
-  padding: 1em;
+  padding: 0.4em;
   background: #fff;
   width: 100%;
   z-index: 2;
@@ -10429,6 +10436,7 @@ ul.profile-meta li {
 
 #showcase .image-wrapper {
   position: relative;
+  background: #fff;
 }
 
 #showcase .portfolio-credit {

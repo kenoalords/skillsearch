@@ -71,11 +71,15 @@ Route::group(['middleware'=>'auth'], function(){
 		Route::get('/portfolio/add', 'PortfolioController@add');
 		Route::post('/portfolio/add', 'PortfolioController@savePortfolio');
 		Route::post('/portfolio/thumbnail', 'PortfolioController@savePortfolioThumbnail');
+		Route::get('/portfolio/instagram', 'InstagramPortfolioController@index');
+		Route::get('/portfolio/instagram/get', 'InstagramPortfolioController@get');
+		Route::get('/portfolio/instagram/callback', 'InstagramPortfolioController@redirect');
 		Route::get('/portfolio/{portfolio}/edit', 'PortfolioController@edit')->name('edit_portfolio');
 		Route::put('/portfolio/{portfolio}/update', 'PortfolioController@update')->name('update_portfolio');
 		Route::get('/portfolio/{portfolio}/delete', 'PortfolioController@delete')->name('delete_portfolio');
 		Route::get('/portfolio/{portfolio}/delete/ok', 'PortfolioController@deletePortfolio');
 		Route::delete('/files/{file}', 'FileController@deleteFile');
+		
 
 		// Message Routes
 		Route::get('/message', 'MessageController@index')->name('message');

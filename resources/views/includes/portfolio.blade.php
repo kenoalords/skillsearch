@@ -2,7 +2,7 @@
 
     <div class="image-wrapper">
         <a href="{{ $portfolio['link']['url'] }}">
-            <img src="{{ $portfolio['thumbnail'] }}" alt="{{$portfolio['title']}}" class="img-responsive">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" data-src="{{ $portfolio['thumbnail'] }}" alt="{{$portfolio['title']}}" class="img-responsive b-lazy">
         </a>
         <div class="p-content clearfix">
             <h5 class="bold pull-left"><a href="{{ $portfolio['link']['url'] }}">{{ str_limit($portfolio['title'], 20) }}</a></h5>
@@ -23,7 +23,7 @@
     <div class="portfolio-credit">
         <div class="media">
             <div class="media-left">
-                <img src="{{ $portfolio['user_profile']['avatar'] }}" alt="" width="24" height="24" class="img-circle">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" data-src="{{ $portfolio['user_profile']['avatar'] }}" alt="" width="24" height="24" class="img-circle b-lazy">
             </div>
             <div class="media-body">
                 <div class="media-heading pull-left"><a href="/{{ $portfolio['user'] }}">{{ $portfolio['user_profile']['first_name'] }} {!! identity_check($portfolio['verified']) !!}</a></div>

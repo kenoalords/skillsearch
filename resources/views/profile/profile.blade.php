@@ -9,7 +9,7 @@
 
 <div id="profile-back">
     <div class="user-background">
-        <img src="{{ $profile->getUserBackground() }}" alt="{{ $profile->first_name }} {{ $profile->last_name }}">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" data-src="{{ $profile->getUserBackground() }}" class="b-lazy" alt="{{ $profile->first_name }} {{ $profile->last_name }}">
     </div>
     <div class="container">
         <div class="col-md-6 col-md-offset-3 text-center">
@@ -25,7 +25,7 @@
                 <div class="white-boxed">
                     <div class="text-center">
                         <div style="margin-bottom: 1em">
-                            <img src="{{ $profile->getAvatar() }}" width="100" height="100" class="img-circle avatar" style="margin-bottom: 0">
+                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" data-src="{{ $profile->getAvatar() }}" width="100" height="100" class="img-circle avatar b-lazy" style="margin-bottom: 0">
                         </div>
                         <div>
                             <h1 class="small-header">{{ $profile->first_name }} {{ $profile->last_name }} {!! identity_check($profile->getVerified()) !!}</h1>
