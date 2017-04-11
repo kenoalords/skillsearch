@@ -34,7 +34,6 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
-    <!-- <link href="{{ asset('css/star-rating.min.css') }}" rel="stylesheet"> -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     <!-- Scripts -->
@@ -53,7 +52,6 @@
         !!}
 
     </script>
-    <script src="{{ asset('js/star-rating.js') }}"></script>
 </head>
 <body>
     <div id="app">
@@ -178,8 +176,8 @@
     </footer>
 
     <!-- Scripts -->
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyASRW46rAvktIC7IsJFva1gKbPKBYlrpQo&libraries=places&region=ng"></script>
-    <script src="{{ asset('js/app.js') }}"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyASRW46rAvktIC7IsJFva1gKbPKBYlrpQo&libraries=places&region=ng" async></script>
+    <script src="{{ asset('js/app.js') }}" async></script>
 
     <script>
         var inputState = document.getElementById('geolocation');
