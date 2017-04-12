@@ -6,11 +6,11 @@
 
 <div class="container">            
     <div class="col-md-8 col-md-offset-2">
-        @if(Auth::user() && Auth::user()->id !== Request::user()->id)
+        @if(Auth::user() && Auth::user()->id !== $profile->user_id)
             <request-service first-name="{{ $profile->first_name }}"  username="{{$name}}" skills="{{$profile->skills}}"></request-service>
         @endif
 
-        @if(Auth::user() && Auth::user()->id === Request::user()->id)
+        @if(Auth::user() && Auth::user()->id === $profile->user_id)
             <div class="padded text-center">
                 <h2 class="thin">Sorry {{ $profile->first_name }}!</h2>
                 <hr>
