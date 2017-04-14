@@ -273,7 +273,7 @@ class PortfolioController extends Controller
 
         return view('welcome')->with([
             'portfolios' => $portfolios,
-            'skills'    => $skills
+            'skills'    => $skills,
         ]);
     }
 }

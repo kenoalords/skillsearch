@@ -1,5 +1,4 @@
-<div class="col-xs-12 col-sm-4 col-md-3 col-lg-2">
-
+<div class="col-xs-12 col-sm-4 col-md-3 col-lg-2 col-lg-offset-0">
     <div class="image-wrapper">
         <a href="{{ $portfolio['link']['url'] }}">
             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" data-src="{{ $portfolio['thumbnail'] }}" alt="{{$portfolio['title']}}" class="b-lazy img-responsive">

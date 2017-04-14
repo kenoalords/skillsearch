@@ -34,7 +34,7 @@ class UserImageJob implements ShouldQueue
         $path = storage_path() . '/app/' . $this->file;
         $filename = $this->file;
 
-        if(Storage::disk('s3images')->put($filename, fopen($path, 'r+'))){
+        if(Storage::disk('s3images')->getDriver()->put($filename, fopen($path, 'r+'), ['CacheControl'=>'max-age=2628000, must-revalidate'])){
             Storage::delete($filename);
         }
     }

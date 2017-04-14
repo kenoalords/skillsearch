@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title', config('app.name') . ' | ' . config('app.description'))
+@section('metadescription', 'Showcase and discover the best hands in Nigeria. Find skilled Graphics Designers, Web Developers, Animators and much more')
+@section('thumbnail', asset('public/logo-b.png'))
+@section('type', 'article')
 
 @section('content')
 <div id="hero">
@@ -9,7 +13,7 @@
             <br>
             @if(!Auth::user())
             <p>
-                <a href="/register" class="btn btn-primary bold">Signup</a>
+                <a href="/register" class="btn btn-primary bold">Sign Up</a>
             </p>
             @endif            
         </div>
@@ -19,7 +23,6 @@
 <div id="showcase">
     <div class="row">
         @each('includes.portfolio-with-user', $portfolios, 'portfolio')
-        
     </div>
 </div>
 

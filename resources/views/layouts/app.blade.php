@@ -33,7 +33,6 @@
 
 
     <!-- Styles -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     <!-- Scripts -->
@@ -69,7 +68,7 @@
 
                     <!-- Branding Image -->
                     <a class="navbar-brand" href="{{ url('/') }}">
-                        <img src="{{asset('public/logo-w.png')}}" alt="" class="img-responsive" id="logo">
+                        <img src="data:image/png;base64,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" alt="" class="img-responsive" id="logo">
                     </a>
                 </div>
 
@@ -174,7 +173,8 @@
             <small>Skillsearch Nigeria &copy; Copyright <?php echo date('Y') ?></small>
         </div>
     </footer>
-
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"> -->
+    
     <!-- Scripts -->
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyASRW46rAvktIC7IsJFva1gKbPKBYlrpQo&libraries=places&region=ng" async></script>
     <script src="{{ asset('js/app.js') }}" async></script>
@@ -199,6 +199,18 @@
             },
             target: window
         });
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" async></script>
+    <script>
+        // var WebFont = require('webfontloader');
+        (function(){
+            WebFont.load({
+                google: {
+                    families: ['Roboto:300,400,700']
+                }
+            });
+        })();
+        
     </script>
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
