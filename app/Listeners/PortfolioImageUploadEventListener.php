@@ -33,7 +33,7 @@ class PortfolioImageUploadEventListener implements ShouldQueue
         $path = storage_path() . '/app/' . $event->thumbnail;
         $filename = $event->thumbnail;
 
-        if(Storage::disk('s3images')->put($filename, fopen($path, 'r+'))){
+        if(Storage::disk('s3images')->getDriver()->put($filename, fopen($path, 'r+'), ['CacheControl'=>'max-age=2628000, must-revalidate'])){
             Storage::disk('s3images')->delete($event->default);
             $event->portfolio->thumbnail = $filename;
             $event->portfolio->save();
