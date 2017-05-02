@@ -7,6 +7,7 @@
 
 @section('content')
 
+
 <div id="user-badge" class="">
     <div class="container">
         <div class="col-md-12">
@@ -30,8 +31,9 @@
 </div>
 <div class="container">
     <div class="row padded">
-        <div class="col-md-3">
+        <div class="col-sm-3">
             <div class="">
+                <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=" data-src="{{$portfolio['thumbnail']}}" alt="{{$portfolio['title']}}" class="img-thumbnail img-responsive b-lazy form-wrapper">
                 <div>{{$portfolio['description']}}</div>
                 @if($portfolio['description'])
                     @if($portfolio['url'] !== null)
@@ -49,7 +51,7 @@
             </div>
         </div>
         
-        <div class="col-md-9">
+        <div class="col-sm-9">
 
             @if($portfolio['is_public'] === 0 )
             <div class="alert alert-info">

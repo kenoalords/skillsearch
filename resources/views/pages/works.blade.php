@@ -2,31 +2,28 @@
 
 @section('thumbnail', asset('public/logo-b.png'))
 @section('type', 'article')
+@section('metadescription', 'Find out how Skillsearch Nigeria can help promote your works and get you hired!')
+@section('title', 'How It Works')
 
 @section('content')
-<div id="hero">
-    <div class="container">
-        <div class="col-md-8 col-md-offset-2 text-center">
-            <h1 class="thin" style="font-size: 1.5em">Showcase &amp; Discover Skilled People in Nigeria.</h1>
-            <br>
-            @if(!Auth::user())
-            <p>
-                <a href="/register" class="btn btn-primary bold">Sign Up</a>
-            </p>
-            @endif            
-        </div>
-    </div>
-</div>
-
-<div id="showcase">
-    <div class="row">
-        @each('includes.portfolio-with-user', $portfolios, 'portfolio')
-    </div>
-</div>
-
-<div id="how">
-    <div class="container text-center padded">
-        <h2>How it works</h2>
+	
+	<div id="hero" class="page padded text-center">
+		<h1>How It Works</h1>
+	</div>
+	<div id="how">
+    <div id="page" class="container text-center padded">
+    	<div class="col-sm-8 col-sm-offset-2 padded">
+    		<p style="font-size: 1.2em; font-weight: 700">
+    			Frankly speaking, we have made <a href="{{config('app.url')}}">skillsearch.com.ng</a> easy to use.
+    		</p> 
+    		<p style="font-size: 1.2em">
+    			At it's core, <a href="{{config('app.url')}}">skillsearch.com.ng</a> is designed to help you showcase images, videos and audio of your works quickly and easily.
+    		</p>
+    		<p>
+    			<a href="/register" class="btn btn-primary">Create your <strong>Account</strong></a>
+    		</p>
+    		<hr>
+    	</div>
         <div class="col-sm-6 col-md-3">
             <!-- <img src="{{asset('public/signup.png')}}" alt="" class="img-responsive"> -->
             <i class="fa fa-id-badge"></i>
@@ -53,19 +50,5 @@
         </div>
     </div>
 </div>
-
-@if($skills->count())
-<div id="categories">
-    <div class="container padded">
-        <h4 class="bold">Browse top skills</h4>
-        <hr>
-        @foreach($skills as $skill)
-        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
-            <a href="/search?term={{ urlencode($skill->skill) }}"> {{ $skill->skill }} </a>
-        </div>
-        @endforeach
-    </div>
-</div>
-@endif
 
 @endsection

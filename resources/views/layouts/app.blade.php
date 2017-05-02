@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scaleable=no">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -136,15 +136,15 @@
             <div class="col-xs-6 col-sm-6 col-md-4">
                 <h4>Company Info</h4>
                 <ul>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">How It Works</a></li>
-                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="/how-it-works">How It Works</a></li>
+                    <li><a href="/contact">Contact Us</a></li>
                 </ul>
             </div>
             <div class="col-xs-6 col-sm-6 col-md-4">
                 <h4>Legal</h4>
                 <ul>
-                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="/privacy">Privacy Policy</a></li>
                     <li><a href="#">Term of Use</a></li>
                     <li><a href="#">Report Abuse</a></li>
                 </ul>
@@ -165,7 +165,7 @@
             <ul class="list-inline" id="social-links">
                 <li><a href="https://www.facebook.com/skillsearchng/" target="_blank"><i class="fa fa-facebook-square"></i></a></li>
                 <li><a href="https://twitter.com/skillsearchng"><i class="fa fa-twitter"></i></a></li>
-                <li><a href="https://plus.google.com/skillsearchng"><i class="fa fa-google-plus-square"></i></a></li>
+                <!-- <li><a href="https://plus.google.com/skillsearchng"><i class="fa fa-google-plus-square"></i></a></li> -->
             </ul>
 
             <br>

@@ -10096,6 +10096,10 @@ body {
   color: #aaa;
 }
 
+.form-wrapper {
+  margin-bottom: 1.5em;
+}
+
 .thumbnail-image {
   display: block;
   width: 300px;
@@ -10103,10 +10107,11 @@ body {
   position: relative;
   border: 3px dashed #aaa;
   overflow: hidden;
+  margin: 0 auto;
 }
 
 .thumbnail-image:before {
-  content: "Set Thumbnail";
+  content: "Set Portfolio Thumbnail";
   position: absolute;
   width: 100%;
   color: #aaa;
@@ -10284,6 +10289,17 @@ small {
   padding: 0.7em 5em;
   border: 1px solid rgba(0, 0, 0, 0.5);
   letter-spacing: 1px;
+}
+
+#hero.page h1 {
+  font-size: 3em;
+  letter-spacing: 2px;
+  font-weight: 300;
+}
+
+#page p {
+  font-size: 1.2em;
+  line-height: 2;
 }
 
 .navbar-inverse .navbar-nav > li > a {

@@ -1,67 +1,57 @@
 <template> 
 
 <div class="container">
+        <div class="clearfix">
+            <h3 class="pull-left" style="margin-top:0">Add Portfolio</h3>
+            <a href="/home" class="btn btn-basic pull-right"><i class="glyphicon glyphicon-home"></i> Back to profile</a>
+        </div>
+        <hr>
     <div class="row">
-        <div class="col-md-12">
-            <div class="clearfix">
-                <h3 class="pull-left" style="margin-top:0">Add Portfolio</h3>
-                <a href="/home" class="btn btn-basic pull-right"><i class="glyphicon glyphicon-home"></i> Back to profile</a>
+        <div class="col-sm-4">
+            <h4 class="text-center">Upload Cover Image</h4>
+            <label class="thumbnail-image" v-bind:class="{ saving : savingThumbnail }">
+                <input type="file" id="thumbnailImage" class="hidden" v-on:change="uploadThumbnail()" :disabled="savingThumbnail">
+                <img v-bind:src="thumbnail" v-if="thumbnail" class="img-responsive" id="thumbnail">
+            </label>
+            <p class="text-center"><small>Tip: select the best image to use as a thumbnail</small></p>
+        </div>
+        <div class="col-sm-8">
+            <div class="form-wrapper">
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" class="form-control" v-model="title" placeholder="Portfolio title">
+                </div>
+                <div class="form-group">
+                    <label>Description (Optional)</label>
+                    <textarea class="form-control" rows="3" v-model="description" placeholder="Description"></textarea>
+                </div>
+                <div class="form-group" v-if="userSkills">
+                    <label>What skill/skills is this portfolio item associated with?</label><br>
+                    <label v-for="skill in userSkills" style="margin-right:1em;" class="thin">
+                        <input type="checkbox" v-model="portfolioSkills" v-bind:value="skill.skill"> {{ skill.skill }}
+                    </label>
+                </div>
             </div>
-            <hr>
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <div class="row boxed">
-                        <div class="col-sm-4">
-                            <label class="thumbnail-image" v-bind:class="{ saving : savingThumbnail }">
-                                <input type="file" id="thumbnailImage" class="hidden" v-on:change="uploadThumbnail()" :disabled="savingThumbnail">
-                                <img v-bind:src="thumbnail" v-if="thumbnail" class="img-responsive" id="thumbnail">
-                            </label>
-                            <small>Tip: select the best image to use as a thumbnail</small>
-                        </div>
-                        <div class="col-sm-8">
-                            <div class="form-group">
-                                <label>Title</label>
-                                <input type="text" class="form-control" v-model="title" placeholder="Portfolio title">
-                            </div>
-                            <div class="form-group">
-                                <label>Description (Optional)</label>
-                                <textarea class="form-control" rows="3" v-model="description" placeholder="Description"></textarea>
-                            </div>
-                            <div class="form-group" v-if="userSkills">
-                                <label>What skill/skills is this portfolio item associated with?</label><br>
-                                <label v-for="skill in userSkills" style="margin-right:1em;" class="thin">
-                                    <input type="checkbox" v-model="portfolioSkills" v-bind:value="skill.skill"> {{ skill.skill }}
-                                </label>
-                            </div>
-                        </div>
+            
+            <div class="form-wrapper">
+                <hr>
+                <label>Portfolio type</label>
+
+                <div class="row">
+                    <div class="col-xs-12 col-sm-4">
+                        <label class="btn btn-default btn-block">
+                            <input type="radio" v-model="type" value="images" :disabled="uploadedImages.length > 0 ? true : false"> Images
+                        </label>
                     </div>
-
-                    <div class="boxed">
-                        <hr>
-                        <label>Portfolio type</label>
-
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-4">
-                                <label class="btn btn-default btn-block">
-                                    <input type="radio" v-model="type" value="images" :disabled="uploadedImages.length > 0 ? true : false"> Images
-                                </label>
-                            </div>
-                            <div class="col-xs-12 col-sm-4">
-                                <label class=" btn btn-default btn-block">
-                                    <input type="radio" v-model="type" value="video" :disabled="uploadedImages.length > 0 ? true : false"> Video
-                                </label>
-                            </div>
-                            <div class="col-xs-12 col-sm-4">
-                                <label class=" btn btn-default btn-block">
-                                    <input type="radio" v-model="type" value="audio" :disabled="uploadedImages.length > 0 ? true : false"> Audio
-                                </label>
-                            </div>
-                            <!-- <div class="col-xs-6 col-sm-3">
-                                <label class=" btn btn-default btn-block">
-                                    <input type="radio" v-model="type" value="document" :disabled="uploadedImages.length > 0 ? true : false"> Document
-                                </label>
-                            </div> -->
-                        </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <label class=" btn btn-default btn-block">
+                            <input type="radio" v-model="type" value="video" :disabled="uploadedImages.length > 0 ? true : false"> Video
+                        </label>
+                    </div>
+                    <div class="col-xs-12 col-sm-4">
+                        <label class=" btn btn-default btn-block">
+                            <input type="radio" v-model="type" value="audio" :disabled="uploadedImages.length > 0 ? true : false"> Audio
+                        </label>
                     </div>
                 </div>
             </div>
@@ -70,10 +60,10 @@
                 {{error[0]}}
             </div>
 
-            <div class="panel panel-default" v-if="type == 'images'">
-                <div class="panel-heading">Upload/Add Images</div>
+            <div class="form-wrapper" v-if="type == 'images'">
+                <div>Upload/Add Images</div>
 
-                <div class="panel-body" v-if="type == 'images'">
+                <div class="" v-if="type == 'images'">
                     <div class="progress" v-if="isUploading && !uploadingComplete">
                         <div class="progress-bar" role="progressbar" v-bind:style="{ width: progress + '%'}"></div>
                     </div>
@@ -95,9 +85,9 @@
                 </div>
             </div>
 
-            <div class="panel panel-default" v-if="type == 'audio'">
-                <div class="panel-heading">Upload Audio</div>
-                <div class="panel-body" v-if="type == 'audio'">
+            <div class="form-wrapper" v-if="type == 'audio'">
+                <div>Upload Audio</div>
+                <div class="" v-if="type == 'audio'">
                     <div class="progress" v-if="isUploading && !uploadingComplete">
                         <div class="progress-bar" role="progressbar" v-bind:style="{ width: progress + '%'}"></div>
                     </div>
@@ -120,9 +110,9 @@
                 </div>
             </div>
 
-            <div class="panel panel-default" v-if="type == 'video'">
-                <div class="panel-heading">Upload Video</div>
-                <div class="panel-body" v-if="type == 'video'">
+            <div class="form-wrapper" v-if="type == 'video'">
+                <div>Upload Video</div>
+                <div class="" v-if="type == 'video'">
                     <div class="progress" v-if="isUploading && !uploadingComplete">
                         <div class="progress-bar" role="progressbar" v-bind:style="{ width: progress + '%'}"></div>
                     </div>
@@ -151,8 +141,8 @@
                 </div>
             </div>
 
-            <div class="panel panel-default">
-                <div class="panel-body">
+            <div  class="form-wrapper">
+                <div class="">
                     <div class="row">                        
                         <div class="col-sm-6">
                             <label for="url">Portfolio link <span class="text-muted">(optional)</span></label>
@@ -171,8 +161,8 @@
                 </div>
             </div>
 
-            <div class="panel panel-default">
-                <div class="panel-body">
+            <div class="form-wrapper">
+                <div class="">
                     <div class="pull-left">
                         <label>
                             <input type="checkbox" v-model="isPublic" value="1"> &nbsp; Make this portfolio public

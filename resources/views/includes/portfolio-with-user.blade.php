@@ -18,11 +18,11 @@
             </span>
         </div>
     </div>
-    
+
     <div class="portfolio-credit">
         <div class="media">
             <div class="media-left">
-                <img src="{{ $portfolio['user_profile']['avatar'] }}" alt="" width="24" height="24" class="img-circle ">
+                <img src="{{ $portfolio['user_profile']['avatar'] }}" alt="{{ $portfolio['user_profile']['fullname'] }}" width="24" height="24" class="img-circle ">
             </div>
             <div class="media-body">
                 <div class="media-heading pull-left"><a href="/{{ $portfolio['user'] }}">{{ $portfolio['user_profile']['first_name'] }} {!! identity_check($portfolio['verified']) !!}</a></div>

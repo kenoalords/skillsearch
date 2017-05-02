@@ -27146,16 +27146,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 // import videojs from "video.js";
 /* harmony default export */ __webpack_exports__["default"] = {
@@ -62943,19 +62933,13 @@ if (false) {
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "container"
-  }, [_c('div', {
+  }, [_vm._m(0), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
-    staticClass: "col-md-12"
-  }, [_vm._m(0), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
-    staticClass: "panel panel-default"
-  }, [_c('div', {
-    staticClass: "panel-body"
-  }, [_c('div', {
-    staticClass: "row boxed"
-  }, [_c('div', {
     staticClass: "col-sm-4"
-  }, [_c('label', {
+  }, [_c('h4', {
+    staticClass: "text-center"
+  }, [_vm._v("Upload Cover Image")]), _vm._v(" "), _c('label', {
     staticClass: "thumbnail-image",
     class: {
       saving: _vm.savingThumbnail
@@ -62978,8 +62962,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "src": _vm.thumbnail,
       "id": "thumbnail"
     }
-  }) : _vm._e()]), _vm._v(" "), _c('small', [_vm._v("Tip: select the best image to use as a thumbnail")])]), _vm._v(" "), _c('div', {
+  }) : _vm._e()]), _vm._v(" "), _vm._m(1)]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-8"
+  }, [_c('div', {
+    staticClass: "form-wrapper"
   }, [_c('div', {
     staticClass: "form-group"
   }, [_c('label', [_vm._v("Title")]), _vm._v(" "), _c('input', {
@@ -63066,9 +63052,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           }
         }
       }
-    }), _vm._v(" " + _vm._s(skill.skill) + "\n                                ")])
-  })], 2) : _vm._e()])]), _vm._v(" "), _c('div', {
-    staticClass: "boxed"
+    }), _vm._v(" " + _vm._s(skill.skill) + "\n                    ")])
+  })], 2) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "form-wrapper"
   }, [_c('hr'), _vm._v(" "), _c('label', [_vm._v("Portfolio type")]), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
@@ -63095,7 +63081,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.type = "images"
       }
     }
-  }), _vm._v(" Images\n                                ")])]), _vm._v(" "), _c('div', {
+  }), _vm._v(" Images\n                        ")])]), _vm._v(" "), _c('div', {
     staticClass: "col-xs-12 col-sm-4"
   }, [_c('label', {
     staticClass: " btn btn-default btn-block"
@@ -63119,7 +63105,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.type = "video"
       }
     }
-  }), _vm._v(" Video\n                                ")])]), _vm._v(" "), _c('div', {
+  }), _vm._v(" Video\n                        ")])]), _vm._v(" "), _c('div', {
     staticClass: "col-xs-12 col-sm-4"
   }, [_c('label', {
     staticClass: " btn btn-default btn-block"
@@ -63143,7 +63129,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.type = "audio"
       }
     }
-  }), _vm._v(" Audio\n                                ")])])])])])]), _vm._v(" "), _vm._l((_vm.formErrors), function(error) {
+  }), _vm._v(" Audio\n                        ")])])])]), _vm._v(" "), _vm._l((_vm.formErrors), function(error) {
     return (_vm.formErrors) ? _c('div', {
       staticClass: "alert alert-danger",
       attrs: {
@@ -63151,12 +63137,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_vm._v("\n                " + _vm._s(error[0]) + "\n            ")]) : _vm._e()
   }), _vm._v(" "), (_vm.type == 'images') ? _c('div', {
-    staticClass: "panel panel-default"
-  }, [_c('div', {
-    staticClass: "panel-heading"
-  }, [_vm._v("Upload/Add Images")]), _vm._v(" "), (_vm.type == 'images') ? _c('div', {
-    staticClass: "panel-body"
-  }, [(_vm.isUploading && !_vm.uploadingComplete) ? _c('div', {
+    staticClass: "form-wrapper"
+  }, [_c('div', [_vm._v("Upload/Add Images")]), _vm._v(" "), (_vm.type == 'images') ? _c('div', {}, [(_vm.isUploading && !_vm.uploadingComplete) ? _c('div', {
     staticClass: "progress"
   }, [_c('div', {
     staticClass: "progress-bar",
@@ -63216,12 +63198,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "glyphicon glyphicon-trash"
     })])])])
   })) : _vm._e()]) : _vm._e()]) : _vm._e(), _vm._v(" "), (_vm.type == 'audio') ? _c('div', {
-    staticClass: "panel panel-default"
-  }, [_c('div', {
-    staticClass: "panel-heading"
-  }, [_vm._v("Upload Audio")]), _vm._v(" "), (_vm.type == 'audio') ? _c('div', {
-    staticClass: "panel-body"
-  }, [(_vm.isUploading && !_vm.uploadingComplete) ? _c('div', {
+    staticClass: "form-wrapper"
+  }, [_c('div', [_vm._v("Upload Audio")]), _vm._v(" "), (_vm.type == 'audio') ? _c('div', {}, [(_vm.isUploading && !_vm.uploadingComplete) ? _c('div', {
     staticClass: "progress"
   }, [_c('div', {
     staticClass: "progress-bar",
@@ -63280,12 +63258,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "glyphicon glyphicon-trash"
     }), _vm._v(" Delete\n                                ")])])])
   })) : _vm._e()]) : _vm._e()]) : _vm._e(), _vm._v(" "), (_vm.type == 'video') ? _c('div', {
-    staticClass: "panel panel-default"
-  }, [_c('div', {
-    staticClass: "panel-heading"
-  }, [_vm._v("Upload Video")]), _vm._v(" "), (_vm.type == 'video') ? _c('div', {
-    staticClass: "panel-body"
-  }, [(_vm.isUploading && !_vm.uploadingComplete) ? _c('div', {
+    staticClass: "form-wrapper"
+  }, [_c('div', [_vm._v("Upload Video")]), _vm._v(" "), (_vm.type == 'video') ? _c('div', {}, [(_vm.isUploading && !_vm.uploadingComplete) ? _c('div', {
     staticClass: "progress"
   }, [_c('div', {
     staticClass: "progress-bar",
@@ -63344,14 +63318,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "glyphicon glyphicon-trash"
     }), _vm._v(" Delete\n                                ")])])])
   })) : _vm._e()]) : _vm._e()]) : _vm._e(), _vm._v(" "), _c('div', {
-    staticClass: "panel panel-default"
-  }, [_c('div', {
-    staticClass: "panel-body"
-  }, [_c('div', {
+    staticClass: "form-wrapper"
+  }, [_c('div', {}, [_c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-sm-6"
-  }, [_vm._m(1), _vm._v(" "), _c('input', {
+  }, [_vm._m(2), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -63374,9 +63346,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }), _vm._v(" "), _c('small', [_vm._v("Enter an external url this portfolio links to")])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
-  }, [_vm._m(2), _vm._v(" "), _c('div', {
+  }, [_vm._m(3), _vm._v(" "), _c('div', {
     staticClass: "input-group"
-  }, [_vm._m(3), _vm._v(" "), _c('input', {
+  }, [_vm._m(4), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -63397,10 +63369,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   })]), _vm._v(" "), _c('small', [_vm._v("Enter portfolio completion date")])])])])]), _vm._v(" "), _c('div', {
-    staticClass: "panel panel-default"
-  }, [_c('div', {
-    staticClass: "panel-body"
-  }, [_c('div', {
+    staticClass: "form-wrapper"
+  }, [_c('div', {}, [_c('div', {
     staticClass: "pull-left"
   }, [_c('label', [_c('input', {
     directives: [{
@@ -63466,6 +63436,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('i', {
     staticClass: "glyphicon glyphicon-home"
   }), _vm._v(" Back to profile")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('p', {
+    staticClass: "text-center"
+  }, [_c('small', [_vm._v("Tip: select the best image to use as a thumbnail")])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('label', {
     attrs: {
