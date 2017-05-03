@@ -35,18 +35,20 @@
 </div>
 <div id="portfolio" class="container">
     <div class="row padded">
-        <div class="col-sm-3">
-            <div class="">
-                <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=" data-src="{{$portfolio['thumbnail']}}" alt="{{$portfolio['title']}}" class="img-thumbnail img-responsive b-lazy form-wrapper">
-                <div>{{$portfolio['description']}}</div>
-                @if($portfolio['description'])
-                    @if($portfolio['url'] !== null)
-                        <p><a href="{{route('external_link', ['url'=>$portfolio['url']])}}" target="_blank" class="bold">Link <i class="glyphicon glyphicon-new-window"></i></a></p>
+        <div class="col-sm-3" id="portfolio-wrapper">
+            <div class="portfolio-thumbnail">
+                <div class="wrapper">
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=" data-src="{{$portfolio['thumbnail']}}" alt="{{$portfolio['title']}}" class="img-thumbnail img-responsive b-lazy form-wrapper">
+                    <div>{{$portfolio['description']}}</div>
+                    @if($portfolio['description'])
+                        @if($portfolio['url'] !== null)
+                            <p><a href="{{route('external_link', ['url'=>$portfolio['url']])}}" target="_blank" class="bold">Link <i class="glyphicon glyphicon-new-window"></i></a></p>
+                        @endif
+                        <hr>
                     @endif
-                    <hr>
-                @endif
-                <div>
-                    @include('includes.share.portfolio', ['url'=>Request::url()])
+                    <div>
+                        @include('includes.share.portfolio', ['url'=>Request::url()])
+                    </div>
                 </div>
             </div>
         </div>

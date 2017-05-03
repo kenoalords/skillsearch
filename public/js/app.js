@@ -26607,6 +26607,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         submitLike: function submitLike() {
+            if (this.isUserLoggedIn === false) {
+                alert('Please login to like this portfolio');
+                return;
+            }
             if (this.hasLiked === false) {
                 this.count++;
                 this.hasLiked = true;
@@ -62408,7 +62412,7 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return (_vm.isUserLoggedIn) ? _c('span', [_c('a', {
+  return _c('span', [_c('a', {
     staticClass: "btn",
     class: {
       'btn-default': !_vm.hasLiked, 'btn-primary': _vm.hasLiked
@@ -62421,7 +62425,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('i', {
     staticClass: "glyphicon glyphicon-heart"
-  }), _vm._v(" " + _vm._s(_vm.count) + "\n        " + _vm._s((_vm.count < 2) ? 'Like' : 'Likes') + "\n    ")])]) : _vm._e()
+  }), _vm._v(" " + _vm._s(_vm.count) + "\n        " + _vm._s((_vm.count < 2) ? 'Like' : 'Likes') + "\n    ")])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {

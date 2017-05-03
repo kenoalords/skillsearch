@@ -1,5 +1,5 @@
 <template>
-    <span v-if="isUserLoggedIn">
+    <span>
         <a v-on:click.prevent="submitLike" class="btn" v-bind:class="{ 'btn-default' : !hasLiked, 'btn-primary' : hasLiked }">
             <i class="glyphicon glyphicon-heart"></i> {{count}}
             {{ (count < 2) ? 'Like' : 'Likes'}}
@@ -47,6 +47,10 @@
             },
 
             submitLike(){
+                if(this.isUserLoggedIn === false){
+                    alert('Please login to like this portfolio');
+                    return;
+                }
                 if(this.hasLiked === false){
                     this.count++;
                     this.hasLiked = true;

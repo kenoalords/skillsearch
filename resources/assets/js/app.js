@@ -61,3 +61,5 @@ var waypoint = $('#user-badge').waypoint({
 	offset: 0
 });
 
+
+
