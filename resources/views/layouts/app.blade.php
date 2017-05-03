@@ -53,7 +53,7 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-default navbar-static-top navbar-inverse row">
+        <nav class="navbar navbar-default navbar-static-top navbar-inverse container-fluid">
             <div class="col-md-12">
                 <div class="navbar-header">
 
@@ -108,21 +108,12 @@
                                     </li>
                                 </ul>
                             </li>
-
-                            @if(Auth::user() && Auth::user()->profile && Auth::user()->profile->account_type === 1)
-                                <li>
-                                    <a href="/profile/portfolio/add" class="bold">
-                                        <i class="glyphicon glyphicon-plus"></i> Add Portfolio
-                                    </a>
-                                </li>
-                                <!-- <li>
-                                    <a href="/blog/add" class="bold">
-                                        <i class="fa fa-edit"></i> Write
-                                    </a>
-                                </li> -->
-                            @endif
-
                         @endif
+                        <li>
+                            <a href="/profile/portfolio/add" class="btn btn-success navbar-btn">
+                                <i class="glyphicon glyphicon-plus"></i> Submit your work
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -205,13 +196,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" async></script>
     <script>
         // var WebFont = require('webfontloader');
-        (function(){
-            WebFont.load({
-                google: {
-                    families: ['Roboto:300,400,700']
-                }
-            });
-        })();
+        // (function(){
+        //     WebFont.load({
+        //         google: {
+        //             families: ['Roboto:300,400,700']
+        //         }
+        //     });
+        // })();
         
     </script>
     <script>

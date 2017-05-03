@@ -40,3 +40,24 @@ const app = new Vue({
 
 var bLazy = new Blazy();
 
+var waypoint = $('#user-badge').waypoint({
+	handler: function(direction){
+		var userBadge = $('#user-badge'),
+			portfolio = $('#portfolio');
+		if(direction === 'down'){
+			userBadge.addClass('fixit');
+			portfolio.css({
+				'margin-top' : userBadge.outerHeight() + 'px',
+			});
+		}
+
+		if(direction === 'up'){
+			userBadge.removeClass('fixit');
+			portfolio.css({
+				'margin-top' : 0,
+			});
+		}
+	},
+	offset: 0
+});
+

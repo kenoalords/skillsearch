@@ -2,5 +2,6 @@
   "/js/app.js": "/js/app.js",
   "/css/app.css": "/css/app.css",
   "/js/video.min.js": "/js/video.min.js",
+  "/js/jquery.waypoints.min.js": "/js/jquery.waypoints.min.js",
   "/js/blazy.min.js": "/js/blazy.min.js"
 }

@@ -47,3 +47,4 @@ window.axios.defaults.headers.common = {
 // });
 
 window.Blazy = require('blazy');
+window.Waypoint = require('waypoints/lib/jquery.waypoints.min');

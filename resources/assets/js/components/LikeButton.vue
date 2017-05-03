@@ -1,11 +1,11 @@
 <template>
-    <div v-if="isUserLoggedIn">
+    <span v-if="isUserLoggedIn">
         <a v-on:click.prevent="submitLike" class="btn" v-bind:class="{ 'btn-default' : !hasLiked, 'btn-primary' : hasLiked }">
-            <i class="glyphicon glyphicon-heart"></i> 
-            {{ hasLiked ? 'Liked' : 'Like'}}
+            <i class="glyphicon glyphicon-heart"></i> {{count}}
+            {{ (count < 2) ? 'Like' : 'Likes'}}
         </a>
-         <small class="text-muted">{{count}} {{formatCount(count)}}</small>
-    </div>
+         <!-- <small class="text-muted"> {{formatCount(count)}}</small> -->
+    </span>
 </template>
 
 <script>

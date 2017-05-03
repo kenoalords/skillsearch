@@ -12,9 +12,9 @@
     <div class="container">
         <div class="col-md-12">
             <a href="/{{$portfolio['user']}}" class="pull-left" style="margin-right: 1em">
-                <img src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="{{$portfolio['user_profile']['avatar']}}" alt="{{$portfolio['user_profile']['fullname']}}" class="img-circle b-lazy" width="64" height="64">
+                <img src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="{{$portfolio['user_profile']['avatar']}}" alt="{{$portfolio['user_profile']['fullname']}}" class="img-circle b-lazy user-avatar" width="64" height="64">
             </a>
-            <div class="pull-left">
+            <div class="pull-left portfolio-meta">
                 <h4 class="bold">{{ $portfolio['title'] }}</h4>
                 <ul class="list-inline" style="font-weight: 700; font-size: 12px;">
                     <li>by <a href="/{{$portfolio['user']}}">{{$portfolio['user_profile']['fullname']}}</a></li>
@@ -26,10 +26,14 @@
                     <li> {{ $portfolio['date'] }}</li>
                 </ul>
             </div>
+            <div class="pull-right portfolio-actions">
+                <a href="/{{$portfolio['user']}}/hire" class="btn btn-success"><i class="fa fa-envelope"></i> Hire</a>
+                <like-button id="{{$portfolio['uid']}}"></like-button>
+            </div>
         </div>
     </div>
 </div>
-<div class="container">
+<div id="portfolio" class="container">
     <div class="row padded">
         <div class="col-sm-3">
             <div class="">
@@ -43,10 +47,6 @@
                 @endif
                 <div>
                     @include('includes.share.portfolio', ['url'=>Request::url()])
-                </div>
-
-                <div style="padding: 2em 0">
-                    <like-button id="{{$portfolio['uid']}}"></like-button>
                 </div>
             </div>
         </div>
@@ -103,11 +103,11 @@
 
     @if(count($others))
         <div id="showcase">
-            <div class="row">
-                <h4 class="bold">Other portfolio items by {{$portfolio['user_profile']['fullname']}}</h4>
-                <hr>
-            </div> 
-            <div class="row">     
+            <div class="row">    
+                <div class="col-sm-12">
+                    <h4 class="thin">Other works by {{$portfolio['user_profile']['fullname']}}</h4>
+                    <hr>
+                </div> 
                 @each('includes.portfolio-others', $others, 'portfolio')
             </div>
         </div>
