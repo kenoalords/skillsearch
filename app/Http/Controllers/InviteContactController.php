@@ -25,7 +25,7 @@ class InviteContactController extends Controller
 	        $token = $googleService->requestAccessToken($code);
 
 	        // Send a request with it
-	        $result = json_decode($googleService->request('https://www.google.com/m8/feeds/contacts/default/full?alt=json&max-results=5'), true);
+	        $result = json_decode($googleService->request('https://www.google.com/m8/feeds/contacts/default/full?alt=json&max-results=5000'), true);
 
 	        // Going through the array to clear it and create a new clean array with only the email addresses
 	        $emails = []; // initialize the new array
@@ -34,7 +34,7 @@ class InviteContactController extends Controller
 	        $invitee_email = $result['feed']['author'][0]['email']['$t'];
 
 	        $inviteCheck = ContactInvite::where('invitee_email', $invitee_email)->get();
-	        if(!$inviteCheck){
+	        if(!$inviteCheck->count()){
 		        foreach ($result['feed']['entry'] as $contact) {
 		            if (isset($contact['gd$email'])) { // Sometimes, a contact doesn't have email address
 		                // $emails[] = $contact['gd$email'][0]['address'];
