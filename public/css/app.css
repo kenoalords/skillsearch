@@ -9928,7 +9928,6 @@ video::-webkit-media-text-track-display {
 
 body {
   font-family: 'Roboto', Helvetica, sans-serif;
-  font-size: 16px;
   background-color: #f7f7ff;
   font-weight: 300;
   line-height: 1.8;
@@ -10037,7 +10036,8 @@ body {
 #profile-back {
   position: relative;
   overflow: hidden;
-  padding: 7em 0;
+  height: 50vh;
+  margin-bottom: 3em;
 }
 
 #profile-back .user-background {
@@ -10077,6 +10077,38 @@ body {
 #profile-back .container h1 {
   margin: 15px 0 15px 0;
   font-size: 1.6em;
+}
+
+#user-menu {
+  margin-bottom: 2em;
+}
+
+#user-menu .nav-tabs {
+  border-width: 2px;
+}
+
+#user-menu .nav-tabs li {
+  margin-bottom: -2px;
+}
+
+#user-menu .nav-tabs li.active a {
+  border: none;
+  border-bottom: 2px solid #222;
+  font-weight: 700;
+  color: #222;
+}
+
+#user-menu .nav-tabs li a {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 87.5%;
+  color: #888;
+}
+
+#user-menu .nav-tabs li a:hover {
+  background: none;
+  border-color: transparent;
+  color: #444;
 }
 
 #selectedSkills,
@@ -10229,7 +10261,7 @@ small {
 
 #user-badge {
   padding: 0.4em;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.9);
   width: 100%;
   z-index: 2;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
@@ -10432,6 +10464,57 @@ ul.profile-meta li {
   opacity: .8;
 }
 
+body.loading:before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: url(/images/loading.gif?e0b37643a21a04bd1e3588966710298f) no-repeat center rgba(255, 255, 255, 0.9);
+  background-size: 64px;
+  z-index: 999;
+}
+
+#form-invite-wrapper {
+  background: #fff;
+  margin-bottom: 2em;
+  border: 1px solid #ddd;
+}
+
+#invites {
+  background: #5393b8;
+  color: #fff;
+}
+
+.table-fixed {
+  width: 100%;
+}
+
+.table-fixed tbody {
+  max-height: 300px;
+  overflow-y: auto;
+  width: 100%;
+}
+
+.table-fixed thead,
+.table-fixed tbody,
+.table-fixed tr,
+.table-fixed td,
+.table-fixed th {
+  display: block;
+}
+
+.table-fixed tbody td {
+  float: left;
+}
+
+.table-fixed thead tr th {
+  float: left;
+  background-color: #fff;
+  border-color: #888;
+}
+
 #showcase {
   padding-bottom: 0;
 }
@@ -10444,6 +10527,8 @@ ul.profile-meta li {
   left: 0;
   width: 100%;
   background: rgba(0, 0, 0, 0.1);
+  -webkit-transition: all .3s ease-in-out;
+  transition: all .3s ease-in-out;
 }
 
 #showcase .p-content a {
@@ -10454,9 +10539,18 @@ ul.profile-meta li {
   margin-bottom: 0;
 }
 
+#showcase .p-content ul {
+  margin-bottom: 0px;
+  color: #fff;
+}
+
 #showcase .image-wrapper {
   position: relative;
   background: #fff;
+}
+
+#showcase .image-wrapper:hover .p-content {
+  background: rgba(0, 0, 0, 0.7);
 }
 
 #showcase .portfolio-credit {
@@ -10722,6 +10816,10 @@ ul.profile-meta li {
 
 .portfolio-actions {
   padding-top: 1em;
+}
+
+#video {
+  margin-bottom: 5em;
 }
 
 .btn-success {

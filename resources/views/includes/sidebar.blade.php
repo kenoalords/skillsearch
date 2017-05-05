@@ -19,6 +19,7 @@
     @if(Auth::user()->is_admin === 1)
     <a href="{{ route('verify_user_accounts') }}" class="list-group-item"><i class="glyphicon glyphicon-ok-sign"></i> Verify User Accounts</a>
     @endif
+    <a href="/invite" class="list-group-item"><i class="glyphicon glyphicon-heart"></i> Invite Your Friends</a>
     <a href="/profile/delete" class="list-group-item"><i class="glyphicon glyphicon-user"></i> Delete Account</a>
     <a href="{{ route('logout') }}" class="list-group-item"
         onclick="event.preventDefault();

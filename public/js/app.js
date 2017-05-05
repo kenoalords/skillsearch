@@ -25511,6 +25511,10 @@ var waypoint = $('#user-badge').waypoint({
 	},
 	offset: 0
 });
+
+$('body').on('click', '#google-invite', function (e) {
+	$('body').addClass('loading');
+});
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
 
 /***/ }),

@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Mail;
 use App\Models\User;
+use App\Models\ContactInvite;
 use App\Events\UserEvents;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Crypt;
+use App\Mail\InviteAccepted;
 
 class RegisterController extends Controller
 {
@@ -67,7 +70,6 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        // dd($data);
         $user = User::create([
             'name'      => $data['name'],
             'email'     => $data['email'],
@@ -85,6 +87,12 @@ class RegisterController extends Controller
         $user->verifyUser()->create([
             'verify_key' => $verify_key
         ]);
+
+        $inviteCheck = ContactInvite::where('email', $data['email'])->first();
+        if($inviteCheck){
+            Mail::to($inviteCheck->invitee_email)->send(new InviteAccepted($inviteCheck->invitee_name, $data['first_name'], $data['name']));
+            $inviteCheck->delete();
+        }
 
         // Dispatch the event to send the email
         event(new UserEvents($user));

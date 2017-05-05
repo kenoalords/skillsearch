@@ -61,5 +61,9 @@ var waypoint = $('#user-badge').waypoint({
 	offset: 0
 });
 
+$('body').on('click', '#google-invite', function(e){
+	$('body').addClass('loading');
+});
+
 
 

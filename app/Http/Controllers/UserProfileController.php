@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Mail;
 use App\Models\User;
 use App\Models\Profile;
+use App\Models\ContactInvite;
 use App\Models\Activity;
 use App\Models\Phone;
 use App\Models\VerifyIdentity;
@@ -18,6 +19,7 @@ use Intervention\Image\Facades\Image;
 use App\Jobs\DeleteFileFromS3Storage;
 use App\Mail\CancelVerifyNotification;
 use App\Mail\ApproveVerifyNotification;
+use App\Mail\InviteAccepted;
 
 class UserProfileController extends Controller
 {
@@ -63,6 +65,12 @@ class UserProfileController extends Controller
             'account_type'  => $request->account_type,
             'location'      => $request->location,
         ]);
+
+        $inviteCheck = ContactInvite::where('email', $request->user()->email)->first();
+        if($inviteCheck){
+            Mail::to($inviteCheck->invitee_email)->send(new InviteAccepted($inviteCheck->invitee_name, $request->first_name, $request->username));
+            $inviteCheck->delete();
+        }
 
         if($request->account_type == 1){
             return redirect('/home/start/skills');

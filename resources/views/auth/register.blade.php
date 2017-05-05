@@ -12,9 +12,9 @@
             <h3 class="text-center">Create Account</h3>
             <div class="panel panel-default boxed">
                 <div class="panel-body">
-                    <a href="{{route('google')}}" class="btn btn-block btn-danger">Sign in with Google</a>
+                    <a href="{{route('google')}}" class="btn btn-block btn-success"><i class="fa fa-google"></i> Sign in with Google</a>
                     
-                    <a href="{{route('facebook')}}" class="btn btn-block btn-primary">Sign in with Facebook</a>
+                    <a href="{{route('facebook')}}" class="btn btn-block btn-primary"><i class="fa fa-facebook"></i> Sign in with Facebook</a>
                     <hr>
                     <form class="" role="form" method="POST" action="{{ route('register') }}">
                         {{ csrf_field() }}

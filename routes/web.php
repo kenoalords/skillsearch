@@ -33,8 +33,10 @@ Route::post('/portfolio/{portfolio}/comment/add', 'PortfolioCommentController@ad
 
 Route::post('/portfolio/{portfolio}/views', 'ViewsController@create');
 
-// Route::get('/auth/twitter', 'SocialTwitterAuthController@redirect')->name('twitter');
-// Route::get('/auth/twitter/callback', 'SocialTwitterAuthController@callback');
+Route::get('/invite', 'InviteContactController@index');
+Route::get('/invite/gmail', 'InviteContactController@gmailContactInvite');
+Route::post('/invite/gmail', 'InviteContactController@gmailContactInviteRequest');
+Route::get('/invite/success', 'InviteContactController@thankYou');
 
 Route::group(['middleware'=>'auth'], function(){
 

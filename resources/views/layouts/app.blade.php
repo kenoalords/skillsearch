@@ -122,6 +122,12 @@
         @yield('content')
     </div>
 
+    <section id="invites">
+        <div class="container text-center">
+            <h4 class="thin"><a href="/invite" class="btn btn-success"><i class="fa fa-heart"></i> Invite your friends</a></h4>
+        </div>
+    </section>
+
     <footer id="site-footer" class="padded">
         <div class="container" id="sub-footer">
             <div class="col-xs-6 col-sm-6 col-md-4">
@@ -146,7 +152,7 @@
                     Skillsearch Nigeria is designed to help skilled and talented people in Nigeria showcase their works. We are not laible for what content users post on the platform.
                 </p>
                 <p>
-                    If you discover any copyright infringement or illegalities, <a href="#">kindly contact us.</a>
+                    If you discover any copyright infringement or illegalities, <a href="/contact">kindly contact us.</a>
                 </p>
             </div>
         </div>

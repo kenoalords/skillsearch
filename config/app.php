@@ -174,6 +174,7 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Laravel\Scout\ScoutServiceProvider::class,
         Nahid\Talk\TalkServiceProvider::class,
+        Artdarek\OAuth\OAuthServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -235,6 +236,7 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'Talk' => Nahid\Talk\Facades\Talk::class,
+        'OAuth'     => Artdarek\OAuth\Facade\OAuth::class,
     ],
 
 ];

@@ -2,6 +2,7 @@
 
 @section('thumbnail', asset('public/logo-b.png'))
 @section('type', 'article')
+@section('metadescription', 'Showcase your skills and get')
 
 @section('content')
 <div id="hero">

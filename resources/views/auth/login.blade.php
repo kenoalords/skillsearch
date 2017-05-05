@@ -64,9 +64,9 @@
                     </form>
 
                     <hr>
-                    <a href="{{route('google')}}" class="btn btn-block btn-danger">Sign in with Google</a>
+                    <a href="{{route('google')}}" class="btn btn-block btn-success"><i class="fa fa-google"></i> Sign in with Google</a>
                     
-                    <a href="{{route('facebook')}}" class="btn btn-block btn-primary">Sign in with Facebook</a>
+                    <a href="{{route('facebook')}}" class="btn btn-block btn-primary"><i class="fa fa-facebook"></i> Sign in with Facebook</a>
                 </div>
             </div>
             <div class="text-center">

@@ -15,7 +15,6 @@
 
 body{
 	font-family: 'Roboto', Helvetica, sans-serif;
-	font-size:16px;
 	background-color:#f7f7ff;
 	font-weight:300;
 	line-height:1.8;
@@ -126,8 +125,8 @@ body{
 #profile-back{
 	position: relative;
 	overflow: hidden;
-	padding:7em 0;
-
+	height: 50vh;
+	margin-bottom: 3em;
 	.user-background{
 		position: absolute;
 		top:0;
@@ -163,6 +162,35 @@ body{
 		h1{
 			margin: 15px 0 15px 0;
 			font-size: 1.6em;
+		}
+	}
+}
+
+#user-menu{
+	margin-bottom: 2em;
+	.nav-tabs{
+		border-width: 2px;
+		li {
+			margin-bottom: -2px;
+			&.active{
+				a{
+					border: none;
+					border-bottom: 2px solid #222;
+					font-weight: 700;
+					color: #222;
+				}
+			}
+			a{
+				text-transform: uppercase;
+				letter-spacing: 2px;
+				font-size: 87.5%;
+				color: #888;
+				&:hover{
+					background: none;
+					border-color: transparent;
+					color: #444;
+				}
+			}
 		}
 	}
 }
@@ -303,7 +331,7 @@ small{
 
 #user-badge{
 	padding:0.4em;
-	background:#fff;
+	background:rgba(255,255,255,.9);
 	width:100%;
 	z-index: 2;
 	box-shadow: 0 1px 2px rgba(0,0,0,.2);
@@ -497,6 +525,55 @@ ul.profile-meta{
 	}
 }
 
+body.loading:before{
+	content: "";
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom:0;
+	left: 0;
+	background: url('../images/loading.gif') no-repeat center rgba(255,255,255,.9);
+	background-size: 64px;
+	z-index: 999;
+}
+
+#form-invite-wrapper{
+	background: #fff;
+    margin-bottom: 2em;
+    border: 1px solid #ddd;
+}
+
+#invites{
+	background: #5393b8;
+	color: #fff;
+}
+
+.table-fixed{
+  width: 100%;
+  tbody{
+    max-height:300px;
+    overflow-y:auto;
+    width: 100%;
+    }
+  thead,tbody,tr,td,th{
+    display:block;
+  }
+  tbody{
+    td{
+      float:left;
+    }
+  }
+  thead {
+    tr{
+      th{
+        float:left;
+       background-color: #fff;
+       border-color:#888;
+      }
+    }
+  }
+}
+
 #showcase{
 	padding-bottom: 0;
 	.p-content{
@@ -507,16 +584,26 @@ ul.profile-meta{
 		left: 0;
 		width: 100%;
 		background:rgba(0,0,0,.1);
+		transition: all .3s ease-in-out;
 		a{
 			color: #fff;
 		}
 		h5{
 			margin-bottom: 0;
 		}
+		ul{
+			margin-bottom: 0px;
+			color: #fff;
+		}
 	}
 	.image-wrapper{
 		position: relative;
 		background: #fff;
+		&:hover{
+			.p-content{
+				background: rgba(0,0,0,.7);
+			}
+		}
 	}
 	.portfolio-credit{
 		padding: .5em;
