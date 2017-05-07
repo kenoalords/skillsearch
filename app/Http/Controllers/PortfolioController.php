@@ -265,7 +265,7 @@ class PortfolioController extends Controller
 
     public function homepagePortfolio(Portfolio $portfolio, Skills $skills)
     {
-        $portfolios = fractal()->collection($portfolio->isPublic()->latestFirst()->take(12)->get())
+        $portfolios = fractal()->collection($portfolio->isPublic()->latestFirst()->take(10)->get())
                         ->transformWith(new PortfolioTransformer)
                         ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                         ->toArray();

@@ -82,6 +82,10 @@
                         </div>
                     @endif
                 </div>
+
+                <div>
+                    @include('includes.share.profile', ['url'=>Request::url()])
+                </div>
             </div>
             
             
