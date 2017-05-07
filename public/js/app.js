@@ -25507,7 +25507,7 @@ var waypoint = $('#user-badge').waypoint({
 	handler: function handler(direction) {
 		var userBadge = $('#user-badge'),
 		    portfolio = $('#portfolio');
-		if (direction === 'down') {
+		if (direction === 'down' && $(window).outerWidth() > 540) {
 			userBadge.addClass('fixit');
 			portfolio.css({
 				'margin-top': userBadge.outerHeight() + 'px'
@@ -25544,6 +25544,7 @@ function loadAndPlayAudioFile() {
 	wavesurfer.load(audio);
 
 	$('body').on('click', '#play-audio', function (e) {
+		e.preventDefault();
 		if (!wavesurfer.isPlaying()) {
 			$('#play-audio').find('i').removeClass('fa-play').addClass('fa-pause');
 			wavesurfer.play();
@@ -25551,6 +25552,12 @@ function loadAndPlayAudioFile() {
 			$('#play-audio').find('i').removeClass('fa-pause').addClass('fa-play');
 			wavesurfer.pause();
 		}
+	}).on('click', '#stop-audio', function (e) {
+		e.preventDefault();
+		if (wavesurfer.isPlaying()) {
+			$('#play-audio').find('i').removeClass('fa-pause').addClass('fa-play');
+		}
+		wavesurfer.stop();
 	});
 }
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))

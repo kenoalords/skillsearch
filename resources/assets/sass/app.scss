@@ -926,6 +926,9 @@ body.loading:before{
 	}
 
 	#user-badge{
+		&.fixit{
+			position:relative;
+		}
 		.container{
 			width: 100%;
 			img.user-avatar{
@@ -939,6 +942,9 @@ body.loading:before{
 				clear: both !important;
 				width: 100%;
 				border-top: 1px solid #eee;
+				a{
+					width: 49%;
+				}
 			}
 		}
 	}

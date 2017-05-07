@@ -9924,6 +9924,7 @@ video::-webkit-media-text-track-display {
 
 #app {
   min-height: 80vh;
+  margin-bottom: 3em;
 }
 
 body {
@@ -10895,6 +10896,10 @@ body.loading:before {
     padding: 1em;
   }
 
+  #user-badge.fixit {
+    position: relative;
+  }
+
   #user-badge .container {
     width: 100%;
   }
@@ -10912,6 +10917,10 @@ body.loading:before {
     clear: both !important;
     width: 100%;
     border-top: 1px solid #eee;
+  }
+
+  #user-badge .container .portfolio-actions a {
+    width: 49%;
   }
 }
 
