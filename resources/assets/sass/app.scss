@@ -342,6 +342,7 @@ small{
 		top: 0;
 	}
 	h4{
+		margin-bottom: 2px;
 		a{
 			color: #888;
 			transition: all .3s ease-in-out;
@@ -350,6 +351,11 @@ small{
 				text-decoration: none;
 			}
 		}
+	}
+	p{
+		font-size: 12px;
+		font-weight: 700;
+		color: #aaa;
 	}
 }
 
