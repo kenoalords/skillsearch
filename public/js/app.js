@@ -26570,6 +26570,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
 
         handle: function handle() {
+            if (!this.isUserLoggedIn) {
+                alert('Please login to follow this user');
+                return;
+            }
 
             if (this.can_follow) {
                 this.can_follow = false;
@@ -61934,8 +61938,8 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return (_vm.isLoaded) ? _c('span', [(!_vm.is_self && _vm.isUserLoggedIn) ? _c('span', [_c('a', {
-    staticClass: "btn btn-sm btn-block",
+  return (_vm.isLoaded) ? _c('span', [(!_vm.is_self) ? _c('span', [_c('a', {
+    staticClass: "btn btn-block",
     class: {
       'btn-default': _vm.can_follow, 'btn-primary': !_vm.can_follow
     },

@@ -9934,6 +9934,10 @@ body {
   line-height: 1.8;
 }
 
+p {
+  font-size: 16px;
+}
+
 #skills-list {
   max-height: 300px;
   overflow-y: scroll;
@@ -10515,9 +10519,18 @@ body.loading:before {
   border-color: #888;
 }
 
+.portfolio-image-wrapper {
+  background: url(/images/loading.gif?e0b37643a21a04bd1e3588966710298f) no-repeat center #fff;
+  background-size: 24px;
+}
+
 #showcase {
   padding: 2em;
   padding-bottom: 0;
+}
+
+#showcase.other-works {
+  padding: 0;
 }
 
 #showcase .p-content {
@@ -10636,13 +10649,17 @@ body.loading:before {
 }
 
 .white-boxed {
-  padding: 2em;
+  padding: 1em;
   background-color: #fff;
   border: 1px solid #d3e0e9;
 }
 
 .small {
   font-size: 75%;
+}
+
+.block-button a {
+  width: 100%;
 }
 
 .small-header {
@@ -10885,6 +10902,15 @@ body.loading:before {
     padding: 1em;
   }
 
+  #portfolio-wrapper {
+    margin-bottom: 2em;
+  }
+
+  #user-badge {
+    padding-bottom: 1.3em;
+    box-shadow: none;
+  }
+
   #user-badge.fixit {
     position: relative;
   }
@@ -10894,11 +10920,23 @@ body.loading:before {
   }
 
   #user-badge .container img.user-avatar {
-    margin-top: 17px;
+    margin-top: 8px;
+    width: 48px;
+    height: auto;
   }
 
   #user-badge .container .portfolio-meta {
     width: 75%;
+  }
+
+  #user-badge .container h4 {
+    font-size: 16px;
+    margin-bottom: 2px;
+  }
+
+  #user-badge .container p {
+    font-size: 12px;
+    font-weight: 700;
   }
 
   #user-badge .container .portfolio-actions {

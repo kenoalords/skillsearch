@@ -16,15 +16,7 @@
             </a>
             <div class="pull-left portfolio-meta">
                 <h4 class="bold">{{ $portfolio['title'] }}</h4>
-                <ul class="list-inline" style="font-weight: 700; font-size: 12px;">
-                    <li>by <a href="/{{$portfolio['user']}}">{{$portfolio['user_profile']['fullname']}}</a></li>
-                    <li><i class="glyphicon glyphicon-heart"></i> {{ $portfolio['likes_count'] }} {{ str_plural('Like', $portfolio['likes_count'])}}</li>
-                    <li><i class="glyphicon glyphicon-eye-open"></i> {{ $portfolio['views'] }} {{ str_plural('View', $portfolio['views'])}}</li>
-                    @if($portfolio['url'] !== null)
-                        <li><a href="{{route('external_link', ['url'=>$portfolio['url']])}}" target="_blank" class="bold">Link <i class="glyphicon glyphicon-new-window"></i></a></li>
-                    @endif
-                    <li> {{ $portfolio['date'] }}</li>
-                </ul>
+                <p>by <a href="/{{$portfolio['user']}}">{{$portfolio['user_profile']['fullname']}}</a></p>
             </div>
             <div class="pull-right portfolio-actions">
                 <a href="/{{$portfolio['user']}}/hire" class="btn btn-success"><i class="fa fa-envelope"></i> Hire</a>
@@ -36,18 +28,26 @@
 <div id="portfolio" class="container">
     <div class="row padded">
         <div class="col-sm-3" id="portfolio-wrapper">
-            <div class="portfolio-thumbnail">
+            <div class="">
                 <div class="wrapper">
-                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=" data-src="{{$portfolio['thumbnail']}}" alt="{{$portfolio['title']}}" class="img-thumbnail img-responsive b-lazy form-wrapper">
-                    <div>{{$portfolio['description']}}</div>
-                    @if($portfolio['description'])
-                        @if($portfolio['url'] !== null)
-                            <p><a href="{{route('external_link', ['url'=>$portfolio['url']])}}" target="_blank" class="bold">Link <i class="glyphicon glyphicon-new-window"></i></a></p>
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=" data-src="{{$portfolio['thumbnail']}}" alt="{{$portfolio['title']}}" class="img-responsive b-lazy">
+                    <div class="white-boxed">
+                        <p>{{$portfolio['description']}}</p>
+                        <ul class="list-inline" style="font-weight: 600; font-size: 12px; margin-top: 1em;">
+                            <li><i class="glyphicon glyphicon-eye-open"></i> {{ $portfolio['views'] }} {{ str_plural('View', $portfolio['views'])}}</li>
+                            <li> {{ $portfolio['date'] }}</li>
+                        </ul>
+                        @if($portfolio['description'])
+                            @if($portfolio['url'] !== null)
+                                <p><small><a href="{{route('external_link', ['url'=>$portfolio['url']])}}" target="_blank" class="bold">Link <i class="glyphicon glyphicon-new-window"></i></a></small></p>
+                            @endif
                         @endif
+                        <p><follow username="{{$portfolio['user']}}"></follow></p>
+                        <like-button id="{{$portfolio['uid']}}" class="block-button"></like-button>
                         <hr>
-                    @endif
-                    <div>
-                        @include('includes.share.portfolio', ['url'=>Request::url()])
+                        <div>
+                            @include('includes.share.portfolio', ['url'=>Request::url()])
+                        </div>
                     </div>
                 </div>
             </div>
@@ -67,7 +67,9 @@
             @if($portfolio['type'] === 'images')
                 
                 @foreach ($files as $file)
-                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=" data-src="{{asset($file->getFile())}}" alt="{{ $portfolio['title'] }} Image" class="img-responsive thumbnail b-lazy">
+                    <div class="portfolio-image-wrapper">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=" data-src="{{asset($file->getFile())}}" alt="{{ $portfolio['title'] }} Image" class="img-responsive thumbnail b-lazy">
+                    </div>
                 @endforeach
 
             @endif
@@ -108,7 +110,7 @@
     </div>
 
     @if(count($others))
-        <div id="showcase">
+        <div id="showcase" class="other-works">
             <div class="row">    
                 <div class="col-sm-12">
                     <h4 class="thin">Other works by {{$portfolio['user_profile']['fullname']}}</h4>

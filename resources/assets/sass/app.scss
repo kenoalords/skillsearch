@@ -21,6 +21,10 @@ body{
 	line-height:1.8;
 }
 
+p{
+	font-size:16px;
+}
+
 #skills-list{
 	max-height: 300px;
 	overflow-y: scroll;
@@ -572,10 +576,16 @@ body.loading:before{
     }
   }
 }
-
+.portfolio-image-wrapper{
+	background: url('../images/loading.gif') no-repeat center #fff;
+	background-size: 24px;
+}
 #showcase{
 	padding: 2em;
 	padding-bottom: 0;
+	&.other-works{
+		padding: 0;
+	}
 	.p-content{
 		margin-bottom: 0;
 		border: none;
@@ -677,13 +687,19 @@ body.loading:before{
 }
 
 .white-boxed{
-	padding:2em;
+	padding:1em;
 	background-color:#fff;
 	border:1px solid #d3e0e9;
 }
 
 .small{
 	font-size: 75%;
+}
+
+.block-button{
+	a{
+		width: 100%;
+	}
 }
 
 .small-header{
@@ -915,17 +931,33 @@ body.loading:before{
 		padding: 1em;
 	}
 
+	#portfolio-wrapper{
+		margin-bottom: 2em;
+	}
+
 	#user-badge{
+		padding-bottom: 1.3em;
+		box-shadow: none;
 		&.fixit{
 			position:relative;
 		}
 		.container{
 			width: 100%;
 			img.user-avatar{
-				margin-top: 17px;
+				margin-top: 8px;
+				width: 48px;
+				height: auto;
 			}
 			.portfolio-meta{
 				width: 75%;
+			}
+			h4{
+				font-size: 16px;
+				margin-bottom: 2px;
+			}
+			p{
+				font-size: 12px;
+				font-weight: 700;
 			}
 			.portfolio-actions{
 				float: none !important;

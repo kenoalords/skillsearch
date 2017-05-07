@@ -5,8 +5,8 @@
             <li><strong>{{following}}</strong> Following</li>
             
         </ul> -->
-        <span v-if="!is_self && isUserLoggedIn">
-            <a href="#" v-bind:class="{'btn-default': can_follow, 'btn-primary' : !can_follow}" class="btn btn-sm btn-block" v-on:click.prevent="handle">
+        <span v-if="!is_self">
+            <a href="#" v-bind:class="{'btn-default': can_follow, 'btn-primary' : !can_follow}" class="btn btn-block" v-on:click.prevent="handle">
                 <i class="glyphicon " v-bind:class="{'glyphicon-user': can_follow, 'glyphicon-ok' : !can_follow}"></i>
                 {{ can_follow ? 'Follow' : 'Following' }}
             </a>
@@ -47,6 +47,10 @@
             },
 
             handle: function(){
+                if(!this.isUserLoggedIn){
+                    alert('Please login to follow this user');
+                    return;
+                }
 
                 if(this.can_follow){
                     this.can_follow = false;
