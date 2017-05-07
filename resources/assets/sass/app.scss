@@ -11,6 +11,7 @@
 
 #app{
 	min-height: 80vh;
+	margin-bottom: 3em;
 }
 
 body{
@@ -28,6 +29,18 @@ body{
 .img-responsive{
 	width: 100%;
 	height: auto;
+}
+
+.media-buttons{
+	display:inline-block;
+	padding: 5px;
+	&#play-audio{
+		font-size: 2em
+	}
+	&#stop-audio{
+		position:relative;
+		top: -5px;
+	}
 }
 
 .b-lazy {

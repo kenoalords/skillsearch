@@ -76,9 +76,13 @@
                 @foreach ($files as $file)
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            <audio controls preload>
-                                <source src="{{asset($file->getFile())}}"></audio>
-                            </audio>
+                            <!-- <audio controls preload>
+                                <source src=""></audio>
+                            </audio> -->
+                            <div id="audio" data-src="{{asset($file->getFile())}}"></div>
+                            <hr>
+                            <a href="#" class="media-buttons" id="play-audio"><i class="fa fa-play"></i></a>
+                            <a href="#" class="media-buttons" id="stop-audio"><i class="fa fa-stop"></i></a>
                         </div>
                     </div>
                 @endforeach

@@ -64,9 +64,8 @@
                 <div id="user-menu">
                     <nav>
                         <ul class="nav nav-tabs">
-                            <li role="presentation" class="active"><a href="#">Works</a></li>
-                            <li role="presentation"><a href="#">About</a></li>
-                            <li role="presentation"><a href="#">Blog</a></li>
+                            <li role="presentation" class="active"><a href="/{{$name}}">Works</a></li>
+                            <li role="presentation"><a href="/{{$name}}/about">About</a></li>
                         </ul>
                     </nav>
                 </div>

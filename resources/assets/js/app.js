@@ -65,5 +65,32 @@ $('body').on('click', '#google-invite', function(e){
 	$('body').addClass('loading');
 });
 
+if($('#audio').length > 0){
+	loadAndPlayAudioFile();
+}
+
+function loadAndPlayAudioFile(){
+	var audio = $('#audio').data('src');
+	var wavesurfer = Wavesurfer.create({
+		container: '#audio',
+		waveColor: '#93b3ca',
+		progressColor: '#0e74bc',
+		barWidth: 2
+	});
+
+	wavesurfer.load(audio);
+
+	$('body').on('click', '#play-audio', function(e){
+		if(!wavesurfer.isPlaying()){
+			$('#play-audio').find('i').removeClass('fa-play').addClass('fa-pause');
+			wavesurfer.play();
+		} else {
+			$('#play-audio').find('i').removeClass('fa-pause').addClass('fa-play');
+			wavesurfer.pause();
+		}
+	});
+}
+
+
 
 

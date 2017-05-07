@@ -9943,6 +9943,20 @@ body {
   height: auto;
 }
 
+.media-buttons {
+  display: inline-block;
+  padding: 5px;
+}
+
+.media-buttons#play-audio {
+  font-size: 2em;
+}
+
+.media-buttons#stop-audio {
+  position: relative;
+  top: -5px;
+}
+
 .b-lazy {
   -webkit-transition: opacity 500ms ease-in-out;
   transition: opacity 500ms ease-in-out;

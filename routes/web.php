@@ -158,6 +158,7 @@ Route::get('/social/{portfolio}/share', 'SocialShareController@portfolio')->name
 
 Route::get('/{user}', 'People@profile')->name('view_profile');
 Route::get('/{user}/hire', 'People@hire')->name('hire');
+Route::get('/{user}/about', 'People@about')->name('about');
 Route::get('/{user}/portfolio/{portfolio}', 'PortfolioController@view')->name('view_portfolio');
 
 Route::get('/autocomplete_cities/{cities}', 'HomeController@getCities');

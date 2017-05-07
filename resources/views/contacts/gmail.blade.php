@@ -41,7 +41,7 @@
 		            </table>
             	</div> <!-- end form wrapper -->
 				<div class="clearfix">
-					<button class="btn btn-success pull-left" type="submit"><i class="fa fa-envelope"></i> Send Invitation</button>
+					<button class="btn btn-success pull-left" type="submit" id="google-invite"><i class="fa fa-envelope"></i> Send Invitation</button>
 					<a href="/invite" class="btn btn-basic pull-right"><i class="fa fa-arrow-left"></i> Back</a>
 				</div>
 			</form>

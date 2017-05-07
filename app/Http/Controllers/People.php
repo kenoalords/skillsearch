@@ -59,5 +59,14 @@ class People extends Controller
             'name'  => $user->name
         ]);
     }
+
+    public function about(Request $request, User $user)
+    {
+        $profile = $user->profile()->get()->first();
+        return view('profile.profile-about')->with([
+            'profile' => $profile,
+            'name'  => $user->name
+        ]);
+    }
     
 }

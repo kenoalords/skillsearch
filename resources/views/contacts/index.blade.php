@@ -12,7 +12,7 @@
     <div class="container padded">
         <div class="text-center">
             <!-- <h1 class="thin">Invite your friends</h1> -->
-            <h4 style="margin-bottom: 2em">Invite your friends from Gmail and Yahoo! It's Fast, Easy and <strong class="text-warning"><i class="fa fa-lock"></i> Safe</strong> to use</h4>
+            <h4 style="margin-bottom: 2em">Invite your friends from Gmail! It's Fast, Easy and <strong class="text-warning"><i class="fa fa-lock"></i> Safe</strong> to use</h4>
             <div class="col-sm-4 col-sm-offset-4">
 	            <p><a href="/invite/gmail" class="btn btn-success btn-block" id="google-invite"><i class="fa fa-google-plus"></i> Invite Friends From Gmail</a></p>
 	            

@@ -20,6 +20,7 @@
     "blazy": "^1.8.2",
     "masonry-layout": "^4.1.1",
     "pluralize": "^4.0.0",
+    "wavesurfer.js": "^1.4.0",
     "waypoints": "^4.0.1"
   }
 }

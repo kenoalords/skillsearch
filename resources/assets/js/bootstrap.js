@@ -48,3 +48,4 @@ window.axios.defaults.headers.common = {
 
 window.Blazy = require('blazy');
 window.Waypoint = require('waypoints/lib/jquery.waypoints.min');
+window.Wavesurfer = require('wavesurfer.js/dist/wavesurfer.min');
