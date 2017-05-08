@@ -127,4 +127,9 @@ class Profile extends Model
         $id = VerifyIdentity::where('user_id', $this->id)->first();
         return ($id && $id->status === 1) ? true : false;
     }
+
+    public function scopeGetOtherProfiles($query, User $user)
+    {
+        return $query->where('user_id', '!=', $user->id);
+    }
 }

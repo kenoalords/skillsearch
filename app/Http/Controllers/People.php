@@ -19,14 +19,6 @@ class People extends Controller
     public function index(User $user, Profile $profile){
     	
     	$collection = $profile->where('account_type', 1)->isPublic()->get();
-
-    	// $people = fractal()->collection($collection)
-    	// 			->parseIncludes(['skills'])
-    	// 			->transformWith(new ProfileTransformers)
-    	// 			->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
-    	// 			->toArray();
-    	
-    	// dd($collection);
     	return view('profile.people')->with([
             'profiles' => $collection,
             'locations'=> $collection->groupBy('location')
@@ -35,7 +27,7 @@ class People extends Controller
     }
 
 
-    public function profile(Request $request, User $user){
+    public function profile(Request $request, User $user, Profile $profile){
     	$profile = $user->profile()->get()->first();
         $skills = $user->skills()->get();
         $portfolios = fractal()->collection($user->portfolio()->isPublic()->get())
@@ -43,11 +35,18 @@ class People extends Controller
                             ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                             ->toArray();
     	// dd(collect($portfolios));
+        $others = fractal()->collection($profile->getOtherProfiles($user)->isPublic()->take(5)->get())
+                            ->transformWith(new ProfileTransformers)
+                            ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                            ->toArray();
+        // dd($others);
+        
     	return view('profile.profile')->with([
     		'profile' 	=> $profile,
     		'skills'	=> $skills,
             'portfolios'=> $portfolios,
             'name'      => $user->name,
+            'others'    => $others
     	]);
     }
 
