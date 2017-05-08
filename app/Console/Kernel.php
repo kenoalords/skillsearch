@@ -41,9 +41,6 @@ class Kernel extends ConsoleKernel
 
         })->weekly()->tuesdays()->at('10:00')->timezone('Africa/Lagos');
 
-        $schedule->call(function(){
-            Mail::to('kenoalords@gmail.com')->send(new CronTestEmail());
-        })->everyFiveMinutes();
         //->weekly()->tuesdays()->at('10:00')->timezone('Africa/Lagos');
     }
 
