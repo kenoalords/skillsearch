@@ -35,7 +35,7 @@ class People extends Controller
                             ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                             ->toArray();
     	// dd(collect($portfolios));
-        $others = fractal()->collection($profile->getOtherProfiles($user)->isPublic()->take(5)->get())
+        $others = fractal()->collection($profile->getOtherProfiles($user)->isPublic()->take(4)->get())
                             ->transformWith(new ProfileTransformers)
                             ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                             ->toArray();
@@ -62,9 +62,16 @@ class People extends Controller
     public function about(Request $request, User $user)
     {
         $profile = $user->profile()->get()->first();
+
+        $others = fractal()->collection($profile->getOtherProfiles($user)->isPublic()->take(4)->get())
+                            ->transformWith(new ProfileTransformers)
+                            ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                            ->toArray();
+
         return view('profile.profile-about')->with([
             'profile' => $profile,
-            'name'  => $user->name
+            'name'  => $user->name,
+            'others' => $others
         ]);
     }
     

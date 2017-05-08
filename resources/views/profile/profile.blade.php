@@ -91,7 +91,7 @@
             @if(count($others) > 0)
             <div class="col-md-12 padded">
                 <div class="container-fluid">
-                    <h4>More People</h4>
+                    <h4 class="text-center">More People</h4>
                     <hr>
                 </div>
                 <div class="container-fluid">

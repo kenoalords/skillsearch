@@ -1,5 +1,5 @@
-<div class="col-xs-12 col-sm-6 col-md-3 col-lg-15 white-boxed" style="padding: 2em">
-    <div class="text-center">
+<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+    <div class="white-boxed text-center" style="padding: 2em">
         <p>
             <a href="{{ route('view_profile', ['user'=>$profile['username']]) }}">
                 <img src="{{ $profile['avatar'] }}" alt="{{$profile['fullname']}}" class="img-circle" width="100" height="100">
