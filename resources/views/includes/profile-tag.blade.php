@@ -5,16 +5,19 @@
                 <img src="{{ $profile['avatar'] }}" alt="{{$profile['fullname']}}" class="img-circle" width="100" height="100">
             </a>
         </p>
-        <h4 class="bold" style="margin-bottom: 1em">
+        <h5 class="bold" style="margin-bottom: 1em; margin-top: 2em">
             <a href="{{ route('view_profile', ['user'=>$profile['username']]) }}">
                 {{$profile['fullname']}}
             </a>
             
-        </h4>
+        </h5>
         <p class="skills-default">
-        @foreach ($profile['skills'] as $key => $skill)
-            <a href="/search?term={{ urlencode($skill['skill']) }}" class="label label-xs label-default">{{ $skill['skill'] }}</a>
-        @endforeach
+        @if(count($profile['skills']) > 0)
+            <a href="/search?term={{ urlencode($profile['skills'][0]['skill']) }}" class="label label-default label-sm">{{ $profile['skills'][0]['skill'] }}</a>
+            @if(count($profile['skills']) > 1)
+                <small class="bold text-muted">+{{ count($profile['skills']) - 1 }} more</small>
+            @endif
+        @endif
         </p>
         @if($profile['location'] != '')
             <p class="bold"><small><i class="fa fa-map-marker"></i> {{$profile['location']}}</small></p>
