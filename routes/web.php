@@ -139,6 +139,9 @@ Route::group(['middleware'=>'auth'], function(){
 	Route::delete('/likes/{portfolio}', 'LikesController@remove');
 });
 
+// Unsubscribe Routes
+Route::get('/unsubscribe/invite-reminder/', 'UnsubscribeController@unsubscribeContactInviteReminder');
+
 Route::get('/reviews/{user}', 'UserReviewController@reviews');
 Route::get('/portfolio/{user}', 'PortfolioController@getPortfolioItems');
 

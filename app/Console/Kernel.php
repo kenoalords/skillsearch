@@ -2,6 +2,10 @@
 
 namespace App\Console;
 
+use Mail;
+use App\Models\ContactInvite;
+use App\Mail\ContactInviteReminder;
+use App\Mail\CronTestEmail;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -26,6 +30,21 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+
+        // Send out reminder emails for invites
+        $schedule->call(function(){
+
+            $reminder = ContactInvite::getSentInvites()->get();
+            $reminder->each(function($item, $key){
+                Mail::to($item->email)->send(new ContactInviteReminder($item->invitee_name, $item->email));
+            });
+
+        })->weekly()->tuesdays()->at('10:00')->timezone('Africa/Lagos');
+
+        $schedule->call(function(){
+            Mail::to('kenoalords@gmail.com')->send(new CronTestEmail());
+        })->everyFiveMinutes();
+        //->weekly()->tuesdays()->at('10:00')->timezone('Africa/Lagos');
     }
 
     /**

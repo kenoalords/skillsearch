@@ -34,9 +34,10 @@ class PortfolioLikeNotification extends Mailable implements ShouldQueue
     public function build()
     {
         $owner_name = $this->portfolio->user->profile->first_name;
-        $liker_name = $this->user->profile->first_name;
+        $liker_name = ucwords(strtolower($this->user->profile->first_name . ' ' . $this->user->profile->last_name));
         $url = config('app.url') . '/' . $this->portfolio->user->name . '/portfolio/' . $this->portfolio->uid;
-        return $this->subject('Your portfolio')
+        return $this->from(env('MAIL_FROM_ADDRESS'), $liker_name . ' via ' . config('app.name'))
+                    ->subject($liker_name . ' likes your portfolio')
                     ->markdown('email.notifications.like')
                     ->with([
                         'name'  => $owner_name,
