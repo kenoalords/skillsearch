@@ -124,7 +124,7 @@ class Profile extends Model
 
     public function getVerified()
     {
-        $id = VerifyIdentity::where('user_id', $this->id)->first();
+        $id = VerifyIdentity::where('user_id', $this->user_id)->first();
         return ($id && $id->status === 1) ? true : false;
     }
 

@@ -23,7 +23,8 @@ class ProfileTransformers extends TransformerAbstract
 			'avatar'	=> $profile->getAvatar(),
 			'location'	=> $profile->location,
 			'gender'	=> $profile->gender,
-			'fullname'	=> $profile->first_name . ' ' . $profile->last_name
+			'fullname'	=> $profile->first_name . ' ' . $profile->last_name,
+			'verified'	=> $profile->getVerified()
 		];
 	}
 

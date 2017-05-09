@@ -27001,6 +27001,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
             axios.get('/portfolio/' + this.uid + '/comments').then(function (response) {
                 _this.comments = response.data.data;
+                console.log(_this.comments);
             });
         },
         submitComment: function submitComment() {
@@ -27038,6 +27039,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         closeReply: function closeReply() {
             this.isReplyActive = null;
+        },
+        isVerifiedUser: function isVerifiedUser(verified) {
+            if (verified === true) {
+                return '<img src="' + window.Laravel.url + '/public/verified.svg" width="14" height="14">';
+            }
         }
     },
     mounted: function mounted() {
@@ -62093,7 +62099,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       attrs: {
         "href": '/' + comment.profile.data.username
       }
-    }, [_vm._v(_vm._s(comment.profile.data.first_name) + " " + _vm._s(comment.profile.data.last_name))]), _vm._v(" "), _c('small', {
+    }, [_vm._v(_vm._s(comment.profile.data.first_name) + " " + _vm._s(comment.profile.data.last_name) + " "), _c('span', {
+      domProps: {
+        "innerHTML": _vm._s(_vm.isVerifiedUser(comment.profile.data.verified))
+      }
+    })]), _vm._v(" "), _c('small', {
       staticClass: "text-muted"
     }, [_c('em', [_vm._v(_vm._s(comment.date))])])]), _vm._v(" "), _c('p', {
       domProps: {
@@ -62184,7 +62194,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         attrs: {
           "href": '/' + reply.profile.data.username
         }
-      }, [_vm._v(_vm._s(reply.profile.data.first_name) + " " + _vm._s(reply.profile.data.last_name))]), _vm._v(" "), _c('small', {
+      }, [_vm._v(_vm._s(reply.profile.data.first_name) + " " + _vm._s(reply.profile.data.last_name) + " "), _c('span', {
+        domProps: {
+          "innerHTML": _vm._s(_vm.isVerifiedUser(reply.profile.data.verified))
+        }
+      })]), _vm._v(" "), _c('small', {
         staticClass: "text-muted"
       }, [_c('em', [_vm._v(_vm._s(reply.date))])])]), _vm._v(" "), _c('p', {
         domProps: {

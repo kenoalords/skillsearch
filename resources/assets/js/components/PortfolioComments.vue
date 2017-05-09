@@ -17,7 +17,7 @@
                 </div>
                 <div class="media-body">
                     <h5 class="media-heading bold">
-                        <a v-bind:href="'/'+comment.profile.data.username">{{comment.profile.data.first_name}} {{comment.profile.data.last_name}}</a>
+                        <a v-bind:href="'/'+comment.profile.data.username">{{comment.profile.data.first_name}} {{comment.profile.data.last_name}} <span v-html="isVerifiedUser(comment.profile.data.verified)"></span></a>
                          <small class="text-muted"><em>{{ comment.date }}</em></small>
                     </h5>
                     
@@ -48,7 +48,7 @@
                             </div>
                             <div class="media-body">
                                 <h5 class="media-heading bold">
-                                    <a v-bind:href="'/'+reply.profile.data.username">{{reply.profile.data.first_name}} {{reply.profile.data.last_name}}</a> 
+                                    <a v-bind:href="'/'+reply.profile.data.username">{{reply.profile.data.first_name}} {{reply.profile.data.last_name}} <span v-html="isVerifiedUser(reply.profile.data.verified)"></span></a> 
                                     <small class="text-muted"><em>{{ reply.date }}</em></small>
                                 </h5>
                                 <p v-html="reply.comment"></p>
@@ -82,6 +82,7 @@
                 var _this = this;
                 axios.get('/portfolio/'+this.uid+'/comments').then((response)=>{
                     _this.comments = response.data.data;
+                    console.log(_this.comments);
                 });
             },
             submitComment(){
@@ -120,6 +121,12 @@
 
             closeReply(){
                 this.isReplyActive = null;
+            },
+
+            isVerifiedUser(verified){
+                if(verified === true){
+                    return '<img src="'+window.Laravel.url+'/public/verified.svg" width="14" height="14">';
+                }
             }
         },
         mounted() {

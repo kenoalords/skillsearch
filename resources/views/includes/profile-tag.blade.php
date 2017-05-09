@@ -7,7 +7,7 @@
         </p>
         <h5 class="bold" style="margin-bottom: 1em; margin-top: 2em">
             <a href="{{ route('view_profile', ['user'=>$profile['username']]) }}">
-                {{$profile['fullname']}}
+                {{$profile['fullname']}} {!! identity_check($profile['verified']) !!}
             </a>
             
         </h5>
