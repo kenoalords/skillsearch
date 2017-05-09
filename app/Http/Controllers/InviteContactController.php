@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\ContactInvite;
 use App\Mail\ContactInviteMail;
 use Illuminate\Http\Request;
@@ -76,15 +77,19 @@ class InviteContactController extends Controller
     	$emails = $request->invite;
     	if($emails){
     		foreach($emails as $email){
+
     			$invite = explode('|', $email);
-				$contactInvite->create([
-	            	'invitee_name'	=> $request->invitee_name,
-	            	'invitee_email'	=> $request->invitee_email,
-	            	'fullname'		=> $invite[0],
-	            	'email'			=> $invite[1],
-	            	'medium'		=> 'gmail'
-	            ]);
-	            Mail::to($invite[1])->send(new ContactInviteMail($request->invitee_name, $invite[0], $invite[1]));
+    			$check = User::where('email', $invite[1])->first();
+    			if(!$check){
+					$contactInvite->create([
+		            	'invitee_name'	=> $request->invitee_name,
+		            	'invitee_email'	=> $request->invitee_email,
+		            	'fullname'		=> $invite[0],
+		            	'email'			=> $invite[1],
+		            	'medium'		=> 'gmail'
+		            ]);
+		            Mail::to($invite[1])->send(new ContactInviteMail($request->invitee_name, $invite[0], $invite[1]));
+		        }
     		}
     		return redirect('/invite/success')->with('name', $request->invitee_name);
     	}

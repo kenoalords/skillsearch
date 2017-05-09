@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use Mail;
+use App\Models\User;
 use App\Models\ContactInvite;
 use App\Mail\ContactInviteReminder;
 use App\Mail\CronTestEmail;
@@ -36,7 +37,10 @@ class Kernel extends ConsoleKernel
 
             $reminder = ContactInvite::getSentInvites()->get();
             $reminder->each(function($item, $key){
-                Mail::to($item->email)->send(new ContactInviteReminder($item->invitee_name, $item->email));
+                $user = User::where('email', $item->email)->first();
+                if(!$user){
+                    Mail::to($item->email)->send(new ContactInviteReminder($item->invitee_name, $item->email));
+                }
             });
 
         })->weekly()->tuesdays()->at('10:00')->timezone('Africa/Lagos');

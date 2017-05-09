@@ -15,7 +15,7 @@
         @if(count($profile['skills']) > 0)
             <a href="/search?term={{ urlencode($profile['skills'][0]['skill']) }}" class="label label-default label-sm">{{ $profile['skills'][0]['skill'] }}</a>
             @if(count($profile['skills']) > 1)
-                <small class="bold text-muted">+{{ count($profile['skills']) - 1 }} more</small>
+            <small class="bold">+{{ count($profile['skills']) - 1 }} {{str_plural('skill', (count($profile['skills']) - 1))}}</small>
             @endif
         @endif
         </p>
