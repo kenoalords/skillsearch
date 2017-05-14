@@ -92,7 +92,10 @@ class HomeController extends Controller
 
         $user = $request->user();
         $key = VerifyUser::where('user_id', $user->id)->first();
-        // dd($key);
+        // dd($key->verify_key);
+        if(!$key){
+            return redirect('/home');
+        }
         Mail::to($user)->send(new ResendVerificationMail($user->name, $key->verify_key));
         return redirect()->route('verify')->with('status', 'A new verification email is on its way!');
     }
