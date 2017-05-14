@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Mail;
 use App\Models\User;
 use App\Models\VerifyUser;
 use App\Models\Profile;
 use App\Models\City;
 use App\Models\Skills;
 use App\Models\Activity;
+use App\Models\ContactInvite;
+use App\Mail\ResendVerificationMail;
 use App\Http\Requests\UserProfileRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,7 +36,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request, ContactInvite $invite)
     {   
         $following = $request->user()->followers()->pluck('following_id');
         $activities = Activity::whereIn('user_id', $following)->latestFirst()->get();
@@ -47,22 +50,51 @@ class HomeController extends Controller
             $activities = null;
         }
 
+        $email = $request->user()->email;
+        $inviteStatus = true;
+        $gmailCheck =  preg_match('/(@gmail.com)$/', $email); //$request->user()->email
+        if($gmailCheck){
+            $hasInvited = $invite->where('invitee_email', $email)->get();
+            if($hasInvited->count()){
+                $inviteStatus = true;
+            } else {
+                $inviteStatus = false;
+            }
+        }
 
         return view('home')->with([
             'user'      => $request->user(),
             'profile'   => $request->user()->profile()->get()->first(),
             'activities'=> $activities,
+            'gmail'     => (bool)$gmailCheck,
+            'invite_status' => $inviteStatus
         ]);
     }
 
 
-    public function verify(User $user){
+    public function verify(Request $request){
+        if(!Auth::user()){
+            return redirect()->route('home');
+        }
+        
         $profile = Auth::user()->profile;
-
         if($profile->verified_email === 1)
             return redirect('/home');
         else
             return view('verify')->with(['profile' => $profile]);
+    }
+
+    public function resendVerify(Request $request)
+    {
+        if(!Auth::user()){
+            return redirect()->route('home');
+        }
+
+        $user = $request->user();
+        $key = $user->verifyUser->verify_key;
+        // dd($key);
+        Mail::to($user)->send(new ResendVerificationMail($user->name, $key));
+        return redirect()->route('verify')->with('status', 'A new verification email is on its way!');
     }
 
     public function verifyUser(Request $request, VerifyUser $verify, Profile $profile){
@@ -74,7 +106,7 @@ class HomeController extends Controller
             $verify_profile->verified_email = 1;
             $verify_profile->save();
             $user->delete();
-            return redirect('/home')->with('success', 'email verified');
+            return redirect('/home')->with('status', 'Your account is now verified');
         }
     }
 

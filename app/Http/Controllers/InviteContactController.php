@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Follower;
 use App\Models\ContactInvite;
 use App\Mail\ContactInviteMail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use OAuth;
 use Mail;
 
@@ -26,10 +28,11 @@ class InviteContactController extends Controller
 	        $token = $googleService->requestAccessToken($code);
 
 	        // Send a request with it
-	        $result = json_decode($googleService->request('https://www.google.com/m8/feeds/contacts/default/full?alt=json&max-results=5000'), true);
+	        $result = json_decode($googleService->request('https://www.google.com/m8/feeds/contacts/default/full?alt=json&max-results=5'), true);
 
 	        // Going through the array to clear it and create a new clean array with only the email addresses
 	        $emails = []; // initialize the new array
+	        $friends = [];
 
 	        $invitee_name = $result['feed']['author'][0]['name']['$t'];
 	        $invitee_email = $result['feed']['author'][0]['email']['$t'];
@@ -38,11 +41,27 @@ class InviteContactController extends Controller
 	        if(!$inviteCheck->count()){
 		        foreach ($result['feed']['entry'] as $contact) {
 		            if (isset($contact['gd$email'])) { // Sometimes, a contact doesn't have email address
-		                // $emails[] = $contact['gd$email'][0]['address'];
-		                array_push($emails, [
-		                	'email'=> $contact['gd$email'][0]['address'],
-		                	'name' => ucwords(strtolower($contact['title']['$t']))
-		                ]);
+
+		            	$email = $contact['gd$email'][0]['address'];
+
+		                $friends_check = User::where('email', $email)->first();
+		                if($friends_check){
+		                	// check if the inviting user is registered
+		                	// check if the inviting user has connected with the person they are inviting
+		                	$is_registered_request = User::where('email', $invitee_email)->first();
+		                	// If its an authenticated request
+		                	if(Auth::user()){
+		                		$is_following = Auth::user()->followers()->where('following_id', $friends_check->id)->first();
+		                		if(!$is_following){
+		                			array_push($friends, $friends_check);
+		                		}
+		                	}
+		                } else {
+		                	array_push($emails, [
+			                	'email'=> $email,
+			                	'name' => ucwords(strtolower($contact['title']['$t']))
+			                ]);
+		                }
 		            }
 		        }
 		    } else {
@@ -51,13 +70,14 @@ class InviteContactController extends Controller
 		    		'invitee_name' => $invitee_name
 		    	]);
 		    }
-	        // dd($emails);
+	        // dd($friends);
 	        
 	        return view('contacts.gmail')->with([
 	        		'invitee_name'	=> $invitee_name,
 	        		'invitee_email'	=> $invitee_email,
 	        		'total_contacts'=> number_format((int)$result['feed']['openSearch$totalResults']['$t']),
-	        		'emails'		=> $emails
+	        		'emails'		=> $emails,
+	        		'friends'		=> $friends
 	        	]);
 
 	    }

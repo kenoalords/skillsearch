@@ -34,7 +34,7 @@ class Profile extends Model
         'identity_verified',
     ];
 
-    // protected $appends = ['user', 'skills', 'rating', 'portfolio_count', 'phones', 'identity', 'is_skill'];
+    protected $appends = ['user'];
 
     public function getUserAttribute($value)
     {

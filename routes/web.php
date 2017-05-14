@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/', 'PortfolioController@homepagePortfolio');
+Route::get('/', 'PortfolioController@homepagePortfolio')->name('home');
 
 Route::get('/search', 'SearchController@searchProfiles');
 
@@ -139,6 +139,11 @@ Route::group(['middleware'=>'auth'], function(){
 	Route::delete('/likes/{portfolio}', 'LikesController@remove');
 });
 
+// Verify User Email Account Route
+Route::get('/verify', 'HomeController@verify')->name('verify');
+Route::get('/verify/resend', 'HomeController@resendVerify')->name('resend_verify');
+Route::get('/verify/{verify_key}', 'HomeController@verifyUser')->name('verify_user');
+
 // Unsubscribe Routes
 Route::get('/unsubscribe/invite-reminder/', 'UnsubscribeController@unsubscribeContactInviteReminder');
 
@@ -169,10 +174,6 @@ Route::get('/skills/all', 'HomeController@getSkills');
 Route::get('/skills/user', 'HomeController@getUserSkills');
 Route::post('/skills/add', 'HomeController@addUserSkill');
 Route::delete('/skills/delete/{skill}', 'HomeController@deleteUserSkill');
-
-Route::get('/verify', 'HomeController@verify')->name('verify');
-
-Route::get('/verify/{verify_key}', 'HomeController@verifyUser')->name('verify_user');
 
 // Followers Route
 Route::get('/follower/{user}', 'FollowerController@getFollowers');

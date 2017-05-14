@@ -67,7 +67,7 @@
                     <div class="progress" v-if="isUploading && !uploadingComplete">
                         <div class="progress-bar" role="progressbar" v-bind:style="{ width: progress + '%'}"></div>
                     </div>
-                    <label class="btn btn-primary btn-lg btn-block" v-if="uploadedImages.length < 10">
+                    <label class="btn btn-primary btn-block" v-if="uploadedImages.length < 10 && !isUploading">
                         <i class="glyphicon glyphicon-plus"></i> Select image
                         <input type="file" id="fileUpload" style="display:none" v-on:change="uploadImage">
                     </label>
@@ -91,7 +91,7 @@
                     <div class="progress" v-if="isUploading && !uploadingComplete">
                         <div class="progress-bar" role="progressbar" v-bind:style="{ width: progress + '%'}"></div>
                     </div>
-                    <label class="btn btn-primary btn-lg btn-block" v-if="uploadedImages.length == 0">
+                    <label class="btn btn-primary btn-block" v-if="uploadedImages.length == 0 && !isUploading">
                         <i class="glyphicon glyphicon-music"></i> Select Audio
                         <input type="file" id="fileUpload" style="display:none" v-on:change="uploadImage">
                     </label>
@@ -116,7 +116,7 @@
                     <div class="progress" v-if="isUploading && !uploadingComplete">
                         <div class="progress-bar" role="progressbar" v-bind:style="{ width: progress + '%'}"></div>
                     </div>
-                    <label class="btn btn-primary btn-lg btn-block" v-if="uploadedImages.length == 0">
+                    <label class="btn btn-primary btn-block" v-if="uploadedImages.length == 0 && !isUploading">
                         <i class="glyphicon glyphicon-facetime-video"></i> Upload video
                         <input type="file" id="fileUpload" style="display:none" v-on:change="uploadImage">
                     </label>
@@ -163,14 +163,15 @@
 
             <div class="form-wrapper">
                 <div class="">
-                    <div class="pull-left">
+                    <div>
                         <label>
-                            <input type="checkbox" v-model="isPublic" value="1"> &nbsp; Make this portfolio public
+                            <input type="checkbox" v-model="isPublic" value="1"> &nbsp; Make My Portfolio Public
                         </label>
                     </div>
-                    <div class="pull-right">
-                        <span class="text-muted">{{ statusText }}</span>
+                    <hr>
+                    <div>
                         <button class="btn btn-primary" v-on:click.prevent="savePortfolio" :disabled="!canSave">Save Portfolio</button>
+                        <span class="text-muted">{{ statusText }}</span>
                     </div>
                 </div>
             </div>
@@ -292,7 +293,30 @@
             },
             uploadImage() {
                 var file = document.getElementById('fileUpload').files[0],
-                    _this = this;
+                    _this = this,
+                    images = ['image/png', 'image/jpg', 'image/jpeg', 'image/gif'],
+                    video = ['video/mp4', 'video/mpeg'],
+                    audio = ['audio/mp3', 'audio/wav', 'audio/mpeg'];
+                
+                // check if there is a file uploaded
+                if(!file){
+                    return false;
+                }
+                
+                if( _this.type === 'images' && images.indexOf(file.type) === -1 ){
+                    alert('Please select an image file');
+                    return false;
+                }
+
+                // if( _this.type === 'video' && video.indexOf(file.type) === -1 ){
+                //     alert('Please select a video file to upload');
+                //     return false;
+                // }
+
+                if( _this.type === 'audio' && audio.indexOf(file.type) === -1 ){
+                    alert('Please select an audio file to upload');
+                    return false;
+                }
 
                 _this.isUploading = true;
                 if(_this.uid == null) {

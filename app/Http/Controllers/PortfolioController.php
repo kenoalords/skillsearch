@@ -65,7 +65,7 @@ class PortfolioController extends Controller
 
         if($request->type == 'video'){
             $this->validate($request, [
-                'file' => 'required|mimetypes:video/mp4'
+                'file' => 'required|mimetypes:video/mp4,video/mpeg'
             ]);
         }
     	if( $request->uid && $request->file ){

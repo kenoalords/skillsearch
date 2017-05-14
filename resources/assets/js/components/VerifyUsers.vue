@@ -67,6 +67,7 @@
                 this.isVerifying = true;
                 var _this = this;
                 axios.post('/home/users/ok', data).then((response)=>{
+                    _this.isVerifying = false;
                     _this.users.splice(_this.users.indexOf(user), 1);
                 }).catch((error)=>{
                     _this.isVerifying = false;

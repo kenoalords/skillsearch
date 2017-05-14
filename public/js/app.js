@@ -27239,6 +27239,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 // import videojs from "video.js";
 /* harmony default export */ __webpack_exports__["default"] = {
@@ -27347,7 +27348,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         uploadImage: function uploadImage() {
             var file = document.getElementById('fileUpload').files[0],
-                _this = this;
+                _this = this,
+                images = ['image/png', 'image/jpg', 'image/jpeg', 'image/gif'],
+                video = ['video/mp4', 'video/mpeg'],
+                audio = ['audio/mp3', 'audio/wav', 'audio/mpeg'];
+
+            // check if there is a file uploaded
+            if (!file) {
+                return false;
+            }
+
+            if (_this.type === 'images' && images.indexOf(file.type) === -1) {
+                alert('Please select an image file');
+                return false;
+            }
+
+            // if( _this.type === 'video' && video.indexOf(file.type) === -1 ){
+            //     alert('Please select a video file to upload');
+            //     return false;
+            // }
+
+            if (_this.type === 'audio' && audio.indexOf(file.type) === -1) {
+                alert('Please select an audio file to upload');
+                return false;
+            }
 
             _this.isUploading = true;
             if (_this.uid == null) {
@@ -28216,6 +28240,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.isVerifying = true;
             var _this = this;
             axios.post('/home/users/ok', data).then(function (response) {
+                _this.isVerifying = false;
                 _this.users.splice(_this.users.indexOf(user), 1);
             }).catch(function (error) {
                 _this.isVerifying = false;
@@ -63249,8 +63274,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "role": "progressbar"
     }
-  })]) : _vm._e(), _vm._v(" "), (_vm.uploadedImages.length < 10) ? _c('label', {
-    staticClass: "btn btn-primary btn-lg btn-block"
+  })]) : _vm._e(), _vm._v(" "), (_vm.uploadedImages.length < 10 && !_vm.isUploading) ? _c('label', {
+    staticClass: "btn btn-primary btn-block"
   }, [_c('i', {
     staticClass: "glyphicon glyphicon-plus"
   }), _vm._v(" Select image\n                        "), _c('input', {
@@ -63310,8 +63335,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "role": "progressbar"
     }
-  })]) : _vm._e(), _vm._v(" "), (_vm.uploadedImages.length == 0) ? _c('label', {
-    staticClass: "btn btn-primary btn-lg btn-block"
+  })]) : _vm._e(), _vm._v(" "), (_vm.uploadedImages.length == 0 && !_vm.isUploading) ? _c('label', {
+    staticClass: "btn btn-primary btn-block"
   }, [_c('i', {
     staticClass: "glyphicon glyphicon-music"
   }), _vm._v(" Select Audio\n                        "), _c('input', {
@@ -63370,8 +63395,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "role": "progressbar"
     }
-  })]) : _vm._e(), _vm._v(" "), (_vm.uploadedImages.length == 0) ? _c('label', {
-    staticClass: "btn btn-primary btn-lg btn-block"
+  })]) : _vm._e(), _vm._v(" "), (_vm.uploadedImages.length == 0 && !_vm.isUploading) ? _c('label', {
+    staticClass: "btn btn-primary btn-block"
   }, [_c('i', {
     staticClass: "glyphicon glyphicon-facetime-video"
   }), _vm._v(" Upload video\n                        "), _c('input', {
@@ -63471,9 +63496,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })]), _vm._v(" "), _c('small', [_vm._v("Enter portfolio completion date")])])])])]), _vm._v(" "), _c('div', {
     staticClass: "form-wrapper"
-  }, [_c('div', {}, [_c('div', {
-    staticClass: "pull-left"
-  }, [_c('label', [_c('input', {
+  }, [_c('div', {}, [_c('div', [_c('label', [_c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -63505,11 +63528,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }
-  }), _vm._v("   Make this portfolio public\n                        ")])]), _vm._v(" "), _c('div', {
-    staticClass: "pull-right"
-  }, [_c('span', {
-    staticClass: "text-muted"
-  }, [_vm._v(_vm._s(_vm.statusText))]), _vm._v(" "), _c('button', {
+  }), _vm._v("   Make this portfolio public\n                        ")])]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', [_c('button', {
     staticClass: "btn btn-primary",
     attrs: {
       "disabled": !_vm.canSave
@@ -63520,7 +63539,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.savePortfolio($event)
       }
     }
-  }, [_vm._v("Save Portfolio")])])])])], 2)])])
+  }, [_vm._v("Save Portfolio")]), _vm._v(" "), _c('span', {
+    staticClass: "text-muted"
+  }, [_vm._v(_vm._s(_vm.statusText))])])])])], 2)])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "clearfix"
