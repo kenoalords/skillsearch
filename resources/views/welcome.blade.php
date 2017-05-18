@@ -11,11 +11,10 @@
         <div class="col-md-8 col-md-offset-2 text-center">
             <h1 class="thin" style="font-size: 1.5em">Showcase &amp; Discover Skilled People in Nigeria.</h1>
             <br>
-            @if(!Auth::user())
             <p>
-                <a href="/register" class="btn btn-primary bold">Sign Up</a>
+                <a href="/people" class="btn btn-primary bold">Discover People</a>
             </p>
-            @endif            
+                        
         </div>
     </div>
 </div>
@@ -24,6 +23,15 @@
     <div class="row">
         @each('includes.portfolio-with-user', $portfolios, 'portfolio')
     </div>
+    <div class="text-center">
+        <a href="/work" class="btn btn-primary">Discover more work</a>
+    </div>
+    @if(!Auth::user())
+    <hr>
+    <div class="text-center padded">
+        @include('includes.signup-teaser')
+    </div>
+    @endif
 </div>
 
 <div id="how">
