@@ -281,4 +281,14 @@ class PortfolioController extends Controller
             'skills'    => $skills,
         ]);
     }
+
+    public function workPage(Portfolio $portfolio, Skills $skills)
+    {
+        $portfolios = fractal()->collection($portfolio->isPublic()->latestFirst()->take(20)->get())
+                        ->transformWith(new PortfolioTransformer)
+                        ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                        ->toArray();
+        $skills = $skills->orderAlphabetically()->get();
+        return view('portfolio.index')->with(['portfolios' => $portfolios, 'skills' => $skills ]);
+    }
 }

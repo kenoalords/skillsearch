@@ -15,7 +15,7 @@
                 <img src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="{{$portfolio['user_profile']['avatar']}}" alt="{{$portfolio['user_profile']['fullname']}}" class="img-circle b-lazy user-avatar" width="64" height="64">
             </a>
             <div class="pull-left portfolio-meta">
-                <h4 class="bold">{{ $portfolio['title'] }}</h4>
+                <h4 class="bold">{{ ucwords(strtolower($portfolio['title'])) }}</h4>
                 <p>by <a href="/{{$portfolio['user']}}">{{$portfolio['user_profile']['fullname']}}</a></p>
             </div>
             <div class="pull-right portfolio-actions">

@@ -11,7 +11,7 @@
                 <div class="col-md-3">
                     <h4 class="media-heading">
                         <a href="{{ route('view_profile', ['user'=>$profile['username']]) }}">
-                            {{ $profile['fullname'] }} {!! identity_check($profile['verified']) !!}
+                            {{ ucwords(strtolower($profile['fullname'])) }} {!! identity_check($profile['verified']) !!}
                         </a>
                     </h4>
                    <ul class="profile-meta">
@@ -26,7 +26,6 @@
                     @endif
                     <p>{{ str_limit($profile['bio'], 75) }}</p>
                     <p>
-                        <a href="/{{$profile['username']}}" class="btn btn-default btn-xs">View profile</a>
                         <a href="/{{$profile['username']}}/hire" class="btn btn-success btn-xs">Hire me</a>
                     </p>
                     

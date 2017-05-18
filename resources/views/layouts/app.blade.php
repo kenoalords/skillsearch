@@ -54,7 +54,7 @@
 <body>
     <div id="app">
         <nav class="navbar navbar-default navbar-static-top navbar-inverse container-fluid">
-            <div class="col-md-12">
+            <div class="">
                 <div class="navbar-header">
 
                     <!-- Collapsed Hamburger -->
@@ -72,14 +72,25 @@
                 </div>
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
+                    
+
+                    <form action="/search" method="get" class="navbar-left navbar-form hidden-sm" id="navbar-search-form">
+                        <div class="input-group">
+                            <input type="text" name="term" class="form-control" placeholder="e.g Website Desginer" value="{{Request::get('term')}}">
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-search"></i></button>
+                            </span>
+                        </div>    
+                    </form>
+
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        <!-- <li><a href="{{ route('people') }}">People</a></li> -->
-                        <!-- <li><a href="{{ route('tasks') }}">Tasks</a></li> -->
+                        <li><a href="{{ route('people') }}">Find People</a></li>
+                        <li><a href="{{ route('work') }}">Recent Works</a></li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
-                    <ul class="nav navbar-nav navbar-right">
+                    <ul class="nav navbar-nav navbar-right" style="margin-right: 0">
                         <!-- Authentication Links -->
                         @if (Auth::guest())
                             <li><a href="{{ route('login') }}">Login</a></li>
@@ -87,7 +98,7 @@
                         @else
                             
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle bold" data-toggle="dropdown" role="button" aria-expanded="false">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
 
@@ -110,8 +121,8 @@
                             </li>
                         @endif
                         <li>
-                            <a href="/profile/portfolio/add" class="btn btn-success navbar-btn">
-                                <i class="glyphicon glyphicon-plus"></i> Submit your work
+                            <a href="/profile/portfolio/add" class="btn btn-primary navbar-btn">
+                                <i class="fa fa-briefcase"></i> Submit Your Work
                             </a>
                         </li>
                     </ul>

@@ -22,16 +22,12 @@ class People extends Controller
     	$collection = $user->has('portfolio')->withCount(['portfolio' => function($query){
                                 $query->where('is_public', true);
                             }])->orderBy('portfolio_count', 'desc')->take(10)->get();
-        // dd($collection);
-    	// return view('profile.people')->with([
-     //        'profiles' => $collection,
-     //        'locations'=> $collection->groupBy('location')
-     //    ]);
+
         $people = fractal()->collection($collection)
                             ->transformWith(new UserTransformers)
                             ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                             ->toArray();
-        // dd($people);
+
         return view('profile.people')->with([
                 'profiles'  => $people
             ]);

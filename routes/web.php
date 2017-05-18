@@ -16,6 +16,7 @@ Route::get('/', 'PortfolioController@homepagePortfolio')->name('home');
 Route::get('/search', 'SearchController@searchProfiles');
 
 Route::get('/about', 'PagesController@about');
+Route::get('/work', 'PortfolioController@workPage')->name('work');
 Route::get('/contact', 'PagesController@contact');
 Route::get('/how-it-works', 'PagesController@works');
 Route::get('/privacy', 'PagesController@privacy');

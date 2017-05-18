@@ -1,12 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
+@include('search-form') 
 <div class="container padded">
-
-	@include('search-form') 
 	
-	@if($profiles->count())
+	@if(count($profiles) > 0)
 	<div class="row">
+		<h1 class="thin text-center medium-header">We found {{count($profiles)}} {{ str_plural('profile', count($profiles)) }} matching your search</h1>
+		<hr>
 		@each('profile.person-tag', $profiles, 'profile')
 	</div>
 	@else

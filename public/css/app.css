@@ -9929,7 +9929,7 @@ video::-webkit-media-text-track-display {
 
 body {
   font-family: 'Roboto', Helvetica, sans-serif;
-  background-color: #f7f7ff;
+  background-color: #f7f7f7;
   font-weight: 300;
   line-height: 1.8;
 }
@@ -10010,7 +10010,7 @@ p {
 }
 
 .padded {
-  padding: 4em 0;
+  padding: 2em 0;
 }
 
 #f-stats {
@@ -10262,7 +10262,7 @@ small {
 }
 
 .person-tag .media {
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #eee;
   margin-bottom: 15px;
   padding: 15px 0;
 }
@@ -10271,7 +10271,7 @@ small {
   padding: 10px;
   background: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 
 .person-tag .col-md-9 .col-sm-4 {
@@ -10455,8 +10455,8 @@ ul.profile-meta li {
 }
 
 #search-form {
-  padding: 2em;
-  border: 2px solid #eee;
+  padding: 1em;
+  border-bottom: 1px solid #ddd;
   margin: 0 0 2em 0;
   background: #fff;
 }
@@ -10749,6 +10749,10 @@ body.loading:before {
   font-size: 1.2em;
 }
 
+.medium-header {
+  font-size: 1.875em;
+}
+
 #activities {
   background: #fff;
   padding: 2em;
@@ -10955,6 +10959,10 @@ body.loading:before {
   .container {
     width: 90%;
   }
+
+  #search-form .container div {
+    margin-bottom: 5px;
+  }
 }
 
 @media screen and (min-width: 320px) and (max-width: 539px) {
@@ -11033,6 +11041,10 @@ body.loading:before {
 
   #user-badge .container .portfolio-actions a {
     width: 49%;
+  }
+
+  #search-form .container div {
+    margin-bottom: 5px;
   }
 }
 

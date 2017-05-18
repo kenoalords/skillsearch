@@ -5,6 +5,7 @@
 @section('metadescription', 'Showcase your skills and get')
 
 @section('content')
+<!-- @include('search-form') -->
 <div id="hero">
     <div class="container">
         <div class="col-md-8 col-md-offset-2 text-center">
