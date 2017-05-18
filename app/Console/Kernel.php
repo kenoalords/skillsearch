@@ -4,9 +4,11 @@ namespace App\Console;
 
 use Mail;
 use App\Models\User;
+use App\Models\VerifyUser;
 use App\Models\ContactInvite;
 use App\Mail\ContactInviteReminder;
 use App\Mail\CronTestEmail;
+use App\Mail\VerificationReminderMail;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -44,6 +46,18 @@ class Kernel extends ConsoleKernel
             });
 
         })->weekly()->tuesdays()->at('10:00')->timezone('Africa/Lagos');
+
+        $schedule->call(function(){
+
+            $verify = VerifyUser::get();
+            if($verify->count()){
+                $verify->each( function($item, $key) {
+                    $user = User::where('id', $item->user_id)->first();
+                    Mail::to($user)->send( new VerificationReminderMail( $user->name, $item->verify_key ) );
+                });
+            }
+
+        })->weekly()->fridays()->at('10:00')->timezone('Africa/Lagos');
 
         //->weekly()->tuesdays()->at('10:00')->timezone('Africa/Lagos');
     }

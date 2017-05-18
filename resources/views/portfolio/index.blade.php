@@ -3,6 +3,7 @@
 @section('thumbnail', asset('public/logo-b.png'))
 @section('type', 'article')
 @section('metadescription', 'Discover, Share and Hire The Best Hands In Nigeria')
+@section('title', 'Recent Works')
 
 @section('content')
 <!-- @include('search-form') -->

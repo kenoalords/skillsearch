@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Profile;
+use App\Models\Skills;
 use App\Models\SkillsRelations;
 use App\Transformers\ProfileTransformers;
 use App\Transformers\UserTransformers;
@@ -17,7 +18,7 @@ class People extends Controller
 {
     use Orderable;
 
-    public function index(User $user, Profile $profile){
+    public function index(User $user, Profile $profile, Skills $skills ){
     	
     	$collection = $user->has('portfolio')->withCount(['portfolio' => function($query){
                                 $query->where('is_public', true);
@@ -27,9 +28,11 @@ class People extends Controller
                             ->transformWith(new UserTransformers)
                             ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                             ->toArray();
+        $skills = $skills->orderAlphabetically()->get();
 
         return view('profile.people')->with([
-                'profiles'  => $people
+                'profiles'  => $people,
+                'skills'    => $skills,
             ]);
 
     }
