@@ -10224,7 +10224,6 @@ small {
   font-size: 75%;
 }
 
-#person-tag .media,
 .skills-default .media {
   border: 2px solid #eee;
   margin-bottom: 10px;
@@ -10233,34 +10232,77 @@ small {
   background: #fff;
 }
 
-#person-tag .media:hover,
 .skills-default .media:hover {
   border-color: #ccc;
 }
 
-#person-tag p,
 .skills-default p {
   font-size: 87.5%;
   margin-top: 1em;
 }
 
-#person-tag .label-default,
 .skills-default .label-default {
   background: #fff;
   border: 1px solid #999;
   font-weight: 300;
 }
 
-#person-tag .label,
 .skills-default .label {
   color: #999;
   -webkit-transition: all .6s ease-in-out;
   transition: all .6s ease-in-out;
 }
 
-#person-tag .label:hover,
 .skills-default .label:hover {
   opacity: 1;
+}
+
+.person-tag:last-of-type .media {
+  border: none;
+}
+
+.person-tag .media {
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 15px;
+  padding: 15px 0;
+}
+
+.person-tag .image-wrapper {
+  padding: 10px;
+  background: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 5px;
+}
+
+.person-tag .col-md-9 .col-sm-4 {
+  padding-left: 5px;
+  padding-right: 5px;
+  float: right;
+}
+
+.person-tag p {
+  font-size: 87.5%;
+  margin-top: 1em;
+}
+
+.person-tag .label-default {
+  background: #fff;
+  border: 1px solid #999;
+  font-weight: 300;
+}
+
+.person-tag .label {
+  color: #999;
+  -webkit-transition: all .6s ease-in-out;
+  transition: all .6s ease-in-out;
+}
+
+.person-tag .label:hover {
+  opacity: 1;
+}
+
+.person-tag .p-content ul {
+  margin-bottom: 0px;
 }
 
 #user-badge {
@@ -10408,7 +10450,7 @@ ul.profile-meta {
 ul.profile-meta li {
   display: inline-block;
   margin-right: 3em;
-  font-size: 75%;
+  font-size: 87.5%;
   font-weight: 700;
 }
 

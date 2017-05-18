@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Profile;
 use App\Models\SkillsRelations;
 use App\Transformers\ProfileTransformers;
+use App\Transformers\UserTransformers;
 use App\Transformers\PortfolioTransformer;
 use Illuminate\Http\Request;
 use League\Fractal\Resource\Collection;
@@ -18,11 +19,22 @@ class People extends Controller
 
     public function index(User $user, Profile $profile){
     	
-    	$collection = $profile->where('account_type', 1)->isPublic()->get();
-    	return view('profile.people')->with([
-            'profiles' => $collection,
-            'locations'=> $collection->groupBy('location')
-        ]);
+    	$collection = $user->has('portfolio')->withCount(['portfolio' => function($query){
+                                $query->where('is_public', true);
+                            }])->orderBy('portfolio_count', 'desc')->take(10)->get();
+        // dd($collection);
+    	// return view('profile.people')->with([
+     //        'profiles' => $collection,
+     //        'locations'=> $collection->groupBy('location')
+     //    ]);
+        $people = fractal()->collection($collection)
+                            ->transformWith(new UserTransformers)
+                            ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                            ->toArray();
+        // dd($people);
+        return view('profile.people')->with([
+                'profiles'  => $people
+            ]);
 
     }
 

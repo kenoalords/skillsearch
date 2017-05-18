@@ -9,17 +9,17 @@ use App\Models\SkillsRelations;
 use App\Transformers\PortfolioTransformer;
 use League\Fractal\TransformerAbstract;
 
-class ProfileTransformers extends TransformerAbstract
+class UserTransformers extends TransformerAbstract
 {
 
 	protected $defaultIncludes = ['skills', 'portfolios'];
 
-	public function transform(Profile $profile){
+	public function transform(User $user){
 
-		$username = User::where('id', $profile->user_id)->pluck('name')->first();
+		$profile = Profile::where('user_id', $user->id)->first();
 
 		return [
-			'username'	=> $username,
+			'username'	=> $user->name,
 			'first_name'=> $profile->first_name,
 			'last_name'	=> $profile->last_name,
 			'avatar'	=> $profile->getAvatar(),
@@ -31,17 +31,18 @@ class ProfileTransformers extends TransformerAbstract
 		];
 	}
 
-	public function includeSkills(Profile $profile)
+	public function includeSkills(User $user)
 	{
-		return $this->collection($profile->user->skills->all(), new SkillsTransformer);
+		$skills = $user->skills()->get();
+		return $this->collection($skills, new SkillsTransformer);
 	}
 
-	public function includePortfolios(Profile $profile)
+	public function includePortfolios(User $user)
 	{
 		$portfolios = Portfolio::where([
-				['user_id', '=', $profile->user_id],
+				['user_id', '=', $user->id],
 				['is_public', '=', true]
-			])->get();
+			])->take(3)->get();
 		return $this->collection($portfolios, new PortfolioTransformer);
 	}
 }
