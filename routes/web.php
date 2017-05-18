@@ -40,6 +40,9 @@ Route::get('/invite/success', 'InviteContactController@thankYou');
 
 Route::group(['middleware'=>'auth'], function(){
 
+	Route::post('/comment/{comment}/like', 'CommentController@likeComment');
+	Route::delete('/comment/{comment}/delete', 'CommentController@deleteComment');
+
 	Route::group(['prefix'=>'home'], function(){
 		Route::get('/', 'HomeController@index')->middleware('user_profile_setup');
 		Route::get('/start', 'UserProfileController@setupUserProfile')->name('start');

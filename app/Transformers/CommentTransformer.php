@@ -19,7 +19,8 @@ class CommentTransformer extends TransformerAbstract
 			'id'		=> $comment->id,
 			'user_id'	=> $comment->user_id,
 			'comment'	=> $comment->comment,
-			'date'		=> $comment->created_at->diffForHumans()
+			'date'		=> $comment->created_at->diffForHumans(),
+			'likes'		=> $comment->likes()->count(),
 		];
 	}
 

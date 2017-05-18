@@ -14,6 +14,7 @@ return [
 
     'name'          => 'Skillsearch Nigeria',
     'description'   => 'Hire The Best Skilled People In Nigeria',
+    'mail_from_address'  => env('MAIL_FROM_ADDRESS'),
     // 'thumbnail'     => asset('public/skillsearc-nigeria-social-image.jpg'),
 
     /*
@@ -185,6 +186,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\InstagramPortfolioServiceProvider::class,
+        App\Providers\PointServiceProvider::class,
     ],
 
     /*

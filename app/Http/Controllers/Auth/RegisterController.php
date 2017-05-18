@@ -6,6 +6,7 @@ use Mail;
 use App\Models\User;
 use App\Models\ContactInvite;
 use App\Events\UserEvents;
+use App\Services\PointService;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -90,6 +91,11 @@ class RegisterController extends Controller
 
         $inviteCheck = ContactInvite::where('email', $data['email'])->first();
         if($inviteCheck){
+            $invitee = User::where('email', $inviteCheck->invitee_email)->first();
+            if($invitee){
+                $point = new PointService(config('services.points'));
+                $point->addPoint($invitee, 'invite_signup');
+            }
             Mail::to($inviteCheck->invitee_email)->send(new InviteAccepted($inviteCheck->invitee_name, $data['first_name'], $data['name']));
             $inviteCheck->delete();
         }
@@ -100,5 +106,10 @@ class RegisterController extends Controller
         // Return the newly created user
         return $user;
 
+    }
+
+    private function addUserPoint(User $user, PointService $point)
+    {
+        $point->addPoint($user, 'invite_signup');
     }
 }

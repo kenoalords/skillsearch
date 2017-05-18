@@ -12,7 +12,7 @@ class SearchController extends Controller
 	
     public function searchProfiles(Request $request, Profile $profile)
     {
-    	$results = $profile->search($request->term . ' ' . $request->location)->where('is_public', 1)->get();
+    	$results = $profile->where('bio', 'like', $request->term . ' ' . $request->location)->where('is_public', 1)->get();
     	// dd($results);
     	return view('search')->with('profiles', $results);
     }

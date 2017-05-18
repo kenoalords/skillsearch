@@ -10,6 +10,7 @@ use App\Models\Activity;
 use App\Models\Phone;
 use App\Models\VerifyIdentity;
 use App\Jobs\UserImageJob;
+use App\Services\PointService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\UserProfileRequest;
@@ -47,7 +48,7 @@ class UserProfileController extends Controller
         return view('profile.start')->with('name', $name);
     }
 
-    public function saveSocialUserProfile(SocialUserProfileRequest $request)
+    public function saveSocialUserProfile(SocialUserProfileRequest $request, PointService $point)
     {
         // dd($request->user_location);
         if($request->username !== $request->user()->name){
@@ -68,6 +69,10 @@ class UserProfileController extends Controller
 
         $inviteCheck = ContactInvite::where('email', $request->user()->email)->first();
         if($inviteCheck){
+            $invitee = User::where('email', $inviteCheck->invitee_email)->first();
+            if($invitee){
+                $point->addPoint($invitee, 'invite_signup');
+            }
             Mail::to($inviteCheck->invitee_email)->send(new InviteAccepted($inviteCheck->invitee_name, $request->first_name, $request->username));
             $inviteCheck->delete();
         }

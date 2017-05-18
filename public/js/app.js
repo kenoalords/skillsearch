@@ -26979,6 +26979,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
     data: function data() {
@@ -26986,10 +27000,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             comments: [],
             comment: null,
             user: window.Laravel.userLoggedIn,
+            user_id: window.Laravel.user_id,
             isSubmitting: false,
             isReplyActive: null,
             isReplySubmitting: false,
-            reply: null
+            reply: null,
+            isLiking: false
         };
     },
 
@@ -27001,10 +27017,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
             axios.get('/portfolio/' + this.uid + '/comments').then(function (response) {
                 _this.comments = response.data.data;
-                console.log(_this.comments);
             });
         },
         submitComment: function submitComment() {
+            if (this.comment === null) {
+                alert('Please enter a comment');
+                return;
+            }
             var data = {
                 comment: this.comment
             };
@@ -27014,6 +27033,46 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.comment = null;
                 _this.isSubmitting = false;
                 _this.comments.unshift(response.data.data);
+            });
+        },
+        deleteComment: function deleteComment(comment) {
+            var _this = this;
+
+            if (window.confirm('Do you really want to delete this comment?')) {
+                axios.delete('/comment/' + comment.id + '/delete').then(function (response) {
+                    // console.log(response);
+                    _this.comments.splice(_this.comments.indexOf(comment), 1);
+                });
+            }
+        },
+        deleteReply: function deleteReply(reply, commentId) {
+            var _this = this;
+
+            if (window.confirm('Do you really want to delete this reply?')) {
+                axios.delete('/comment/' + reply.id + '/delete').then(function (response) {
+                    // console.log(response);
+                    // _this.comments.splice(_this.comments.indexOf(comment), 1);
+                    _this.comments.map(function (comment, index) {
+                        if (comment.id === commentId) {
+                            _this.comments[index].replies.data.splice(_this.comments[index].replies.data.indexOf(reply), 1);
+                        }
+                    });
+                });
+            }
+        },
+        submitCommentLike: function submitCommentLike(comment) {
+            var _this = this;
+            _this.isLiking = true;
+            if (!_this.user) {
+                alert('Please login to like this comment');
+                return;
+            }
+            var data = {
+                comment_id: comment.id
+            };
+            axios.post('/comment/' + comment.id + '/like', data).then(function (response) {
+                _this.isLiking = false;
+                comment.likes = response.data.likes;
             });
         },
         submitReply: function submitReply(commentId) {
@@ -62093,7 +62152,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.submitComment()
       }
     }
-  }, [_vm._v(_vm._s(_vm.isSubmitting ? 'Submitting...' : 'Submit comment'))])]) : _vm._e(), _vm._v(" "), (_vm.comments) ? _c('div', {
+  }, [_vm._v(_vm._s(_vm.isSubmitting ? 'Submitting...' : 'Submit Comment'))])]) : _vm._e(), _vm._v(" "), (_vm.comments) ? _c('div', {
     attrs: {
       "id": "comments"
     }
@@ -62136,8 +62195,28 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }), _vm._v(" "), _c('ul', {
       staticClass: "list-inline"
-    }, [(_vm.user) ? _c('li', [_c('small', [_c('a', {
-      staticClass: "bold",
+    }, [_c('li', [_c('a', {
+      staticClass: "bold text-muted",
+      class: {
+        active: _vm.isLiking
+      },
+      attrs: {
+        "href": "#"
+      },
+      on: {
+        "click": function($event) {
+          $event.preventDefault();
+          _vm.submitCommentLike(comment)
+        }
+      }
+    }, [_c('i', {
+      staticClass: "fa fa-heart"
+    }), _vm._v(" "), _c('span', {
+      attrs: {
+        "id": 'comment-' + comment.id
+      }
+    }, [_vm._v(_vm._s(comment.likes) + " " + _vm._s(comment.likes > 1 ? 'Likes' : 'Like'))])])]), _vm._v(" "), (_vm.user) ? _c('li', [_c('a', {
+      staticClass: "bold text-muted",
       attrs: {
         "href": "#"
       },
@@ -62147,7 +62226,22 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.toggleReplyField(comment.id)
         }
       }
-    }, [_vm._v("Reply")])])]) : _vm._e()]), _vm._v(" "), (_vm.isReplyActive === comment.id) ? _c('div', [_c('div', {
+    }, [_c('i', {
+      staticClass: "fa fa-comments"
+    }), _vm._v(" " + _vm._s(comment.replies.data.length) + " " + _vm._s(comment.replies.data.length > 1 ? 'Replies' : 'Reply') + " ")])]) : _vm._e(), _vm._v(" "), (_vm.user && comment.user_id === _vm.user_id) ? _c('li', [_c('a', {
+      staticClass: "bold text-muted",
+      attrs: {
+        "href": "#"
+      },
+      on: {
+        "click": function($event) {
+          $event.preventDefault();
+          _vm.deleteComment(comment)
+        }
+      }
+    }, [_c('i', {
+      staticClass: "fa fa-close"
+    }), _vm._v(" Delete")])]) : _vm._e()]), _vm._v(" "), (_vm.isReplyActive === comment.id) ? _c('div', [_c('div', {
       staticClass: "form-group"
     }, [_c('textarea', {
       directives: [{
@@ -62183,7 +62277,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.submitReply(comment.id)
         }
       }
-    }, [_vm._v("Submit Reply")]), _vm._v(" "), _c('a', {
+    }, [_vm._v("Submit Reply")]), _vm._v(" "), _c('small', [_c('a', {
       staticClass: "btn btn-basic text-muted",
       attrs: {
         "href": "#"
@@ -62194,7 +62288,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.closeReply()
         }
       }
-    }, [_vm._v("Close")])])]) : _vm._e(), _vm._v(" "), (comment.replies.data) ? _c('div', [(comment.replies.data.length > 0) ? _c('div', [_c('hr')]) : _vm._e(), _vm._v(" "), _vm._l((comment.replies.data), function(reply) {
+    }, [_vm._v("Close")])])])]) : _vm._e(), _vm._v(" "), (comment.replies.data) ? _c('div', [(comment.replies.data.length > 0) ? _c('div', [_c('hr')]) : _vm._e(), _vm._v(" "), _vm._l((comment.replies.data), function(reply) {
       return _c('div', {
         staticClass: "media"
       }, [_c('div', {
@@ -62229,7 +62323,38 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         domProps: {
           "innerHTML": _vm._s(reply.comment)
         }
-      })])])
+      }), _vm._v(" "), _c('ul', {
+        staticClass: "list-inline"
+      }, [_c('li', [_c('a', {
+        staticClass: "bold text-muted",
+        class: {
+          active: _vm.isLiking
+        },
+        attrs: {
+          "href": "#"
+        },
+        on: {
+          "click": function($event) {
+            $event.preventDefault();
+            _vm.submitCommentLike(reply)
+          }
+        }
+      }, [_c('i', {
+        staticClass: "fa fa-heart"
+      }), _vm._v(" " + _vm._s(reply.likes) + " " + _vm._s(reply.likes > 1 ? 'Likes' : 'Like'))])]), _vm._v(" "), (_vm.user && reply.user_id === _vm.user_id) ? _c('li', [_c('a', {
+        staticClass: "bold text-muted",
+        attrs: {
+          "href": "#"
+        },
+        on: {
+          "click": function($event) {
+            $event.preventDefault();
+            _vm.deleteReply(reply, comment.id)
+          }
+        }
+      }, [_c('i', {
+        staticClass: "fa fa-close"
+      }), _vm._v(" Delete")])]) : _vm._e()])])])
     })], 2) : _vm._e()])])
   })], 2) : _vm._e()])
 },staticRenderFns: []}
@@ -63528,7 +63653,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }
-  }), _vm._v("   Make this portfolio public\n                        ")])]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', [_c('button', {
+  }), _vm._v("   Make My Portfolio Public\n                        ")])]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', [_c('button', {
     staticClass: "btn btn-primary",
     attrs: {
       "disabled": !_vm.canSave

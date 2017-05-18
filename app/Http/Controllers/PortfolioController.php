@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Portfolio;
 use App\Models\File;
 use App\Models\Skills;
+use App\Services\PointService;
 use Illuminate\Http\Request;
 use App\Events\PortfolioImageUploadEvent;
 use App\Events\PortfolioFilesUploadEvent;
@@ -49,7 +50,7 @@ class PortfolioController extends Controller
     	]);
     }
 
-    public function savePortfolio(Request $request)
+    public function savePortfolio(Request $request, PointService $pointService)
     {
     	if($request->type == 'images'){
     		$this->validate($request, [
@@ -82,6 +83,7 @@ class PortfolioController extends Controller
     		]);
 
             if($request->is_public == 1){
+                // $pointService->addPoint($request->user, 'portfolio');
                 $portfolio->activity()->create([
                     'user_id'=> $request->user()->id,
                     'title' => 'updated their portfolio',
@@ -194,12 +196,12 @@ class PortfolioController extends Controller
         }
     }
 
-    public function delete(Portfolio $portfolio)
+    public function delete(Portfolio $portfolio, PointService $pointService)
     {
         return view('portfolio.delete')->with('portfolio', $portfolio);
     }
 
-    public function deletePortfolio(Request $request, Portfolio $portfolio)
+    public function deletePortfolio(Request $request, Portfolio $portfolio, PointService $pointService)
     {
         // DeleteFileFromS3Storage
         $this->authorize('edit', $portfolio);
@@ -235,6 +237,9 @@ class PortfolioController extends Controller
 
         // Send confirmation message and redirect the user
         $request->session()->flash('status', $portfolio->title . ' has been successfully deleted');
+
+        // Delete Point
+        // $pointService->deletePoint($portfolio->user, 'portfolio');
         return redirect('/profile/portfolio');
     }
 

@@ -37,7 +37,8 @@ class UserNotification extends Mailable
 
         $url = route('verify_user', ['verify_key' => $key]); 
 
-        return $this->markdown('email.user.created')
+        return $this->subject('Verify Your ' . config('app.name') . ' Account')
+                    ->markdown('email.user.created')
                     ->with([
                         'name'  => $this->user->name,
                         'email' => $this->user->email,

@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Follower;
 use App\Models\ContactInvite;
 use App\Mail\ContactInviteMail;
+use App\Services\PointService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use OAuth;
@@ -28,7 +29,7 @@ class InviteContactController extends Controller
 	        $token = $googleService->requestAccessToken($code);
 
 	        // Send a request with it
-	        $result = json_decode($googleService->request('https://www.google.com/m8/feeds/contacts/default/full?alt=json&max-results=5000'), true);
+	        $result = json_decode($googleService->request('https://www.google.com/m8/feeds/contacts/default/full?alt=json&max-results=5'), true);
 
 	        // Going through the array to clear it and create a new clean array with only the email addresses
 	        $emails = []; // initialize the new array
@@ -92,7 +93,7 @@ class InviteContactController extends Controller
 	    }
     }
 
-    public function gmailContactInviteRequest(Request $request, ContactInvite $contactInvite)
+    public function gmailContactInviteRequest(Request $request, ContactInvite $contactInvite, PointService $pointService)
     {
     	$emails = $request->invite;
     	if($emails){
@@ -110,6 +111,11 @@ class InviteContactController extends Controller
 		            ]);
 		            Mail::to($invite[1])->send(new ContactInviteMail($request->invitee_name, $invite[0], $invite[1]));
 		        }
+    		}
+
+    		$invitingUser = User::where('email', $request->invitee_email)->first();
+    		if($invitingUser){
+    			$pointService->addPoint($invitingUser, 'invite');
     		}
     		return redirect('/invite/success')->with('name', $request->invitee_name);
     	}

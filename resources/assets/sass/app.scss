@@ -515,6 +515,36 @@ ul.profile-meta{
 
 #comments{
 	margin-top: 3em;
+	ul.list-inline{
+		li{
+			a{
+				color: #333;
+				transition: all .3s ease-in-out;
+				font-size: 13px;
+				opacity: .7;
+				text-decoration: none;
+				font-weight: 300 !important;
+				&.active{
+					position:relative;
+					display: block;
+					&:after{
+						content: "";
+						position: absolute;
+						top: 0;
+						right: 0;
+						bottom: 0;
+						left: 0;
+						background: #fff;
+						opacity: .8;
+						z-index: 1;
+					}
+				}
+				&:hover{
+					opacity: 1;
+				}
+			}
+		}
+	}
 }
 
 #site-footer{

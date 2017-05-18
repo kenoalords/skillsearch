@@ -7,6 +7,7 @@ use App\Models\Blog;
 use App\Models\Profile;
 use App\Models\VerifyUser;
 use App\Models\Follower;
+use App\Models\Point;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -147,6 +148,11 @@ class User extends Authenticatable
     public function activity()
     {
         return $this->morphMany(Activity::class, 'activable');
+    }
+
+    public function points()
+    {
+        return $this->hasOne(Point::class);
     }
 
 }

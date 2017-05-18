@@ -4,7 +4,7 @@
             <div class="form-group">
                 <textarea v-model="comment" class="form-control" rows="3" placeholder="Share a comment..."></textarea>
             </div>
-            <button class="btn btn-default" v-on:click.prevent="submitComment()" :disabled="isSubmitting">{{isSubmitting ? 'Submitting...' : 'Submit comment'}}</button>
+            <button class="btn btn-default" v-on:click.prevent="submitComment()" :disabled="isSubmitting">{{isSubmitting ? 'Submitting...' : 'Submit Comment'}}</button>
         </div>
         <div v-if="comments"  id="comments">
             <h4 class="bold">{{comments.length}} {{comments.length > 1 ? 'Comments' : 'Comment'}}</h4>
@@ -23,8 +23,14 @@
                     
                     <p v-html="comment.comment"></p>
                     <ul class="list-inline">
+                        <li>
+                            <a href="#" class="bold text-muted" v-on:click.prevent="submitCommentLike(comment)" v-bind:class="{ active : isLiking }"><i class="fa fa-heart"></i> <span :id="'comment-'+comment.id">{{ comment.likes }} {{ comment.likes > 1 ? 'Likes' : 'Like' }}</span></a>
+                        </li>
                         <li v-if="user">
-                           <small><a href="#" v-on:click.prevent="toggleReplyField(comment.id)" class="bold">Reply</a></small>
+                           <a href="#" v-on:click.prevent="toggleReplyField(comment.id)" class="bold text-muted"><i class="fa fa-comments"></i> {{comment.replies.data.length}} {{comment.replies.data.length > 1 ? 'Replies' : 'Reply'}} </a>
+                        </li>
+                        <li v-if="user && comment.user_id === user_id">
+                           <a href="#" v-on:click.prevent="deleteComment(comment)" class="bold text-muted"><i class="fa fa-close"></i> Delete</a>
                         </li>
                     </ul>
                     <div v-if="isReplyActive === comment.id">
@@ -33,7 +39,7 @@
                         </div>
                         <div class="form-group">
                             <button class="btn btn-default" v-on:click.prevent="submitReply(comment.id)" :disabled="isReplySubmitting">Submit Reply</button>
-                            <a href="#" class="btn btn-basic text-muted" v-on:click.prevent="closeReply()">Close</a>
+                            <small><a href="#" class="btn btn-basic text-muted" v-on:click.prevent="closeReply()">Close</a></small>
                         </div>
                     </div>
                     <div v-if="comment.replies.data">
@@ -43,7 +49,7 @@
                         <div class="media" v-for="reply in comment.replies.data">
                             <div class="media-left">
                                 <a v-bind:href="'/'+reply.profile.data.username">
-                                    <img  :src="reply.profile.data.avatar" :alt="reply.profile.data.first_name" width="50" height="50" class="thumbnail">
+                                    <img :src="reply.profile.data.avatar" :alt="reply.profile.data.first_name" width="50" height="50" class="thumbnail">
                                 </a>
                             </div>
                             <div class="media-body">
@@ -52,6 +58,14 @@
                                     <small class="text-muted"><em>{{ reply.date }}</em></small>
                                 </h5>
                                 <p v-html="reply.comment"></p>
+                                <ul class="list-inline">
+                                    <li>
+                                        <a href="#" class="bold text-muted" v-on:click.prevent="submitCommentLike(reply)" v-bind:class="{ active : isLiking }"><i class="fa fa-heart"></i> {{ reply.likes }} {{ reply.likes > 1 ? 'Likes' : 'Like' }}</a>
+                                    </li>
+                                    <li v-if="user && reply.user_id === user_id">
+                                       <a href="#" v-on:click.prevent="deleteReply(reply, comment.id)" class="bold text-muted"><i class="fa fa-close"></i> Delete</a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -68,10 +82,12 @@
                 comments: [],
                 comment: null,
                 user: window.Laravel.userLoggedIn,
+                user_id: window.Laravel.user_id,
                 isSubmitting: false,
                 isReplyActive: null,
                 isReplySubmitting: false,
                 reply: null,
+                isLiking: false,
             }
         },
         props: {
@@ -82,10 +98,13 @@
                 var _this = this;
                 axios.get('/portfolio/'+this.uid+'/comments').then((response)=>{
                     _this.comments = response.data.data;
-                    console.log(_this.comments);
                 });
             },
             submitComment(){
+                if(this.comment === null){
+                    alert('Please enter a comment');
+                    return;
+                }
                 var data = {
                     comment : this.comment
                 }
@@ -96,6 +115,46 @@
                     _this.isSubmitting = false;
                     _this.comments.unshift(response.data.data);
                 });
+            },
+            deleteComment(comment){
+                var _this = this;
+
+                if(window.confirm('Do you really want to delete this comment?')){
+                    axios.delete('/comment/' + comment.id + '/delete').then((response)=>{
+                        // console.log(response);
+                        _this.comments.splice(_this.comments.indexOf(comment), 1);
+                    });
+                }
+            },
+            deleteReply(reply, commentId){
+                var _this = this;
+
+                if(window.confirm('Do you really want to delete this reply?')){
+                    axios.delete('/comment/' + reply.id + '/delete').then((response)=>{
+                        // console.log(response);
+                        // _this.comments.splice(_this.comments.indexOf(comment), 1);
+                        _this.comments.map((comment, index)=>{
+                            if(comment.id === commentId){
+                                _this.comments[index].replies.data.splice(_this.comments[index].replies.data.indexOf(reply), 1);
+                            }
+                        })
+                    });
+                }
+            },
+            submitCommentLike(comment){
+                var _this = this;
+                _this.isLiking = true;
+                if(!_this.user){
+                    alert('Please login to like this comment');
+                    return;
+                }
+                var data = {
+                    comment_id : comment.id
+                };
+                axios.post('/comment/' + comment.id + '/like', data).then((response)=>{
+                    _this.isLiking = false;
+                    comment.likes = response.data.likes;
+                })
             },
             submitReply(commentId){
                 var data = {

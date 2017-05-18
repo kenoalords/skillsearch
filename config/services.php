@@ -57,6 +57,16 @@ return [
         'client_id'     => env('INSTAGRAM_CLIENT_ID'),
         'client_secret' => env('INSTAGRAM_CLIENT_SECRET'),
         'redirect'      => config('app.url').'/profile/portfolio/instagram/callback'
-    ]
+    ],
+
+    'points' => [
+        'like'          => 15,
+        'invite'        => 500,
+        'comment'       => 25,
+        'invite_signup' => 250,
+        'portfolio'     => 15,
+        'follow'        => 35,
+        'comment_like'  => 5,
+    ],
 
 ];

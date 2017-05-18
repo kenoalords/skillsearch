@@ -10460,6 +10460,37 @@ ul.profile-meta li {
   margin-top: 3em;
 }
 
+#comments ul.list-inline li a {
+  color: #333;
+  -webkit-transition: all .3s ease-in-out;
+  transition: all .3s ease-in-out;
+  font-size: 13px;
+  opacity: .7;
+  text-decoration: none;
+  font-weight: 300 !important;
+}
+
+#comments ul.list-inline li a.active {
+  position: relative;
+  display: block;
+}
+
+#comments ul.list-inline li a.active:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: #fff;
+  opacity: .8;
+  z-index: 1;
+}
+
+#comments ul.list-inline li a:hover {
+  opacity: 1;
+}
+
 #site-footer {
   background: #444;
   color: rgba(255, 255, 255, 0.6);

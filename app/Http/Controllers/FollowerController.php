@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Services\PointService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -29,17 +30,19 @@ class FollowerController extends Controller
     	return response()->json($response, 200);
     }
 
-    public function addFollower(Request $request, User $user)
+    public function addFollower(Request $request, User $user, PointService $point)
     {
     	Auth::user()->followers()->create([
     		'following_id'	=> $user->id
     	]);
+        $point->addPoint(Auth::user(), 'follow');
     	return response()->json(null, 200);
     }
 
-    public function deleteFollower(Request $request, User $user)
+    public function deleteFollower(Request $request, User $user, PointService $point)
     {
     	Auth::user()->followers()->where('following_id', $user->id)->delete();
+        $point->deletePoint(Auth::user(), 'follow');
     	return response()->json(null, 200);
     }
 }
