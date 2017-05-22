@@ -14,19 +14,28 @@
                             {{ ucwords(strtolower($profile['fullname'])) }} {!! identity_check($profile['verified']) !!}
                         </a>
                     </h4>
+                    <div class="bold">
+                        <span class="label label-info label-xs" style="color: #fff">{{ $profile['following'] }} Following</span>
+                        <span class="label label-info label-xs" style="color: #fff">{{ $profile['followers'] }} {{ $profile['followers'] > 1 ? 'Follwers' : 'Follower' }}</span>
+                    </div>
                    <ul class="profile-meta">
                         <li><i class="glyphicon glyphicon-map-marker"></i> {{ $profile['location'] }}</li> 
                     </ul> 
                     @if(count($profile['skills']) > 0)
                     <div>
                         @foreach ($profile['skills'] as $skill)
-                            <small class="label label-default">{{ $skill['skill'] }}</small>
+                            <a href="/search/?term={{ $skill['skill'] }}" class="label label-default">{{ $skill['skill'] }}</a>
                         @endforeach
                     </div>
                     @endif
+                    
                     <p>{{ str_limit($profile['bio'], 75) }}</p>
+                    
+                    @if($profile['has_instagram'] === true)
+                        <a href="/{{$profile['username']}}/instagram" class=""><i class="fa fa-instagram"></i> <span class="bold">Instagram</span> <span class="thin">Feed</span></a>
+                    @endif
                     <p>
-                        <a href="/{{$profile['username']}}/hire" class="btn btn-success btn-xs">Hire me</a>
+                        <a href="/{{$profile['username']}}/hire" class="btn btn-success btn-xs btn-hire">Hire Me</a>
                     </p>
                     
                 </div> 

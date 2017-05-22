@@ -11,6 +11,20 @@
         </div>
         <div class="col-md-9 col-sm-8">
             @include('includes.status')
+
+            @if($profile->user->instagram()->count() == 0)
+            <div id="instagram-notification">
+                <div class="white-boxed text-center">
+                    <p><img src="{{ asset('public/instagram-teaser.jpg') }}" alt="Instagram"></p>
+                    <p>Connect your instagram account and showcase more of your work</p>
+                    <p>
+                        <a href="/profile/portfolio/instagram" class="btn btn-success"><i class="fa fa-instagram"></i> Get Started</a>
+                        <a href="#" class="btn btn-basic text-muted" id="close-instagram-notification"><i class="fa fa-close"></i> Close</a>
+                    </p>
+                </div>
+                <hr>
+            </div>
+            @endif
             
             @if($profile->verified_email === 0)
                 <div class="alert alert-danger dismissable">

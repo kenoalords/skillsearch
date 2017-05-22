@@ -33,6 +33,7 @@ Vue.component('register-view', require('./components/Views.vue'));
 Vue.component('video-player', require('./components/VideoPlayer.vue'));
 Vue.component('blog-form', require('./components/BlogForm.vue'));
 Vue.component('verify-users', require('./components/VerifyUsers.vue'));
+Vue.component('instagram', require('./components/Instagram.vue'));
 
 const app = new Vue({
     el: '#app'
@@ -98,6 +99,16 @@ function loadAndPlayAudioFile(){
 		wavesurfer.stop();
 	});
 }
+
+$('body').on('click', '#delete-instagram', function(e){
+	if(!confirm('Are you sure you want to delete this Instagram account? This action cannot be undone.')){
+		return false;
+	}
+})
+.on('click', '#close-instagram-notification', function(e){
+	e.preventDefault();
+	$('#instagram-notification').slideUp('fast');
+})
 
 
 

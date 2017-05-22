@@ -1,7 +1,6 @@
 <template>
     <div id="service-request" class="padded">
-        <div class="alert alert-success" role="alert" v-if="status">
-            {!! status !!}
+        <div class="alert alert-success" role="alert" v-if="status" v-html="status">
         </div>
         <div class="alert alert-danger" role="alert" v-if="formErrors" v-for="error in formErrors">
             {{error[0]}}

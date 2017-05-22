@@ -44,18 +44,6 @@
                             <a href="{{ route('hire', ['user' => $name] )}}" class="btn btn-success btn-sm btn-block"><i class="fa fa-envelope"></i> Hire</a>
                         @endif
                      </div>
-
-                    <!-- <p>{!! verifyStatus($profile) !!}</p> -->
-                    @if($profile->phones->count() && Auth::user())
-                        <hr>
-                        <div class="padded">
-                            <h4>Contact Number</h4>
-                            @foreach($profile->phones as $phone)
-                            <span><i class="glyphicon glyphicon-phone"></i> {{$phone->number}}</span>
-                            @endforeach
-                        </div>
-                    @endif
-                    
                 </div>
             </div>
 
@@ -63,39 +51,24 @@
                 <div id="user-menu">
                     <nav>
                         <ul class="nav nav-tabs">
-                            <li role="presentation" class="active"><a href="/{{$name}}">Works</a></li>
+                            <li role="presentation"><a href="/{{$name}}">Works</a></li>
                             <li role="presentation"><a href="/{{$name}}/about">About</a></li>
                             @if($profile->user->instagram()->first())
-                            <li role="presentation"><a href="/{{$name}}/instagram">Instagram</a></li>
+                            <li role="presentation" class="active"><a href="/{{$name}}/instagram">Instagram</a></li>
                             @endif
                         </ul>
                     </nav>
                 </div>
                 <div class="">
-                    @if(count($portfolios))
-                        <div class="row" id="showcase" style="padding: 0">
-                            @each('includes.portfolio', $portfolios, 'portfolio')
-                        </div>
-                    @endif
-                    @if(count($portfolios) == 0)
-                        <div class="text-center">
-                            <h1><i class="fa fa-frown-o"></i></h1>
-                            <p>{{ $profile->first_name }} has nothing to show at the moment!</p>
-                        </div>
-                    @endif
-
-                    @if($instagram)
+                    <instagram user="{{$name}}"></instagram>
+                    @if($instaUser)
                         <p style="margin-top: 1em">
-                            <a href="/{{$name}}/instagram" class="btn btn-info">
+                            <a href="https://instagram.com/{{$instaUser->username}}" target="_blank" class="btn btn-info">
                                 <i class="fa fa-instagram"></i>
-                                 <span class="bold">My Instagram</span> <span class="thin">Feed</span>
+                                 Follow me on Instagram
                             </a>
                         </p>
                     @endif
-                </div>
-
-                <div>
-                    @include('includes.share.profile', ['url'=>Request::url()])
                 </div>
             </div>
             
@@ -110,6 +83,7 @@
                 </div>
             </div>
             @endif
+            
         </div>
 
         

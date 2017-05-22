@@ -83,6 +83,7 @@ Route::group(['middleware'=>'auth'], function(){
 		Route::post('/portfolio/thumbnail', 'PortfolioController@savePortfolioThumbnail');
 		Route::get('/portfolio/instagram', 'InstagramPortfolioController@index');
 		Route::get('/portfolio/instagram/get', 'InstagramPortfolioController@get');
+		Route::get('/portfolio/instagram/delete', 'InstagramPortfolioController@delete');
 		Route::get('/portfolio/instagram/callback', 'InstagramPortfolioController@redirect');
 		Route::get('/portfolio/{portfolio}/edit', 'PortfolioController@edit')->name('edit_portfolio');
 		Route::put('/portfolio/{portfolio}/update', 'PortfolioController@update')->name('update_portfolio');
@@ -171,6 +172,8 @@ Route::get('/social/{portfolio}/share', 'SocialShareController@portfolio')->name
 Route::get('/{user}', 'People@profile')->name('view_profile');
 Route::get('/{user}/hire', 'People@hire')->name('hire');
 Route::get('/{user}/about', 'People@about')->name('about');
+Route::get('/{user}/instagram', 'People@instagram')->name('instagram');
+Route::get('/{user}/instagram/feed', 'People@instagramFeed')->name('instagram_feed');
 Route::get('/{user}/portfolio/{portfolio}', 'PortfolioController@view')->name('view_portfolio');
 
 Route::get('/autocomplete_cities/{cities}', 'HomeController@getCities');

@@ -9,6 +9,7 @@ use App\Models\SkillsRelations;
 use App\Transformers\ProfileTransformers;
 use App\Transformers\UserTransformers;
 use App\Transformers\PortfolioTransformer;
+use App\Services\InstagramService;
 use Illuminate\Http\Request;
 use League\Fractal\Resource\Collection;
 use App\Traits\Orderable;
@@ -51,10 +52,12 @@ class People extends Controller
                             ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                             ->toArray();
         // dd($others);
+        $instagram = $user->instagram()->first();
         
     	return view('profile.profile')->with([
     		'profile' 	=> $profile,
     		'skills'	=> $skills,
+            'instagram' => $instagram,
             'portfolios'=> $portfolios,
             'name'      => $user->name,
             'others'    => $others
@@ -78,12 +81,42 @@ class People extends Controller
                             ->transformWith(new ProfileTransformers)
                             ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                             ->toArray();
-
+        $instagram = $user->instagram()->first();
         return view('profile.profile-about')->with([
             'profile' => $profile,
+            'instagram' => $instagram,
             'name'  => $user->name,
             'others' => $others
         ]);
+    }
+
+    public function instagram(Request $request, User $user)
+    {
+        $token = $user->instagram()->first();
+        $profile = $user->profile()->get()->first();
+        $others = fractal()->collection($profile->getOtherProfiles($user)->isPublic()->take(4)->get())
+                            ->transformWith(new ProfileTransformers)
+                            ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                            ->toArray();
+
+        return view('profile.profile-instagram')->with([
+                    'instaUser'  => $token,
+                    'name'  => $user->name,
+                    'profile' => $profile,
+                    'others' => $others
+                ]);
+    }
+
+    public function instagramFeed(Request $request, User $user, InstagramService $instagram)
+    {
+        $token = $user->instagram()->first();
+        $media = $instagram->getUserRecentMedia($token->access_token);
+        
+        if($media->meta->code === 200){
+            return response()->json($media->data);
+        } else {
+            return response()->json($media);
+        }
     }
     
 }

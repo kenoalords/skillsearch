@@ -15,6 +15,7 @@
     <!-- <a href="{{ route('phone') }}" class="list-group-item"><i class="glyphicon glyphicon-phone"></i> Phone</a> -->
     <a href="{{ route('requests') }}" class="list-group-item"><i class="glyphicon glyphicon-apple"></i> Requests</a>
     <a href="/profile/portfolio" class="list-group-item"><i class="glyphicon glyphicon-briefcase"></i> Portfolio</a>
+    <a href="/profile/portfolio/instagram" class="list-group-item"><i class="fa fa-instagram"></i> Instagram Feed</a>
     <!-- <a href="#" class="list-group-item"><i class="glyphicon glyphicon-heart"></i> Likes</a> -->
     @if(Auth::user()->is_admin === 1)
     <a href="{{ route('verify_user_accounts') }}" class="list-group-item"><i class="glyphicon glyphicon-ok-sign"></i> Verify User Accounts</a>

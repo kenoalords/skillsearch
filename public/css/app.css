@@ -9934,6 +9934,17 @@ body {
   line-height: 1.8;
 }
 
+h1,
+h2,
+h3 {
+  line-height: 1.5;
+}
+
+h1,
+h2 {
+  margin-top: 0;
+}
+
 p {
   font-size: 16px;
 }
@@ -10534,7 +10545,7 @@ ul.profile-meta li {
 }
 
 #site-footer {
-  background: #444;
+  background: #222;
   color: rgba(255, 255, 255, 0.6);
 }
 
@@ -10543,12 +10554,16 @@ ul.profile-meta li {
 }
 
 #site-footer #social-links {
-  font-size: 2em;
+  font-size: 1.5em;
 }
 
 #site-footer #social-links li a {
   color: #fff;
   opacity: .8;
+}
+
+.btn-hire {
+  padding: 6px 35px;
 }
 
 body.loading:before {
@@ -10570,7 +10585,7 @@ body.loading:before {
 }
 
 #invites {
-  background: #5393b8;
+  background: #111;
   color: #fff;
 }
 
@@ -10637,7 +10652,7 @@ body.loading:before {
 
 #showcase .p-content ul {
   margin-bottom: 0px;
-  color: #aaa;
+  color: #666;
   font-weight: 400;
   font-size: 1.1em;
 }
@@ -10647,6 +10662,17 @@ body.loading:before {
   background: #fff;
   padding: .5em;
   box-shadow: 0 0px 15px rgba(0, 0, 0, 0.1);
+}
+
+#showcase .image-wrapper.video a:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: url(/images/instagram-video-icon.png?82aded242254ce6e5bea6e7c62a33709) no-repeat center;
+  background-size: 64px auto;
 }
 
 #showcase .portfolio-credit {
@@ -10932,6 +10958,66 @@ body.loading:before {
   margin-bottom: 5em;
 }
 
+#instagram-overlay {
+  position: fixed;
+  background: rgba(1, 1, 1, 0.8);
+  width: 100vw;
+  height: 100vh;
+  overflow-y: scroll;
+  top: 0;
+  left: 0;
+  z-index: 99999;
+}
+
+#instagram-overlay .instagram-content {
+  padding: 1em;
+  background: #fff;
+  margin-bottom: 5em;
+}
+
+#instagram-overlay .navigation-links {
+  width: 100%;
+  position: fixed;
+  top: 45vh;
+  z-index: 99999;
+}
+
+#instagram-overlay .navigation-links a {
+  background: #fff;
+  padding: 10px;
+  color: #333;
+  position: absolute;
+  display: block;
+  -webkit-transition: all .3s ease-in-out;
+  transition: all .3s ease-in-out;
+}
+
+#instagram-overlay .navigation-links a.prev {
+  left: 0;
+}
+
+#instagram-overlay .navigation-links a.next {
+  right: 0;
+}
+
+#instagram-overlay .navigation-links a:hover {
+  background: #3097D1;
+  color: #fff;
+}
+
+#instagram-overlay .instagram-media {
+  margin-top: 5em;
+  padding: 1em;
+  background: #fff;
+}
+
+#instagram-overlay #close-overlay {
+  position: fixed;
+  right: 1em;
+  top: 1em;
+  z-index: 9999;
+}
+
 .btn-success {
   border: 1px solid #34740e;
   text-decoration: none;
@@ -10963,6 +11049,14 @@ body.loading:before {
   #search-form .container div {
     margin-bottom: 5px;
   }
+
+  #others .container-fluid {
+    padding: 0;
+  }
+
+  #others .container-fluid .white-boxed {
+    margin-bottom: 2em;
+  }
 }
 
 @media screen and (min-width: 320px) and (max-width: 539px) {
@@ -10971,7 +11065,13 @@ body.loading:before {
   }
 
   #profile-back {
-    padding: 1em 0;
+    padding: 0;
+    height: auto;
+    margin-bottom: 2em;
+  }
+
+  #profile-back .user-background {
+    position: relative;
   }
 
   #profile-back .container h1 {
@@ -10981,6 +11081,46 @@ body.loading:before {
 
   #profile-back .container img.avatar {
     width: 64px;
+  }
+
+  #user-menu {
+    margin-top: 2em;
+  }
+
+  #user-menu .nav-tabs li a {
+    letter-spacing: 1px;
+  }
+
+  .person-tag .media {
+    background: #fff;
+    border: 1px solid #d3e0e9;
+  }
+
+  .person-tag .media:last-of-type {
+    border: 1px solid #e5e4eb;
+  }
+
+  .person-tag .media-left,
+  .person-tag .media-right,
+  .person-tag .media-body {
+    display: block;
+    padding: 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  .person-tag .media-left img,
+  .person-tag .media-right img,
+  .person-tag .media-body img {
+    margin: 0px auto 10px auto;
+  }
+
+  #others .container-fluid {
+    padding: 0;
+  }
+
+  #others .container-fluid .white-boxed {
+    margin-bottom: 2em;
   }
 
   #profile-edit {

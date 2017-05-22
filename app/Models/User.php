@@ -8,6 +8,7 @@ use App\Models\Profile;
 use App\Models\VerifyUser;
 use App\Models\Follower;
 use App\Models\Point;
+use App\Models\Instagram;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -44,6 +45,11 @@ class User extends Authenticatable
     public function phone()
     {
         return $this->hasMany('App\Models\Phone');
+    }
+
+    public function instagram()
+    {
+        return $this->hasOne(Instagram::class);
     }
 
     public function social()

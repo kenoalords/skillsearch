@@ -2,9 +2,12 @@
 
 namespace App\Services;
 
+use App\Models\Instagram;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+// use Psr\Http\Message\ResponseInterface;
+// use GuzzleHttp\Exception\RequestException;
 
 class InstagramService
 {
@@ -34,26 +37,48 @@ class InstagramService
 
 	protected function getAccessToken($code)
 	{
-		$response = $this->getHttpClient()->post($this->tokenUrl, [
-				'form_params'	=> [
-					'client_id'		=> $this->client_id,
-					'client_secret'	=> $this->client_secret,
-					'grant_type'	=> 'authorization_code',
-					'redirect_uri'	=> $this->redirect,
-					'code'			=> $code
-				],
-				'headers' => ['Accept' => 'application/json'],
-			]);
+		if($code){
+			$response = $this->getHttpClient()->post($this->tokenUrl, [
+					'form_params'	=> [
+						'client_id'		=> $this->client_id,
+						'client_secret'	=> $this->client_secret,
+						'grant_type'	=> 'authorization_code',
+						'redirect_uri'	=> $this->redirect,
+						'code'			=> $code
+					],
+					'headers' => ['Accept' => 'application/json'],
+				]);
 
-		return json_decode($response->getBody());
+			return json_decode($response->getBody());
+		} else {
+			return false;
+		}
 
 	}
 
 	public function getUser(Request $request)
 	{
+		// dd($request->user());
 		$user = $this->getAccessToken($request->code);
-		$media = $this->getUserRecentMedia($user->access_token);
-		dd($media);
+		
+		if($user){
+			$check = $request->user()->instagram()->first();
+			if(!$check){
+				$instagram = $request->user()->instagram()->create([
+					'access_token'	=> $user->access_token,
+					'full_name'		=> $user->user->full_name,
+					'username'		=> $user->user->username,
+					'instagram_id'	=> $user->user->id,
+				]);
+				return $instagram;
+			} else {
+				$check->access_token = $user->access_token;
+				$check->save();
+				return $check;
+			}		
+		} else {
+			return false;
+		}
 	}
 
 	public function getUserRecentMedia($token)
@@ -67,6 +92,7 @@ class InstagramService
 				],
 			]);
 		return json_decode($response->getBody());
+		
 	}
 
 	protected function getHttpClient()

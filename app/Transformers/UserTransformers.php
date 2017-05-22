@@ -27,7 +27,10 @@ class UserTransformers extends TransformerAbstract
 			'gender'	=> $profile->gender,
 			'bio'		=> $profile->bio,
 			'fullname'	=> $profile->first_name . ' ' . $profile->last_name,
-			'verified'	=> $profile->getVerified()
+			'verified'	=> $profile->getVerified(),
+			'has_instagram'	=> ($profile->user->instagram()->first()) ? true : false,
+			'followers'	=> $profile->user->getFollowers($user),
+			'following'	=> $profile->user->getFollowing(),
 		];
 	}
 

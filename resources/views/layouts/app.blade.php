@@ -170,14 +170,18 @@
 
         <div class="container text-center">
             <hr>
-            <ul class="list-inline" id="social-links">
-                <li><a href="https://www.facebook.com/skillsearchng/" target="_blank"><i class="fa fa-facebook-square"></i></a></li>
-                <li><a href="https://twitter.com/skillsearchng"><i class="fa fa-twitter"></i></a></li>
-                <!-- <li><a href="https://plus.google.com/skillsearchng"><i class="fa fa-google-plus-square"></i></a></li> -->
-            </ul>
-
-            <br>
-            <small>Skillsearch Nigeria &copy; Copyright <?php echo date('Y') ?></small>
+            <div class="clearfix">
+                <ul class="list-inline pull-left" id="social-links">
+                    <li><a href="https://www.facebook.com/skillsearchng/" target="_blank"><i class="fa fa-facebook-square"></i></a></li>
+                    <li><a href="https://twitter.com/skillsearchng"><i class="fa fa-twitter"></i></a></li>
+                    <!-- <li><a href="https://plus.google.com/skillsearchng"><i class="fa fa-google-plus-square"></i></a></li> -->
+                </ul>
+                <div class="pull-right">
+                    <small>Skillsearch Nigeria &copy; Copyright <?php echo date('Y') ?> a <a href="http://clickmedia.com.ng" target="_blank">Clickmedia Solutions Project</a></small>
+                </div>
+            </div>
+            
+            
         </div>
     </footer>
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"> -->

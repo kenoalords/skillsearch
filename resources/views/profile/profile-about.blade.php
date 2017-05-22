@@ -53,6 +53,9 @@
                         <ul class="nav nav-tabs">
                             <li role="presentation"><a href="/{{$name}}">Works</a></li>
                             <li role="presentation" class="active"><a href="/{{$name}}/about">About</a></li>
+                            @if($profile->user->instagram()->first())
+                            <li role="presentation"><a href="/{{$name}}/instagram">Instagram</a></li>
+                            @endif
                         </ul>
                     </nav>
                 </div>
@@ -66,6 +69,14 @@
                         </div>
                     @endif
                     
+                    @if($instagram)
+                        <p style="margin-top: 1em">
+                            <a href="/{{$name}}/instagram" class="btn btn-info">
+                                <i class="fa fa-instagram"></i>
+                                 <span class="bold">My Instagram</span> <span class="thin">Feed</span>
+                            </a>
+                        </p>
+                    @endif
                 </div>
                 <div>
                     @include('includes.share.profile', ['url'=>Request::url()])
@@ -73,7 +84,7 @@
             </div>
             
             @if(count($others) > 0)
-            <div class="col-md-12 padded">
+            <div id="others" class="col-md-12 padded">
                 <div class="container-fluid">
                     <h4 class="text-center">More People</h4>
                     <hr>

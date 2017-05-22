@@ -10,6 +10,7 @@ use App\Models\City;
 use App\Models\Skills;
 use App\Models\Activity;
 use App\Models\ContactInvite;
+use App\Models\Instagram;
 use App\Mail\ResendVerificationMail;
 use App\Http\Requests\UserProfileRequest;
 use Illuminate\Http\Request;
@@ -53,6 +54,8 @@ class HomeController extends Controller
         $email = $request->user()->email;
         $inviteStatus = true;
         $gmailCheck =  preg_match('/(@gmail.com)$/', $email); //$request->user()->email
+        // $instagram = $request->user()->instagram()->count();
+        // dd($instagram);
         if($gmailCheck){
             $hasInvited = $invite->where('invitee_email', $email)->get();
             if($hasInvited->count()){

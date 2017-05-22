@@ -118,7 +118,6 @@
             },
             deleteComment(comment){
                 var _this = this;
-
                 if(window.confirm('Do you really want to delete this comment?')){
                     axios.delete('/comment/' + comment.id + '/delete').then((response)=>{
                         // console.log(response);
@@ -146,6 +145,7 @@
                 _this.isLiking = true;
                 if(!_this.user){
                     alert('Please login to like this comment');
+                    _this.isLiking = false;
                     return;
                 }
                 var data = {
