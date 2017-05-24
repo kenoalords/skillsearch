@@ -8,6 +8,7 @@
   },
   "devDependencies": {
     "axios": "^0.15.2",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "bootstrap-sass": "^3.3.7",
     "jquery": "^3.1.0",
     "laravel-mix": "^0.6.0",
@@ -18,7 +19,8 @@
   },
   "dependencies": {
     "blazy": "^1.8.2",
-    "masonry-layout": "^4.1.1",
+    "imagesloaded": "^4.1.2",
+    "masonry-layout": "^4.2.0",
     "pluralize": "^4.0.0",
     "wavesurfer.js": "^1.4.0",
     "waypoints": "^4.0.1"

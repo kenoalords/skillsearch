@@ -8,6 +8,7 @@ use App\Models\VerifyUser;
 use App\Models\ContactInvite;
 use App\Mail\ContactInviteReminder;
 use App\Mail\CronTestEmail;
+use App\Mail\InstagramNotificationMail;
 use App\Mail\VerificationReminderMail;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -59,6 +60,18 @@ class Kernel extends ConsoleKernel
 
         })->weekly()->fridays()->at('10:00')->timezone('Africa/Lagos');
 
+
+        // Instagram Notification Schedule Mail
+        $schedule->call(function(){
+            $users = User::get();
+            if($users->count()){
+                $users->each( function( $user, $key ) {
+                    if($user->profile->account_type === 1){
+                        Mail::to($user)->send( new InstagramNotificationMail($user) );
+                    }
+                });
+            }
+        })->weekly()->wednesdays()->at('16:00')->timezone('Africa/Lagos');
         //->weekly()->tuesdays()->at('10:00')->timezone('Africa/Lagos');
     }
 

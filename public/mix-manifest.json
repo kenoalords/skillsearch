@@ -3,6 +3,8 @@
   "/js/jquery.waypoints.min.js": "/js/jquery.waypoints.min.js",
   "/css/app.css": "/css/app.css",
   "/js/video.min.js": "/js/video.min.js",
+  "/js/masonry.pkgd.min.js": "/js/masonry.pkgd.min.js",
+  "/js/imagesloaded.js": "/js/imagesloaded.js",
   "/js/wavesurfer.min.js": "/js/wavesurfer.min.js",
   "/js/blazy.min.js": "/js/blazy.min.js"
 }

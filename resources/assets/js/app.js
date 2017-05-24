@@ -40,6 +40,8 @@ const app = new Vue({
 });
 
 var bLazy = new Blazy();
+// var masonry = new Masonry();
+// var imagesLoaded = new imagesLoaded();
 
 var waypoint = $('#user-badge').waypoint({
 	handler: function(direction){
@@ -108,7 +110,19 @@ $('body').on('click', '#delete-instagram', function(e){
 .on('click', '#close-instagram-notification', function(e){
 	e.preventDefault();
 	$('#instagram-notification').slideUp('fast');
-})
+});
+
+// (function($){
+// 	var $grid = $('.grid').imagesLoaded(function(){
+// 		$grid.masonry({
+// 			itemSelector: '.grid-item',
+// 			columnWidth: '.grid-sizer',
+// 			percentPosition: true,
+// 		});
+// 	});
+// })(jQuery);
+
+
 
 
 

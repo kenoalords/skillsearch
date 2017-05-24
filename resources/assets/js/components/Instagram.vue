@@ -12,19 +12,21 @@
         </div>
 
         <div v-if="feeds" id="showcase" class="row" style="padding: 0px">
-            <div class="col-xs-12 col-sm-4 col-md-4" v-for="feed in feeds">
-                <div class="image-wrapper" :class="feed.type" style="margin-bottom:2.3em">
-                    <a :href="feed.link" target="_blank" :data-image="feed.images.standard_resolution.url" v-on:click.prevent="showImage(feed)">
-                        <img :src="feed.images.standard_resolution.url" width="320" height="320" alt="feed.user.full_name" class="img-responsive">
-                    </a>
-                    <div class="p-content">
-                        <ul class="list-inline" style="font-size: 87.5%">
-                            <li><i class="fa fa-heart"></i> {{feed.likes.count}} </li>
-                            <li><i class="fa fa-comments"></i> {{feed.comments.count}}</li>
-                        </ul>
+            <div class="grid">
+                <div class="col-xs-12 col-sm-4 col-md-4 grid-item" :class="{'grid-sizer' : feeds.indexOf(feed) == 0 }" v-for="feed in feeds">
+                    <div class="image-wrapper" :class="feed.type" style="margin-bottom:2.3em">
+                        <a :href="feed.link" target="_blank" :data-image="feed.images.standard_resolution.url" v-on:click.prevent="showImage(feed)">
+                            <img :src="feed.images.standard_resolution.url" width="320" height="320" alt="feed.user.full_name" class="img-responsive">
+                        </a>
+                        <div class="p-content">
+                            <ul class="list-inline" style="font-size: 87.5%">
+                                <li><i class="fa fa-heart"></i> {{feed.likes.count}} </li>
+                                <li><i class="fa fa-comments"></i> {{feed.comments.count}}</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </div><!-- end of grid -->
         </div>
 
         <div id="instagram-overlay" v-if="isOverlay">
@@ -79,6 +81,8 @@
 
 <script>
     import videojs from "video.js";
+    import masonry from "masonry-layout/dist/masonry.pkgd.min.js";
+    import imagesLoaded from "imagesloaded/imagesloaded.js";
     export default {
         data(){
             return {
@@ -103,7 +107,23 @@
                     // console.log(response);
                     _this.isFetching = false;
                     _this.feeds = response.data;
+
+                    setTimeout(()=>{
+                        var el = document.querySelector('.grid');
+                        if(el.length > 0){
+                            var loaded = el.imagesLoaded(function(){
+                                alert('loaded');
+                                var masonry = new Masonry(el, {
+                                    itemSelector: '.grid-item',
+                                    columnWidth: '.grid-sizer',
+                                    percentPosition: true,
+                                });
+                            });
+                        }
+                    },500);
+                    
                 }).catch((e) => {
+                    console.log(e);
                     _this.isFetching = false;
                     _this.error = true;
                 });
