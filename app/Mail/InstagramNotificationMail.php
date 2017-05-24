@@ -31,7 +31,7 @@ class InstagramNotificationMail extends Mailable implements ShouldQueue
     public function build()
     {
         $first_name = ucfirst(strtolower($this->user->profile->first_name));
-        return $this->from(config('app.mail_from_address'), 'Keno via ' . config('app.name'))
+        return $this->from(config('app.mail_from_address'), 'Instagram Connect via ' . config('app.name'))
                     ->subject($first_name . ', Connect Your Instagram Account on ' . config('app.name'))
                     ->markdown('email.notifications.instagram')
                     ->with('user', $this->user);

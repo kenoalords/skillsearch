@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "./";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 220);
+/******/ 	return __webpack_require__(__webpack_require__.s = 215);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -91,7 +91,7 @@ var _guid = __webpack_require__(14);
 
 var Guid = _interopRequireWildcard(_guid);
 
-var _events = __webpack_require__(12);
+var _events = __webpack_require__(11);
 
 var Events = _interopRequireWildcard(_events);
 
@@ -103,7 +103,7 @@ var _toTitleCase = __webpack_require__(15);
 
 var _toTitleCase2 = _interopRequireDefault(_toTitleCase);
 
-var _mergeOptions = __webpack_require__(11);
+var _mergeOptions = __webpack_require__(10);
 
 var _mergeOptions2 = _interopRequireDefault(_mergeOptions);
 
@@ -2891,7 +2891,7 @@ var $$ = exports.$$ = createQuerier('querySelectorAll');
 
 /* WEBPACK VAR INJECTION */(function(global) {var topLevel = typeof global !== 'undefined' ? global :
     typeof window !== 'undefined' ? window : {}
-var minDoc = __webpack_require__(213);
+var minDoc = __webpack_require__(210);
 
 if (typeof document !== 'undefined') {
     module.exports = document;
@@ -3686,6 +3686,584 @@ module.exports = {
 
 /***/ }),
 /* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports['default'] = mergeOptions;
+
+var _obj = __webpack_require__(7);
+
+/**
+ * Deep-merge one or more options objects, recursively merging **only** plain
+ * object properties.
+ *
+ * @param   {Object[]} sources
+ *          One or more objects to merge into a new object.
+ *
+ * @returns {Object}
+ *          A new object that is the merged result of all sources.
+ */
+function mergeOptions() {
+  var result = {};
+
+  for (var _len = arguments.length, sources = Array(_len), _key = 0; _key < _len; _key++) {
+    sources[_key] = arguments[_key];
+  }
+
+  sources.forEach(function (source) {
+    if (!source) {
+      return;
+    }
+
+    (0, _obj.each)(source, function (value, key) {
+      if (!(0, _obj.isPlain)(value)) {
+        result[key] = value;
+        return;
+      }
+
+      if (!(0, _obj.isPlain)(result[key])) {
+        result[key] = {};
+      }
+
+      result[key] = mergeOptions(result[key], value);
+    });
+  });
+
+  return result;
+} /**
+   * @file merge-options.js
+   * @module merge-options
+   */
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.fixEvent = fixEvent;
+exports.on = on;
+exports.off = off;
+exports.trigger = trigger;
+exports.one = one;
+
+var _dom = __webpack_require__(2);
+
+var Dom = _interopRequireWildcard(_dom);
+
+var _guid = __webpack_require__(14);
+
+var Guid = _interopRequireWildcard(_guid);
+
+var _log = __webpack_require__(8);
+
+var _log2 = _interopRequireDefault(_log);
+
+var _window = __webpack_require__(5);
+
+var _window2 = _interopRequireDefault(_window);
+
+var _document = __webpack_require__(3);
+
+var _document2 = _interopRequireDefault(_document);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+
+/**
+ * Clean up the listener cache and dispatchers
+ *
+ * @param {Element|Object} elem
+ *        Element to clean up
+ *
+ * @param {string} type
+ *        Type of event to clean up
+ */
+function _cleanUpEvents(elem, type) {
+  var data = Dom.getElData(elem);
+
+  // Remove the events of a particular type if there are none left
+  if (data.handlers[type].length === 0) {
+    delete data.handlers[type];
+    // data.handlers[type] = null;
+    // Setting to null was causing an error with data.handlers
+
+    // Remove the meta-handler from the element
+    if (elem.removeEventListener) {
+      elem.removeEventListener(type, data.dispatcher, false);
+    } else if (elem.detachEvent) {
+      elem.detachEvent('on' + type, data.dispatcher);
+    }
+  }
+
+  // Remove the events object if there are no types left
+  if (Object.getOwnPropertyNames(data.handlers).length <= 0) {
+    delete data.handlers;
+    delete data.dispatcher;
+    delete data.disabled;
+  }
+
+  // Finally remove the element data if there is no data left
+  if (Object.getOwnPropertyNames(data).length === 0) {
+    Dom.removeElData(elem);
+  }
+}
+
+/**
+ * Loops through an array of event types and calls the requested method for each type.
+ *
+ * @param {Function} fn
+ *        The event method we want to use.
+ *
+ * @param {Element|Object} elem
+ *        Element or object to bind listeners to
+ *
+ * @param {string} type
+ *        Type of event to bind to.
+ *
+ * @param {EventTarget~EventListener} callback
+ *        Event listener.
+ */
+/**
+ * @file events.js. An Event System (John Resig - Secrets of a JS Ninja http://jsninja.com/)
+ * (Original book version wasn't completely usable, so fixed some things and made Closure Compiler compatible)
+ * This should work very similarly to jQuery's events, however it's based off the book version which isn't as
+ * robust as jquery's, so there's probably some differences.
+ *
+ * @module events
+ */
+
+function _handleMultipleEvents(fn, elem, types, callback) {
+  types.forEach(function (type) {
+    // Call the event method for each one of the types
+    fn(elem, type, callback);
+  });
+}
+
+/**
+ * Fix a native event to have standard property values
+ *
+ * @param {Object} event
+ *        Event object to fix.
+ *
+ * @return {Object}
+ *         Fixed event object.
+ */
+function fixEvent(event) {
+
+  function returnTrue() {
+    return true;
+  }
+
+  function returnFalse() {
+    return false;
+  }
+
+  // Test if fixing up is needed
+  // Used to check if !event.stopPropagation instead of isPropagationStopped
+  // But native events return true for stopPropagation, but don't have
+  // other expected methods like isPropagationStopped. Seems to be a problem
+  // with the Javascript Ninja code. So we're just overriding all events now.
+  if (!event || !event.isPropagationStopped) {
+    var old = event || _window2['default'].event;
+
+    event = {};
+    // Clone the old object so that we can modify the values event = {};
+    // IE8 Doesn't like when you mess with native event properties
+    // Firefox returns false for event.hasOwnProperty('type') and other props
+    //  which makes copying more difficult.
+    // TODO: Probably best to create a whitelist of event props
+    for (var key in old) {
+      // Safari 6.0.3 warns you if you try to copy deprecated layerX/Y
+      // Chrome warns you if you try to copy deprecated keyboardEvent.keyLocation
+      // and webkitMovementX/Y
+      if (key !== 'layerX' && key !== 'layerY' && key !== 'keyLocation' && key !== 'webkitMovementX' && key !== 'webkitMovementY') {
+        // Chrome 32+ warns if you try to copy deprecated returnValue, but
+        // we still want to if preventDefault isn't supported (IE8).
+        if (!(key === 'returnValue' && old.preventDefault)) {
+          event[key] = old[key];
+        }
+      }
+    }
+
+    // The event occurred on this element
+    if (!event.target) {
+      event.target = event.srcElement || _document2['default'];
+    }
+
+    // Handle which other element the event is related to
+    if (!event.relatedTarget) {
+      event.relatedTarget = event.fromElement === event.target ? event.toElement : event.fromElement;
+    }
+
+    // Stop the default browser action
+    event.preventDefault = function () {
+      if (old.preventDefault) {
+        old.preventDefault();
+      }
+      event.returnValue = false;
+      old.returnValue = false;
+      event.defaultPrevented = true;
+    };
+
+    event.defaultPrevented = false;
+
+    // Stop the event from bubbling
+    event.stopPropagation = function () {
+      if (old.stopPropagation) {
+        old.stopPropagation();
+      }
+      event.cancelBubble = true;
+      old.cancelBubble = true;
+      event.isPropagationStopped = returnTrue;
+    };
+
+    event.isPropagationStopped = returnFalse;
+
+    // Stop the event from bubbling and executing other handlers
+    event.stopImmediatePropagation = function () {
+      if (old.stopImmediatePropagation) {
+        old.stopImmediatePropagation();
+      }
+      event.isImmediatePropagationStopped = returnTrue;
+      event.stopPropagation();
+    };
+
+    event.isImmediatePropagationStopped = returnFalse;
+
+    // Handle mouse position
+    if (event.clientX !== null && event.clientX !== undefined) {
+      var doc = _document2['default'].documentElement;
+      var body = _document2['default'].body;
+
+      event.pageX = event.clientX + (doc && doc.scrollLeft || body && body.scrollLeft || 0) - (doc && doc.clientLeft || body && body.clientLeft || 0);
+      event.pageY = event.clientY + (doc && doc.scrollTop || body && body.scrollTop || 0) - (doc && doc.clientTop || body && body.clientTop || 0);
+    }
+
+    // Handle key presses
+    event.which = event.charCode || event.keyCode;
+
+    // Fix button for mouse clicks:
+    // 0 == left; 1 == middle; 2 == right
+    if (event.button !== null && event.button !== undefined) {
+
+      // The following is disabled because it does not pass videojs-standard
+      // and... yikes.
+      /* eslint-disable */
+      event.button = event.button & 1 ? 0 : event.button & 4 ? 1 : event.button & 2 ? 2 : 0;
+      /* eslint-enable */
+    }
+  }
+
+  // Returns fixed-up instance
+  return event;
+}
+
+/**
+ * Add an event listener to element
+ * It stores the handler function in a separate cache object
+ * and adds a generic handler to the element's event,
+ * along with a unique id (guid) to the element.
+ *
+ * @param {Element|Object} elem
+ *        Element or object to bind listeners to
+ *
+ * @param {string|string[]} type
+ *        Type of event to bind to.
+ *
+ * @param {EventTarget~EventListener} fn
+ *        Event listener.
+ */
+function on(elem, type, fn) {
+  if (Array.isArray(type)) {
+    return _handleMultipleEvents(on, elem, type, fn);
+  }
+
+  var data = Dom.getElData(elem);
+
+  // We need a place to store all our handler data
+  if (!data.handlers) {
+    data.handlers = {};
+  }
+
+  if (!data.handlers[type]) {
+    data.handlers[type] = [];
+  }
+
+  if (!fn.guid) {
+    fn.guid = Guid.newGUID();
+  }
+
+  data.handlers[type].push(fn);
+
+  if (!data.dispatcher) {
+    data.disabled = false;
+
+    data.dispatcher = function (event, hash) {
+
+      if (data.disabled) {
+        return;
+      }
+
+      event = fixEvent(event);
+
+      var handlers = data.handlers[event.type];
+
+      if (handlers) {
+        // Copy handlers so if handlers are added/removed during the process it doesn't throw everything off.
+        var handlersCopy = handlers.slice(0);
+
+        for (var m = 0, n = handlersCopy.length; m < n; m++) {
+          if (event.isImmediatePropagationStopped()) {
+            break;
+          } else {
+            try {
+              handlersCopy[m].call(elem, event, hash);
+            } catch (e) {
+              _log2['default'].error(e);
+            }
+          }
+        }
+      }
+    };
+  }
+
+  if (data.handlers[type].length === 1) {
+    if (elem.addEventListener) {
+      elem.addEventListener(type, data.dispatcher, false);
+    } else if (elem.attachEvent) {
+      elem.attachEvent('on' + type, data.dispatcher);
+    }
+  }
+}
+
+/**
+ * Removes event listeners from an element
+ *
+ * @param {Element|Object} elem
+ *        Object to remove listeners from.
+ *
+ * @param {string|string[]} [type]
+ *        Type of listener to remove. Don't include to remove all events from element.
+ *
+ * @param {EventTarget~EventListener} [fn]
+ *        Specific listener to remove. Don't include to remove listeners for an event
+ *        type.
+ */
+function off(elem, type, fn) {
+  // Don't want to add a cache object through getElData if not needed
+  if (!Dom.hasElData(elem)) {
+    return;
+  }
+
+  var data = Dom.getElData(elem);
+
+  // If no events exist, nothing to unbind
+  if (!data.handlers) {
+    return;
+  }
+
+  if (Array.isArray(type)) {
+    return _handleMultipleEvents(off, elem, type, fn);
+  }
+
+  // Utility function
+  var removeType = function removeType(t) {
+    data.handlers[t] = [];
+    _cleanUpEvents(elem, t);
+  };
+
+  // Are we removing all bound events?
+  if (!type) {
+    for (var t in data.handlers) {
+      removeType(t);
+    }
+    return;
+  }
+
+  var handlers = data.handlers[type];
+
+  // If no handlers exist, nothing to unbind
+  if (!handlers) {
+    return;
+  }
+
+  // If no listener was provided, remove all listeners for type
+  if (!fn) {
+    removeType(type);
+    return;
+  }
+
+  // We're only removing a single handler
+  if (fn.guid) {
+    for (var n = 0; n < handlers.length; n++) {
+      if (handlers[n].guid === fn.guid) {
+        handlers.splice(n--, 1);
+      }
+    }
+  }
+
+  _cleanUpEvents(elem, type);
+}
+
+/**
+ * Trigger an event for an element
+ *
+ * @param {Element|Object} elem
+ *        Element to trigger an event on
+ *
+ * @param {EventTarget~Event|string} event
+ *        A string (the type) or an event object with a type attribute
+ *
+ * @param {Object} [hash]
+ *        data hash to pass along with the event
+ *
+ * @return {boolean|undefined}
+ *         - Returns the opposite of `defaultPrevented` if default was prevented
+ *         - Otherwise returns undefined
+ */
+function trigger(elem, event, hash) {
+  // Fetches element data and a reference to the parent (for bubbling).
+  // Don't want to add a data object to cache for every parent,
+  // so checking hasElData first.
+  var elemData = Dom.hasElData(elem) ? Dom.getElData(elem) : {};
+  var parent = elem.parentNode || elem.ownerDocument;
+  // type = event.type || event,
+  // handler;
+
+  // If an event name was passed as a string, creates an event out of it
+  if (typeof event === 'string') {
+    event = { type: event, target: elem };
+  }
+  // Normalizes the event properties.
+  event = fixEvent(event);
+
+  // If the passed element has a dispatcher, executes the established handlers.
+  if (elemData.dispatcher) {
+    elemData.dispatcher.call(elem, event, hash);
+  }
+
+  // Unless explicitly stopped or the event does not bubble (e.g. media events)
+  // recursively calls this function to bubble the event up the DOM.
+  if (parent && !event.isPropagationStopped() && event.bubbles === true) {
+    trigger.call(null, parent, event, hash);
+
+    // If at the top of the DOM, triggers the default action unless disabled.
+  } else if (!parent && !event.defaultPrevented) {
+    var targetData = Dom.getElData(event.target);
+
+    // Checks if the target has a default action for this event.
+    if (event.target[event.type]) {
+      // Temporarily disables event dispatching on the target as we have already executed the handler.
+      targetData.disabled = true;
+      // Executes the default action.
+      if (typeof event.target[event.type] === 'function') {
+        event.target[event.type]();
+      }
+      // Re-enables event dispatching.
+      targetData.disabled = false;
+    }
+  }
+
+  // Inform the triggerer if the default was prevented by returning false
+  return !event.defaultPrevented;
+}
+
+/**
+ * Trigger a listener only once for an event
+ *
+ * @param {Element|Object} elem
+ *        Element or object to bind to.
+ *
+ * @param {string|string[]} type
+ *        Name/type of event
+ *
+ * @param {Event~EventListener} fn
+ *        Event Listener function
+ */
+function one(elem, type, fn) {
+  if (Array.isArray(type)) {
+    return _handleMultipleEvents(one, elem, type, fn);
+  }
+  var func = function func() {
+    off(elem, type, func);
+    fn.apply(this, arguments);
+  };
+
+  // copy the guid to the new function so it can removed using the original function's ID
+  func.guid = fn.guid = fn.guid || Guid.newGUID();
+  on(elem, type, func);
+}
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+/**
+ * @file format-time.js
+ * @module Format-time
+ */
+
+/**
+ * Format seconds as a time string, H:MM:SS or M:SS. Supplying a guide (in seconds)
+ * will force a number of leading zeros to cover the length of the guide.
+ *
+ * @param {number} seconds
+ *        Number of seconds to be turned into a string
+ *
+ * @param {number} guide
+ *        Number (in seconds) to model the string after
+ *
+ * @return {string}
+ *         Time formatted as H:MM:SS or M:SS
+ */
+function formatTime(seconds) {
+  var guide = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : seconds;
+
+  seconds = seconds < 0 ? 0 : seconds;
+  var s = Math.floor(seconds % 60);
+  var m = Math.floor(seconds / 60 % 60);
+  var h = Math.floor(seconds / 3600);
+  var gm = Math.floor(guide / 60 % 60);
+  var gh = Math.floor(guide / 3600);
+
+  // handle invalid times
+  if (isNaN(seconds) || seconds === Infinity) {
+    // '-' is false for all relational operators (e.g. <, >=) so this setting
+    // will add the minimum number of fields specified by the guide
+    h = m = s = '-';
+  }
+
+  // Check if we need to show hours
+  h = h > 0 || gh > 0 ? h + ':' : '';
+
+  // If hours are showing, we may need to add a leading zero.
+  // Always show at least one digit of minutes.
+  m = ((h || gm >= 10) && m < 10 ? '0' + m : m) + ':';
+
+  // Check if leading zero is need for seconds
+  s = s < 10 ? '0' + s : s;
+
+  return h + m + s;
+}
+
+exports['default'] = formatTime;
+
+
+/***/ }),
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -13912,584 +14490,6 @@ return jQuery;
 
 
 /***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-exports.__esModule = true;
-exports['default'] = mergeOptions;
-
-var _obj = __webpack_require__(7);
-
-/**
- * Deep-merge one or more options objects, recursively merging **only** plain
- * object properties.
- *
- * @param   {Object[]} sources
- *          One or more objects to merge into a new object.
- *
- * @returns {Object}
- *          A new object that is the merged result of all sources.
- */
-function mergeOptions() {
-  var result = {};
-
-  for (var _len = arguments.length, sources = Array(_len), _key = 0; _key < _len; _key++) {
-    sources[_key] = arguments[_key];
-  }
-
-  sources.forEach(function (source) {
-    if (!source) {
-      return;
-    }
-
-    (0, _obj.each)(source, function (value, key) {
-      if (!(0, _obj.isPlain)(value)) {
-        result[key] = value;
-        return;
-      }
-
-      if (!(0, _obj.isPlain)(result[key])) {
-        result[key] = {};
-      }
-
-      result[key] = mergeOptions(result[key], value);
-    });
-  });
-
-  return result;
-} /**
-   * @file merge-options.js
-   * @module merge-options
-   */
-
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-exports.__esModule = true;
-exports.fixEvent = fixEvent;
-exports.on = on;
-exports.off = off;
-exports.trigger = trigger;
-exports.one = one;
-
-var _dom = __webpack_require__(2);
-
-var Dom = _interopRequireWildcard(_dom);
-
-var _guid = __webpack_require__(14);
-
-var Guid = _interopRequireWildcard(_guid);
-
-var _log = __webpack_require__(8);
-
-var _log2 = _interopRequireDefault(_log);
-
-var _window = __webpack_require__(5);
-
-var _window2 = _interopRequireDefault(_window);
-
-var _document = __webpack_require__(3);
-
-var _document2 = _interopRequireDefault(_document);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
-
-/**
- * Clean up the listener cache and dispatchers
- *
- * @param {Element|Object} elem
- *        Element to clean up
- *
- * @param {string} type
- *        Type of event to clean up
- */
-function _cleanUpEvents(elem, type) {
-  var data = Dom.getElData(elem);
-
-  // Remove the events of a particular type if there are none left
-  if (data.handlers[type].length === 0) {
-    delete data.handlers[type];
-    // data.handlers[type] = null;
-    // Setting to null was causing an error with data.handlers
-
-    // Remove the meta-handler from the element
-    if (elem.removeEventListener) {
-      elem.removeEventListener(type, data.dispatcher, false);
-    } else if (elem.detachEvent) {
-      elem.detachEvent('on' + type, data.dispatcher);
-    }
-  }
-
-  // Remove the events object if there are no types left
-  if (Object.getOwnPropertyNames(data.handlers).length <= 0) {
-    delete data.handlers;
-    delete data.dispatcher;
-    delete data.disabled;
-  }
-
-  // Finally remove the element data if there is no data left
-  if (Object.getOwnPropertyNames(data).length === 0) {
-    Dom.removeElData(elem);
-  }
-}
-
-/**
- * Loops through an array of event types and calls the requested method for each type.
- *
- * @param {Function} fn
- *        The event method we want to use.
- *
- * @param {Element|Object} elem
- *        Element or object to bind listeners to
- *
- * @param {string} type
- *        Type of event to bind to.
- *
- * @param {EventTarget~EventListener} callback
- *        Event listener.
- */
-/**
- * @file events.js. An Event System (John Resig - Secrets of a JS Ninja http://jsninja.com/)
- * (Original book version wasn't completely usable, so fixed some things and made Closure Compiler compatible)
- * This should work very similarly to jQuery's events, however it's based off the book version which isn't as
- * robust as jquery's, so there's probably some differences.
- *
- * @module events
- */
-
-function _handleMultipleEvents(fn, elem, types, callback) {
-  types.forEach(function (type) {
-    // Call the event method for each one of the types
-    fn(elem, type, callback);
-  });
-}
-
-/**
- * Fix a native event to have standard property values
- *
- * @param {Object} event
- *        Event object to fix.
- *
- * @return {Object}
- *         Fixed event object.
- */
-function fixEvent(event) {
-
-  function returnTrue() {
-    return true;
-  }
-
-  function returnFalse() {
-    return false;
-  }
-
-  // Test if fixing up is needed
-  // Used to check if !event.stopPropagation instead of isPropagationStopped
-  // But native events return true for stopPropagation, but don't have
-  // other expected methods like isPropagationStopped. Seems to be a problem
-  // with the Javascript Ninja code. So we're just overriding all events now.
-  if (!event || !event.isPropagationStopped) {
-    var old = event || _window2['default'].event;
-
-    event = {};
-    // Clone the old object so that we can modify the values event = {};
-    // IE8 Doesn't like when you mess with native event properties
-    // Firefox returns false for event.hasOwnProperty('type') and other props
-    //  which makes copying more difficult.
-    // TODO: Probably best to create a whitelist of event props
-    for (var key in old) {
-      // Safari 6.0.3 warns you if you try to copy deprecated layerX/Y
-      // Chrome warns you if you try to copy deprecated keyboardEvent.keyLocation
-      // and webkitMovementX/Y
-      if (key !== 'layerX' && key !== 'layerY' && key !== 'keyLocation' && key !== 'webkitMovementX' && key !== 'webkitMovementY') {
-        // Chrome 32+ warns if you try to copy deprecated returnValue, but
-        // we still want to if preventDefault isn't supported (IE8).
-        if (!(key === 'returnValue' && old.preventDefault)) {
-          event[key] = old[key];
-        }
-      }
-    }
-
-    // The event occurred on this element
-    if (!event.target) {
-      event.target = event.srcElement || _document2['default'];
-    }
-
-    // Handle which other element the event is related to
-    if (!event.relatedTarget) {
-      event.relatedTarget = event.fromElement === event.target ? event.toElement : event.fromElement;
-    }
-
-    // Stop the default browser action
-    event.preventDefault = function () {
-      if (old.preventDefault) {
-        old.preventDefault();
-      }
-      event.returnValue = false;
-      old.returnValue = false;
-      event.defaultPrevented = true;
-    };
-
-    event.defaultPrevented = false;
-
-    // Stop the event from bubbling
-    event.stopPropagation = function () {
-      if (old.stopPropagation) {
-        old.stopPropagation();
-      }
-      event.cancelBubble = true;
-      old.cancelBubble = true;
-      event.isPropagationStopped = returnTrue;
-    };
-
-    event.isPropagationStopped = returnFalse;
-
-    // Stop the event from bubbling and executing other handlers
-    event.stopImmediatePropagation = function () {
-      if (old.stopImmediatePropagation) {
-        old.stopImmediatePropagation();
-      }
-      event.isImmediatePropagationStopped = returnTrue;
-      event.stopPropagation();
-    };
-
-    event.isImmediatePropagationStopped = returnFalse;
-
-    // Handle mouse position
-    if (event.clientX !== null && event.clientX !== undefined) {
-      var doc = _document2['default'].documentElement;
-      var body = _document2['default'].body;
-
-      event.pageX = event.clientX + (doc && doc.scrollLeft || body && body.scrollLeft || 0) - (doc && doc.clientLeft || body && body.clientLeft || 0);
-      event.pageY = event.clientY + (doc && doc.scrollTop || body && body.scrollTop || 0) - (doc && doc.clientTop || body && body.clientTop || 0);
-    }
-
-    // Handle key presses
-    event.which = event.charCode || event.keyCode;
-
-    // Fix button for mouse clicks:
-    // 0 == left; 1 == middle; 2 == right
-    if (event.button !== null && event.button !== undefined) {
-
-      // The following is disabled because it does not pass videojs-standard
-      // and... yikes.
-      /* eslint-disable */
-      event.button = event.button & 1 ? 0 : event.button & 4 ? 1 : event.button & 2 ? 2 : 0;
-      /* eslint-enable */
-    }
-  }
-
-  // Returns fixed-up instance
-  return event;
-}
-
-/**
- * Add an event listener to element
- * It stores the handler function in a separate cache object
- * and adds a generic handler to the element's event,
- * along with a unique id (guid) to the element.
- *
- * @param {Element|Object} elem
- *        Element or object to bind listeners to
- *
- * @param {string|string[]} type
- *        Type of event to bind to.
- *
- * @param {EventTarget~EventListener} fn
- *        Event listener.
- */
-function on(elem, type, fn) {
-  if (Array.isArray(type)) {
-    return _handleMultipleEvents(on, elem, type, fn);
-  }
-
-  var data = Dom.getElData(elem);
-
-  // We need a place to store all our handler data
-  if (!data.handlers) {
-    data.handlers = {};
-  }
-
-  if (!data.handlers[type]) {
-    data.handlers[type] = [];
-  }
-
-  if (!fn.guid) {
-    fn.guid = Guid.newGUID();
-  }
-
-  data.handlers[type].push(fn);
-
-  if (!data.dispatcher) {
-    data.disabled = false;
-
-    data.dispatcher = function (event, hash) {
-
-      if (data.disabled) {
-        return;
-      }
-
-      event = fixEvent(event);
-
-      var handlers = data.handlers[event.type];
-
-      if (handlers) {
-        // Copy handlers so if handlers are added/removed during the process it doesn't throw everything off.
-        var handlersCopy = handlers.slice(0);
-
-        for (var m = 0, n = handlersCopy.length; m < n; m++) {
-          if (event.isImmediatePropagationStopped()) {
-            break;
-          } else {
-            try {
-              handlersCopy[m].call(elem, event, hash);
-            } catch (e) {
-              _log2['default'].error(e);
-            }
-          }
-        }
-      }
-    };
-  }
-
-  if (data.handlers[type].length === 1) {
-    if (elem.addEventListener) {
-      elem.addEventListener(type, data.dispatcher, false);
-    } else if (elem.attachEvent) {
-      elem.attachEvent('on' + type, data.dispatcher);
-    }
-  }
-}
-
-/**
- * Removes event listeners from an element
- *
- * @param {Element|Object} elem
- *        Object to remove listeners from.
- *
- * @param {string|string[]} [type]
- *        Type of listener to remove. Don't include to remove all events from element.
- *
- * @param {EventTarget~EventListener} [fn]
- *        Specific listener to remove. Don't include to remove listeners for an event
- *        type.
- */
-function off(elem, type, fn) {
-  // Don't want to add a cache object through getElData if not needed
-  if (!Dom.hasElData(elem)) {
-    return;
-  }
-
-  var data = Dom.getElData(elem);
-
-  // If no events exist, nothing to unbind
-  if (!data.handlers) {
-    return;
-  }
-
-  if (Array.isArray(type)) {
-    return _handleMultipleEvents(off, elem, type, fn);
-  }
-
-  // Utility function
-  var removeType = function removeType(t) {
-    data.handlers[t] = [];
-    _cleanUpEvents(elem, t);
-  };
-
-  // Are we removing all bound events?
-  if (!type) {
-    for (var t in data.handlers) {
-      removeType(t);
-    }
-    return;
-  }
-
-  var handlers = data.handlers[type];
-
-  // If no handlers exist, nothing to unbind
-  if (!handlers) {
-    return;
-  }
-
-  // If no listener was provided, remove all listeners for type
-  if (!fn) {
-    removeType(type);
-    return;
-  }
-
-  // We're only removing a single handler
-  if (fn.guid) {
-    for (var n = 0; n < handlers.length; n++) {
-      if (handlers[n].guid === fn.guid) {
-        handlers.splice(n--, 1);
-      }
-    }
-  }
-
-  _cleanUpEvents(elem, type);
-}
-
-/**
- * Trigger an event for an element
- *
- * @param {Element|Object} elem
- *        Element to trigger an event on
- *
- * @param {EventTarget~Event|string} event
- *        A string (the type) or an event object with a type attribute
- *
- * @param {Object} [hash]
- *        data hash to pass along with the event
- *
- * @return {boolean|undefined}
- *         - Returns the opposite of `defaultPrevented` if default was prevented
- *         - Otherwise returns undefined
- */
-function trigger(elem, event, hash) {
-  // Fetches element data and a reference to the parent (for bubbling).
-  // Don't want to add a data object to cache for every parent,
-  // so checking hasElData first.
-  var elemData = Dom.hasElData(elem) ? Dom.getElData(elem) : {};
-  var parent = elem.parentNode || elem.ownerDocument;
-  // type = event.type || event,
-  // handler;
-
-  // If an event name was passed as a string, creates an event out of it
-  if (typeof event === 'string') {
-    event = { type: event, target: elem };
-  }
-  // Normalizes the event properties.
-  event = fixEvent(event);
-
-  // If the passed element has a dispatcher, executes the established handlers.
-  if (elemData.dispatcher) {
-    elemData.dispatcher.call(elem, event, hash);
-  }
-
-  // Unless explicitly stopped or the event does not bubble (e.g. media events)
-  // recursively calls this function to bubble the event up the DOM.
-  if (parent && !event.isPropagationStopped() && event.bubbles === true) {
-    trigger.call(null, parent, event, hash);
-
-    // If at the top of the DOM, triggers the default action unless disabled.
-  } else if (!parent && !event.defaultPrevented) {
-    var targetData = Dom.getElData(event.target);
-
-    // Checks if the target has a default action for this event.
-    if (event.target[event.type]) {
-      // Temporarily disables event dispatching on the target as we have already executed the handler.
-      targetData.disabled = true;
-      // Executes the default action.
-      if (typeof event.target[event.type] === 'function') {
-        event.target[event.type]();
-      }
-      // Re-enables event dispatching.
-      targetData.disabled = false;
-    }
-  }
-
-  // Inform the triggerer if the default was prevented by returning false
-  return !event.defaultPrevented;
-}
-
-/**
- * Trigger a listener only once for an event
- *
- * @param {Element|Object} elem
- *        Element or object to bind to.
- *
- * @param {string|string[]} type
- *        Name/type of event
- *
- * @param {Event~EventListener} fn
- *        Event Listener function
- */
-function one(elem, type, fn) {
-  if (Array.isArray(type)) {
-    return _handleMultipleEvents(one, elem, type, fn);
-  }
-  var func = function func() {
-    off(elem, type, func);
-    fn.apply(this, arguments);
-  };
-
-  // copy the guid to the new function so it can removed using the original function's ID
-  func.guid = fn.guid = fn.guid || Guid.newGUID();
-  on(elem, type, func);
-}
-
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-exports.__esModule = true;
-/**
- * @file format-time.js
- * @module Format-time
- */
-
-/**
- * Format seconds as a time string, H:MM:SS or M:SS. Supplying a guide (in seconds)
- * will force a number of leading zeros to cover the length of the guide.
- *
- * @param {number} seconds
- *        Number of seconds to be turned into a string
- *
- * @param {number} guide
- *        Number (in seconds) to model the string after
- *
- * @return {string}
- *         Time formatted as H:MM:SS or M:SS
- */
-function formatTime(seconds) {
-  var guide = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : seconds;
-
-  seconds = seconds < 0 ? 0 : seconds;
-  var s = Math.floor(seconds % 60);
-  var m = Math.floor(seconds / 60 % 60);
-  var h = Math.floor(seconds / 3600);
-  var gm = Math.floor(guide / 60 % 60);
-  var gh = Math.floor(guide / 3600);
-
-  // handle invalid times
-  if (isNaN(seconds) || seconds === Infinity) {
-    // '-' is false for all relational operators (e.g. <, >=) so this setting
-    // will add the minimum number of fields specified by the guide
-    h = m = s = '-';
-  }
-
-  // Check if we need to show hours
-  h = h > 0 || gh > 0 ? h + ':' : '';
-
-  // If hours are showing, we may need to add a leading zero.
-  // Always show at least one digit of minutes.
-  m = ((h || gm >= 10) && m < 10 ? '0' + m : m) + ':';
-
-  // Check if leading zero is need for seconds
-  s = s < 10 ? '0' + s : s;
-
-  return h + m + s;
-}
-
-exports['default'] = formatTime;
-
-
-/***/ }),
 /* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -14780,7 +14780,7 @@ var _dom = __webpack_require__(2);
 
 var Dom = _interopRequireWildcard(_dom);
 
-var _events = __webpack_require__(12);
+var _events = __webpack_require__(11);
 
 var Events = _interopRequireWildcard(_events);
 
@@ -15103,15 +15103,15 @@ var _component = __webpack_require__(0);
 
 var _component2 = _interopRequireDefault(_component);
 
-var _htmlTrackElement = __webpack_require__(157);
+var _htmlTrackElement = __webpack_require__(154);
 
 var _htmlTrackElement2 = _interopRequireDefault(_htmlTrackElement);
 
-var _htmlTrackElementList = __webpack_require__(156);
+var _htmlTrackElementList = __webpack_require__(153);
 
 var _htmlTrackElementList2 = _interopRequireDefault(_htmlTrackElementList);
 
-var _mergeOptions = __webpack_require__(11);
+var _mergeOptions = __webpack_require__(10);
 
 var _mergeOptions2 = _interopRequireDefault(_mergeOptions);
 
@@ -15119,7 +15119,7 @@ var _textTrack = __webpack_require__(30);
 
 var _textTrack2 = _interopRequireDefault(_textTrack);
 
-var _textTrackList = __webpack_require__(161);
+var _textTrackList = __webpack_require__(158);
 
 var _textTrackList2 = _interopRequireDefault(_textTrackList);
 
@@ -15746,7 +15746,7 @@ var Tech = function (_Component) {
     // signals that the Tech is ready at which point Tech.el_ is part of the DOM
     // before inserting the WebVTT script
     if (_document2['default'].body.contains(this.el())) {
-      var vtt = __webpack_require__(164);
+      var vtt = __webpack_require__(161);
 
       // load via require if available and vtt.js script location was not passed in
       // as an option. novtt builds will turn the above require call into an empty object
@@ -16646,7 +16646,7 @@ var _textTrackMenuItem = __webpack_require__(29);
 
 var _textTrackMenuItem2 = _interopRequireDefault(_textTrackMenuItem);
 
-var _offTextTrackMenuItem = __webpack_require__(133);
+var _offTextTrackMenuItem = __webpack_require__(130);
 
 var _offTextTrackMenuItem2 = _interopRequireDefault(_offTextTrackMenuItem);
 
@@ -16744,7 +16744,7 @@ exports['default'] = TextTrackButton;
 
 exports.__esModule = true;
 
-var _events = __webpack_require__(12);
+var _events = __webpack_require__(11);
 
 var Events = _interopRequireWildcard(_events);
 
@@ -17259,7 +17259,7 @@ Licensed under the MIT license.
 https://github.com/imakewebthings/waypoints/blob/master/licenses.txt
 */
 !function(){"use strict";function t(o){if(!o)throw new Error("No options passed to Waypoint constructor");if(!o.element)throw new Error("No element option passed to Waypoint constructor");if(!o.handler)throw new Error("No handler option passed to Waypoint constructor");this.key="waypoint-"+e,this.options=t.Adapter.extend({},t.defaults,o),this.element=this.options.element,this.adapter=new t.Adapter(this.element),this.callback=o.handler,this.axis=this.options.horizontal?"horizontal":"vertical",this.enabled=this.options.enabled,this.triggerPoint=null,this.group=t.Group.findOrCreate({name:this.options.group,axis:this.axis}),this.context=t.Context.findOrCreateByElement(this.options.context),t.offsetAliases[this.options.offset]&&(this.options.offset=t.offsetAliases[this.options.offset]),this.group.add(this),this.context.add(this),i[this.key]=this,e+=1}var e=0,i={};t.prototype.queueTrigger=function(t){this.group.queueTrigger(this,t)},t.prototype.trigger=function(t){this.enabled&&this.callback&&this.callback.apply(this,t)},t.prototype.destroy=function(){this.context.remove(this),this.group.remove(this),delete i[this.key]},t.prototype.disable=function(){return this.enabled=!1,this},t.prototype.enable=function(){return this.context.refresh(),this.enabled=!0,this},t.prototype.next=function(){return this.group.next(this)},t.prototype.previous=function(){return this.group.previous(this)},t.invokeAll=function(t){var e=[];for(var o in i)e.push(i[o]);for(var n=0,r=e.length;r>n;n++)e[n][t]()},t.destroyAll=function(){t.invokeAll("destroy")},t.disableAll=function(){t.invokeAll("disable")},t.enableAll=function(){t.Context.refreshAll();for(var e in i)i[e].enabled=!0;return this},t.refreshAll=function(){t.Context.refreshAll()},t.viewportHeight=function(){return window.innerHeight||document.documentElement.clientHeight},t.viewportWidth=function(){return document.documentElement.clientWidth},t.adapters=[],t.defaults={context:window,continuous:!0,enabled:!0,group:"default",horizontal:!1,offset:0},t.offsetAliases={"bottom-in-view":function(){return this.context.innerHeight()-this.adapter.outerHeight()},"right-in-view":function(){return this.context.innerWidth()-this.adapter.outerWidth()}},window.Waypoint=t}(),function(){"use strict";function t(t){window.setTimeout(t,1e3/60)}function e(t){this.element=t,this.Adapter=n.Adapter,this.adapter=new this.Adapter(t),this.key="waypoint-context-"+i,this.didScroll=!1,this.didResize=!1,this.oldScroll={x:this.adapter.scrollLeft(),y:this.adapter.scrollTop()},this.waypoints={vertical:{},horizontal:{}},t.waypointContextKey=this.key,o[t.waypointContextKey]=this,i+=1,n.windowContext||(n.windowContext=!0,n.windowContext=new e(window)),this.createThrottledScrollHandler(),this.createThrottledResizeHandler()}var i=0,o={},n=window.Waypoint,r=window.onload;e.prototype.add=function(t){var e=t.options.horizontal?"horizontal":"vertical";this.waypoints[e][t.key]=t,this.refresh()},e.prototype.checkEmpty=function(){var t=this.Adapter.isEmptyObject(this.waypoints.horizontal),e=this.Adapter.isEmptyObject(this.waypoints.vertical),i=this.element==this.element.window;t&&e&&!i&&(this.adapter.off(".waypoints"),delete o[this.key])},e.prototype.createThrottledResizeHandler=function(){function t(){e.handleResize(),e.didResize=!1}var e=this;this.adapter.on("resize.waypoints",function(){e.didResize||(e.didResize=!0,n.requestAnimationFrame(t))})},e.prototype.createThrottledScrollHandler=function(){function t(){e.handleScroll(),e.didScroll=!1}var e=this;this.adapter.on("scroll.waypoints",function(){(!e.didScroll||n.isTouch)&&(e.didScroll=!0,n.requestAnimationFrame(t))})},e.prototype.handleResize=function(){n.Context.refreshAll()},e.prototype.handleScroll=function(){var t={},e={horizontal:{newScroll:this.adapter.scrollLeft(),oldScroll:this.oldScroll.x,forward:"right",backward:"left"},vertical:{newScroll:this.adapter.scrollTop(),oldScroll:this.oldScroll.y,forward:"down",backward:"up"}};for(var i in e){var o=e[i],n=o.newScroll>o.oldScroll,r=n?o.forward:o.backward;for(var s in this.waypoints[i]){var a=this.waypoints[i][s];if(null!==a.triggerPoint){var l=o.oldScroll<a.triggerPoint,h=o.newScroll>=a.triggerPoint,p=l&&h,u=!l&&!h;(p||u)&&(a.queueTrigger(r),t[a.group.id]=a.group)}}}for(var c in t)t[c].flushTriggers();this.oldScroll={x:e.horizontal.newScroll,y:e.vertical.newScroll}},e.prototype.innerHeight=function(){return this.element==this.element.window?n.viewportHeight():this.adapter.innerHeight()},e.prototype.remove=function(t){delete this.waypoints[t.axis][t.key],this.checkEmpty()},e.prototype.innerWidth=function(){return this.element==this.element.window?n.viewportWidth():this.adapter.innerWidth()},e.prototype.destroy=function(){var t=[];for(var e in this.waypoints)for(var i in this.waypoints[e])t.push(this.waypoints[e][i]);for(var o=0,n=t.length;n>o;o++)t[o].destroy()},e.prototype.refresh=function(){var t,e=this.element==this.element.window,i=e?void 0:this.adapter.offset(),o={};this.handleScroll(),t={horizontal:{contextOffset:e?0:i.left,contextScroll:e?0:this.oldScroll.x,contextDimension:this.innerWidth(),oldScroll:this.oldScroll.x,forward:"right",backward:"left",offsetProp:"left"},vertical:{contextOffset:e?0:i.top,contextScroll:e?0:this.oldScroll.y,contextDimension:this.innerHeight(),oldScroll:this.oldScroll.y,forward:"down",backward:"up",offsetProp:"top"}};for(var r in t){var s=t[r];for(var a in this.waypoints[r]){var l,h,p,u,c,d=this.waypoints[r][a],f=d.options.offset,w=d.triggerPoint,y=0,g=null==w;d.element!==d.element.window&&(y=d.adapter.offset()[s.offsetProp]),"function"==typeof f?f=f.apply(d):"string"==typeof f&&(f=parseFloat(f),d.options.offset.indexOf("%")>-1&&(f=Math.ceil(s.contextDimension*f/100))),l=s.contextScroll-s.contextOffset,d.triggerPoint=Math.floor(y+l-f),h=w<s.oldScroll,p=d.triggerPoint>=s.oldScroll,u=h&&p,c=!h&&!p,!g&&u?(d.queueTrigger(s.backward),o[d.group.id]=d.group):!g&&c?(d.queueTrigger(s.forward),o[d.group.id]=d.group):g&&s.oldScroll>=d.triggerPoint&&(d.queueTrigger(s.forward),o[d.group.id]=d.group)}}return n.requestAnimationFrame(function(){for(var t in o)o[t].flushTriggers()}),this},e.findOrCreateByElement=function(t){return e.findByElement(t)||new e(t)},e.refreshAll=function(){for(var t in o)o[t].refresh()},e.findByElement=function(t){return o[t.waypointContextKey]},window.onload=function(){r&&r(),e.refreshAll()},n.requestAnimationFrame=function(e){var i=window.requestAnimationFrame||window.mozRequestAnimationFrame||window.webkitRequestAnimationFrame||t;i.call(window,e)},n.Context=e}(),function(){"use strict";function t(t,e){return t.triggerPoint-e.triggerPoint}function e(t,e){return e.triggerPoint-t.triggerPoint}function i(t){this.name=t.name,this.axis=t.axis,this.id=this.name+"-"+this.axis,this.waypoints=[],this.clearTriggerQueues(),o[this.axis][this.name]=this}var o={vertical:{},horizontal:{}},n=window.Waypoint;i.prototype.add=function(t){this.waypoints.push(t)},i.prototype.clearTriggerQueues=function(){this.triggerQueues={up:[],down:[],left:[],right:[]}},i.prototype.flushTriggers=function(){for(var i in this.triggerQueues){var o=this.triggerQueues[i],n="up"===i||"left"===i;o.sort(n?e:t);for(var r=0,s=o.length;s>r;r+=1){var a=o[r];(a.options.continuous||r===o.length-1)&&a.trigger([i])}}this.clearTriggerQueues()},i.prototype.next=function(e){this.waypoints.sort(t);var i=n.Adapter.inArray(e,this.waypoints),o=i===this.waypoints.length-1;return o?null:this.waypoints[i+1]},i.prototype.previous=function(e){this.waypoints.sort(t);var i=n.Adapter.inArray(e,this.waypoints);return i?this.waypoints[i-1]:null},i.prototype.queueTrigger=function(t,e){this.triggerQueues[e].push(t)},i.prototype.remove=function(t){var e=n.Adapter.inArray(t,this.waypoints);e>-1&&this.waypoints.splice(e,1)},i.prototype.first=function(){return this.waypoints[0]},i.prototype.last=function(){return this.waypoints[this.waypoints.length-1]},i.findOrCreate=function(t){return o[t.axis][t.name]||new i(t)},n.Group=i}(),function(){"use strict";function t(t){this.$element=e(t)}var e=__webpack_provided_window_dot_jQuery,i=window.Waypoint;e.each(["innerHeight","innerWidth","off","offset","on","outerHeight","outerWidth","scrollLeft","scrollTop"],function(e,i){t.prototype[i]=function(){var t=Array.prototype.slice.call(arguments);return this.$element[i].apply(this.$element,t)}}),e.each(["extend","inArray","isEmptyObject"],function(i,o){t[o]=e[o]}),i.adapters.push({name:"jquery",Adapter:t}),i.Adapter=t}(),function(){"use strict";function t(t){return function(){var i=[],o=arguments[0];return t.isFunction(arguments[0])&&(o=t.extend({},arguments[1]),o.handler=arguments[0]),this.each(function(){var n=t.extend({},o,{element:this});"string"==typeof n.context&&(n.context=t(this).closest(n.context)[0]),i.push(new e(n))}),i}}var e=window.Waypoint;__webpack_provided_window_dot_jQuery&&(__webpack_provided_window_dot_jQuery.fn.waypoint=t(__webpack_provided_window_dot_jQuery)),window.Zepto&&(window.Zepto.fn.waypoint=t(window.Zepto))}();
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
 
 /***/ }),
 /* 27 */
@@ -17269,7 +17269,7 @@ https://github.com/imakewebthings/waypoints/blob/master/licenses.txt
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(9);
-var normalizeHeaderName = __webpack_require__(78);
+var normalizeHeaderName = __webpack_require__(76);
 
 var PROTECTION_PREFIX = /^\)\]\}',?\n/;
 var DEFAULT_CONTENT_TYPE = {
@@ -17730,7 +17730,7 @@ exports['default'] = TextTrackMenuItem;
 
 exports.__esModule = true;
 
-var _textTrackCueList = __webpack_require__(158);
+var _textTrackCueList = __webpack_require__(155);
 
 var _textTrackCueList2 = _interopRequireDefault(_textTrackCueList);
 
@@ -17758,7 +17758,7 @@ var _xhr = __webpack_require__(56);
 
 var _xhr2 = _interopRequireDefault(_xhr);
 
-var _mergeOptions = __webpack_require__(11);
+var _mergeOptions = __webpack_require__(10);
 
 var _mergeOptions2 = _interopRequireDefault(_mergeOptions);
 
@@ -18698,12 +18698,12 @@ function computedStyle(el, prop) {
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(9);
-var settle = __webpack_require__(70);
-var buildURL = __webpack_require__(73);
-var parseHeaders = __webpack_require__(79);
-var isURLSameOrigin = __webpack_require__(77);
+var settle = __webpack_require__(68);
+var buildURL = __webpack_require__(71);
+var parseHeaders = __webpack_require__(77);
+var isURLSameOrigin = __webpack_require__(75);
 var createError = __webpack_require__(38);
-var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(72);
+var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(70);
 
 module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -18799,7 +18799,7 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(75);
+      var cookies = __webpack_require__(73);
 
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -18920,7 +18920,7 @@ module.exports = function isCancel(value) {
 "use strict";
 
 
-var enhanceError = __webpack_require__(69);
+var enhanceError = __webpack_require__(67);
 
 /**
  * Create an Error with the specified message, config, error code, and response.
@@ -19262,7 +19262,7 @@ var _fn = __webpack_require__(1);
 
 var Fn = _interopRequireWildcard(_fn);
 
-__webpack_require__(140);
+__webpack_require__(137);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 
@@ -20027,7 +20027,7 @@ var _fn = __webpack_require__(1);
 
 var Fn = _interopRequireWildcard(_fn);
 
-var _events = __webpack_require__(12);
+var _events = __webpack_require__(11);
 
 var Events = _interopRequireWildcard(_events);
 
@@ -20735,7 +20735,7 @@ var _window = __webpack_require__(5);
 
 var _window2 = _interopRequireDefault(_window);
 
-var _events = __webpack_require__(12);
+var _events = __webpack_require__(11);
 
 var Events = _interopRequireWildcard(_events);
 
@@ -20771,7 +20771,7 @@ var _stylesheet = __webpack_require__(54);
 
 var stylesheet = _interopRequireWildcard(_stylesheet);
 
-var _fullscreenApi = __webpack_require__(144);
+var _fullscreenApi = __webpack_require__(141);
 
 var _fullscreenApi2 = _interopRequireDefault(_fullscreenApi);
 
@@ -20779,17 +20779,17 @@ var _mediaError = __webpack_require__(45);
 
 var _mediaError2 = _interopRequireDefault(_mediaError);
 
-var _tuple = __webpack_require__(108);
+var _tuple = __webpack_require__(105);
 
 var _tuple2 = _interopRequireDefault(_tuple);
 
 var _obj = __webpack_require__(7);
 
-var _mergeOptions = __webpack_require__(11);
+var _mergeOptions = __webpack_require__(10);
 
 var _mergeOptions2 = _interopRequireDefault(_mergeOptions);
 
-var _textTrackListConverter = __webpack_require__(160);
+var _textTrackListConverter = __webpack_require__(157);
 
 var _textTrackListConverter2 = _interopRequireDefault(_textTrackListConverter);
 
@@ -20809,27 +20809,27 @@ var _videoTrackList = __webpack_require__(52);
 
 var _videoTrackList2 = _interopRequireDefault(_videoTrackList);
 
-__webpack_require__(154);
-
-__webpack_require__(152);
+__webpack_require__(151);
 
 __webpack_require__(149);
 
-__webpack_require__(159);
+__webpack_require__(146);
 
-__webpack_require__(145);
-
-__webpack_require__(110);
-
-__webpack_require__(111);
-
-__webpack_require__(114);
+__webpack_require__(156);
 
 __webpack_require__(142);
 
-__webpack_require__(162);
+__webpack_require__(107);
 
-__webpack_require__(153);
+__webpack_require__(108);
+
+__webpack_require__(111);
+
+__webpack_require__(139);
+
+__webpack_require__(159);
+
+__webpack_require__(150);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 
@@ -25242,7 +25242,7 @@ var _document = __webpack_require__(3);
 
 var _document2 = _interopRequireDefault(_document);
 
-var _setup = __webpack_require__(150);
+var _setup = __webpack_require__(147);
 
 var setup = _interopRequireWildcard(_setup);
 
@@ -25258,7 +25258,7 @@ var _eventTarget = __webpack_require__(22);
 
 var _eventTarget2 = _interopRequireDefault(_eventTarget);
 
-var _events = __webpack_require__(12);
+var _events = __webpack_require__(11);
 
 var Events = _interopRequireWildcard(_events);
 
@@ -25266,11 +25266,11 @@ var _player = __webpack_require__(49);
 
 var _player2 = _interopRequireDefault(_player);
 
-var _plugins = __webpack_require__(146);
+var _plugins = __webpack_require__(143);
 
 var _plugins2 = _interopRequireDefault(_plugins);
 
-var _mergeOptions2 = __webpack_require__(11);
+var _mergeOptions2 = __webpack_require__(10);
 
 var _mergeOptions3 = _interopRequireDefault(_mergeOptions2);
 
@@ -25282,17 +25282,17 @@ var _textTrack = __webpack_require__(30);
 
 var _textTrack2 = _interopRequireDefault(_textTrack);
 
-var _audioTrack = __webpack_require__(155);
+var _audioTrack = __webpack_require__(152);
 
 var _audioTrack2 = _interopRequireDefault(_audioTrack);
 
-var _videoTrack = __webpack_require__(163);
+var _videoTrack = __webpack_require__(160);
 
 var _videoTrack2 = _interopRequireDefault(_videoTrack);
 
 var _timeRanges = __webpack_require__(20);
 
-var _formatTime = __webpack_require__(13);
+var _formatTime = __webpack_require__(12);
 
 var _formatTime2 = _interopRequireDefault(_formatTime);
 
@@ -25318,7 +25318,7 @@ var _computedStyle = __webpack_require__(34);
 
 var _computedStyle2 = _interopRequireDefault(_computedStyle);
 
-var _extend = __webpack_require__(143);
+var _extend = __webpack_require__(140);
 
 var _extend2 = _interopRequireDefault(_extend);
 
@@ -25952,8 +25952,8 @@ exports['default'] = videojs;
 
 var window = __webpack_require__(5)
 var isFunction = __webpack_require__(40)
-var parseHeaders = __webpack_require__(107)
-var xtend = __webpack_require__(212)
+var parseHeaders = __webpack_require__(104)
+var xtend = __webpack_require__(209)
 
 module.exports = createXHR
 createXHR.XMLHttpRequest = window.XMLHttpRequest || noop
@@ -26197,7 +26197,7 @@ function noop() {}
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-__webpack_require__(101);
+__webpack_require__(99);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -26205,29 +26205,29 @@ __webpack_require__(101);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example', __webpack_require__(171));
+Vue.component('example', __webpack_require__(168));
 // Vue.component('location', require('./components/Location.vue'));
-Vue.component('skills', __webpack_require__(184));
-Vue.component('upload-image', __webpack_require__(185));
-Vue.component('portfolio-form', __webpack_require__(178));
-Vue.component('message', __webpack_require__(175));
-Vue.component('send-message', __webpack_require__(183));
-Vue.component('follow', __webpack_require__(172));
-Vue.component('reviews', __webpack_require__(182));
-Vue.component('portfolio', __webpack_require__(176));
-Vue.component('request-service', __webpack_require__(180));
-Vue.component('requests', __webpack_require__(181));
-Vue.component('user-background', __webpack_require__(186));
-Vue.component('like-button', __webpack_require__(174));
-Vue.component('privacy-toggle', __webpack_require__(179));
-Vue.component('portfolio-comments', __webpack_require__(177));
-Vue.component('register-view', __webpack_require__(189));
-Vue.component('video-player', __webpack_require__(188));
-Vue.component('blog-form', __webpack_require__(170));
-Vue.component('verify-users', __webpack_require__(187));
-Vue.component('instagram', __webpack_require__(173));
+Vue.component('skills', __webpack_require__(181));
+Vue.component('upload-image', __webpack_require__(182));
+Vue.component('portfolio-form', __webpack_require__(175));
+Vue.component('message', __webpack_require__(172));
+Vue.component('send-message', __webpack_require__(180));
+Vue.component('follow', __webpack_require__(169));
+Vue.component('reviews', __webpack_require__(179));
+Vue.component('portfolio', __webpack_require__(173));
+Vue.component('request-service', __webpack_require__(177));
+Vue.component('requests', __webpack_require__(178));
+Vue.component('user-background', __webpack_require__(183));
+Vue.component('like-button', __webpack_require__(171));
+Vue.component('privacy-toggle', __webpack_require__(176));
+Vue.component('portfolio-comments', __webpack_require__(174));
+Vue.component('register-view', __webpack_require__(186));
+Vue.component('video-player', __webpack_require__(185));
+Vue.component('blog-form', __webpack_require__(167));
+Vue.component('verify-users', __webpack_require__(184));
+Vue.component('instagram', __webpack_require__(170));
 
-const app = new Vue({
+var app = new Vue({
 	el: '#app'
 });
 
@@ -26236,7 +26236,7 @@ var bLazy = new Blazy();
 // var imagesLoaded = new imagesLoaded();
 
 var waypoint = $('#user-badge').waypoint({
-	handler: function (direction) {
+	handler: function handler(direction) {
 		var userBadge = $('#user-badge'),
 		    portfolio = $('#portfolio');
 		if (direction === 'down' && $(window).outerWidth() > 540) {
@@ -26311,21 +26311,19 @@ $('body').on('click', '#delete-instagram', function (e) {
 // 		});
 // 	});
 // })(jQuery);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
 
 /***/ }),
 /* 58 */,
 /* 59 */,
 /* 60 */,
-/* 61 */,
-/* 62 */,
-/* 63 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(64);
+module.exports = __webpack_require__(62);
 
 /***/ }),
-/* 64 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26333,7 +26331,7 @@ module.exports = __webpack_require__(64);
 
 var utils = __webpack_require__(9);
 var bind = __webpack_require__(39);
-var Axios = __webpack_require__(66);
+var Axios = __webpack_require__(64);
 var defaults = __webpack_require__(27);
 
 /**
@@ -26368,14 +26366,14 @@ axios.create = function create(instanceConfig) {
 
 // Expose Cancel & CancelToken
 axios.Cancel = __webpack_require__(36);
-axios.CancelToken = __webpack_require__(65);
+axios.CancelToken = __webpack_require__(63);
 axios.isCancel = __webpack_require__(37);
 
 // Expose all/spread
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = __webpack_require__(80);
+axios.spread = __webpack_require__(78);
 
 module.exports = axios;
 
@@ -26384,7 +26382,7 @@ module.exports.default = axios;
 
 
 /***/ }),
-/* 65 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26448,7 +26446,7 @@ module.exports = CancelToken;
 
 
 /***/ }),
-/* 66 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26456,10 +26454,10 @@ module.exports = CancelToken;
 
 var defaults = __webpack_require__(27);
 var utils = __webpack_require__(9);
-var InterceptorManager = __webpack_require__(67);
-var dispatchRequest = __webpack_require__(68);
-var isAbsoluteURL = __webpack_require__(76);
-var combineURLs = __webpack_require__(74);
+var InterceptorManager = __webpack_require__(65);
+var dispatchRequest = __webpack_require__(66);
+var isAbsoluteURL = __webpack_require__(74);
+var combineURLs = __webpack_require__(72);
 
 /**
  * Create a new instance of Axios
@@ -26540,7 +26538,7 @@ module.exports = Axios;
 
 
 /***/ }),
-/* 67 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26599,14 +26597,14 @@ module.exports = InterceptorManager;
 
 
 /***/ }),
-/* 68 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(9);
-var transformData = __webpack_require__(71);
+var transformData = __webpack_require__(69);
 var isCancel = __webpack_require__(37);
 var defaults = __webpack_require__(27);
 
@@ -26685,7 +26683,7 @@ module.exports = function dispatchRequest(config) {
 
 
 /***/ }),
-/* 69 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26711,7 +26709,7 @@ module.exports = function enhanceError(error, config, code, response) {
 
 
 /***/ }),
-/* 70 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26743,7 +26741,7 @@ module.exports = function settle(resolve, reject, response) {
 
 
 /***/ }),
-/* 71 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26770,7 +26768,7 @@ module.exports = function transformData(data, headers, fns) {
 
 
 /***/ }),
-/* 72 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26813,7 +26811,7 @@ module.exports = btoa;
 
 
 /***/ }),
-/* 73 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26888,7 +26886,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
 
 /***/ }),
-/* 74 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26907,7 +26905,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 
 /***/ }),
-/* 75 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26967,7 +26965,7 @@ module.exports = (
 
 
 /***/ }),
-/* 76 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26988,7 +26986,7 @@ module.exports = function isAbsoluteURL(url) {
 
 
 /***/ }),
-/* 77 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27063,7 +27061,7 @@ module.exports = (
 
 
 /***/ }),
-/* 78 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27082,7 +27080,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 
 
 /***/ }),
-/* 79 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27126,7 +27124,7 @@ module.exports = function parseHeaders(headers) {
 
 
 /***/ }),
-/* 80 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27160,6 +27158,116 @@ module.exports = function spread(callback) {
 
 
 /***/ }),
+/* 79 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = {
+    data: function data() {
+        return {
+            title: null,
+            body: null,
+            tags: null,
+            image: null,
+            blogID: null
+        };
+    },
+
+    methods: {
+        uploadBlogImage: function uploadBlogImage() {
+            var form = new FormData(),
+                image = document.getElementById('imageUpload').files[0],
+                _this = this;
+            form.append('image', image);
+            form.append('id', this.blogID);
+            form.append('body', this.body);
+            form.append('title', this.title);
+            form.append('tags', this.tags);
+
+            axios.post('/blog/add/image', form).then(function (response) {
+                _this.blogID = response.data.id;
+                _this.image = response.data.image;
+            });
+        },
+        saveBlogPost: function saveBlogPost() {
+            var data = {
+                title: this.title,
+                body: this.body,
+                id: this.blogID,
+                tags: this.tags
+            };
+            axios.post('/blog/add', data).then(function (response) {
+                console.log(response);
+            });
+        }
+    },
+    mounted: function mounted() {
+        // console.log(this.title)
+    }
+};
+
+/***/ }),
+/* 80 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = {
+    mounted: function mounted() {
+        console.log('Component mounted.');
+    }
+};
+
+/***/ }),
 /* 81 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -27181,119 +27289,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = {
-    data() {
-        return {
-            title: null,
-            body: null,
-            tags: null,
-            image: null,
-            blogID: null
-        };
-    },
-    methods: {
-        uploadBlogImage() {
-            var form = new FormData(),
-                image = document.getElementById('imageUpload').files[0],
-                _this = this;
-            form.append('image', image);
-            form.append('id', this.blogID);
-            form.append('body', this.body);
-            form.append('title', this.title);
-            form.append('tags', this.tags);
-
-            axios.post('/blog/add/image', form).then(response => {
-                _this.blogID = response.data.id;
-                _this.image = response.data.image;
-            });
-        },
-
-        saveBlogPost() {
-            var data = {
-                title: this.title,
-                body: this.body,
-                id: this.blogID,
-                tags: this.tags
-            };
-            axios.post('/blog/add', data).then(response => {
-                console.log(response);
-            });
-        }
-    },
-    mounted() {
-        // console.log(this.title)
-    }
-};
-
-/***/ }),
-/* 82 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = {
-    mounted() {
-        console.log('Component mounted.');
-    }
-};
-
-/***/ }),
-/* 83 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = {
-    data() {
+    data: function data() {
         return {
             followers: null,
             following: null,
@@ -27304,15 +27302,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
 
+
     props: {
         username: null
     },
 
     methods: {
 
-        getFollowership: function () {
+        getFollowership: function getFollowership() {
             var _this = this;
-            axios.get('/follower/' + this.username).then(response => {
+            axios.get('/follower/' + this.username).then(function (response) {
                 _this.isLoaded = true;
                 _this.followers = response.data.followers;
                 _this.following = response.data.following;
@@ -27321,7 +27320,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
 
-        handle: function () {
+        handle: function handle() {
             if (!this.isUserLoggedIn) {
                 alert('Please login to follow this user');
                 return;
@@ -27338,23 +27337,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         },
 
-        follow: function () {
+        follow: function follow() {
             axios.post('/follower/' + this.username);
         },
 
-        unfollow: function () {
+        unfollow: function unfollow() {
             axios.delete('/follower/' + this.username);
         }
 
     },
 
-    mounted() {
+    mounted: function mounted() {
         this.getFollowership();
     }
 };
 
 /***/ }),
-/* 84 */
+/* 82 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -27445,7 +27444,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = {
-    data() {
+    data: function data() {
         return {
             feeds: null,
             isFetching: false,
@@ -27456,68 +27455,292 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             player: null
         };
     },
+
     props: {
         user: null
     },
 
     methods: {
-        getInstagramFeed() {
+        getInstagramFeed: function getInstagramFeed() {
             var _this = this;
             _this.isFetching = true;
-            axios.get(window.Laravel.url + '/' + _this.user + '/instagram/feed').then(response => {
+            axios.get(window.Laravel.url + '/' + _this.user + '/instagram/feed').then(function (response) {
                 // console.log(response);
                 _this.isFetching = false;
                 _this.feeds = response.data;
-            }).catch(e => {
-                console.log(e);
+            }).catch(function (e) {
                 _this.isFetching = false;
                 _this.error = true;
             });
         },
-
-        showImage(feed) {
+        showImage: function showImage(feed) {
             console.log(feed);
             this.isOverlay = true;
             this.currentlyViewing = feed;
             if (feed.type === 'video') {
-                setTimeout(() => {
+                setTimeout(function () {
                     __WEBPACK_IMPORTED_MODULE_0_video_js___default()(document.querySelector('.video-js'));
                 }, 300);
             }
         },
-
-        closeOverlay() {
+        closeOverlay: function closeOverlay() {
             this.isOverlay = false;
         },
+        prevPost: function prevPost(feed) {
+            var _this2 = this;
 
-        prevPost(feed) {
             var index = this.feeds.indexOf(feed);
             if (index === 0) {
-                setTimeout(() => {
-                    this.currentlyViewing = this.feeds[this.feeds.length - 1];
+                setTimeout(function () {
+                    _this2.currentlyViewing = _this2.feeds[_this2.feeds.length - 1];
                 }, 300);
             } else {
-                setTimeout(() => {
-                    this.currentlyViewing = this.feeds[index - 1];
+                setTimeout(function () {
+                    _this2.currentlyViewing = _this2.feeds[index - 1];
                 }, 300);
             }
         },
+        nextPost: function nextPost(feed) {
+            var _this3 = this;
 
-        nextPost(feed) {
             var index = this.feeds.indexOf(feed);
             if (index === this.feeds.length - 1) {
-                setTimeout(() => {
-                    this.currentlyViewing = this.feeds[0];
+                setTimeout(function () {
+                    _this3.currentlyViewing = _this3.feeds[0];
                 }, 300);
             } else {
-                setTimeout(() => {
-                    this.currentlyViewing = this.feeds[index + 1];
+                setTimeout(function () {
+                    _this3.currentlyViewing = _this3.feeds[index + 1];
                 }, 300);
             }
         }
     },
-    mounted() {
+    mounted: function mounted() {
         this.getInstagramFeed();
+    }
+};
+
+/***/ }),
+/* 83 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = {
+    data: function data() {
+        return {
+            isLoggedIn: null,
+            count: null,
+            canLike: false,
+            hasLiked: false,
+            isUserLoggedIn: window.Laravel.userLoggedIn
+        };
+    },
+
+    props: {
+        id: null
+    },
+
+    methods: {
+        formatCount: function formatCount(c) {
+            var text = '';
+            if (c === 0) {
+                text = 'No likes yet';
+            } else if (c === 1) {
+                text = ' person likes this';
+            } else if (c > 1) {
+                text = ' people like this';
+            }
+            return text;
+        },
+        getLikes: function getLikes() {
+            var _this = this;
+            axios.get('/likes/' + this.id).then(function (response) {
+                // console.log(response);
+                _this.count = response.data.count;
+                _this.canLike = response.data.canLike;
+                _this.hasLiked = response.data.hasLiked;
+            });
+        },
+        submitLike: function submitLike() {
+            if (this.isUserLoggedIn === false) {
+                alert('Please login to like this portfolio');
+                return;
+            }
+            if (this.hasLiked === false) {
+                this.count++;
+                this.hasLiked = true;
+                this.like();
+            } else if (this.hasLiked === true) {
+                this.count--;
+                this.hasLiked = false;
+                this.unlike();
+            }
+        },
+        like: function like() {
+            var _this = this,
+                data = {
+                id: _this.id
+            };
+            axios.post('/likes/' + this.id, data);
+        },
+        unlike: function unlike() {
+            var _this = this,
+                data = {
+                id: _this.id
+            };
+            axios.delete('/likes/' + this.id, data);
+        }
+    },
+    mounted: function mounted() {
+        console.log(this.isUserLoggedIn);
+        this.getLikes();
+    }
+};
+
+/***/ }),
+/* 84 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = {
+    data: function data() {
+        return {
+            messages: this.messageList ? JSON.parse(this.messageList) : [],
+            messageInView: null,
+            reply: null,
+            replies: [],
+            status: null
+        };
+    },
+
+    props: {
+        messageList: null
+    },
+    methods: {
+        getMessage: function getMessage(message) {
+            var _this2 = this;
+
+            this.status = 'loading replies...';
+            this.replies = [];
+            this.messageInView = message;
+            axios.get('/message-replies/' + message.id).then(function (response) {
+                _this2.status = null;
+                _this2.replies = response.data;
+            }).catch(function (error) {
+                _this2.status = null;
+            });
+        },
+        getImage: function getImage(image) {
+            return window.Laravel.url + '/' + image;
+        },
+        submitReply: function submitReply(currentMessage) {
+            var _this = this;
+            var data = {
+                reply_id: currentMessage.id,
+                subject: 'RE: ' + currentMessage.subject,
+                receiver_id: currentMessage.user_id,
+                message: this.reply
+            };
+            axios.post('/message-reply', data).then(function (response) {
+                _this.reply = '';
+                _this.replies.push(response.data);
+            });
+        }
+    },
+    mounted: function mounted() {
+        console.log(this.messageList);
     }
 };
 
@@ -27537,79 +27760,72 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
-    data() {
+    data: function data() {
         return {
-            isLoggedIn: null,
-            count: null,
-            canLike: false,
-            hasLiked: false,
-            isUserLoggedIn: window.Laravel.userLoggedIn
+            portfolios: [],
+            queryLink: '/portfolio/' + this.username,
+            isLoaded: false
         };
     },
+
     props: {
-        id: null
+        username: null
     },
-
     methods: {
-        formatCount(c) {
-            var text = '';
-            if (c === 0) {
-                text = 'No likes yet';
-            } else if (c === 1) {
-                text = ' person likes this';
-            } else if (c > 1) {
-                text = ' people like this';
-            }
-            return text;
-        },
-
-        getLikes() {
+        getPortfolio: function getPortfolio() {
             var _this = this;
-            axios.get('/likes/' + this.id).then(response => {
-                // console.log(response);
-                _this.count = response.data.count;
-                _this.canLike = response.data.canLike;
-                _this.hasLiked = response.data.hasLiked;
+            axios.get(this.queryLink).then(function (response) {
+                _this.isLoaded = true;
+                _this.portfolios = response.data;
             });
         },
+        getFirstImage: function getFirstImage(file) {
+            var thumbnail = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
 
-        submitLike() {
-            if (this.isUserLoggedIn === false) {
-                alert('Please login to like this portfolio');
-                return;
+            if (thumbnail) {
+                return window.Laravel.url + '/' + thumbnail;
             }
-            if (this.hasLiked === false) {
-                this.count++;
-                this.hasLiked = true;
-                this.like();
-            } else if (this.hasLiked === true) {
-                this.count--;
-                this.hasLiked = false;
-                this.unlike();
+            return window.Laravel.url + '/' + file[0].file;
+        },
+        getAudioImage: function getAudioImage() {
+            var thumbnail = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+            if (thumbnail) {
+                return window.Laravel.url + '/' + thumbnail;
             }
-        },
-
-        like() {
-            var _this = this,
-                data = {
-                id: _this.id
-            };
-            axios.post('/likes/' + this.id, data);
-        },
-
-        unlike() {
-            var _this = this,
-                data = {
-                id: _this.id
-            };
-            axios.delete('/likes/' + this.id, data);
+            return window.Laravel.url + '/public/audio_wave.jpg';
         }
     },
-    mounted() {
-        console.log(this.isUserLoggedIn);
-        this.getLikes();
+    mounted: function mounted() {
+        this.getPortfolio();
     }
 };
 
@@ -27696,225 +27912,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = {
-    data() {
-        return {
-            messages: this.messageList ? JSON.parse(this.messageList) : [],
-            messageInView: null,
-            reply: null,
-            replies: [],
-            status: null
-        };
-    },
-    props: {
-        messageList: null
-    },
-    methods: {
-        getMessage: function (message) {
-            this.status = 'loading replies...';
-            this.replies = [];
-            this.messageInView = message;
-            axios.get('/message-replies/' + message.id).then(response => {
-                this.status = null;
-                this.replies = response.data;
-            }).catch(error => {
-                this.status = null;
-            });
-        },
-        getImage: function (image) {
-            return window.Laravel.url + '/' + image;
-        },
-        submitReply: function (currentMessage) {
-            var _this = this;
-            var data = {
-                reply_id: currentMessage.id,
-                subject: 'RE: ' + currentMessage.subject,
-                receiver_id: currentMessage.user_id,
-                message: this.reply
-            };
-            axios.post('/message-reply', data).then(response => {
-                _this.reply = '';
-                _this.replies.push(response.data);
-            });
-        }
-    },
-    mounted() {
-        console.log(this.messageList);
-    }
-};
-
-/***/ }),
-/* 87 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = {
-    data() {
-        return {
-            portfolios: [],
-            queryLink: '/portfolio/' + this.username,
-            isLoaded: false
-        };
-    },
-    props: {
-        username: null
-    },
-    methods: {
-
-        getPortfolio() {
-            var _this = this;
-            axios.get(this.queryLink).then(response => {
-                _this.isLoaded = true;
-                _this.portfolios = response.data;
-            });
-        },
-
-        getFirstImage(file, thumbnail = null) {
-            if (thumbnail) {
-                return window.Laravel.url + '/' + thumbnail;
-            }
-            return window.Laravel.url + '/' + file[0].file;
-        },
-
-        getAudioImage(thumbnail = null) {
-            if (thumbnail) {
-                return window.Laravel.url + '/' + thumbnail;
-            }
-            return window.Laravel.url + '/public/audio_wave.jpg';
-        }
-
-    },
-    mounted() {
-        this.getPortfolio();
-    }
-};
-
-/***/ }),
-/* 88 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = {
-    data() {
+    data: function data() {
         return {
             comments: [],
             comment: null,
@@ -27927,17 +27927,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             isLiking: false
         };
     },
+
     props: {
         uid: null
     },
     methods: {
-        getComments() {
+        getComments: function getComments() {
             var _this = this;
-            axios.get('/portfolio/' + this.uid + '/comments').then(response => {
+            axios.get('/portfolio/' + this.uid + '/comments').then(function (response) {
                 _this.comments = response.data.data;
             });
         },
-        submitComment() {
+        submitComment: function submitComment() {
             if (this.comment === null) {
                 alert('Please enter a comment');
                 return;
@@ -27947,29 +27948,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             };
             var _this = this;
             _this.isSubmitting = true;
-            axios.post('/portfolio/' + this.uid + '/comment/add', data).then(response => {
+            axios.post('/portfolio/' + this.uid + '/comment/add', data).then(function (response) {
                 _this.comment = null;
                 _this.isSubmitting = false;
                 _this.comments.unshift(response.data.data);
             });
         },
-        deleteComment(comment) {
+        deleteComment: function deleteComment(comment) {
             var _this = this;
             if (window.confirm('Do you really want to delete this comment?')) {
-                axios.delete('/comment/' + comment.id + '/delete').then(response => {
+                axios.delete('/comment/' + comment.id + '/delete').then(function (response) {
                     // console.log(response);
                     _this.comments.splice(_this.comments.indexOf(comment), 1);
                 });
             }
         },
-        deleteReply(reply, commentId) {
+        deleteReply: function deleteReply(reply, commentId) {
             var _this = this;
 
             if (window.confirm('Do you really want to delete this reply?')) {
-                axios.delete('/comment/' + reply.id + '/delete').then(response => {
+                axios.delete('/comment/' + reply.id + '/delete').then(function (response) {
                     // console.log(response);
                     // _this.comments.splice(_this.comments.indexOf(comment), 1);
-                    _this.comments.map((comment, index) => {
+                    _this.comments.map(function (comment, index) {
                         if (comment.id === commentId) {
                             _this.comments[index].replies.data.splice(_this.comments[index].replies.data.indexOf(reply), 1);
                         }
@@ -27977,7 +27978,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 });
             }
         },
-        submitCommentLike(comment) {
+        submitCommentLike: function submitCommentLike(comment) {
             var _this = this;
             _this.isLiking = true;
             if (!_this.user) {
@@ -27988,50 +27989,48 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var data = {
                 comment_id: comment.id
             };
-            axios.post('/comment/' + comment.id + '/like', data).then(response => {
+            axios.post('/comment/' + comment.id + '/like', data).then(function (response) {
                 _this.isLiking = false;
                 comment.likes = response.data.likes;
             });
         },
-        submitReply(commentId) {
+        submitReply: function submitReply(commentId) {
             var data = {
                 comment: this.reply,
                 id: commentId
             };
             var _this = this;
             _this.isReplySubmitting = true;
-            axios.post('/portfolio/' + this.uid + '/comment/add', data).then(response => {
+            axios.post('/portfolio/' + this.uid + '/comment/add', data).then(function (response) {
                 _this.reply = null;
                 _this.isReplySubmitting = false;
                 _this.isReplyActive = null;
-                _this.comments.map((comment, index) => {
+                _this.comments.map(function (comment, index) {
                     if (comment.id === commentId) {
                         _this.comments[index].replies.data.push(response.data.data);
                     }
                 });
             });
         },
-        toggleReplyField(commentID) {
+        toggleReplyField: function toggleReplyField(commentID) {
             this.isReplyActive = commentID;
         },
-
-        closeReply() {
+        closeReply: function closeReply() {
             this.isReplyActive = null;
         },
-
-        isVerifiedUser(verified) {
+        isVerifiedUser: function isVerifiedUser(verified) {
             if (verified === true) {
                 return '<img src="' + window.Laravel.url + '/public/verified.svg" width="14" height="14">';
             }
         }
     },
-    mounted() {
+    mounted: function mounted() {
         this.getComments();
     }
 };
 
 /***/ }),
-/* 89 */
+/* 87 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28222,7 +28221,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 // import videojs from "video.js";
 /* harmony default export */ __webpack_exports__["default"] = {
-    data() {
+    data: function data() {
         var portfolio = this.portfolio ? JSON.parse(this.portfolio) : '',
             files = this.files ? JSON.parse(this.files) : '',
             skills = this.skills ? JSON.parse(this.skills) : '';
@@ -28249,13 +28248,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             formErrors: null
         };
     },
+
     props: {
         portfolio: null,
         files: null,
         skills: null
     },
     methods: {
-        savePortfolio() {
+        savePortfolio: function savePortfolio() {
+            var _this2 = this;
+
             this.statusText = 'Saving Changes...';
             var data = {
                 uid: this.uid,
@@ -28272,15 +28274,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 method: 'PUT',
                 url: '/profile/portfolio/' + this.uid + '/update',
                 data: data
-            }).then(response => {
-                this.statusText = 'Saved!';
-                setTimeout(() => {
+            }).then(function (response) {
+                _this2.statusText = 'Saved!';
+                setTimeout(function () {
                     window.location.href = '/profile/portfolio';
                 }, 600);
             });
         },
-
-        uploadThumbnail() {
+        uploadThumbnail: function uploadThumbnail() {
             var _this = this;
             var thumbnail = document.getElementById('thumbnailImage').files[0];
             _this.savingThumbnail = true;
@@ -28295,19 +28296,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     url: '/profile/portfolio/thumbnail',
                     data: form,
                     headers: { 'Content-Type': 'multipart/form-data' },
-                    onUploadProgress: function (e) {
+                    onUploadProgress: function onUploadProgress(e) {
                         if (e.lengthComputable) {
                             // _this.progress = (e.loaded/e.total) * 100;
                         }
                     }
-                }).then(response => {
+                }).then(function (response) {
                     _this.savingThumbnail = false;
                     _this.isNew = true;
                     if (response.data.uid) {
                         _this.uid = response.data.uid;
                     }
                     _this.thumbnail = response.data.thumbnail;
-                }).catch(error => {
+                }).catch(function (error) {
                     _this.savingThumbnail = false;
                 });
             } else {
@@ -28316,15 +28317,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return;
             }
         },
-
-        getFile(image) {
+        getFile: function getFile(image) {
             if (this.isNew === false) {
                 return window.skillsearch.s3images + '/' + image;
             } else {
                 return window.Laravel.url + '/' + image;
             }
         },
-        uploadImage() {
+        uploadImage: function uploadImage() {
             var file = document.getElementById('fileUpload').files[0],
                 _this = this,
                 images = ['image/png', 'image/jpg', 'image/jpeg', 'image/gif'],
@@ -28365,19 +28365,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     url: '/profile/portfolio/add',
                     data: form,
                     headers: { 'Content-Type': 'multipart/form-data' },
-                    onUploadProgress: function (e) {
+                    onUploadProgress: function onUploadProgress(e) {
                         if (e.lengthComputable) {
                             _this.progress = e.loaded / e.total * 100;
                         }
                     }
-                }).then(response => {
+                }).then(function (response) {
                     _this.isNew = true;
                     _this.isUploading = false;
                     _this.uploadingComplete = true;
                     _this.uid = response.data.uid;
                     _this.uploadedImages.push(response.data.file);
                     _this.canSave = true;
-                }).catch(e => {
+                }).catch(function (e) {
                     _this.isUploading = false;
                     _this.uploadingComplete = true;
                     _this.formErrors = e.response.data;
@@ -28398,17 +28398,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     url: '/profile/portfolio/add',
                     data: form,
                     headers: { 'Content-Type': 'multipart/form-data' },
-                    onUploadProgress: function (e) {
+                    onUploadProgress: function onUploadProgress(e) {
                         if (e.lengthComputable) {
                             _this.progress = e.loaded / e.total * 100;
                         }
                     }
-                }).then(response => {
+                }).then(function (response) {
                     _this.isNew = true;
                     _this.isUploading = false;
                     _this.uploadingComplete = true;
                     _this.uploadedImages.push(response.data.file);
-                }).catch(e => {
+                }).catch(function (e) {
                     // console.log(error)
                     _this.isUploading = false;
                     _this.uploadingComplete = true;
@@ -28416,19 +28416,170 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 });
             }
         },
-        deleteFile(image) {
+        deleteFile: function deleteFile(image) {
             var file_id = image.id,
                 verify = confirm("Are you sure you want to delete this file"),
                 _this = this;
             var i = _this.uploadedImages.indexOf(image);
             if (verify) {
-                axios.delete('/profile/files/' + file_id).then(response => {
+                axios.delete('/profile/files/' + file_id).then(function (response) {
                     _this.uploadedImages.splice(i, 1);
                 });
             }
         }
     },
-    mounted() {}
+    mounted: function mounted() {}
+};
+
+/***/ }),
+/* 88 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = {
+    data: function data() {
+        return {
+            isPublic: false
+        };
+    },
+
+
+    methods: {
+        togglePrivacy: function togglePrivacy() {
+            if (this.isPublic) {
+                this.isPublic = false;
+                this.setPrivate();
+            } else {
+                this.isPublic = true;
+                this.setPublic();
+            }
+        },
+        setPrivate: function setPrivate() {
+            axios.get('/profile/set/private');
+        },
+        setPublic: function setPublic() {
+            axios.get('/profile/set/public');
+        },
+        getStatus: function getStatus() {
+            var _this = this;
+            axios.get('/profile/get-privacy').then(function (response) {
+                _this.isPublic = response.data.status;
+            });
+        }
+    },
+
+    props: {
+        public: null
+    },
+
+    mounted: function mounted() {
+        this.getStatus();
+    }
+};
+
+/***/ }),
+/* 89 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = {
+    data: function data() {
+        return {
+            userServices: JSON.parse(this.skills),
+            subject: null,
+            body: null,
+            services: [],
+            link: '/services/' + this.username,
+            status: null,
+            isSubmitting: false,
+            formErrors: null
+        };
+    },
+
+
+    props: {
+        firstName: null,
+        username: null,
+        skills: null
+    },
+
+    methods: {
+        submitRequest: function submitRequest() {
+            var _this = this,
+                data = {
+                subject: _this.subject,
+                body: _this.body,
+                services: _this.services
+            };
+
+            _this.isSubmitting = true;
+            axios.post(_this.link, data).then(function (response) {
+                _this.subject = null;
+                _this.body = null;
+                _this.services = null;
+                _this.status = '<strong>Oshe!</strong> Your request was sent successfully!';
+                _this.isSubmitting = false;
+                setTimeout(function () {
+                    _this.status = null;
+                    window.location.href = window.Laravel.url + '/' + _this.username;
+                }, 3000);
+            }).catch(function (e) {
+                _this.isSubmitting = false;
+                _this.formErrors = e.response.data;
+            });
+        }
+    },
+
+    mounted: function mounted() {
+        //
+    }
 };
 
 /***/ }),
@@ -28446,160 +28597,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-
-/* harmony default export */ __webpack_exports__["default"] = {
-    data() {
-        return {
-            isPublic: false
-        };
-    },
-
-    methods: {
-        togglePrivacy() {
-            if (this.isPublic) {
-                this.isPublic = false;
-                this.setPrivate();
-            } else {
-                this.isPublic = true;
-                this.setPublic();
-            }
-        },
-
-        setPrivate() {
-            axios.get('/profile/set/private');
-        },
-
-        setPublic() {
-            axios.get('/profile/set/public');
-        },
-
-        getStatus() {
-            var _this = this;
-            axios.get('/profile/get-privacy').then(response => {
-                _this.isPublic = response.data.status;
-            });
-        }
-    },
-
-    props: {
-        public: null
-    },
-
-    mounted() {
-        this.getStatus();
-    }
-};
-
-/***/ }),
-/* 91 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = {
-    data() {
-        return {
-            userServices: JSON.parse(this.skills),
-            subject: null,
-            body: null,
-            services: [],
-            link: '/services/' + this.username,
-            status: null,
-            isSubmitting: false,
-            formErrors: null
-        };
-    },
-
-    props: {
-        firstName: null,
-        username: null,
-        skills: null
-    },
-
-    methods: {
-
-        submitRequest() {
-            var _this = this,
-                data = {
-                subject: _this.subject,
-                body: _this.body,
-                services: _this.services
-            };
-
-            _this.isSubmitting = true;
-            axios.post(_this.link, data).then(response => {
-                _this.subject = null;
-                _this.body = null;
-                _this.services = null;
-                _this.status = '<strong>Oshe!</strong> Your request was sent successfully!';
-                _this.isSubmitting = false;
-                setTimeout(() => {
-                    _this.status = null;
-                    window.location.href = window.Laravel.url + '/' + _this.username;
-                }, 3000);
-            }).catch(e => {
-                _this.isSubmitting = false;
-                _this.formErrors = e.response.data;
-            });
-        }
-
-    },
-
-    mounted() {
-        //
-    }
-};
-
-/***/ }),
-/* 92 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -28679,7 +28676,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = {
-    data() {
+    data: function data() {
         return {
             serviceRequests: JSON.parse(this.requests),
             userId: window.Laravel.user_id,
@@ -28690,49 +28687,46 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
 
+
     methods: {
-        getAvatar(image) {
+        getAvatar: function getAvatar(image) {
             return window.skillsearch.s3images + '/' + image;
         },
-
-        loadRequest(request) {
+        loadRequest: function loadRequest(request) {
             this.reading = request;
             this.loadResponses(request);
         },
-
-        loadResponses(request) {
+        loadResponses: function loadResponses(request) {
             var _this = this;
             _this.responses = [];
-            axios.get('/profile/response/' + request.id).then(response => {
+            axios.get('/profile/response/' + request.id).then(function (response) {
                 _this.isLoadingResponse = true;
                 _this.responses = response.data;
             });
         },
-
-        submitResponse(request) {
+        submitResponse: function submitResponse(request) {
             var _this = this,
                 data = {
                 response: _this.body
             };
-            axios.post('/profile/response/' + request.id, data).then(response => {
+            axios.post('/profile/response/' + request.id, data).then(function (response) {
                 _this.body = null;
                 _this.responses.push(response.data);
             });
         }
-
     },
 
     props: {
         requests: null
     },
 
-    mounted() {
+    mounted: function mounted() {
         console.log(this.serviceRequests);
     }
 };
 
 /***/ }),
-/* 93 */
+/* 91 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28796,7 +28790,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 // import kartik from 'kartik-v';
 /* harmony default export */ __webpack_exports__["default"] = {
-    data() {
+    data: function data() {
         return {
             reviews: [],
             hasReviewed: false,
@@ -28807,41 +28801,41 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
 
+
     props: {
         username: null,
         userId: null
     },
 
     methods: {
-
-        getReviews() {
+        getReviews: function getReviews() {
             var _this = this;
-            axios.get("/reviews/" + this.username).then(response => {
-                setTimeout(() => {
+            axios.get("/reviews/" + this.username).then(function (response) {
+                setTimeout(function () {
                     _this.reviews = response.data;
                 });
             });
         },
-
-        submitReview() {
+        submitReview: function submitReview() {
             var score = document.getElementById('score').value;
             var _this = this;
             var data = {
                 score: score,
                 review: this.review
             };
-            axios.post("/reviews/" + this.username, data).then(response => {
+            axios.post("/reviews/" + this.username, data).then(function (response) {
                 _this.review = '';
                 score = 0;
                 _this.reviews.unshift(response.data);
             });
         },
 
-        getImage: function (image) {
+
+        getImage: function getImage(image) {
             return window.skillsearch.s3images + '/' + image;
         },
 
-        getRatings(count) {
+        getRatings: function getRatings(count) {
             var star = '',
                 r = 5 - count;
 
@@ -28855,12 +28849,177 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
             return star;
         }
-
     },
 
-    mounted() {
+    mounted: function mounted() {
         this.getReviews();
     }
+};
+
+/***/ }),
+/* 92 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = {
+    data: function data() {
+        var user = this.user ? JSON.parse(this.user) : '';
+        return {
+            subject: null,
+            receiver_id: user.id,
+            message: null,
+            sent: false,
+            sending: false,
+            profile: user,
+            status: null
+        };
+    },
+
+    props: {
+        user: null
+    },
+    methods: {
+        sendMessage: function sendMessage(event) {
+            var data = {
+                subject: this.subject,
+                message: this.message,
+                receiver_id: this.receiver_id
+            },
+                _this = this;
+            axios.post('/' + this.user.name + '/message', data).then(function (response) {
+                _this.status = 'Your message was sent successfully';
+                _this.subject = '';
+                _this.message = '';
+            });
+        }
+    },
+    mounted: function mounted() {}
+};
+
+/***/ }),
+/* 93 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = {
+    mounted: function mounted() {},
+    data: function data() {
+        return {
+            skills: this.getSkills(),
+            selectedSkills: this.getUserSkills()
+        };
+    },
+
+
+    methods: {
+        getSkills: function getSkills() {
+            var _this = this;
+            axios.get('/skills/all').then(function (response) {
+                _this.skills = response.data;
+            });
+        },
+        getUserSkills: function getUserSkills() {
+            var _this = this;
+            axios.get('/skills/user').then(function (response) {
+                _this.selectedSkills = response.data;
+            });
+        },
+        addSkill: function addSkill(skill, event) {
+            if (this.selectedSkills.length >= 5) {
+                return false;
+            }
+            var i = this.skills.indexOf(skill);
+            this.skills.splice(i, 1);
+            this.selectedSkills.push(skill);
+
+            axios.post('/skills/add', {
+                'id': skill.id,
+                'skill': skill.skill
+            }).then(function (response) {
+                console.log(response);
+            });
+        },
+        removeSkill: function removeSkill(skill, event) {
+            var i = this.selectedSkills.indexOf(skill);
+            this.selectedSkills.splice(i, 1);
+            this.skills.push(skill);
+
+            axios.delete('/skills/delete/' + skill.skill).then(function (response) {
+                console.log(response);
+            });
+        }
+    }
+
 };
 
 /***/ }),
@@ -28889,44 +29048,60 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = {
-    data() {
-        var user = this.user ? JSON.parse(this.user) : '';
+    mounted: function mounted() {
+        // console.log('Component mounted.')
+    },
+    data: function data() {
         return {
-            subject: null,
-            receiver_id: user.id,
-            message: null,
-            sent: false,
-            sending: false,
-            profile: user,
-            status: null
+
+            fileupload: null,
+            isUploading: false,
+            progress: 0,
+            uploadingComplete: false,
+            file: null,
+            imageSrc: this.imgSrc
         };
     },
+
+
     props: {
-        user: null
+
+        imgSrc: null
+
     },
+
     methods: {
-        sendMessage: function (event) {
-            var data = {
-                subject: this.subject,
-                message: this.message,
-                receiver_id: this.receiver_id
-            },
+
+        uploadProfileImage: function uploadProfileImage(event) {
+            var image = document.getElementById('fileupload').files[0];
+            this.isUploading = true;
+
+            var data = new FormData(),
                 _this = this;
-            axios.post('/' + this.user.name + '/message', data).then(response => {
-                _this.status = 'Your message was sent successfully';
-                _this.subject = '';
-                _this.message = '';
+
+            data.append('image', image);
+
+            axios({
+                method: 'post',
+                url: '/profile/upload-image',
+                headers: { 'Content-Type': 'multipart/form-data' },
+                data: data,
+                onUploadProgress: function onUploadProgress(e) {
+                    if (e.lengthComputable) {
+                        _this.progress = e.loaded / e.total * 100;
+                    }
+                }
+            }).then(function (response) {
+                _this.uploadingComplete = true;
+                _this.isUploading = false;
+                _this.progress = 0;
+                _this.imageSrc = response.data.filename;
             });
         }
-    },
-    mounted() {}
+
+    }
 };
 
 /***/ }),
@@ -28942,95 +29117,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = {
-    mounted() {},
-
-    data() {
+    data: function data() {
         return {
-            skills: this.getSkills(),
-            selectedSkills: this.getUserSkills()
+            status: ''
         };
     },
 
+
     methods: {
-
-        getSkills() {
-            var _this = this;
-            axios.get('/skills/all').then(response => {
-                _this.skills = response.data;
-            });
-        },
-
-        getUserSkills() {
-            var _this = this;
-            axios.get('/skills/user').then(response => {
-                _this.selectedSkills = response.data;
-            });
-        },
-
-        addSkill(skill, event) {
-            if (this.selectedSkills.length >= 5) {
-                return false;
-            }
-            var i = this.skills.indexOf(skill);
-            this.skills.splice(i, 1);
-            this.selectedSkills.push(skill);
-
-            axios.post('/skills/add', {
-                'id': skill.id,
-                'skill': skill.skill
-            }).then(response => {
-                console.log(response);
-            });
-        },
-
-        removeSkill(skill, event) {
-            var i = this.selectedSkills.indexOf(skill);
-            this.selectedSkills.splice(i, 1);
-            this.skills.push(skill);
-
-            axios.delete('/skills/delete/' + skill.skill).then(response => {
-                console.log(response);
+        uploadBackgroundImage: function uploadBackgroundImage() {
+            var file = document.getElementById('backgroundImage').files[0],
+                form = new FormData();
+            form.append('file', file);
+            axios.post('/home/upload', form).then(function (response) {
+                window.location.reload();
             });
         }
+    },
 
+    mounted: function mounted() {
+        //console.log('Component mounted.')
     }
-
 };
 
 /***/ }),
@@ -29059,127 +29168,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-
-/* harmony default export */ __webpack_exports__["default"] = {
-    mounted() {
-        // console.log('Component mounted.')
-    },
-
-    data() {
-        return {
-
-            fileupload: null,
-            isUploading: false,
-            progress: 0,
-            uploadingComplete: false,
-            file: null,
-            imageSrc: this.imgSrc
-        };
-    },
-
-    props: {
-
-        imgSrc: null
-
-    },
-
-    methods: {
-
-        uploadProfileImage: function (event) {
-            var image = document.getElementById('fileupload').files[0];
-            this.isUploading = true;
-
-            var data = new FormData(),
-                _this = this;
-
-            data.append('image', image);
-
-            axios({
-                method: 'post',
-                url: '/profile/upload-image',
-                headers: { 'Content-Type': 'multipart/form-data' },
-                data: data,
-                onUploadProgress: function (e) {
-                    if (e.lengthComputable) {
-                        _this.progress = e.loaded / e.total * 100;
-                    }
-                }
-            }).then(response => {
-                _this.uploadingComplete = true;
-                _this.isUploading = false;
-                _this.progress = 0;
-                _this.imageSrc = response.data.filename;
-            });
-        }
-
-    }
-};
-
-/***/ }),
-/* 97 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = {
-
-    data() {
-        return {
-            status: ''
-        };
-    },
-
-    methods: {
-        uploadBackgroundImage() {
-            var file = document.getElementById('backgroundImage').files[0],
-                form = new FormData();
-            form.append('file', file);
-            axios.post('/home/upload', form).then(response => {
-                window.location.reload();
-            });
-        }
-    },
-
-    mounted() {
-        //console.log('Component mounted.')
-    }
-
-};
-
-/***/ }),
-/* 98 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -29198,7 +29186,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = {
-    data() {
+    data: function data() {
         return {
             users: null,
             loaded: false,
@@ -29208,54 +29196,53 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
 
+
     methods: {
-        getVerificationRequests() {
+        getVerificationRequests: function getVerificationRequests() {
             var _this = this;
-            axios.get('/home/users').then(response => {
+            axios.get('/home/users').then(function (response) {
                 _this.loaded = true;
                 _this.users = response.data;
                 // console.log(response);
             });
         },
-        getImage(image) {
+        getImage: function getImage(image) {
             return window.skillsearch.s3images + '/' + image;
         },
-
-        verifyUser(user) {
+        verifyUser: function verifyUser(user) {
             var data = {
                 user_id: user.user_id,
                 id: user.id
             };
             this.isVerifying = true;
             var _this = this;
-            axios.post('/home/users/ok', data).then(response => {
+            axios.post('/home/users/ok', data).then(function (response) {
                 _this.isVerifying = false;
                 _this.users.splice(_this.users.indexOf(user), 1);
-            }).catch(error => {
+            }).catch(function (error) {
                 _this.isVerifying = false;
             });
         },
-
-        cancelMessage(user) {
+        cancelMessage: function cancelMessage(user) {
             var data = {
                 user_id: user.user_id,
                 message: this.message,
                 id: user.id
             };
             var _this = this;
-            axios.post('/home/users/cancel', data).then(response => {
+            axios.post('/home/users/cancel', data).then(function (response) {
                 _this.users.splice(_this.users.indexOf(user), 1);
             });
         }
     },
 
-    mounted() {
+    mounted: function mounted() {
         this.getVerificationRequests();
     }
 };
 
 /***/ }),
-/* 99 */
+/* 97 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -29273,21 +29260,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = {
-    data() {
+    data: function data() {
         return {
             player: null
         };
     },
+
     props: {
         videoUrl: null
     },
-    mounted() {
+    mounted: function mounted() {
         this.player = __WEBPACK_IMPORTED_MODULE_0_video_js___default()("video");
     }
 };
 
 /***/ }),
-/* 100 */
+/* 98 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -29298,13 +29286,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = {
-    data() {
+    data: function data() {
         return {
             id: this.uid
         };
     },
+
     methods: {
-        logView() {
+        logView: function logView() {
             axios.post('/portfolio/' + this.id + '/views');
         }
     },
@@ -29312,19 +29301,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         uid: null
     },
 
-    mounted() {
-        setTimeout(() => {
-            this.logView();
+    mounted: function mounted() {
+        var _this = this;
+
+        setTimeout(function () {
+            _this.logView();
         }, 5000);
     }
 };
 
 /***/ }),
-/* 101 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(__webpack_provided_window_dot_jQuery) {
-window._ = __webpack_require__(106);
+window._ = __webpack_require__(103);
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -29332,9 +29323,9 @@ window._ = __webpack_require__(106);
  * code may be modified to fit the specific needs of your application.
  */
 
-window.$ = __webpack_provided_window_dot_jQuery = __webpack_require__(10);
+window.$ = __webpack_provided_window_dot_jQuery = __webpack_require__(13);
 
-__webpack_require__(103);
+__webpack_require__(101);
 
 /**
  * Vue is a modern JavaScript library for building interactive web interfaces
@@ -29342,7 +29333,7 @@ __webpack_require__(103);
  * and simple, leaving you to focus on building your next great project.
  */
 
-window.Vue = __webpack_require__(210);
+window.Vue = __webpack_require__(207);
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -29350,7 +29341,7 @@ window.Vue = __webpack_require__(210);
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-window.axios = __webpack_require__(63);
+window.axios = __webpack_require__(61);
 
 window.axios.defaults.headers.common = {
   'X-CSRF-TOKEN': window.Laravel.csrfToken,
@@ -29370,13 +29361,13 @@ window.axios.defaults.headers.common = {
 //     key: 'your-pusher-key'
 // });
 
-window.Blazy = __webpack_require__(102);
+window.Blazy = __webpack_require__(100);
 window.Waypoint = __webpack_require__(26);
 window.Wavesurfer = __webpack_require__(25);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
 
 /***/ }),
-/* 102 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -29756,7 +29747,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 
 
 /***/ }),
-/* 103 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(jQuery) {/*!
@@ -32137,11 +32128,10 @@ if (typeof jQuery === 'undefined') {
 
 }(jQuery);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
 
 /***/ }),
-/* 104 */,
-/* 105 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isFunction = __webpack_require__(40)
@@ -32193,7 +32183,7 @@ function forEachObject(object, iterator, context) {
 
 
 /***/ }),
-/* 106 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -49282,14 +49272,14 @@ function forEachObject(object, iterator, context) {
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(16), __webpack_require__(211)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(16), __webpack_require__(208)(module)))
 
 /***/ }),
-/* 107 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var trim = __webpack_require__(109)
-  , forEach = __webpack_require__(105)
+var trim = __webpack_require__(106)
+  , forEach = __webpack_require__(102)
   , isArray = function(arg) {
       return Object.prototype.toString.call(arg) === '[object Array]';
     }
@@ -49321,7 +49311,7 @@ module.exports = function (headers) {
 }
 
 /***/ }),
-/* 108 */
+/* 105 */
 /***/ (function(module, exports) {
 
 module.exports = SafeParseTuple
@@ -49341,7 +49331,7 @@ function SafeParseTuple(obj, reviver) {
 
 
 /***/ }),
-/* 109 */
+/* 106 */
 /***/ (function(module, exports) {
 
 
@@ -49361,7 +49351,7 @@ exports.right = function(str){
 
 
 /***/ }),
-/* 110 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49460,7 +49450,7 @@ exports['default'] = BigPlayButton;
 
 
 /***/ }),
-/* 111 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49564,7 +49554,7 @@ exports['default'] = CloseButton;
 
 
 /***/ }),
-/* 112 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49580,7 +49570,7 @@ var _component = __webpack_require__(0);
 
 var _component2 = _interopRequireDefault(_component);
 
-var _audioTrackMenuItem = __webpack_require__(113);
+var _audioTrackMenuItem = __webpack_require__(110);
 
 var _audioTrackMenuItem2 = _interopRequireDefault(_audioTrackMenuItem);
 
@@ -49687,7 +49677,7 @@ exports['default'] = AudioTrackButton;
 
 
 /***/ }),
-/* 113 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49813,7 +49803,7 @@ exports['default'] = AudioTrackMenuItem;
 
 
 /***/ }),
-/* 114 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49825,41 +49815,41 @@ var _component = __webpack_require__(0);
 
 var _component2 = _interopRequireDefault(_component);
 
-__webpack_require__(117);
+__webpack_require__(114);
+
+__webpack_require__(132);
+
+__webpack_require__(133);
 
 __webpack_require__(135);
+
+__webpack_require__(134);
+
+__webpack_require__(113);
+
+__webpack_require__(120);
+
+__webpack_require__(112);
 
 __webpack_require__(136);
 
 __webpack_require__(138);
 
-__webpack_require__(137);
-
-__webpack_require__(116);
-
-__webpack_require__(123);
-
-__webpack_require__(115);
-
-__webpack_require__(139);
-
-__webpack_require__(141);
-
 __webpack_require__(42);
 
-__webpack_require__(130);
-
-__webpack_require__(132);
-
-__webpack_require__(134);
+__webpack_require__(127);
 
 __webpack_require__(129);
 
-__webpack_require__(112);
-
-__webpack_require__(118);
+__webpack_require__(131);
 
 __webpack_require__(126);
+
+__webpack_require__(109);
+
+__webpack_require__(115);
+
+__webpack_require__(123);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -49925,7 +49915,7 @@ exports['default'] = ControlBar;
 
 
 /***/ }),
-/* 115 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50048,7 +50038,7 @@ exports['default'] = FullscreenToggle;
 
 
 /***/ }),
-/* 116 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50157,7 +50147,7 @@ exports['default'] = LiveDisplay;
 
 
 /***/ }),
-/* 117 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50296,7 +50286,7 @@ exports['default'] = PlayToggle;
 
 
 /***/ }),
-/* 118 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50312,7 +50302,7 @@ var _menu = __webpack_require__(47);
 
 var _menu2 = _interopRequireDefault(_menu);
 
-var _playbackRateMenuItem = __webpack_require__(119);
+var _playbackRateMenuItem = __webpack_require__(116);
 
 var _playbackRateMenuItem2 = _interopRequireDefault(_playbackRateMenuItem);
 
@@ -50538,7 +50528,7 @@ exports['default'] = PlaybackRateMenuButton;
 
 
 /***/ }),
-/* 119 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50652,7 +50642,7 @@ exports['default'] = PlaybackRateMenuItem;
 
 
 /***/ }),
-/* 120 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50781,7 +50771,7 @@ exports['default'] = LoadProgressBar;
 
 
 /***/ }),
-/* 121 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50801,7 +50791,7 @@ var _fn = __webpack_require__(1);
 
 var Fn = _interopRequireWildcard(_fn);
 
-var _formatTime = __webpack_require__(13);
+var _formatTime = __webpack_require__(12);
 
 var _formatTime2 = _interopRequireDefault(_formatTime);
 
@@ -50982,7 +50972,7 @@ exports['default'] = MouseTimeDisplay;
 
 
 /***/ }),
-/* 122 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50998,7 +50988,7 @@ var _fn = __webpack_require__(1);
 
 var Fn = _interopRequireWildcard(_fn);
 
-var _formatTime = __webpack_require__(13);
+var _formatTime = __webpack_require__(12);
 
 var _formatTime2 = _interopRequireDefault(_formatTime);
 
@@ -51090,7 +51080,7 @@ exports['default'] = PlayProgressBar;
 
 
 /***/ }),
-/* 123 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51102,9 +51092,9 @@ var _component = __webpack_require__(0);
 
 var _component2 = _interopRequireDefault(_component);
 
-__webpack_require__(124);
-
 __webpack_require__(121);
+
+__webpack_require__(118);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -51164,7 +51154,7 @@ exports['default'] = ProgressControl;
 
 
 /***/ }),
-/* 124 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51184,7 +51174,7 @@ var _fn = __webpack_require__(1);
 
 var Fn = _interopRequireWildcard(_fn);
 
-var _formatTime = __webpack_require__(13);
+var _formatTime = __webpack_require__(12);
 
 var _formatTime2 = _interopRequireDefault(_formatTime);
 
@@ -51192,11 +51182,11 @@ var _computedStyle = __webpack_require__(34);
 
 var _computedStyle2 = _interopRequireDefault(_computedStyle);
 
-__webpack_require__(120);
+__webpack_require__(117);
+
+__webpack_require__(119);
 
 __webpack_require__(122);
-
-__webpack_require__(125);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 
@@ -51431,7 +51421,7 @@ exports['default'] = SeekBar;
 
 
 /***/ }),
-/* 125 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51447,7 +51437,7 @@ var _fn = __webpack_require__(1);
 
 var Fn = _interopRequireWildcard(_fn);
 
-var _formatTime = __webpack_require__(13);
+var _formatTime = __webpack_require__(12);
 
 var _formatTime2 = _interopRequireDefault(_formatTime);
 
@@ -51537,7 +51527,7 @@ exports['default'] = TooltipProgressBar;
 
 
 /***/ }),
-/* 126 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51545,7 +51535,7 @@ exports['default'] = TooltipProgressBar;
 
 exports.__esModule = true;
 
-var _spacer = __webpack_require__(127);
+var _spacer = __webpack_require__(124);
 
 var _spacer2 = _interopRequireDefault(_spacer);
 
@@ -51615,7 +51605,7 @@ exports['default'] = CustomControlSpacer;
 
 
 /***/ }),
-/* 127 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51686,7 +51676,7 @@ exports['default'] = Spacer;
 
 
 /***/ }),
-/* 128 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51778,7 +51768,7 @@ exports['default'] = CaptionSettingsMenuItem;
 
 
 /***/ }),
-/* 129 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51794,7 +51784,7 @@ var _component = __webpack_require__(0);
 
 var _component2 = _interopRequireDefault(_component);
 
-var _captionSettingsMenuItem = __webpack_require__(128);
+var _captionSettingsMenuItem = __webpack_require__(125);
 
 var _captionSettingsMenuItem2 = _interopRequireDefault(_captionSettingsMenuItem);
 
@@ -51896,7 +51886,7 @@ exports['default'] = CaptionsButton;
 
 
 /***/ }),
-/* 130 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51912,7 +51902,7 @@ var _component = __webpack_require__(0);
 
 var _component2 = _interopRequireDefault(_component);
 
-var _chaptersTrackMenuItem = __webpack_require__(131);
+var _chaptersTrackMenuItem = __webpack_require__(128);
 
 var _chaptersTrackMenuItem2 = _interopRequireDefault(_chaptersTrackMenuItem);
 
@@ -52143,7 +52133,7 @@ exports['default'] = ChaptersButton;
 
 
 /***/ }),
-/* 131 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52258,7 +52248,7 @@ exports['default'] = ChaptersTrackMenuItem;
 
 
 /***/ }),
-/* 132 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52401,7 +52391,7 @@ exports['default'] = DescriptionsButton;
 
 
 /***/ }),
-/* 133 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52499,7 +52489,7 @@ exports['default'] = OffTextTrackMenuItem;
 
 
 /***/ }),
-/* 134 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52593,7 +52583,7 @@ exports['default'] = SubtitlesButton;
 
 
 /***/ }),
-/* 135 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52609,7 +52599,7 @@ var _dom = __webpack_require__(2);
 
 var Dom = _interopRequireWildcard(_dom);
 
-var _formatTime = __webpack_require__(13);
+var _formatTime = __webpack_require__(12);
 
 var _formatTime2 = _interopRequireDefault(_formatTime);
 
@@ -52708,7 +52698,7 @@ exports['default'] = CurrentTimeDisplay;
 
 
 /***/ }),
-/* 136 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52724,7 +52714,7 @@ var _dom = __webpack_require__(2);
 
 var Dom = _interopRequireWildcard(_dom);
 
-var _formatTime = __webpack_require__(13);
+var _formatTime = __webpack_require__(12);
 
 var _formatTime2 = _interopRequireDefault(_formatTime);
 
@@ -52833,7 +52823,7 @@ exports['default'] = DurationDisplay;
 
 
 /***/ }),
-/* 137 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52849,7 +52839,7 @@ var _dom = __webpack_require__(2);
 
 var Dom = _interopRequireWildcard(_dom);
 
-var _formatTime = __webpack_require__(13);
+var _formatTime = __webpack_require__(12);
 
 var _formatTime2 = _interopRequireDefault(_formatTime);
 
@@ -52954,7 +52944,7 @@ exports['default'] = RemainingTimeDisplay;
 
 
 /***/ }),
-/* 138 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53013,7 +53003,7 @@ exports['default'] = TimeDivider;
 
 
 /***/ }),
-/* 139 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53111,7 +53101,7 @@ exports['default'] = VolumeControl;
 
 
 /***/ }),
-/* 140 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53169,7 +53159,7 @@ exports['default'] = VolumeLevel;
 
 
 /***/ }),
-/* 141 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53185,11 +53175,11 @@ var _component = __webpack_require__(0);
 
 var _component2 = _interopRequireDefault(_component);
 
-var _popup = __webpack_require__(148);
+var _popup = __webpack_require__(145);
 
 var _popup2 = _interopRequireDefault(_popup);
 
-var _popupButton = __webpack_require__(147);
+var _popupButton = __webpack_require__(144);
 
 var _popupButton2 = _interopRequireDefault(_popupButton);
 
@@ -53419,7 +53409,7 @@ exports['default'] = VolumeMenuButton;
 
 
 /***/ }),
-/* 142 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53435,7 +53425,7 @@ var _modalDialog = __webpack_require__(48);
 
 var _modalDialog2 = _interopRequireDefault(_modalDialog);
 
-var _mergeOptions = __webpack_require__(11);
+var _mergeOptions = __webpack_require__(10);
 
 var _mergeOptions2 = _interopRequireDefault(_mergeOptions);
 
@@ -53526,7 +53516,7 @@ exports['default'] = ErrorDisplay;
 
 
 /***/ }),
-/* 143 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53633,7 +53623,7 @@ exports['default'] = extendFn;
 
 
 /***/ }),
-/* 144 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53695,7 +53685,7 @@ exports['default'] = FullscreenApi;
 
 
 /***/ }),
-/* 145 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53753,7 +53743,7 @@ exports['default'] = LoadingSpinner;
 
 
 /***/ }),
-/* 146 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53786,7 +53776,7 @@ exports['default'] = plugin;
 
 
 /***/ }),
-/* 147 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53915,7 +53905,7 @@ exports['default'] = PopupButton;
 
 
 /***/ }),
-/* 148 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53935,7 +53925,7 @@ var _fn = __webpack_require__(1);
 
 var Fn = _interopRequireWildcard(_fn);
 
-var _events = __webpack_require__(12);
+var _events = __webpack_require__(11);
 
 var Events = _interopRequireWildcard(_events);
 
@@ -54020,7 +54010,7 @@ exports['default'] = Popup;
 
 
 /***/ }),
-/* 149 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54208,7 +54198,7 @@ exports['default'] = PosterImage;
 
 
 /***/ }),
-/* 150 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54221,7 +54211,7 @@ var _dom = __webpack_require__(2);
 
 var Dom = _interopRequireWildcard(_dom);
 
-var _events = __webpack_require__(12);
+var _events = __webpack_require__(11);
 
 var Events = _interopRequireWildcard(_events);
 
@@ -54359,7 +54349,7 @@ exports.hasLoaded = hasLoaded;
 
 
 /***/ }),
-/* 151 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54568,7 +54558,7 @@ exports['default'] = FlashRtmpDecorator;
 
 
 /***/ }),
-/* 152 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54590,7 +54580,7 @@ var Url = _interopRequireWildcard(_url);
 
 var _timeRanges = __webpack_require__(20);
 
-var _flashRtmp = __webpack_require__(151);
+var _flashRtmp = __webpack_require__(148);
 
 var _flashRtmp2 = _interopRequireDefault(_flashRtmp);
 
@@ -55732,7 +55722,7 @@ exports['default'] = Flash;
 
 
 /***/ }),
-/* 153 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -55784,7 +55774,7 @@ var _window2 = _interopRequireDefault(_window);
 
 var _obj = __webpack_require__(7);
 
-var _mergeOptions = __webpack_require__(11);
+var _mergeOptions = __webpack_require__(10);
 
 var _mergeOptions2 = _interopRequireDefault(_mergeOptions);
 
@@ -57492,7 +57482,7 @@ exports['default'] = Html5;
 
 
 /***/ }),
-/* 154 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57587,7 +57577,7 @@ exports['default'] = MediaLoader;
 
 
 /***/ }),
-/* 155 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57601,7 +57591,7 @@ var _track = __webpack_require__(33);
 
 var _track2 = _interopRequireDefault(_track);
 
-var _mergeOptions = __webpack_require__(11);
+var _mergeOptions = __webpack_require__(10);
 
 var _mergeOptions2 = _interopRequireDefault(_mergeOptions);
 
@@ -57723,7 +57713,7 @@ exports['default'] = AudioTrack;
 
 
 /***/ }),
-/* 156 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57878,7 +57868,7 @@ exports['default'] = HtmlTrackElementList;
 
 
 /***/ }),
-/* 157 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58054,7 +58044,7 @@ exports['default'] = HTMLTrackElement;
 
 
 /***/ }),
-/* 158 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58213,7 +58203,7 @@ exports['default'] = TextTrackCueList;
 
 
 /***/ }),
-/* 159 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58570,7 +58560,7 @@ exports['default'] = TextTrackDisplay;
 
 
 /***/ }),
-/* 160 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58679,7 +58669,7 @@ exports['default'] = { textTracksToJson: textTracksToJson, jsonToTextTracks: jso
 
 
 /***/ }),
-/* 161 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58790,7 +58780,7 @@ exports['default'] = TextTrackList;
 
 
 /***/ }),
-/* 162 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59398,7 +59388,7 @@ exports['default'] = TextTrackSettings;
 
 
 /***/ }),
-/* 163 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59412,7 +59402,7 @@ var _track = __webpack_require__(33);
 
 var _track2 = _interopRequireDefault(_track);
 
-var _mergeOptions = __webpack_require__(11);
+var _mergeOptions = __webpack_require__(10);
 
 var _mergeOptions2 = _interopRequireDefault(_mergeOptions);
 
@@ -59533,7 +59523,7 @@ exports['default'] = VideoTrack;
 
 
 /***/ }),
-/* 164 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -59557,9 +59547,9 @@ exports['default'] = VideoTrack;
 // forth between JSON. If we don't then it's not that big of a deal since we're
 // off browser.
 var vttjs = module.exports = {
-  WebVTT: __webpack_require__(165).WebVTT,
-  VTTCue: __webpack_require__(166).VTTCue,
-  VTTRegion: __webpack_require__(168).VTTRegion
+  WebVTT: __webpack_require__(162).WebVTT,
+  VTTCue: __webpack_require__(163).VTTCue,
+  VTTRegion: __webpack_require__(165).VTTRegion
 };
 
 window.vttjs = vttjs;
@@ -59582,7 +59572,7 @@ vttjs.restore = function() {
 
 
 /***/ }),
-/* 165 */
+/* 162 */
 /***/ (function(module, exports) {
 
 /**
@@ -60887,7 +60877,7 @@ vttjs.restore = function() {
 
 
 /***/ }),
-/* 166 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -60909,7 +60899,7 @@ vttjs.restore = function() {
 // If we're in Node.js then require VTTCue so we can extend it, otherwise assume
 // VTTCue is on the global.
 if (typeof module !== "undefined" && module.exports) {
-  this.VTTCue = this.VTTCue || __webpack_require__(167).VTTCue;
+  this.VTTCue = this.VTTCue || __webpack_require__(164).VTTCue;
 }
 
 // Extend VTTCue with methods to convert to JSON, from JSON, and construct a
@@ -60953,7 +60943,7 @@ if (typeof module !== "undefined" && module.exports) {
 
 
 /***/ }),
-/* 167 */
+/* 164 */
 /***/ (function(module, exports) {
 
 /**
@@ -61268,7 +61258,7 @@ if (typeof module !== "undefined" && module.exports) {
 
 
 /***/ }),
-/* 168 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -61290,7 +61280,7 @@ if (typeof module !== "undefined" && module.exports) {
 // If we're in Node.js then require VTTRegion so we can extend it, otherwise assume
 // VTTRegion is on the global.
 if (typeof module !== "undefined" && module.exports) {
-  this.VTTRegion = __webpack_require__(169).VTTRegion;
+  this.VTTRegion = __webpack_require__(166).VTTRegion;
 }
 
 // Extend VTTRegion with methods to convert to JSON, from JSON, and construct a
@@ -61317,7 +61307,7 @@ if (typeof module !== "undefined" && module.exports) {
 
 
 /***/ }),
-/* 169 */
+/* 166 */
 /***/ (function(module, exports) {
 
 /**
@@ -61461,14 +61451,14 @@ if (typeof module !== "undefined" && module.exports) {
 
 
 /***/ }),
-/* 170 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(4)(
   /* script */
-  __webpack_require__(81),
+  __webpack_require__(79),
   /* template */
-  __webpack_require__(194),
+  __webpack_require__(191),
   /* scopeId */
   null,
   /* cssModules */
@@ -61495,14 +61485,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 171 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(4)(
   /* script */
-  __webpack_require__(82),
+  __webpack_require__(80),
   /* template */
-  __webpack_require__(200),
+  __webpack_require__(197),
   /* scopeId */
   null,
   /* cssModules */
@@ -61529,14 +61519,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 172 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(4)(
   /* script */
-  __webpack_require__(83),
+  __webpack_require__(81),
   /* template */
-  __webpack_require__(191),
+  __webpack_require__(188),
   /* scopeId */
   null,
   /* cssModules */
@@ -61563,14 +61553,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 173 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(4)(
   /* script */
-  __webpack_require__(84),
+  __webpack_require__(82),
   /* template */
-  __webpack_require__(206),
+  __webpack_require__(203),
   /* scopeId */
   null,
   /* cssModules */
@@ -61597,14 +61587,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 174 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(4)(
   /* script */
-  __webpack_require__(85),
+  __webpack_require__(83),
   /* template */
-  __webpack_require__(196),
+  __webpack_require__(193),
   /* scopeId */
   null,
   /* cssModules */
@@ -61631,14 +61621,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 175 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(4)(
   /* script */
-  __webpack_require__(86),
+  __webpack_require__(84),
   /* template */
-  __webpack_require__(209),
+  __webpack_require__(206),
   /* scopeId */
   null,
   /* cssModules */
@@ -61665,14 +61655,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 176 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(4)(
   /* script */
-  __webpack_require__(87),
+  __webpack_require__(85),
   /* template */
-  __webpack_require__(208),
+  __webpack_require__(205),
   /* scopeId */
   null,
   /* cssModules */
@@ -61699,14 +61689,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 177 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(4)(
   /* script */
-  __webpack_require__(88),
+  __webpack_require__(86),
   /* template */
-  __webpack_require__(193),
+  __webpack_require__(190),
   /* scopeId */
   null,
   /* cssModules */
@@ -61733,14 +61723,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 178 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(4)(
   /* script */
-  __webpack_require__(89),
+  __webpack_require__(87),
   /* template */
-  __webpack_require__(204),
+  __webpack_require__(201),
   /* scopeId */
   null,
   /* cssModules */
@@ -61767,14 +61757,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 179 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(4)(
   /* script */
-  __webpack_require__(90),
+  __webpack_require__(88),
   /* template */
-  __webpack_require__(201),
+  __webpack_require__(198),
   /* scopeId */
   null,
   /* cssModules */
@@ -61801,14 +61791,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 180 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(4)(
   /* script */
-  __webpack_require__(91),
+  __webpack_require__(89),
   /* template */
-  __webpack_require__(197),
+  __webpack_require__(194),
   /* scopeId */
   null,
   /* cssModules */
@@ -61835,14 +61825,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 181 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(4)(
   /* script */
-  __webpack_require__(92),
+  __webpack_require__(90),
   /* template */
-  __webpack_require__(195),
+  __webpack_require__(192),
   /* scopeId */
   null,
   /* cssModules */
@@ -61869,14 +61859,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 182 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(4)(
   /* script */
-  __webpack_require__(93),
+  __webpack_require__(91),
   /* template */
-  __webpack_require__(190),
+  __webpack_require__(187),
   /* scopeId */
   null,
   /* cssModules */
@@ -61903,14 +61893,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 183 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(4)(
   /* script */
-  __webpack_require__(94),
+  __webpack_require__(92),
   /* template */
-  __webpack_require__(198),
+  __webpack_require__(195),
   /* scopeId */
   null,
   /* cssModules */
@@ -61937,14 +61927,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 184 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(4)(
   /* script */
-  __webpack_require__(95),
+  __webpack_require__(93),
   /* template */
-  __webpack_require__(203),
+  __webpack_require__(200),
   /* scopeId */
   null,
   /* cssModules */
@@ -61971,14 +61961,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 185 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(4)(
   /* script */
-  __webpack_require__(96),
+  __webpack_require__(94),
   /* template */
-  __webpack_require__(192),
+  __webpack_require__(189),
   /* scopeId */
   null,
   /* cssModules */
@@ -62005,14 +61995,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 186 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(4)(
   /* script */
-  __webpack_require__(97),
+  __webpack_require__(95),
   /* template */
-  __webpack_require__(207),
+  __webpack_require__(204),
   /* scopeId */
   null,
   /* cssModules */
@@ -62039,14 +62029,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 187 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(4)(
   /* script */
-  __webpack_require__(98),
+  __webpack_require__(96),
   /* template */
-  __webpack_require__(202),
+  __webpack_require__(199),
   /* scopeId */
   null,
   /* cssModules */
@@ -62073,14 +62063,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 188 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(4)(
   /* script */
-  __webpack_require__(99),
+  __webpack_require__(97),
   /* template */
-  __webpack_require__(199),
+  __webpack_require__(196),
   /* scopeId */
   null,
   /* cssModules */
@@ -62107,14 +62097,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 189 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(4)(
   /* script */
-  __webpack_require__(100),
+  __webpack_require__(98),
   /* template */
-  __webpack_require__(205),
+  __webpack_require__(202),
   /* scopeId */
   null,
   /* cssModules */
@@ -62141,7 +62131,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 190 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -62257,7 +62247,7 @@ if (false) {
 }
 
 /***/ }),
-/* 191 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -62291,7 +62281,7 @@ if (false) {
 }
 
 /***/ }),
-/* 192 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -62347,7 +62337,7 @@ if (false) {
 }
 
 /***/ }),
-/* 193 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -62600,7 +62590,7 @@ if (false) {
 }
 
 /***/ }),
-/* 194 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -62725,7 +62715,7 @@ if (false) {
 }
 
 /***/ }),
-/* 195 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -62854,7 +62844,7 @@ if (false) {
 }
 
 /***/ }),
-/* 196 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -62882,7 +62872,7 @@ if (false) {
 }
 
 /***/ }),
-/* 197 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -63032,7 +63022,7 @@ if (false) {
 }
 
 /***/ }),
-/* 198 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -63117,7 +63107,7 @@ if (false) {
 }
 
 /***/ }),
-/* 199 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -63145,7 +63135,7 @@ if (false) {
 }
 
 /***/ }),
-/* 200 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -63174,7 +63164,7 @@ if (false) {
 }
 
 /***/ }),
-/* 201 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -63202,7 +63192,7 @@ if (false) {
 }
 
 /***/ }),
-/* 202 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -63336,7 +63326,7 @@ if (false) {
 }
 
 /***/ }),
-/* 203 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -63414,7 +63404,7 @@ if (false) {
 }
 
 /***/ }),
-/* 204 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -63955,7 +63945,7 @@ if (false) {
 }
 
 /***/ }),
-/* 205 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -63970,7 +63960,7 @@ if (false) {
 }
 
 /***/ }),
-/* 206 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -64170,7 +64160,7 @@ if (false) {
 }
 
 /***/ }),
-/* 207 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -64198,7 +64188,7 @@ if (false) {
 }
 
 /***/ }),
-/* 208 */
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -64261,7 +64251,7 @@ if (false) {
 }
 
 /***/ }),
-/* 209 */
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -64397,7 +64387,7 @@ if (false) {
 }
 
 /***/ }),
-/* 210 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -72973,7 +72963,7 @@ module.exports = Vue$3;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(28), __webpack_require__(16)))
 
 /***/ }),
-/* 211 */
+/* 208 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -73001,7 +72991,7 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 212 */
+/* 209 */
 /***/ (function(module, exports) {
 
 module.exports = extend
@@ -73026,19 +73016,17 @@ function extend() {
 
 
 /***/ }),
-/* 213 */
+/* 210 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
 
 /***/ }),
+/* 211 */,
+/* 212 */,
+/* 213 */,
 /* 214 */,
-/* 215 */,
-/* 216 */,
-/* 217 */,
-/* 218 */,
-/* 219 */,
-/* 220 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(57);

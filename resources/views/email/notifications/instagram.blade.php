@@ -7,7 +7,7 @@ We know everyone loves to showcase their works on Instagram and that's why we ar
 
 Login to your account and connect your Instagram account today.
 
-@component('mail::button', ['url' => route('instagram_index') ])
+@component('mail::button', ['url' => config('app.url') . '/profile/portfolio/instagram' ])
 Connect your Instagram account
 @endcomponent
 
