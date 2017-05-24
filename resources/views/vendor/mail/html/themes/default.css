@@ -6,7 +6,7 @@ body, body *:not(html):not(style):not(br):not(tr):not(code) {
 }
 
 body {
-    background-color: #F2F4F6;
+    background-color: #FFFFFF;
     color: #74787E;
     height: 100%;
     line-height: 1.4;
@@ -76,7 +76,7 @@ img {
 /* Layout */
 
 .wrapper {
-    background-color: #f5f8fa;
+    background-color: #FFFFFF;
     margin: 0;
     padding: 0;
     width: 100%;
@@ -161,6 +161,11 @@ img {
     color: #AEAEAE;
     font-size: 12px;
     text-align: center;
+}
+
+.footer img{
+    width: 36px;
+    height: auto;
 }
 
 /* Tables */

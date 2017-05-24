@@ -1,5 +1,5 @@
 @component('mail::message')
-![Connect your Instagram Account]({{asset('public/instagram-mail.jpg')}} "Connect Your Instagram Account")
+![Connect your Instagram Account]({{asset('public/instagram-mail-image.jpg')}} "Connect Your Instagram Account")
 
 # Hi {{ $user->profile->first_name }}
 
