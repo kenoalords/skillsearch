@@ -62,16 +62,16 @@ class Kernel extends ConsoleKernel
 
 
         // Instagram Notification Schedule Mail
-        // $schedule->call(function(){
-        //     $users = User::get();
-        //     if($users->count()){
-        //         $users->each( function( $user, $key ) {
-        //             if($user->profile->account_type === 1){
-        //                 Mail::to($user)->send( new InstagramNotificationMail($user) );
-        //             }
-        //         });
-        //     }
-        // })->everyMinute();
+        $schedule->call(function(){
+            $users = User::get();
+            if($users->count()){
+                $users->each( function( $user, $key ) {
+                    if($user->profile->account_type === 1){
+                        Mail::to($user)->send( new InstagramNotificationMail($user) );
+                    }
+                });
+            }
+        })->weekly()->wednesdays()->at('19:30')->timezone('Africa/Lagos');
         //->weekly()->tuesdays()->at('10:00')->timezone('Africa/Lagos');
     }
 

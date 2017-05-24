@@ -81,8 +81,6 @@
 
 <script>
     import videojs from "video.js";
-    import masonry from "masonry-layout/dist/masonry.pkgd.min.js";
-    import imagesLoaded from "imagesloaded/imagesloaded.js";
     export default {
         data(){
             return {
@@ -107,23 +105,8 @@
                     // console.log(response);
                     _this.isFetching = false;
                     _this.feeds = response.data;
-
-                    setTimeout(()=>{
-                        var el = document.querySelector('.grid');
-                        if(el.length > 0){
-                            var loaded = el.imagesLoaded(function(){
-                                alert('loaded');
-                                var masonry = new Masonry(el, {
-                                    itemSelector: '.grid-item',
-                                    columnWidth: '.grid-sizer',
-                                    percentPosition: true,
-                                });
-                            });
-                        }
-                    },500);
                     
                 }).catch((e) => {
-                    console.log(e);
                     _this.isFetching = false;
                     _this.error = true;
                 });
