@@ -12,7 +12,7 @@ class InstagramNotificationMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    protected $user;
+    private $user;
     /**
      * Create a new message instance.
      *

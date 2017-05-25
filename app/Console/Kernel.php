@@ -67,14 +67,13 @@ class Kernel extends ConsoleKernel
             if($users->count()){
                 $users->each( function( $user, $key ) {
                     $hasInstagram = $user->instagram()->first();
-                    if($user->profile->account_type === 1 && !$hasInstagram){
-                        Mail::to($user->email)->send( new InstagramNotificationMail($user) );
+                    $profile = $user->profile()->first();
+                    if($profile && $profile->account_type === 1 && !$hasInstagram){
+                        Mail::to($user)->send( new InstagramNotificationMail($user) );
                     }
                 });
             }
-        })->weekly()->thursdays()->at('13:30')->timezone('Africa/Lagos');
-        //->weekly()->thursdays()->at('12:00')->timezone('Africa/Lagos');
-        //->weekly()->wednesdays()->at('19:30')->timezone('Africa/Lagos');
+        })->weekly()->thursdays()->at('14:38')->timezone('Africa/Lagos');
     }
 
     /**
