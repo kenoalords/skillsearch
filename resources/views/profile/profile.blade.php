@@ -24,6 +24,7 @@
                         </div>
                         <div>
                             <h1 class="small-header">{{ $profile->first_name }} {{ $profile->last_name }} {!! identity_check($profile->getVerified()) !!}</h1>
+                            
                             <p><i class="glyphicon glyphicon-map-marker"></i> {{ $profile->location }}</p>
                             <p class="skills-default">
                             @foreach ($profile->skills as $skill)
@@ -37,11 +38,11 @@
                         <p><follow username="{{$name}}"></follow></p>
                         
                         @if(Auth::user() && Auth::user()->id !== $profile->user_id)
-                            <a href="{{ route('hire', ['user' => $name] )}}" class="btn btn-success btn-sm btn-block"><i class="fa fa-envelope"></i> Hire</a>
+                            <a href="{{ route('hire', ['user' => $name] )}}" class="btn btn-success btn-sm btn-block"><i class="fa fa-envelope"></i> Contact Me</a>
                         @endif
 
                         @if(!Auth::user())
-                            <a href="{{ route('hire', ['user' => $name] )}}" class="btn btn-success btn-sm btn-block"><i class="fa fa-envelope"></i> Hire</a>
+                            <a href="{{ route('hire', ['user' => $name] )}}" class="btn btn-success btn-sm btn-block"><i class="fa fa-envelope"></i> Contact Me</a>
                         @endif
                      </div>
 

@@ -37,12 +37,20 @@
 
     <div class="portfolio-credit">
         <div class="media">
-            <div class="media-left">
-                <img src="{{ $portfolio['user_profile']['avatar'] }}" alt="{{ $portfolio['user_profile']['fullname'] }}" width="24" height="24" class="img-circle ">
+            <div class="media-left media-middle">
+                <img src="{{ $portfolio['user_profile']['avatar'] }}" alt="{{ $portfolio['user_profile']['fullname'] }}" width="20" height="20" class="img-circle ">
             </div>
             <div class="media-body">
-                <div class="media-heading pull-left"><a href="/{{ $portfolio['user'] }}">{{ $portfolio['user_profile']['first_name'] }} {!! identity_check($portfolio['verified']) !!}</a></div>
-                
+                <div class="media-heading pull-left">
+                    <a href="/{{ $portfolio['user'] }}">
+                        {{ $portfolio['user_profile']['fullname'] }} {!! identity_check($portfolio['verified']) !!}
+                    </a>
+                    <!-- <br>
+                    <span class="text-muted">
+                        <i class="fa fa-trophy text-gold"></i> 
+                        {{human_number($portfolio['user_profile']['points'])}} Rep
+                    </span> -->
+                </div>
             </div>
         </div>
     </div>

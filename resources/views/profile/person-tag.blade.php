@@ -35,7 +35,7 @@
                         <a href="/{{$profile['username']}}/instagram" class=""><i class="fa fa-instagram"></i> <span class="bold">Instagram</span> <span class="thin">Feed</span></a>
                     @endif
                     <p>
-                        <a href="/{{$profile['username']}}/hire" class="btn btn-success btn-xs btn-hire">Hire Me</a>
+                        <a href="/{{$profile['username']}}/hire" class="btn btn-success btn-xs btn-hire">Contact Me</a>
                     </p>
                     
                 </div> 

@@ -26,7 +26,7 @@ class ServiceRequestResponseTransformer extends TransformerAbstract
 
 	public function includeProfile(ServiceRequestResponse $request)
 	{
-		return $this->item(Profile::where('id',$request->user_id)->first(), new ProfileTransformers);
+		return $this->item(Profile::where('user_id',$request->user_id)->first(), new ProfileTransformers);
 	}
 
 }

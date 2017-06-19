@@ -19,6 +19,7 @@
     <!-- <a href="#" class="list-group-item"><i class="glyphicon glyphicon-heart"></i> Likes</a> -->
     @if(Auth::user()->is_admin === 1)
     <a href="{{ route('verify_user_accounts') }}" class="list-group-item"><i class="glyphicon glyphicon-ok-sign"></i> Verify User Accounts</a>
+    <a href="{{ route('approve_jobs') }}" class="list-group-item"><i class="glyphicon glyphicon-ok-sign"></i> Job Approval</a>
     @endif
     <a href="/invite" class="list-group-item"><i class="glyphicon glyphicon-heart"></i> Invite Your Friends</a>
     <a href="/profile/delete" class="list-group-item"><i class="glyphicon glyphicon-user"></i> Delete Account</a>

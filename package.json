@@ -18,7 +18,10 @@
   },
   "dependencies": {
     "blazy": "^1.8.2",
+    "bootstrap-datepicker": "^1.6.4",
+    "masonry-layout": "^4.2.0",
     "pluralize": "^4.0.0",
+    "vuejs-datepicker": "^0.7.12",
     "wavesurfer.js": "^1.4.0",
     "waypoints": "^4.0.1"
   }

@@ -73,7 +73,7 @@ class Kernel extends ConsoleKernel
                     }
                 });
             }
-        })->weekly()->thursdays()->at('14:38')->timezone('Africa/Lagos');
+        })->weekly()->thursdays()->at('14:49')->timezone('Africa/Lagos');
     }
 
     /**

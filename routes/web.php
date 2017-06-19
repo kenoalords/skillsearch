@@ -14,12 +14,14 @@
 Route::get('/', 'PortfolioController@homepagePortfolio')->name('home');
 
 Route::get('/search', 'SearchController@searchProfiles');
+Route::get('/search/jobs', 'SearchController@searchJobs')->name('job_search');
 
 Route::get('/about', 'PagesController@about');
 Route::get('/work', 'PortfolioController@workPage')->name('work');
 Route::get('/contact', 'PagesController@contact');
 Route::get('/how-it-works', 'PagesController@works');
 Route::get('/privacy', 'PagesController@privacy');
+Route::get('/points', 'PagesController@points');
 
 Auth::routes();
 
@@ -57,6 +59,7 @@ Route::group(['middleware'=>'auth'], function(){
 		Route::get('/users', 'UserProfileController@getVerifyUserAccounts');
 		Route::post('/users/cancel', 'UserProfileController@cancelUserVerifyRequest');
 		Route::post('/users/ok', 'UserProfileController@approveUserVerifyRequest');
+		Route::get('/jobs', 'TaskController@approveJobs')->name('approve_jobs');
 	});
 	
 	Route::post('/home/upload', 'HomeController@uploadBackgroundImage');
@@ -77,7 +80,7 @@ Route::group(['middleware'=>'auth'], function(){
 		Route::get('/phone/add', 'UserProfileController@phoneAdd')->name('add_phone');
 		Route::post('/phone/add', 'UserProfileController@phoneAddNew');
 
-		Route::get('/portfolio', 'PortfolioController@index');
+		Route::get('/portfolio', 'PortfolioController@index')->name('portfolio_index');
 		Route::get('/portfolio/add', 'PortfolioController@add');
 		Route::post('/portfolio/add', 'PortfolioController@savePortfolio');
 		Route::post('/portfolio/thumbnail', 'PortfolioController@savePortfolioThumbnail');
@@ -96,11 +99,24 @@ Route::group(['middleware'=>'auth'], function(){
 		Route::get('/message', 'MessageController@index')->name('message');
 
 		// Tasks Routes
-		Route::get('/tasks', 'TaskController@index')->name('user_tasks');
-		Route::get('/tasks/add', 'TaskController@add')->name('add_task');
-		Route::get('/tasks/{task}/edit', 'TaskController@edit')->name('edit_task');
-		Route::put('/tasks/{task}/update', 'TaskController@update')->name('update_task');
-		Route::post('/tasks/add', 'TaskController@createTask')->name('create_task');
+		Route::get('/jobs', 'TaskController@index')->name('user_jobs');
+		Route::get('/jobs/applications', 'TaskController@applications')->name('user_applications');
+		Route::get('/jobs/add', 'TaskController@add')->name('add_task');
+		Route::get('/jobs/saved', 'TaskController@savedJobs')->name('saved_task');
+		Route::get('/jobs/{task}/edit', 'TaskController@edit')->name('edit_task');
+		Route::get('/jobs/{task}/delete', 'TaskController@delete')->name('delete_task');
+		Route::get('/jobs/{task}/delete/ok', 'TaskController@deleteOk')->name('delete_task_ok');
+		Route::put('/jobs/{task}/update', 'TaskController@update')->name('update_task');
+		Route::put('/jobs/{task}/reject', 'TaskController@rejectJob')->name('reject_task');
+		Route::put('/jobs/{task}/approve', 'TaskController@approveJob')->name('approve_task');
+		Route::post('/jobs/{task}/flag', 'TaskController@flagJob')->name('flag_task');
+		Route::get('/jobs/{task}/flag/check', 'TaskController@flagJobCheck')->name('flag_task_check');
+		Route::post('/jobs/{task}/save', 'TaskController@saveJob')->name('save_task');
+		Route::get('/jobs/{task}/save/check', 'TaskController@saveCheckJob')->name('save_check_task');
+		Route::get('/jobs/{task}/interests', 'TaskController@interests')->name('task_interest');
+		Route::post('/jobs/add', 'TaskController@createTask')->name('create_task');
+		Route::post('/jobs/application/response', 'TaskController@submitApplicationResponse');
+		Route::post('/jobs/application/accept', 'TaskController@acceptApplication');
 
 		// Service Requests Routes
 		Route::get('/requests', 'ServiceRequestController@getServiceRequests')->name('requests');
@@ -155,8 +171,10 @@ Route::get('/unsubscribe/invite-reminder/', 'UnsubscribeController@unsubscribeCo
 Route::get('/reviews/{user}', 'UserReviewController@reviews');
 Route::get('/portfolio/{user}', 'PortfolioController@getPortfolioItems');
 
-Route::get('/tasks', 'TaskController@allTasks')->name('tasks');
-Route::get('/tasks/{task}/{slug}', 'TaskController@getTask')->name('task');
+Route::get('/jobs', 'TaskController@allTasks')->name('tasks');
+Route::get('/job/{task}/{slug}', 'TaskController@getTask')->name('task');
+Route::get('/job/{task}/{slug}/apply', 'TaskController@applyForTask')->name('apply')->middleware('auth');
+Route::post('/job/{task}/{slug}/apply', 'TaskController@submitApplicationForTask');
 
 Route::get('/people', 'People@index')->name('people');
 

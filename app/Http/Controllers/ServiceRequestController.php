@@ -42,6 +42,7 @@ class ServiceRequestController extends Controller
     {
     	$user = Auth::user();
     	$requests = $serviceRequest->allRequests($user)->get();
+        // dd($requests);
         $data = response()->json(fractal()->collection($requests)->transformWith(new ServiceRequestTransformer)
                         ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                         ->toArray());
@@ -68,7 +69,9 @@ class ServiceRequestController extends Controller
         $user = ($r->user_id === $request->user()->id) ? $r->receiver_id : $r->user_id;
         $reciever = User::where('id',$user)->first();
         Mail::to($reciever)->queue(new RequestServiceResponseNotification($r, $reciever));
-    	return response()->json($response, 200);
+    	return response()->json(fractal()->item($response)->transformWith(new ServiceRequestResponseTransformer)
+                        ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                        ->toArray(), 200);
     }
 }
 

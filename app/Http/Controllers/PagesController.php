@@ -25,4 +25,9 @@ class PagesController extends Controller
     {
     	return view('pages.privacy');
     }
+
+    public function points(Request $request)
+    {
+        return view('pages.points');
+    }
 }

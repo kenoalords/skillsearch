@@ -12,25 +12,24 @@
             <div class="media" v-for="comment in comments">
                 <div class="media-left">
                     <a :href="'/'+comment.profile.data.username">
-                        <img :src="comment.profile.data.avatar" :alt="comment.profile.data.first_name" width="50" height="50" class="thumbnail">
+                        <img :src="comment.profile.data.avatar" :alt="comment.profile.data.first_name" width="48" height="48" class="img-circle">
                     </a>
                 </div>
                 <div class="media-body">
                     <h5 class="media-heading bold">
                         <a v-bind:href="'/'+comment.profile.data.username">{{comment.profile.data.first_name}} {{comment.profile.data.last_name}} <span v-html="isVerifiedUser(comment.profile.data.verified)"></span></a>
-                         <small class="text-muted"><em>{{ comment.date }}</em></small>
+                         <small class="">{{ comment.date }}</small>
                     </h5>
-                    
                     <p v-html="comment.comment"></p>
                     <ul class="list-inline">
                         <li>
-                            <a href="#" class="bold text-muted" v-on:click.prevent="submitCommentLike(comment)" v-bind:class="{ active : isLiking }"><i class="fa fa-heart"></i> <span :id="'comment-'+comment.id">{{ comment.likes }} {{ comment.likes > 1 ? 'Likes' : 'Like' }}</span></a>
+                            <a href="#" class="bold " v-on:click.prevent="submitCommentLike(comment)" v-bind:class="{ active : isLiking }"><i class="fa fa-heart"></i> <span :id="'comment-'+comment.id">{{ comment.likes }} {{ comment.likes > 1 ? 'Likes' : 'Like' }}</span></a>
                         </li>
                         <li v-if="user">
-                           <a href="#" v-on:click.prevent="toggleReplyField(comment.id)" class="bold text-muted"><i class="fa fa-comments"></i> {{comment.replies.data.length}} {{comment.replies.data.length > 1 ? 'Replies' : 'Reply'}} </a>
+                           <a href="#" v-on:click.prevent="toggleReplyField(comment.id)" class="bold "><i class="fa fa-comments"></i> {{comment.replies.data.length}} {{comment.replies.data.length > 1 ? 'Replies' : 'Reply'}} </a>
                         </li>
                         <li v-if="user && comment.user_id === user_id">
-                           <a href="#" v-on:click.prevent="deleteComment(comment)" class="bold text-muted"><i class="fa fa-close"></i> Delete</a>
+                           <a href="#" v-on:click.prevent="deleteComment(comment)" class="bold "><i class="fa fa-close"></i> Delete</a>
                         </li>
                     </ul>
                     <div v-if="isReplyActive === comment.id">
@@ -39,7 +38,7 @@
                         </div>
                         <div class="form-group">
                             <button class="btn btn-default" v-on:click.prevent="submitReply(comment.id)" :disabled="isReplySubmitting">Submit Reply</button>
-                            <small><a href="#" class="btn btn-basic text-muted" v-on:click.prevent="closeReply()">Close</a></small>
+                            <small><a href="#" class="btn btn-basic " v-on:click.prevent="closeReply()">Close</a></small>
                         </div>
                     </div>
                     <div v-if="comment.replies.data">
@@ -49,21 +48,20 @@
                         <div class="media" v-for="reply in comment.replies.data">
                             <div class="media-left">
                                 <a v-bind:href="'/'+reply.profile.data.username">
-                                    <img :src="reply.profile.data.avatar" :alt="reply.profile.data.first_name" width="50" height="50" class="thumbnail">
+                                    <img :src="reply.profile.data.avatar" :alt="reply.profile.data.first_name" width="36" height="36" class="img-circle">
                                 </a>
                             </div>
                             <div class="media-body">
                                 <h5 class="media-heading bold">
-                                    <a v-bind:href="'/'+reply.profile.data.username">{{reply.profile.data.first_name}} {{reply.profile.data.last_name}} <span v-html="isVerifiedUser(reply.profile.data.verified)"></span></a> 
-                                    <small class="text-muted"><em>{{ reply.date }}</em></small>
+                                    <a v-bind:href="'/'+reply.profile.data.username">{{reply.profile.data.first_name}} {{reply.profile.data.last_name}} <span v-html="isVerifiedUser(reply.profile.data.verified)"></span></a> <small class="">{{ reply.date }}</small>
                                 </h5>
                                 <p v-html="reply.comment"></p>
                                 <ul class="list-inline">
                                     <li>
-                                        <a href="#" class="bold text-muted" v-on:click.prevent="submitCommentLike(reply)" v-bind:class="{ active : isLiking }"><i class="fa fa-heart"></i> {{ reply.likes }} {{ reply.likes > 1 ? 'Likes' : 'Like' }}</a>
+                                        <a href="#" class="bold " v-on:click.prevent="submitCommentLike(reply)" v-bind:class="{ active : isLiking }"><i class="fa fa-heart"></i> {{ reply.likes }} {{ reply.likes > 1 ? 'Likes' : 'Like' }}</a>
                                     </li>
                                     <li v-if="user && reply.user_id === user_id">
-                                       <a href="#" v-on:click.prevent="deleteReply(reply, comment.id)" class="bold text-muted"><i class="fa fa-close"></i> Delete</a>
+                                       <a href="#" v-on:click.prevent="deleteReply(reply, comment.id)" class="bold "><i class="fa fa-close"></i> Delete</a>
                                     </li>
                                 </ul>
                             </div>

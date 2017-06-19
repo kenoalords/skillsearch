@@ -9,7 +9,7 @@
 @include('search-form') 
 <div class="container padded">
         
-        <h1 class="text-center medium-header bold">Discover Amazing Talents in Nigeria</h1>   
+        <h1 class="text-center"><span class="bold">Discover</span> <span class="thin">Amazing Talents in Nigeria</span></h1>   
 		<hr>
         @if ( count($profiles) )
             <div class="row">

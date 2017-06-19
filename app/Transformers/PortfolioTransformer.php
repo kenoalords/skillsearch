@@ -36,7 +36,8 @@ class PortfolioTransformer extends TransformerAbstract
 				'first_name'	=> $portfolio->user->profile->first_name,
 				'last_name'		=> $portfolio->user->profile->last_name,
 				'fullname'		=> $portfolio->user->profile->first_name . ' ' . $portfolio->user->profile->last_name,
-				'avatar'		=> $portfolio->user->profile->getAvatar()
+				'avatar'		=> $portfolio->user->profile->getAvatar(),
+				'points'		=> $portfolio->user->points()->first()->points,
 			],
 			'views'		=> $portfolio->views()->count(),
 		];

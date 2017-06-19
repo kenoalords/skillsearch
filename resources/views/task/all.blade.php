@@ -1,37 +1,26 @@
 @extends('layouts.app')
 
+@section('title', 'Find Jobs')
+@section('metadescription', 'Find quick jobs matching your skills on ' . config('app.name') . ' and earn more.')
+@section('type', 'article')
+
 @section('content')
+
+
+@include('search.partials.job-search-form', ['skills'=>$skills]) 
 <div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+
+    <div class="row padded" id="jobs">
+        <div class="col-md-10 col-md-offset-1">
             
-            @if ( $tasks->count() )
-                @foreach ( $tasks as $task )
-                <div class="panel panel-default">
-                <div class="panel-body">
-                    <div class="clearfix">
-                        <h4><a href="{{ route('task', ['task'=>$task->id, 'slug'=>$task->slug]) }}"> {{ $task->title }} </a></h4>
-                        <p><span class="text-muted">{{ $task->created_at->diffForHumans() }}</span></p>
-                        <p>{{ str_limit($task->description, 200) }}</p>
-                        <hr>
-                        <div class="">
-                            <div class="pull-right">
-                                <a href="{{ route('edit_task', ['task'=>$task->id]) }}" class="btn btn-default"><i class="glyphicon glyphicon-pencil"></i> Edit</a>
-                                <a href="" class="btn btn-default"><i class="glyphicon glyphicon-trash"></i> Delete</a>
-                            </div>
-                            <div class="pull-left">
-                                <a href="{{ route('edit_task', ['task'=>$task->id]) }}" class="btn btn-default"><i class="glyphicon glyphicon-stats"></i> Details</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                </div>
-                @endforeach
-                <hr>
-                <p><a href="{{route('add_task')}}" class="btn btn-default">Submit task</a></p>
+            @if ( count($tasks) > 0 )
+                @each('task.partials.task', $tasks, 'task')
             @else
-                <p>No task has been submitted yet</p>
-                <p><a href="{{route('add_task')}}" class="btn btn-default">Submit task</a></p>
+                <div class="text-center">
+                    <h1><span class="bold">Fresh</span> &amp; <span class="thin">Clean</span></h1>
+                    <p>No jobs have been submitted yet, please check back later</p>
+                    <p><a href="{{route('add_task')}}" class="btn btn-success">Submit your job</a></p>
+                </div>
             @endif
         </div>
     </div>

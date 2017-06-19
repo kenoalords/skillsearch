@@ -30,16 +30,23 @@ Vue.component('like-button', require('./components/LikeButton.vue'));
 Vue.component('privacy-toggle', require('./components/PrivacyToggle.vue'));
 Vue.component('portfolio-comments', require('./components/PortfolioComments.vue'));
 Vue.component('register-view', require('./components/Views.vue'));
+Vue.component('application-actions', require('./components/ApplicationActions.vue'));
 Vue.component('video-player', require('./components/VideoPlayer.vue'));
 Vue.component('blog-form', require('./components/BlogForm.vue'));
 Vue.component('verify-users', require('./components/VerifyUsers.vue'));
 Vue.component('instagram', require('./components/Instagram.vue'));
+Vue.component('task-form', require('./components/TaskForm.vue'));
+Vue.component('task-form-apply', require('./components/TaskFormApply.vue'));
+Vue.component('job-actions', require('./components/JobActions.vue'));
+Vue.component('flag-job', require('./components/FlagJob.vue'));
+Vue.component('save-job', require('./components/SaveJob.vue'));
 
 const app = new Vue({
     el: '#app'
 });
 
 var bLazy = new Blazy();
+
 // var masonry = new Masonry();
 // var imagesLoaded = new imagesLoaded();
 
@@ -111,16 +118,6 @@ $('body').on('click', '#delete-instagram', function(e){
 	e.preventDefault();
 	$('#instagram-notification').slideUp('fast');
 });
-
-// (function($){
-// 	var $grid = $('.grid').imagesLoaded(function(){
-// 		$grid.masonry({
-// 			itemSelector: '.grid-item',
-// 			columnWidth: '.grid-sizer',
-// 			percentPosition: true,
-// 		});
-// 	});
-// })(jQuery);
 
 
 

@@ -37,11 +37,11 @@
                         <p><follow username="{{$name}}"></follow></p>
                         
                         @if(Auth::user() && Auth::user()->id !== $profile->user_id)
-                            <a href="{{ route('hire', ['user' => $name] )}}" class="btn btn-success btn-sm btn-block"><i class="fa fa-envelope"></i> Hire</a>
+                            <a href="{{ route('hire', ['user' => $name] )}}" class="btn btn-success btn-sm btn-block"><i class="fa fa-envelope"></i> Contact Me</a>
                         @endif
 
                         @if(!Auth::user())
-                            <a href="{{ route('hire', ['user' => $name] )}}" class="btn btn-success btn-sm btn-block"><i class="fa fa-envelope"></i> Hire</a>
+                            <a href="{{ route('hire', ['user' => $name] )}}" class="btn btn-success btn-sm btn-block"><i class="fa fa-envelope"></i> Contact Me</a>
                         @endif
                      </div>
                 </div>

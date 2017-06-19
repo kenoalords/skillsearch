@@ -16,7 +16,7 @@
                 <div class="col-xs-12 col-sm-4 col-md-4 grid-item" :class="{'grid-sizer' : feeds.indexOf(feed) == 0 }" v-for="feed in feeds">
                     <div class="image-wrapper" :class="feed.type" style="margin-bottom:2.3em">
                         <a :href="feed.link" target="_blank" :data-image="feed.images.standard_resolution.url" v-on:click.prevent="showImage(feed)">
-                            <img :src="feed.images.standard_resolution.url" width="320" height="320" alt="feed.user.full_name" class="img-responsive">
+                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" :data-src="feed.images.standard_resolution.url" width="320" height="320" :alt="feed.user.full_name" class="img-responsive b-lazy instagram-image">
                         </a>
                         <div class="p-content">
                             <ul class="list-inline" style="font-size: 87.5%">
@@ -34,7 +34,7 @@
             <div class="container">
                 <div class="instagram-media col-md-6 col-md-offset-3" v-if="currentlyViewing">
                     <div v-if="currentlyViewing.type === 'image'">
-                        <img :src="currentlyViewing.images.standard_resolution.url" alt="currentlyViewing.user.full_name" class="img-responsive">
+                        <img :src="currentlyViewing.images.standard_resolution.url" :alt="currentlyViewing.user.full_name" class="img-responsive">
                     </div>
                     <div v-if="currentlyViewing.type === 'video'">
                         <video id="video" class="video-js vjs-default-skin vjs-big-play-centered vjs-16-9" controls preload="auto" data-setup='{"fluid":true, "preload":auto}'>
@@ -46,7 +46,7 @@
                     <div class="media">
                         <div class="media-left">
                             <a :href="'https://instagram.com/' + currentlyViewing.user.username">
-                                <img :src="currentlyViewing.user.profile_picture" alt="currentlyViewing.user.full_name" width="48" height="48" class="img-circle">
+                                <img :src="currentlyViewing.user.profile_picture" :alt="currentlyViewing.user.full_name" width="48" height="48" class="img-circle">
                             </a>
                         </div>
                         <div class="media-body">
@@ -81,6 +81,8 @@
 
 <script>
     import videojs from "video.js";
+    import blazy from "blazy";
+    import masonry from "masonry-layout/dist/masonry.pkgd.min.js";
     export default {
         data(){
             return {
@@ -105,6 +107,20 @@
                     // console.log(response);
                     _this.isFetching = false;
                     _this.feeds = response.data;
+
+                    // var grid = document.querySelector('.grid');
+                    // var $grid = new Masonry(grid, {
+                    //     itemSelector: '.grid-item',
+                    //     columnWidth: '.grid-sizer',
+                    //     percentPosition: true
+                    // });
+
+                    var blazy = new Blazy({
+                        selector: "img.instagram-image",
+                        // success: function(el){
+                        //     $grid.masonry('layout');
+                        // }
+                    })
                     
                 }).catch((e) => {
                     _this.isFetching = false;
@@ -113,7 +129,7 @@
             },
 
             showImage(feed){
-                console.log(feed);
+                // console.log(feed);
                 this.isOverlay = true;
                 this.currentlyViewing = feed;
                 if(feed.type === 'video'){
@@ -156,6 +172,6 @@
         },
         mounted() {
             this.getInstagramFeed();
-        }
+        },
     }
 </script>

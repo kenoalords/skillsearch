@@ -1,12 +1,13 @@
 @extends('layouts.app')
 
+@section('title', 'Messages')
 @section('content')
 
 <div class="container padded">
-	<div class="col-md-12">
+	<div class="col-md-10 col-md-offset-1">
 		<div class="clearfix">
-			<h2 class="pull-left"><span class="bold">Service Requests</span> | <span class="thin">Inbox</span></h2>
-			<h2 class="pull-right"><small style="font-size: 14px"><a href="/home">Back to profile</a></small></h2>
+			<h4 class="pull-left"><span class="bold">Service</span> <span class="thin">Requests</span></h4>
+			<span class="pull-right"><small style="font-size: 14px"><a href="/home" class="btn btn-default">Back to profile</a></small></span>
 		</div>
 		<hr>
 		@if($requests)

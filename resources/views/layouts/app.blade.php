@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scaleable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -12,7 +12,7 @@
     <meta name="description" content="@yield('metadescription')">
 
 
-    <title>@yield('title') {{ config('app.name', 'Skillsearch Nigeria') }} | {{ config('app.description') }}</title>
+    <title>@yield('title') - {{ config('app.name', 'Skillsearch Nigeria') }} | {{ config('app.description') }}</title>
     @yield('seometa')
 
     <meta name="twitter:card" content="@yield('metadescription')">
@@ -32,6 +32,7 @@
     <meta property="og:site_name" content="{{config('app.name')}}" />
     
     <!-- Styles -->
+    <link href="{{ asset('css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     
     <!-- Scripts -->
@@ -86,7 +87,8 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
                         <li><a href="{{ route('people') }}">Find People</a></li>
-                        <li><a href="{{ route('work') }}">Recent Works</a></li>
+                        <li><a href="{{ route('work') }}">Recent Portfolio</a></li>
+                        <li><a href="{{ route('tasks') }}">Find Jobs</a></li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -107,6 +109,14 @@
                                         <a href="/home">My Account</a>
                                         <a href="{{ route('requests') }}">Requests</a>
                                         <a href="/profile/portfolio">Portfolio</a>
+                                        <a href="/profile/portfolio/instagram">Instagram Feed</a>
+                                        <a href="{{ route('user_jobs') }}">Jobs</a>
+                                        @if(Auth::user()->is_admin === 1)
+                                            <a href="{{ route('verify_user_accounts') }}">Verify User Accounts</a>
+                                            <a href="{{ route('approve_jobs') }}">
+                                                Job Approval
+                                            </a>
+                                        @endif
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -122,7 +132,7 @@
                         @endif
                         <li>
                             <a href="/profile/portfolio/add" class="btn btn-primary navbar-btn">
-                                <i class="fa fa-briefcase"></i> Submit Your Work
+                                 Showcase Your Work
                             </a>
                         </li>
                     </ul>
@@ -203,28 +213,10 @@
             autocomplete = new google.maps.places.Autocomplete(inputState, options);
         }
 
-        $('.afix').affix({
-            offset: {
-                top: 0,
-                bottom: function () {
-                  return (this.bottom = $('#showcase').outerHeight(true))
-                }
-            },
-            target: window
-        });
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" async></script>
-    <script>
-        var WebFont = require('webfontloader');
-        (function(){
-            WebFont.load({
-                google: {
-                    families: ['Lato:300,400,700']
-                }
-            });
-        })();
-        
-    </script>
+    <!-- <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script> -->
+    <!-- <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script> -->
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

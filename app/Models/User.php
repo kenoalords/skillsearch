@@ -88,7 +88,11 @@ class User extends Authenticatable
     }
 
     public function tasks(){
-        return $this->hasMany('App\Models\Task');
+        return $this->hasMany(Task::class);
+    }
+
+    public function savedJobs(){
+        return $this->hasMany(SaveJob::class);
     }
 
     public function views(){
@@ -159,6 +163,11 @@ class User extends Authenticatable
     public function points()
     {
         return $this->hasOne(Point::class);
+    }
+
+    public function applications()
+    {
+        return $this->hasMany(Application::class);
     }
 
 }

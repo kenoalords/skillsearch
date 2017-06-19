@@ -25,7 +25,7 @@ class TaskFormRequest extends FormRequest
     {
         return [
             'title'     => 'required|min:6|max:255',
-            'description' => 'required|min:200|max:2000',
+            'description' => 'required|max:2000',
             'location'  => 'required|min:3',
             'category'  => 'required',
             'budget'    => 'integer',

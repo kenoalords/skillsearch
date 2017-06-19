@@ -30,11 +30,11 @@ class ServiceRequestTransformer extends TransformerAbstract
 
 	public function includeSenderProfile(ServiceRequest $request)
 	{
-		return $this->item(Profile::where('id',$request->user_id)->first(), new ProfileTransformers);
+		return $this->item(Profile::where('user_id',$request->user_id)->first(), new ProfileTransformers);
 	}
 
 	public function includeReceiverProfile(ServiceRequest $request)
 	{
-		return $this->item(Profile::where('id',$request->receiver_id)->first(), new ProfileTransformers);
+		return $this->item(Profile::where('user_id',$request->receiver_id)->first(), new ProfileTransformers);
 	}
 }

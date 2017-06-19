@@ -2,7 +2,8 @@
 
 @section('thumbnail', asset('public/logo-b.png'))
 @section('type', 'article')
-@section('metadescription', 'Showcase your skills and get')
+@section('title', 'Home')
+@section('metadescription', 'Showcase your skills, find latest jobs and get hired on Nigeria preferred skills promotion platform')
 
 @section('content')
 <!-- @include('search-form') -->
@@ -23,7 +24,7 @@
     <div class="row">
         @each('includes.portfolio-with-user', $portfolios, 'portfolio')
     </div>
-    <div class="text-center">
+    <div class="text-center" style="margin-bottom: 2em;">
         <a href="/work" class="btn btn-primary">Discover more work</a>
     </div>
     @if(!Auth::user())

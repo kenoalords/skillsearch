@@ -9,6 +9,8 @@ window._ = require('lodash');
 
 window.$ = window.jQuery = require('jquery');
 
+// window.jQuery.noConflict();
+
 require('bootstrap-sass');
 
 /**
@@ -49,3 +51,4 @@ window.axios.defaults.headers.common = {
 window.Blazy = require('blazy');
 window.Waypoint = require('waypoints/lib/jquery.waypoints.min');
 window.Wavesurfer = require('wavesurfer.js/dist/wavesurfer.min');
+window.datepicker = require('bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js');
