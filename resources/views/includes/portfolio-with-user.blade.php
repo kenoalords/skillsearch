@@ -45,11 +45,6 @@
                     <a href="/{{ $portfolio['user'] }}">
                         {{ $portfolio['user_profile']['fullname'] }} {!! identity_check($portfolio['verified']) !!}
                     </a>
-                    <!-- <br>
-                    <span class="text-muted">
-                        <i class="fa fa-trophy text-gold"></i> 
-                        {{human_number($portfolio['user_profile']['points'])}} Rep
-                    </span> -->
                 </div>
             </div>
         </div>
