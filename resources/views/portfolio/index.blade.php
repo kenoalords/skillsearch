@@ -7,12 +7,12 @@
 
 @section('content')
 <!-- @include('search-form') -->
-@include('search-form')
+
 <div id="showcase">
     <div class="text-center">
         <h1 class="bold medium-header">Recent Works</h1>
         <p>Discover, Share and Hire The Best Hands in Nigeria</p>
-        <!-- <p><a href="/profile/portfolio/add" class="btn btn-primary"><i class="fa fa-briefcase"></i> Submit Your Work</a></p> -->
+        @include('search-form')
     </div>
     
     <hr>

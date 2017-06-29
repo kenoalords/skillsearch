@@ -1,5 +1,5 @@
-<form action="{{ route('job_search') }}" class="job-form" id="search-form">
-    <div class="container">
+<form action="{{ route('job_search') }}" class="job-form">
+    <div>
         <div class="row">
             <div class="col-sm-5">
                 <select name="skill" class="form-control">
@@ -15,7 +15,7 @@
                 <input type="text" class="form-control" placeholder="Location" name="location" value="{{Request::get('location')}}">
             </div>
             <div class="col-sm-2">
-                <button class="btn btn-success btn-block" type="submit">Find Jobs</button>
+                <button class="btn btn-default btn-block" type="submit"><i class="fa fa-search"></i> Search</button>
             </div>
         </div>
     </div>

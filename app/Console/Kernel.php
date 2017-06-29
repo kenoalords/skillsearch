@@ -10,6 +10,7 @@ use App\Mail\ContactInviteReminder;
 use App\Mail\CronTestEmail;
 use App\Mail\InstagramNotificationMail;
 use App\Mail\VerificationReminderMail;
+use App\Mail\JobPromotionNotification;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -61,7 +62,16 @@ class Kernel extends ConsoleKernel
         })->weekly()->fridays()->at('10:00')->timezone('Africa/Lagos');
 
 
-        // Instagram Notification Schedule Mail
+        // Job Promotion Notification Schedule Mail
+        $schedule->call(function(){
+            $users = ContactInvite::get();
+            if($users->count()){
+                $users->each( function( $user, $key ) {
+                    Mail::to($user->email)->send( new JobPromotionNotification() );
+                });
+            }
+        })->weekly()->thursdays()->at('08:15')->timezone('Africa/Lagos');
+
         $schedule->call(function(){
             $users = User::get();
             if($users->count()){

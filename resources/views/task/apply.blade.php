@@ -40,7 +40,7 @@
 			@if(!$applied)
 				@if( $task['application_limit'] > 0 && $task['application_limit'] !== -1 )
 					@if( $task['application_left'] > 0 && $task['closed'] !== 1 )
-						<task-form-apply task="{{ json_encode($task) }}"></task-form-apply>
+						<task-form-apply task="{{ json_encode($task) }}" style="margin-top: 3em"></task-form-apply>
 					@else
 						<div class="container">
 						    <div class="row padded" style="background: #fff; border: 1px solid #eee; margin-top: 3em">

@@ -350,6 +350,11 @@ class TaskController extends Controller
 
         return response()->json(true, 200);
     }
+
+    public function submitJobTeaser(Request $request)
+    {
+        return view('task.submit');
+    }
 }
 
 

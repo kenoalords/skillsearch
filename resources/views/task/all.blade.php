@@ -7,12 +7,18 @@
 @section('content')
 
 
-@include('search.partials.job-search-form', ['skills'=>$skills]) 
-<div class="container">
 
-    <div class="row padded" id="jobs">
+<div class="container padded">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2 text-center">
+            <h1><span class="bold">Find</span> <span class="thin">Quick Jobs</span></h1>
+            <p>Discover quick jobs matching your skills</p>
+            @include('search.partials.job-search-form', ['skills'=>$skills])
+        </div>
+    </div>
+    <hr>
+    <div class="row" id="jobs">
         <div class="col-md-10 col-md-offset-1">
-            
             @if ( count($tasks) > 0 )
                 @each('task.partials.task', $tasks, 'task')
             @else

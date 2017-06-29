@@ -6,11 +6,13 @@
 @section('title', 'Find People')
 
 @section('content')
-@include('search-form') 
+ 
 <div class="container padded">
         
         <h1 class="text-center"><span class="bold">Discover</span> <span class="thin">Amazing Talents in Nigeria</span></h1>   
-		<hr>
+		
+        @include('search-form')
+        <hr>
         @if ( count($profiles) )
             <div class="row">
                 @each('profile.person-tag', $profiles, 'profile')

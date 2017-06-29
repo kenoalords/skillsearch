@@ -11,7 +11,7 @@
 @endif
                 
 <div class="container">
-    <div class="row padded" style="background: #fff">
+    <div class="row padded" style="background: #fff; margin-top: 3em;">
         <div class="col-md-10 col-md-offset-1">
             @if($task['is_approved'] === 1)
                 @include('task.partials.single-task', ['task'=>$task])

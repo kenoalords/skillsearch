@@ -7,53 +7,32 @@
 
 @section('content')
 
-
-<div id="user-badge" class="">
-    <div class="container">
-        <div class="col-md-12">
-            <a href="/{{$portfolio['user']}}" class="pull-left" style="margin-right: 1em">
-                <img src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="{{$portfolio['user_profile']['avatar']}}" alt="{{$portfolio['user_profile']['fullname']}}" class="img-circle b-lazy user-avatar" width="64" height="64">
-            </a>
-            <div class="pull-left portfolio-meta">
-                <h4 class="bold">{{ ucwords(strtolower($portfolio['title'])) }}</h4>
-                <p>by <a href="/{{$portfolio['user']}}">{{$portfolio['user_profile']['fullname']}}</a></p>
-            </div>
-            <div class="pull-right portfolio-actions">
-                <a href="/{{$portfolio['user']}}/hire" class="btn btn-success"><i class="fa fa-envelope"></i> Hire</a>
-                <like-button id="{{$portfolio['uid']}}"></like-button>
-            </div>
-        </div>
-    </div>
-</div>
-<div id="portfolio" class="container">
+<div  class="container">
     <div class="row padded">
-        <div class="col-sm-3" id="portfolio-wrapper">
-            <div class="">
-                <div class="wrapper">
-                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=" data-src="{{$portfolio['thumbnail']}}" alt="{{$portfolio['title']}}" class="img-responsive b-lazy">
-                    <div class="white-boxed">
-                        <p>{{$portfolio['description']}}</p>
-                        <ul class="list-inline" style="font-weight: 600; font-size: 12px; margin-top: 1em;">
-                            <li><i class="glyphicon glyphicon-eye-open"></i> {{ $portfolio['views'] }} {{ str_plural('View', $portfolio['views'])}}</li>
-                            <li> {{ $portfolio['date'] }}</li>
-                        </ul>
-                        @if($portfolio['description'])
-                            @if($portfolio['url'] !== null)
-                                <p><small><a href="{{route('external_link', ['url'=>$portfolio['url']])}}" target="_blank" class="bold">Link <i class="glyphicon glyphicon-new-window"></i></a></small></p>
-                            @endif
-                        @endif
-                        <p><follow username="{{$portfolio['user']}}"></follow></p>
-                        <like-button id="{{$portfolio['uid']}}" class="block-button"></like-button>
-                        <hr>
-                        <div>
-                            @include('includes.share.portfolio', ['url'=>Request::url()])
-                        </div>
-                    </div>
+                
+        <div class="col-md-10 col-md-offset-1">
+
+            <div class="clearfix">
+                <!-- <div class="col-sm-3">
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=" data-src="{{$portfolio['thumbnail']}}" alt="{{ $portfolio['title'] }}" class="img-responsive b-lazy">
+                </div> -->
+                <div class="portfolio-meta">
+                    <h1 class="thin" style="font-size: 1.675em">{{ ucwords(strtolower($portfolio['title'])) }}</h1>
+                    <ul class="list-inline">
+                        <li><a href="/{{$portfolio['user']}}"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="{{$portfolio['user_profile']['avatar']}}" alt="{{$portfolio['user_profile']['fullname']}}" class="img-circle b-lazy user-avatar" width="18" height="18"> {{$portfolio['user_profile']['fullname']}}</a></li>
+                        <li><follow username="{{$portfolio['user']}}"></follow></li>
+                    </ul>
+                    <p></p>
+                    <p>{{$portfolio['description']}}</p>
+                    <ul class="list-inline" style="font-weight: 600; font-size: 12px; margin-top: 1em;">
+                        <li><i class="glyphicon glyphicon-eye-open"></i> {{ $portfolio['views'] }} {{ str_plural('View', $portfolio['views'])}}</li>
+                        <li> {{ $portfolio['date'] }}</li>
+                        <li><a href="{{route('external_link', ['url'=>$portfolio['url']])}}" target="_blank" class="bold">Link <i class="glyphicon glyphicon-new-window"></i></a></li>
+                    </ul>
                 </div>
             </div>
-        </div>
-        
-        <div class="col-sm-9">
+            
+            <hr>
 
             @if($portfolio['is_public'] === 0 )
             <div class="alert alert-info">
@@ -95,8 +74,9 @@
                     <video-player video-url="{{$file->getFile()}}"></video-player>
                 @endforeach
             @endif
-
-
+            <like-button id="{{$portfolio['uid']}}"></like-button>
+            <hr>
+            <div>@include('includes.share.portfolio', ['url'=>Request::url()])</div>
             
             @if(!Auth::user())
             <a href="/login" class="btn btn-primary">Login or Register</a> to comment or like
@@ -113,7 +93,7 @@
         <div id="showcase" class="other-works">
             <div class="row">    
                 <div class="col-sm-12">
-                    <h4 class="thin">Other works by {{$portfolio['user_profile']['fullname']}}</h4>
+                    <h4 class="thin">More From {{$portfolio['user_profile']['fullname']}}</h4>
                     <hr>
                 </div> 
                 @each('includes.portfolio-others', $others, 'portfolio')

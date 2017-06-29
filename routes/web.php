@@ -41,6 +41,8 @@ Route::get('/invite/gmail', 'InviteContactController@gmailContactInvite');
 Route::post('/invite/gmail', 'InviteContactController@gmailContactInviteRequest');
 Route::get('/invite/success', 'InviteContactController@thankYou');
 
+Route::get('/jobs/submit', 'TaskController@submitJobTeaser');
+
 Route::group(['middleware'=>'auth'], function(){
 
 	Route::post('/comment/{comment}/like', 'CommentController@likeComment');
