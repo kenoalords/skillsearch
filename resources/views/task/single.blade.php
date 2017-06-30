@@ -11,7 +11,7 @@
 @endif
                 
 <div class="container">
-    <div class="row padded" style="background: #fff; margin-top: 3em;">
+    <div class="row padded whiteCard" style="background: #fff; margin-top: 3em;">
         <div class="col-md-10 col-md-offset-1">
             @if($task['is_approved'] === 1)
                 @include('task.partials.single-task', ['task'=>$task])
@@ -48,8 +48,8 @@
     </div>
 
     @if(count($others) > 0)
-    <hr>
-    <div class="row padded" style="background: #fff" id="jobs">
+    
+    <div class="whiteCard row padded" id="jobs">
         <div class="col-md-10 col-md-offset-1">
             <h4 class="container-fluid bold" style="margin-bottom: 0">Other Jobs<hr></h4>
             @each('task.partials.task', $others, 'task')

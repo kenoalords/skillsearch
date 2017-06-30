@@ -15,10 +15,10 @@
                     </a>
                 </div>
                 <div class="media-body">
-                    <h5 class="media-heading bold">
+                    <h4 class="media-heading bold">
                         <a v-bind:href="'/'+comment.profile.data.username">{{comment.profile.data.first_name}} {{comment.profile.data.last_name}} <span v-html="isVerifiedUser(comment.profile.data.verified)"></span></a>
                          <small class="">{{ comment.date }}</small>
-                    </h5>
+                    </h4>
                     <p v-html="comment.comment"></p>
                     <ul class="list-inline">
                         <li>
@@ -42,6 +42,7 @@
                     </div>
                     <div v-if="comment.replies.data" class="replies">
                         <div v-if="comment.replies.data.length > 0">
+                            <h4 class="bold text-muted" style="font-size: 1em">{{ comment.replies.data.length }} {{ comment.replies.data.length > 1 ? 'Replies' : 'Reply'}}</h4>
                         </div>
                         <div class="media" v-for="reply in comment.replies.data">
                             <div class="media-left">
@@ -50,9 +51,9 @@
                                 </a>
                             </div>
                             <div class="media-body">
-                                <h5 class="media-heading bold">
+                                <h4 class="media-heading bold">
                                     <a v-bind:href="'/'+reply.profile.data.username">{{reply.profile.data.first_name}} {{reply.profile.data.last_name}} <span v-html="isVerifiedUser(reply.profile.data.verified)"></span></a> <small class="">{{ reply.date }}</small>
-                                </h5>
+                                </h4>
                                 <p v-html="reply.comment"></p>
                                 <ul class="list-inline">
                                     <li>

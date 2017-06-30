@@ -6,7 +6,7 @@ Your job posting **{{$task->title}}** has been rejected, please view the reason 
 > ##{{$message}}
 
 @component('mail::button', ['url' => config('app.url').'/profile/jobs'])
-Login to your account
+Login and make changes
 @endcomponent
 
 Thanks,<br>

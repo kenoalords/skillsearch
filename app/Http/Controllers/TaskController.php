@@ -7,6 +7,7 @@ use App\Models\Task;
 use App\Models\Skills;
 use App\Models\Application;
 use App\Models\SaveJob;
+use App\Models\Profile;
 use App\Models\ApplicationResponse;
 use App\Transformers\TaskTransformer;
 use App\Transformers\SimpleUserTransformers;
@@ -24,6 +25,7 @@ use App\Mail\JobRejectNotification;
 use App\Mail\JobApprovalNotification;
 use App\Mail\TaskApplicationNotification;
 use App\Mail\ApplicationAcceptanceNotification;
+use App\Mail\JobBroadcastNotification;
 
 class TaskController extends Controller
 {
@@ -257,6 +259,19 @@ class TaskController extends Controller
         }
         $task->is_approved = true;
         $task->save();
+        
+        $category = $task->category;
+        $owner_id = $task->user_id;
+        $matching_profiles = User::whereHas('skills', function($query) use ($category, $owner_id){
+            $query->where('skill', $category);
+            $query->where('user_id', '!=', $owner_id);
+        })->get();
+
+        if($matching_profiles){
+            $matching_profiles->each(function($user, $index) use ($task){
+                Mail::to($user)->send(new JobBroadcastNotification($user, $task));
+            });
+        }
 
         Mail::to($task->user)->send(new JobApprovalNotification($task));
         return response()->json(null);

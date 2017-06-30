@@ -32,6 +32,7 @@
     <meta property="og:site_name" content="{{config('app.name')}}" />
     
     <!-- Styles -->
+    <link rel="icon" href="{{ asset('public/favicon.png') }}" type="image/png">
     <link href="{{ asset('css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     

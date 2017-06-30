@@ -35,6 +35,7 @@ class JobApprovalNotification extends Mailable implements ShouldQueue
                     ->with([
                         'task' => $this->task,
                         'fullname' => $this->task->user->name,
+                        'url'   => route('task', [ 'task'=>$this->task->id, 'slug'=>$this->task->slug ]) . '?utm_source=email&utm_medium=job_broadcast_notification&utm_campaign=job_broadcast&utm_term=job_broadcast&utm_content=job_broadcast_via_email'
                     ]);
     }
 }

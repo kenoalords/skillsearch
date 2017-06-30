@@ -28613,6 +28613,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
     data: function data() {
@@ -63301,7 +63302,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     })])]), _vm._v(" "), _c('div', {
       staticClass: "media-body"
-    }, [_c('h5', {
+    }, [_c('h4', {
       staticClass: "media-heading bold"
     }, [_c('a', {
       attrs: {
@@ -63412,7 +63413,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_vm._v("Close")])])])]) : _vm._e(), _vm._v(" "), (comment.replies.data) ? _c('div', {
       staticClass: "replies"
-    }, [(comment.replies.data.length > 0) ? _c('div') : _vm._e(), _vm._v(" "), _vm._l((comment.replies.data), function(reply) {
+    }, [(comment.replies.data.length > 0) ? _c('div', [_c('h4', {
+      staticClass: "bold text-muted",
+      staticStyle: {
+        "font-size": "1em"
+      }
+    }, [_vm._v(_vm._s(comment.replies.data.length) + " " + _vm._s(comment.replies.data.length > 1 ? 'Replies' : 'Reply'))])]) : _vm._e(), _vm._v(" "), _vm._l((comment.replies.data), function(reply) {
       return _c('div', {
         staticClass: "media"
       }, [_c('div', {
@@ -63431,7 +63437,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       })])]), _vm._v(" "), _c('div', {
         staticClass: "media-body"
-      }, [_c('h5', {
+      }, [_c('h4', {
         staticClass: "media-heading bold"
       }, [_c('a', {
         attrs: {

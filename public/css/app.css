@@ -9930,6 +9930,7 @@ video::-webkit-media-text-track-display {
 body {
   font-family: 'Roboto', Helvetica, sans-serif;
   background-color: #fafafa;
+  color: #333;
   font-weight: 300;
   line-height: 1.8;
 }
@@ -10671,15 +10672,6 @@ ul.profile-meta li {
 
 #comments > .media .media-body .replies .media {
   margin-bottom: 1em;
-}
-
-#comments > .media .media-body .replies .media .media-body {
-  padding: 1em;
-  border: 1px solid rgba(0, 0, 0, 0.09);
-  margin-bottom: 1em;
-  border-radius: 3px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
-  padding-bottom: 0;
 }
 
 #comments > .media:last-of-type .media-body {
