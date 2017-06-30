@@ -1,7 +1,7 @@
 
 // Fonts
 @import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css);
-
+@import url(https://fonts.googleapis.com/css?family=Roboto|Roboto+Slab:300,700);
 // Variables
 @import "variables";
 
@@ -16,13 +16,15 @@
 
 body{
 	font-family: 'Roboto', Helvetica, sans-serif;
-	background-color:#f3f3f3;
+	background-color:#fafafa;
 	font-weight:300;
 	line-height:1.8;
 }
 
-h1, h2, h3{
+h1, h2, h3, h4{
 	line-height: 1.5;
+	font-family: "Roboto Slab", serif;
+	color: #111;
 }
 
 h1, h2{
@@ -708,13 +710,42 @@ ul.profile-meta{
 	}
 }
 
+.whiteCard{
+	padding: 1em;
+	background-color: #fff;
+	border: 1px solid rgba(0,0,0,.09);
+	margin-bottom: 1em;
+	border-radius: 3px;
+	box-shadow: 0 1px 4px rgba(0,0,0,.04);
+}
+
+.padding-1{
+	padding: 5px !important;
+}
+
 #comments{
 	margin-top: 3em;
 	&>.media{
+		padding: 2em;
+		background-color: #fff;
+		border: 1px solid rgba(0,0,0,.09);
+		margin-bottom: 1em;
+		border-radius: 3px;
+		box-shadow: 0 1px 4px rgba(0,0,0,.04);
 		.media-body{
-			margin-bottom: 1em;
-			padding-bottom:1em;
-			border-bottom: 1px solid #eee;
+			.replies{
+				.media{
+					margin-bottom: 1em;
+					.media-body{
+						padding: 1em;
+						border: 1px solid rgba(0,0,0,.09);
+						margin-bottom: 1em;
+						border-radius: 3px;
+						box-shadow: 0 1px 4px rgba(0,0,0,.04);
+						padding-bottom: 0;
+					}
+				}
+			}
 		}
 		&:last-of-type{
 			.media-body{
@@ -890,7 +921,6 @@ body.loading:before{
 		position: relative;
 		background: #fff;
 		padding: .5em;
-		box-shadow: 0 0px 15px rgba(0,0,0,.1);
 		&.video{
 			a{
 				&:before{
@@ -1321,6 +1351,17 @@ ul.no-style-list{
 		}
 	}
 
+	.search-input{
+		width: 100% !important;
+		margin-bottom: 10px;
+	}
+
+	#showcase{
+		width: 70%;
+		padding: 0;
+		margin: 0 auto;
+	}
+
 	#portfolio-wrapper{
 		margin-bottom: 1em;
 		padding-bottom: 1em;
@@ -1357,6 +1398,12 @@ ul.no-style-list{
 	.container{
 		width: 90%;
 	}
+
+	.search-input{
+		width: 100% !important;
+		margin-bottom: 10px;
+	}
+
 
 	#profile-back{
 		padding: 0;

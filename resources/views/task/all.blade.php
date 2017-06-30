@@ -17,18 +17,23 @@
         </div>
     </div>
     <hr>
-    <div class="row" id="jobs">
+    <div class="container-fluid" id="jobs">
         <div class="col-md-10 col-md-offset-1">
             @if ( count($tasks) > 0 )
                 @each('task.partials.task', $tasks, 'task')
             @else
-                <div class="text-center">
-                    <h1><span class="bold">Fresh</span> &amp; <span class="thin">Clean</span></h1>
-                    <p>No jobs have been submitted yet, please check back later</p>
-                    <p><a href="{{route('add_task')}}" class="btn btn-success">Submit your job</a></p>
+                <div class="text-center" style="padding: 3em">
+                    <h2 class="text-warning"><i class="fa fa-warning"></i></h2>
+                    <h4 class="text-warning">No jobs have been submitted yet, please check back later</h4>
                 </div>
             @endif
         </div>
+    </div>
+
+    <div class="container-fluid text-center padded">
+        <h1><i class="fa fa-hand-o-down"></i></h1>
+        <h2>Do you have an upcoming project or job?</h2>
+        <p>Let the best hands come to you. <a href="{{ route('add_task') }}" class="btn btn-sm btn-success">Submit Your Project Today</a></p>
     </div>
 </div>
 @endsection

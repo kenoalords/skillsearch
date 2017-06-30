@@ -1,4 +1,4 @@
-@import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css);@charset "UTF-8";
+@import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css);@import url(https://fonts.googleapis.com/css?family=Roboto|Roboto+Slab:300,700);@charset "UTF-8";
 
 /*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)
@@ -9929,15 +9929,18 @@ video::-webkit-media-text-track-display {
 
 body {
   font-family: 'Roboto', Helvetica, sans-serif;
-  background-color: #f3f3f3;
+  background-color: #fafafa;
   font-weight: 300;
   line-height: 1.8;
 }
 
 h1,
 h2,
-h3 {
+h3,
+h4 {
   line-height: 1.5;
+  font-family: "Roboto Slab", serif;
+  color: #111;
 }
 
 h1,
@@ -10640,14 +10643,43 @@ ul.profile-meta li {
   margin-right: 2em;
 }
 
+.whiteCard {
+  padding: 1em;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.09);
+  margin-bottom: 1em;
+  border-radius: 3px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+.padding-1 {
+  padding: 5px !important;
+}
+
 #comments {
   margin-top: 3em;
 }
 
-#comments > .media .media-body {
+#comments > .media {
+  padding: 2em;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.09);
   margin-bottom: 1em;
-  padding-bottom: 1em;
-  border-bottom: 1px solid #eee;
+  border-radius: 3px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+#comments > .media .media-body .replies .media {
+  margin-bottom: 1em;
+}
+
+#comments > .media .media-body .replies .media .media-body {
+  padding: 1em;
+  border: 1px solid rgba(0, 0, 0, 0.09);
+  margin-bottom: 1em;
+  border-radius: 3px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  padding-bottom: 0;
 }
 
 #comments > .media:last-of-type .media-body {
@@ -10839,7 +10871,6 @@ body.loading:before {
   position: relative;
   background: #fff;
   padding: .5em;
-  box-shadow: 0 0px 15px rgba(0, 0, 0, 0.1);
 }
 
 #showcase .image-wrapper.video a:before {
@@ -11295,6 +11326,17 @@ ul.no-style-list .list-group-item img.avatar {
     margin-bottom: 5px;
   }
 
+  .search-input {
+    width: 100% !important;
+    margin-bottom: 10px;
+  }
+
+  #showcase {
+    width: 70%;
+    padding: 0;
+    margin: 0 auto;
+  }
+
   #portfolio-wrapper {
     margin-bottom: 1em;
     padding-bottom: 1em;
@@ -11326,6 +11368,11 @@ ul.no-style-list .list-group-item img.avatar {
 @media screen and (min-width: 320px) and (max-width: 539px) {
   .container {
     width: 90%;
+  }
+
+  .search-input {
+    width: 100% !important;
+    margin-bottom: 10px;
   }
 
   #profile-back {

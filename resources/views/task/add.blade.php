@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Submit Job')
 @section('content')
 @if($user['verified'] === false)
     <div class="alert alert-danger text-center">

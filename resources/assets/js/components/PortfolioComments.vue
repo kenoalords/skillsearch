@@ -1,14 +1,13 @@
 <template>
     <div>
-        <div v-if="user">
+        <div v-if="user" class="whiteCard">
             <div class="form-group">
                 <textarea v-model="comment" class="form-control" rows="3" placeholder="Share a comment..."></textarea>
             </div>
-            <button class="btn btn-default" v-on:click.prevent="submitComment()" :disabled="isSubmitting">{{isSubmitting ? 'Submitting...' : 'Submit Comment'}}</button>
+            <button class="btn btn-primary" v-on:click.prevent="submitComment()" :disabled="isSubmitting">{{isSubmitting ? 'Submitting...' : 'Submit Comment'}}</button>
         </div>
         <div v-if="comments"  id="comments">
-            <h4 class="bold">{{comments.length}} {{comments.length > 1 ? 'Comments' : 'Comment'}}</h4>
-            <hr>
+            <h3 class="bold">{{comments.length}} {{comments.length > 1 ? 'Comments' : 'Comment'}}</h3>
             <div class="media" v-for="comment in comments">
                 <div class="media-left">
                     <a :href="'/'+comment.profile.data.username">
@@ -41,9 +40,8 @@
                             <small><a href="#" class="btn btn-basic " v-on:click.prevent="closeReply()">Close</a></small>
                         </div>
                     </div>
-                    <div v-if="comment.replies.data">
+                    <div v-if="comment.replies.data" class="replies">
                         <div v-if="comment.replies.data.length > 0">
-                            <hr>
                         </div>
                         <div class="media" v-for="reply in comment.replies.data">
                             <div class="media-left">

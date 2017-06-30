@@ -13,11 +13,11 @@
 					<span class="label label-success"><i class="fa fa-lock"></i> Closed</span>
 				@endif
 			@endif
-			<h4 class="bold" style="line-height: 1.7">
+			<h3 style="line-height: 1.7">
 				<a href="{{ route('task', [ 'task'=>$task['id'], 'slug'=>$task['slug'] ]) }}">
 					{{$task['title']}}
 				</a>
-			</h4>
+			</h3>
 			<ul class="list-inline" style="font-size: .875em">
 				<li>
 					<img src="{{$task['profile']['avatar']}}" alt="{{$task['profile']['fullname']}}" class="img-circle" width="18" height="18"> <span class="bold"><a href="{{ config('app.url') . '/' . $task['profile']['username'] }}">{{ $task['profile']['fullname'] }} {!! identity_check($task['profile']['verified']) !!}</a></span>

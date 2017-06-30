@@ -1,22 +1,23 @@
 <template> 
 
 <div class="container">
-        <div class="clearfix">
-            <h3 class="pull-left" style="margin-top:0">Add Portfolio</h3>
-            <a href="/home" class="btn btn-basic pull-right"><i class="glyphicon glyphicon-home"></i> Back to profile</a>
-        </div>
-        <hr>
+    <div class="col-md-8 col-md-offset-2">
+    <div class="clearfix">
+        <h3 class="pull-left bold" style="margin-top:0">Add Portfolio Item</h3>
+        <a href="/home" class="btn btn-basic pull-right bold text-muted"><i class="fa fa-arrow-left"></i> Back</a>
+    </div>
+    <hr>
     <div class="row">
-        <div class="col-sm-4">
-            <h4 class="text-center">Upload Cover Image</h4>
+        <div>
+            <h4 class="text-center bold">Upload Cover Image</h4>
             <label class="thumbnail-image" v-bind:class="{ saving : savingThumbnail }">
                 <input type="file" id="thumbnailImage" class="hidden" v-on:change="uploadThumbnail()" :disabled="savingThumbnail">
                 <img v-bind:src="thumbnail" v-if="thumbnail" class="img-responsive" id="thumbnail">
             </label>
             <p class="text-center"><small>Tip: select the best image to use as a thumbnail</small></p>
         </div>
-        <div class="col-sm-8">
-            <div class="form-wrapper">
+        <div>
+            <div class="form-wrapper whiteCard">
                 <div class="form-group">
                     <label>Title</label>
                     <input type="text" class="form-control" v-model="title" placeholder="Portfolio title">
@@ -32,9 +33,9 @@
                     </label>
                 </div>
             </div>
-            
-            <div class="form-wrapper">
-                <hr>
+            <hr>
+            <div class="form-wrapper whiteCard">
+                
                 <label>Portfolio type</label>
 
                 <div class="row">
@@ -60,9 +61,9 @@
                 {{error[0]}}
             </div>
 
-            <div class="form-wrapper" v-if="type == 'images'">
-                <div>Upload/Add Images</div>
-
+            <div class="form-wrapper whiteCard" v-if="type == 'images'">
+                <h4 class="bold">Upload Images</h4>
+                <p>You can upload up to 10 images. <span class="text-warning"><em>** Supported file formats are JPEG, JPG, PNG and GIF's</em></span></p>
                 <div class="" v-if="type == 'images'">
                     <div class="progress" v-if="isUploading && !uploadingComplete">
                         <div class="progress-bar" role="progressbar" v-bind:style="{ width: progress + '%'}"></div>
@@ -71,7 +72,7 @@
                         <i class="glyphicon glyphicon-plus"></i> Select image
                         <input type="file" id="fileUpload" style="display:none" v-on:change="uploadImage">
                     </label>
-                    <p class="text-center bold"><small><em>{{ uploadedImages.length }} out of 10 images</em></small></p>
+                    <p class="bold"><small>{{ uploadedImages.length }} out of 10 Images</small></p>
                     <div class="list-group" v-if="uploadedImages" style="margin-top:2em">
                         <div class="list-group-item" v-for="image in uploadedImages">
                             <img v-bind:src=" image.link " style="width:auto; height: 70px;">
@@ -85,8 +86,9 @@
                 </div>
             </div>
 
-            <div class="form-wrapper" v-if="type == 'audio'">
-                <div>Upload Audio</div>
+            <div class="form-wrapper whiteCard" v-if="type == 'audio'">
+                <h4 class="bold">Upload Audio</h4>
+                <p>You can upload 1 audio file. <span class="text-warning"><em>** Supported file format is MP3</em></span></p>
                 <div class="" v-if="type == 'audio'">
                     <div class="progress" v-if="isUploading && !uploadingComplete">
                         <div class="progress-bar" role="progressbar" v-bind:style="{ width: progress + '%'}"></div>
@@ -110,8 +112,9 @@
                 </div>
             </div>
 
-            <div class="form-wrapper" v-if="type == 'video'">
-                <div>Upload Video</div>
+            <div class="form-wrapper whiteCard" v-if="type == 'video'">
+                <h4 class="bold">Upload Video</h4>
+                <p>You can upload 1 video file per portfolio item. <span class="text-warning"><em>** Supported file formats are MP4 &amp; MPEG</em></span></p>
                 <div class="" v-if="type == 'video'">
                     <div class="progress" v-if="isUploading && !uploadingComplete">
                         <div class="progress-bar" role="progressbar" v-bind:style="{ width: progress + '%'}"></div>
@@ -141,7 +144,7 @@
                 </div>
             </div>
 
-            <div  class="form-wrapper">
+            <div  class="form-wrapper whiteCard">
                 <div class="">
                     <div class="row">                        
                         <div class="col-sm-6">
@@ -177,6 +180,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
     
 </template>
@@ -219,6 +223,15 @@
         methods: {
             savePortfolio() {
                 this.statusText = 'Saving Changes...';
+                if(this.isPublic !== 0 && this.uploadedImages.length === 0){
+                    alert('You cannot make your portfolio public without uploading at least one file');
+                    return;
+                }
+
+                if(this.thumbnail === null){
+                    alert('Please upload a thumbnail for your portfolio item');
+                    return;
+                }
                 var data = {
                     uid : this.uid,
                     title: this.title,

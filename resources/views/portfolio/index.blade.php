@@ -10,7 +10,7 @@
 
 <div id="showcase">
     <div class="text-center">
-        <h1 class="bold medium-header">Recent Works</h1>
+        <h1><span class="bold">Recent</span> <span class="thin">Works</span></h1>
         <p>Discover, Share and Hire The Best Hands in Nigeria</p>
         @include('search-form')
     </div>

@@ -148,11 +148,11 @@
         @yield('content')
     </div>
 
-    <section id="invites">
+    <!-- <section id="invites">
         <div class="container text-center">
             <h4 class="thin"><a href="/invite" class="btn btn-success"><i class="fa fa-heart"></i> Invite your friends</a></h4>
         </div>
-    </section>
+    </section> -->
 
     <footer id="site-footer" class="padded">
         <div class="container" id="sub-footer">

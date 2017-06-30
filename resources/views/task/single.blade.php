@@ -56,5 +56,11 @@
         </div>
     </div>
     @endif
+
+    <div class="container-fluid text-center padded">
+        <h1><i class="fa fa-hand-o-down"></i></h1>
+        <h2>Do you have an upcoming project or job?</h2>
+        <p>Let the best hands come to you. <a href="{{ route('add_task') }}" class="btn btn-sm btn-success">Submit Your Project Today</a></p>
+    </div>
 </div>
 @endsection

@@ -148,7 +148,7 @@ class PortfolioController extends Controller
 
         $thumbnail = $request->file('thumbnail')->store('public');
         // echo $thumbnail; die();
-        Image::make(storage_path().'/app/'.$thumbnail)->fit(400)->save();
+        Image::make(storage_path().'/app/'.$thumbnail)->fit(800)->save();
         $path = storage_path().'/app/'.$thumbnail;
 
         if($request->uid !== "null")

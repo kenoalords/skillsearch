@@ -28613,8 +28613,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = {
     data: function data() {
@@ -28921,6 +28919,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 // import videojs from "video.js";
 /* harmony default export */ __webpack_exports__["default"] = {
@@ -28962,6 +28964,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this2 = this;
 
             this.statusText = 'Saving Changes...';
+            if (this.isPublic !== 0 && this.uploadedImages.length === 0) {
+                alert('You cannot make your portfolio public without uploading at least one file');
+                return;
+            }
+
+            if (this.thumbnail === null) {
+                alert('Please upload a thumbnail for your portfolio item');
+                return;
+            }
             var data = {
                 uid: this.uid,
                 title: this.title,
@@ -63229,7 +63240,9 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [(_vm.user) ? _c('div', [_c('div', {
+  return _c('div', [(_vm.user) ? _c('div', {
+    staticClass: "whiteCard"
+  }, [_c('div', {
     staticClass: "form-group"
   }, [_c('textarea', {
     directives: [{
@@ -63253,7 +63266,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   })]), _vm._v(" "), _c('button', {
-    staticClass: "btn btn-default",
+    staticClass: "btn btn-primary",
     attrs: {
       "disabled": _vm.isSubmitting
     },
@@ -63267,9 +63280,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "id": "comments"
     }
-  }, [_c('h4', {
+  }, [_c('h3', {
     staticClass: "bold"
-  }, [_vm._v(_vm._s(_vm.comments.length) + " " + _vm._s(_vm.comments.length > 1 ? 'Comments' : 'Comment'))]), _vm._v(" "), _c('hr'), _vm._v(" "), _vm._l((_vm.comments), function(comment) {
+  }, [_vm._v(_vm._s(_vm.comments.length) + " " + _vm._s(_vm.comments.length > 1 ? 'Comments' : 'Comment'))]), _vm._v(" "), _vm._l((_vm.comments), function(comment) {
     return _c('div', {
       staticClass: "media"
     }, [_c('div', {
@@ -63397,7 +63410,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.closeReply()
         }
       }
-    }, [_vm._v("Close")])])])]) : _vm._e(), _vm._v(" "), (comment.replies.data) ? _c('div', [(comment.replies.data.length > 0) ? _c('div', [_c('hr')]) : _vm._e(), _vm._v(" "), _vm._l((comment.replies.data), function(reply) {
+    }, [_vm._v("Close")])])])]) : _vm._e(), _vm._v(" "), (comment.replies.data) ? _c('div', {
+      staticClass: "replies"
+    }, [(comment.replies.data.length > 0) ? _c('div') : _vm._e(), _vm._v(" "), _vm._l((comment.replies.data), function(reply) {
       return _c('div', {
         staticClass: "media"
       }, [_c('div', {
@@ -65066,12 +65081,12 @@ if (false) {
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "container"
+  }, [_c('div', {
+    staticClass: "col-md-8 col-md-offset-2"
   }, [_vm._m(0), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
     staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col-sm-4"
-  }, [_c('h4', {
-    staticClass: "text-center"
+  }, [_c('div', [_c('h4', {
+    staticClass: "text-center bold"
   }, [_vm._v("Upload Cover Image")]), _vm._v(" "), _c('label', {
     staticClass: "thumbnail-image",
     class: {
@@ -65095,10 +65110,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "src": _vm.thumbnail,
       "id": "thumbnail"
     }
-  }) : _vm._e()]), _vm._v(" "), _vm._m(1)]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-8"
-  }, [_c('div', {
-    staticClass: "form-wrapper"
+  }) : _vm._e()]), _vm._v(" "), _vm._m(1)]), _vm._v(" "), _c('div', [_c('div', {
+    staticClass: "form-wrapper whiteCard"
   }, [_c('div', {
     staticClass: "form-group"
   }, [_c('label', [_vm._v("Title")]), _vm._v(" "), _c('input', {
@@ -65186,9 +65199,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }), _vm._v(" " + _vm._s(skill.skill) + "\n                    ")])
-  })], 2) : _vm._e()]), _vm._v(" "), _c('div', {
-    staticClass: "form-wrapper"
-  }, [_c('hr'), _vm._v(" "), _c('label', [_vm._v("Portfolio type")]), _vm._v(" "), _c('div', {
+  })], 2) : _vm._e()]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
+    staticClass: "form-wrapper whiteCard"
+  }, [_c('label', [_vm._v("Portfolio type")]), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-xs-12 col-sm-4"
@@ -65270,8 +65283,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_vm._v("\n                " + _vm._s(error[0]) + "\n            ")]) : _vm._e()
   }), _vm._v(" "), (_vm.type == 'images') ? _c('div', {
-    staticClass: "form-wrapper"
-  }, [_c('div', [_vm._v("Upload/Add Images")]), _vm._v(" "), (_vm.type == 'images') ? _c('div', {}, [(_vm.isUploading && !_vm.uploadingComplete) ? _c('div', {
+    staticClass: "form-wrapper whiteCard"
+  }, [_c('h4', {
+    staticClass: "bold"
+  }, [_vm._v("Upload Images")]), _vm._v(" "), _vm._m(2), _vm._v(" "), (_vm.type == 'images') ? _c('div', {}, [(_vm.isUploading && !_vm.uploadingComplete) ? _c('div', {
     staticClass: "progress"
   }, [_c('div', {
     staticClass: "progress-bar",
@@ -65297,8 +65312,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "change": _vm.uploadImage
     }
   })]) : _vm._e(), _vm._v(" "), _c('p', {
-    staticClass: "text-center bold"
-  }, [_c('small', [_c('em', [_vm._v(_vm._s(_vm.uploadedImages.length) + " out of 10 images")])])]), _vm._v(" "), (_vm.uploadedImages) ? _c('div', {
+    staticClass: "bold"
+  }, [_c('small', [_vm._v(_vm._s(_vm.uploadedImages.length) + " out of 10 Images")])]), _vm._v(" "), (_vm.uploadedImages) ? _c('div', {
     staticClass: "list-group",
     staticStyle: {
       "margin-top": "2em"
@@ -65331,8 +65346,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "glyphicon glyphicon-trash"
     })])])])
   })) : _vm._e()]) : _vm._e()]) : _vm._e(), _vm._v(" "), (_vm.type == 'audio') ? _c('div', {
-    staticClass: "form-wrapper"
-  }, [_c('div', [_vm._v("Upload Audio")]), _vm._v(" "), (_vm.type == 'audio') ? _c('div', {}, [(_vm.isUploading && !_vm.uploadingComplete) ? _c('div', {
+    staticClass: "form-wrapper whiteCard"
+  }, [_c('h4', {
+    staticClass: "bold"
+  }, [_vm._v("Upload Audio")]), _vm._v(" "), _vm._m(3), _vm._v(" "), (_vm.type == 'audio') ? _c('div', {}, [(_vm.isUploading && !_vm.uploadingComplete) ? _c('div', {
     staticClass: "progress"
   }, [_c('div', {
     staticClass: "progress-bar",
@@ -65391,8 +65408,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "glyphicon glyphicon-trash"
     }), _vm._v(" Delete\n                                ")])])])
   })) : _vm._e()]) : _vm._e()]) : _vm._e(), _vm._v(" "), (_vm.type == 'video') ? _c('div', {
-    staticClass: "form-wrapper"
-  }, [_c('div', [_vm._v("Upload Video")]), _vm._v(" "), (_vm.type == 'video') ? _c('div', {}, [(_vm.isUploading && !_vm.uploadingComplete) ? _c('div', {
+    staticClass: "form-wrapper whiteCard"
+  }, [_c('h4', {
+    staticClass: "bold"
+  }, [_vm._v("Upload Video")]), _vm._v(" "), _vm._m(4), _vm._v(" "), (_vm.type == 'video') ? _c('div', {}, [(_vm.isUploading && !_vm.uploadingComplete) ? _c('div', {
     staticClass: "progress"
   }, [_c('div', {
     staticClass: "progress-bar",
@@ -65451,12 +65470,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "glyphicon glyphicon-trash"
     }), _vm._v(" Delete\n                                ")])])])
   })) : _vm._e()]) : _vm._e()]) : _vm._e(), _vm._v(" "), _c('div', {
-    staticClass: "form-wrapper"
+    staticClass: "form-wrapper whiteCard"
   }, [_c('div', {}, [_c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-sm-6"
-  }, [_vm._m(2), _vm._v(" "), _c('input', {
+  }, [_vm._m(5), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -65479,9 +65498,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }), _vm._v(" "), _c('small', [_vm._v("Enter an external url this portfolio links to")])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-6"
-  }, [_vm._m(3), _vm._v(" "), _c('div', {
+  }, [_vm._m(6), _vm._v(" "), _c('div', {
     staticClass: "input-group"
-  }, [_vm._m(4), _vm._v(" "), _c('input', {
+  }, [_vm._m(7), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -65548,27 +65567,39 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_vm._v("Save Portfolio")]), _vm._v(" "), _c('span', {
     staticClass: "text-muted"
-  }, [_vm._v(_vm._s(_vm.statusText))])])])])], 2)])])
+  }, [_vm._v(_vm._s(_vm.statusText))])])])])], 2)])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "clearfix"
   }, [_c('h3', {
-    staticClass: "pull-left",
+    staticClass: "pull-left bold",
     staticStyle: {
       "margin-top": "0"
     }
-  }, [_vm._v("Add Portfolio")]), _vm._v(" "), _c('a', {
-    staticClass: "btn btn-basic pull-right",
+  }, [_vm._v("Add Portfolio Item")]), _vm._v(" "), _c('a', {
+    staticClass: "btn btn-basic pull-right bold text-muted",
     attrs: {
       "href": "/home"
     }
   }, [_c('i', {
-    staticClass: "glyphicon glyphicon-home"
-  }), _vm._v(" Back to profile")])])
+    staticClass: "fa fa-arrow-left"
+  }), _vm._v(" Back")])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('p', {
     staticClass: "text-center"
   }, [_c('small', [_vm._v("Tip: select the best image to use as a thumbnail")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('p', [_vm._v("You can upload up to 10 images. "), _c('span', {
+    staticClass: "text-warning"
+  }, [_c('em', [_vm._v("** Supported file formats are JPEG, JPG, PNG and GIF's")])])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('p', [_vm._v("You can upload 1 audio file. "), _c('span', {
+    staticClass: "text-warning"
+  }, [_c('em', [_vm._v("** Supported file format is MP3")])])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('p', [_vm._v("You can upload 1 video file per portfolio item. "), _c('span', {
+    staticClass: "text-warning"
+  }, [_c('em', [_vm._v("** Supported file formats are MP4 & MPEG")])])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('label', {
     attrs: {

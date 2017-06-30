@@ -9,7 +9,7 @@
         <div class="media-body">
             <div class="container-fluid row">
                 <div class="col-md-3">
-                    <h4 class="media-heading">
+                    <h4 class="media-heading bold">
                         <a href="{{ route('view_profile', ['user'=>$profile['username']]) }}">
                             {{ ucwords(strtolower($profile['fullname'])) }} {!! identity_check($profile['verified']) !!}
                         </a>

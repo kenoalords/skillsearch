@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'My Portfolio')
+
 @section('content')
 <div class="container">
     <div class="row padded">
@@ -9,11 +11,17 @@
         <br>
         <div class="clearfix">
             <a href="/profile/portfolio/add" class="btn btn-primary pull-left">
-                <strong><i class="glyphicon glyphicon-plus-sign"></i> Add item</strong>
+                <strong><i class="glyphicon glyphicon-plus-sign"></i> Add portfolio item</strong>
             </a>
             <a href="/home" class="btn btn-basic pull-right"><i class="glyphicon glyphicon-home"></i> Back to profile</a>
         </div>
         <hr>
+
+        @if(count($portfolios) < 3)
+        <div class="alert alert-warning">
+            <i class="fa fa-warning"></i> You need a minimun of <span class="bold">3 portfolio items</span> to apply for jobs
+        </div>
+        @endif
         
         @if ($portfolios)
             <div class="row">
