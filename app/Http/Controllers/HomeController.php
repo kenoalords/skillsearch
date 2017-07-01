@@ -64,13 +64,14 @@ class HomeController extends Controller
                 $inviteStatus = false;
             }
         }
-
+        $points = $request->user()->points()->first();
         return view('home')->with([
             'user'      => $request->user(),
             'profile'   => $request->user()->profile()->get()->first(),
             'activities'=> $activities,
             'gmail'     => (bool)$gmailCheck,
-            'invite_status' => $inviteStatus
+            'invite_status' => $inviteStatus,
+            'points'    => ($points) ? (int)$points->points : 0
         ]);
     }
 

@@ -21,7 +21,7 @@ Route::get('/work', 'PortfolioController@workPage')->name('work');
 Route::get('/contact', 'PagesController@contact');
 Route::get('/how-it-works', 'PagesController@works');
 Route::get('/privacy', 'PagesController@privacy');
-Route::get('/points', 'PagesController@points');
+Route::get('/points', 'PagesController@points')->name('points');
 
 Auth::routes();
 

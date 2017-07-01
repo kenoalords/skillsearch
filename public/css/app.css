@@ -1845,7 +1845,7 @@ dd {
   clear: both;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1199px) {
   .dl-horizontal dt {
     float: left;
     width: 160px;
@@ -4654,7 +4654,7 @@ tbody.collapse.in {
   margin-bottom: 2px;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1199px) {
   .navbar-right .dropdown-menu {
     right: 0;
     left: auto;
@@ -5255,7 +5255,7 @@ tbody.collapse.in {
   clear: both;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1199px) {
   .navbar {
     border-radius: 4px;
   }
@@ -5271,7 +5271,7 @@ tbody.collapse.in {
   clear: both;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1199px) {
   .navbar-header {
     float: left;
   }
@@ -5300,7 +5300,7 @@ tbody.collapse.in {
   overflow-y: auto;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1199px) {
   .navbar-collapse {
     width: auto;
     border-top: 0;
@@ -5346,7 +5346,7 @@ tbody.collapse.in {
   margin-left: -15px;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1199px) {
   .container > .navbar-header,
   .container > .navbar-collapse,
   .container-fluid > .navbar-header,
@@ -5361,7 +5361,7 @@ tbody.collapse.in {
   border-width: 0 0 1px;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1199px) {
   .navbar-static-top {
     border-radius: 0;
   }
@@ -5375,7 +5375,7 @@ tbody.collapse.in {
   z-index: 1030;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1199px) {
   .navbar-fixed-top,
   .navbar-fixed-bottom {
     border-radius: 0;
@@ -5410,7 +5410,7 @@ tbody.collapse.in {
   display: block;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1199px) {
   .navbar > .container .navbar-brand,
   .navbar > .container-fluid .navbar-brand {
     margin-left: -15px;
@@ -5445,7 +5445,7 @@ tbody.collapse.in {
   margin-top: 4px;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1199px) {
   .navbar-toggle {
     display: none;
   }
@@ -5461,7 +5461,7 @@ tbody.collapse.in {
   line-height: 22px;
 }
 
-@media (max-width: 991px) {
+@media (max-width: 1198px) {
   .navbar-nav .open .dropdown-menu {
     position: static;
     float: none;
@@ -5487,7 +5487,7 @@ tbody.collapse.in {
   }
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1199px) {
   .navbar-nav {
     float: left;
     margin: 0;
@@ -5575,7 +5575,7 @@ tbody.collapse.in {
   }
 }
 
-@media (max-width: 991px) {
+@media (max-width: 1198px) {
   .navbar-form .form-group {
     margin-bottom: 5px;
   }
@@ -5585,7 +5585,7 @@ tbody.collapse.in {
   }
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1199px) {
   .navbar-form {
     width: auto;
     border: 0;
@@ -5633,7 +5633,7 @@ tbody.collapse.in {
   margin-bottom: 14px;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1199px) {
   .navbar-text {
     float: left;
     margin-left: 15px;
@@ -5641,7 +5641,7 @@ tbody.collapse.in {
   }
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1199px) {
   .navbar-left {
     float: left !important;
   }
@@ -5724,7 +5724,7 @@ tbody.collapse.in {
   color: #555;
 }
 
-@media (max-width: 991px) {
+@media (max-width: 1198px) {
   .navbar-default .navbar-nav .open .dropdown-menu > li > a {
     color: #777;
   }
@@ -5842,7 +5842,7 @@ fieldset[disabled] .navbar-default .btn-link:focus {
   color: #fff;
 }
 
-@media (max-width: 991px) {
+@media (max-width: 1198px) {
   .navbar-inverse .navbar-nav .open .dropdown-menu > .dropdown-header {
     border-color: #090909;
   }
@@ -11374,6 +11374,26 @@ ul.no-style-list .list-group-item img.avatar {
   }
 }
 
+#points-header {
+  background-color: #3b4f5c;
+  padding: 4em 0;
+}
+
+#points-header h1,
+#points-header h4 {
+  color: #fff !important;
+}
+
+.points-table td {
+  padding-right: 15px !important;
+  padding-left: 15px !important;
+}
+
+.points-table td p {
+  font-size: 14px !important;
+  color: #999;
+}
+
 @media screen and (min-width: 320px) and (max-width: 539px) {
   .container {
     width: 90%;
@@ -11382,6 +11402,11 @@ ul.no-style-list .list-group-item img.avatar {
   .search-input {
     width: 100% !important;
     margin-bottom: 10px;
+  }
+
+  #hero .btn-primary {
+    padding-right: 2em;
+    padding-left: 2em;
   }
 
   #profile-back {
@@ -11511,6 +11536,31 @@ ul.no-style-list .list-group-item img.avatar {
     width: 100%;
     padding-left: 0px;
     padding-right: 0px;
+  }
+
+  #showcase {
+    padding: 0px;
+  }
+
+  #showcase .col-xs-12 {
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  h1 {
+    font-size: 1.7em;
+  }
+
+  h3 {
+    font-size: 19px;
+  }
+
+  h4 {
+    font-size: 14px;
+  }
+
+  #comments > .media {
+    padding: .5em;
   }
 }
 

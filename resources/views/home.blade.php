@@ -11,7 +11,14 @@
         </div>
         <div class="col-md-9 col-sm-8">
             @include('includes.status')
-
+            
+            <div class="white-boxed text-center">
+                <div class="">
+                    <h4 class="bold text-gold" style="font-size: 3em;"><i class="fa fa-trophy"></i> {{$points}} <small>{{str_plural('Point', $points)}} Earned</small></h4>
+                    <p>Earn points to boost your profile on {{ config('app.name') }} <span class="bold"><a href="{{route('points')}}">Find out more</a></span></p>
+                </div>
+            </div>
+            <hr>
             @if($profile->user->instagram()->count() == 0)
             <div id="instagram-notification">
                 <div class="white-boxed text-center">
