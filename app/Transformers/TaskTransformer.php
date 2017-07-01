@@ -36,7 +36,7 @@ class TaskTransformer extends TransformerAbstract
 			'budget_type' => ucfirst($task->budget_type),
 			'slug'		=> $task->slug,
 			'expires_at'=> $task->expires,
-			'expires_human' => $expires_date->diffForHumans(),
+			'expires_human' => $expires_date->toFormattedDateString(),
 			'date'		=> $task->created_at->diffForHumans(),
 			'can_apply' => $task->open_applications,
 			'is_approved' => $task->is_approved,

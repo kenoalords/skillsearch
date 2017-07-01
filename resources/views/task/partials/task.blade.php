@@ -13,7 +13,7 @@
 					<span class="label label-success"><i class="fa fa-lock"></i> Closed</span>
 				@endif
 			@endif
-			<h3 style="line-height: 1.7">
+			<h3 style="line-height: 1.7" class="bold job-title">
 				<a href="{{ route('task', [ 'task'=>$task['id'], 'slug'=>$task['slug'] ]) }}">
 					{{$task['title']}}
 				</a>
@@ -37,6 +37,9 @@
 						<span class="text-warning bold budget">₦0</span>
 					</li>
 				@endif
+				@if($task['expires_at'])
+		            <li class="bold text-warning">Expires {{ $task['expires_human'] }}</li>
+		        @endif
 			</ul>
 			<p>
 				{{ str_limit($task['description'], 100) }}

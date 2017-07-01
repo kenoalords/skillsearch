@@ -16,7 +16,7 @@
         <li class="bold"><i class="fa fa-map-marker"></i> {{$task['location']}}</li>
         <li class="bold">{{count($task['applications'])}} {{ str_plural( 'Application', count($task['applications']) ) }}</li>
         <li class="bold"><em>{{$task['date']}}</em></li>
-        <li class="bold text-warning">Closes {{ $task['expires_human'] }}</li>
+        
         @if($task['budget'])
             <li class="pull-right">
                 <span class="budget bold">₦{{ number_format($task['budget']) }}</span>
@@ -25,13 +25,16 @@
         @if($task['budget_type'])
             <li class="bold">**{{ $task['budget_type'] }}</li>
         @endif
+        @if($task['expires_at'])
+            <li class="bold text-warning">Expires {{ $task['expires_human'] }}</li>
+        @endif
     </ul>
     <br><br>
     <p>
         {!! nl2br($task['description']) !!}
     </p>
     @if($task['expires_human'])
-    <p class="bold text-warning">Closes {{ $task['expires_human'] }}</p>
+    <h4 class="bold text-warning">Expires {{ $task['expires_human'] }}</h4>
     @endif
     <br>
     @include('includes.share.job', ['task'=>$task])

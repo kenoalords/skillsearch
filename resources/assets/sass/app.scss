@@ -1,7 +1,7 @@
 
 // Fonts
 @import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css);
-@import url(https://fonts.googleapis.com/css?family=Roboto|Roboto+Slab:300,700);
+@import url(https://fonts.googleapis.com/css?family=Roboto:100,300|Roboto+Slab:300,700);
 // Variables
 @import "variables";
 
@@ -156,6 +156,18 @@ p{
 .btn-default:hover{
 	background-color:#fff;
 	border-color: #999;
+}
+
+.job-title{
+	a{
+		color: #3b4f5c;
+		text-decoration: none;
+		transition: all .3s ease-in-out;
+		&:hover{
+			color: #3097D1;
+			text-decoration: none;
+		}
+	}
 }
 
 .btn-default-success-outline{
@@ -1333,10 +1345,10 @@ ul.no-style-list{
 	display: none;
 }
 
-@media screen and (min-width: 540px) and (max-width: 769px)
+@media screen and (min-width: 540px) and (max-width: 768px)
 {
 	.container{
-		width: 70%;
+		width: 90%;
 	}
 
 	#search-form{
@@ -1353,9 +1365,9 @@ ul.no-style-list{
 	}
 
 	#showcase{
-		width: 70%;
+		width: 90%;
 		padding: 0;
-		margin: 0 auto;
+		margin: 15px auto;
 	}
 
 	#portfolio-wrapper{
@@ -1373,19 +1385,23 @@ ul.no-style-list{
 		}
 	}
 
-	#showcase{
-		.row{
-			width: 70%;
-			margin: 15px auto;
-		}
-	}
-
 	.hidden-sm{
 		display: none;
 	}
 
 	.visible-sm{
 		display: block;
+	}
+
+	#primary-nav{
+		&.container-fluid{
+			padding-left: 0px;
+			padding-right: 0px;
+		}
+		.container{
+			padding-left: 0px;
+			padding-right: 0px;
+		}
 	}
 }
 
@@ -1517,6 +1533,20 @@ ul.no-style-list{
 				margin-bottom: 5px;
 			}
 		}
+	}
+
+	#primary-nav{
+		.container{
+			width: 100%;
+			padding-left: 0px;
+			padding-right: 0px;
+		}
+	}
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px){
+	.container{
+		width: 80%;
 	}
 }
 

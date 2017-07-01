@@ -29243,6 +29243,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
     data: function data() {
@@ -63930,9 +63931,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "role": "alert"
       }
     }, [_vm._v("\n        " + _vm._s(error[0]) + "\n    ")]) : _vm._e()
-  }), _vm._v(" "), _c('h2', [_c('span', {
+  }), _vm._v(" "), _c('div', [_c('h2', [_c('span', {
     staticClass: "bold"
-  }, [_vm._v("Hire " + _vm._s(_vm.firstName))]), _vm._v(" "), _c('span', {
+  }, [_vm._v("Contact " + _vm._s(_vm.firstName))]), _vm._v(" "), _c('span', {
     staticClass: "thin"
   }, [_vm._v(" | Request any of " + _vm._s(_vm.firstName) + "'s services")])]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', [_c('div', {
     staticClass: "form-group"
@@ -63969,7 +63970,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           }
         }
       }
-    }), _vm._v(" " + _vm._s(service.skill) + "\n            ")]) : _vm._e()
+    }), _vm._v(" " + _vm._s(service.skill) + "\n                ")]) : _vm._e()
   })], 2), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('input', {
@@ -64030,12 +64031,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.submitRequest($event)
       }
     }
-  }, [_vm._v("Submit Request")]), _vm._v(" "), _c('a', {
+  }, [_vm._v("Send Message")]), _vm._v(" "), _c('a', {
     staticClass: "btn btn-basic pull-right",
     attrs: {
       "href": '/' + _vm.username
     }
-  }, [_vm._v("Back to profile")])])])], 2)
+  }, [_vm._v("Back to profile")])])])])], 2)
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('p', {
     staticClass: "text-info"
@@ -64043,7 +64044,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "glyphicon glyphicon-info-sign"
   }), _vm._v(" All fields are required")])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('p', [_vm._v("Select the service you will like to request for? "), _c('span', {
+  return _c('p', [_vm._v("Select the service you will like to inquire about? "), _c('span', {
     staticClass: "text-muted"
   })])
 }]}

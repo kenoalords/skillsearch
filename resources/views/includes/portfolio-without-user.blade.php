@@ -6,7 +6,7 @@
         </a>
         <div class="p-content clearfix">
             <!-- <h5 class="bold"><a href="{{ $portfolio['link']['url'] }}">{{ str_limit($portfolio['title'], 20) }}</a></h5> -->
-            <span class="pull-left" style="color: #aaa; position: relative; top: 3px;">
+            <span class="pull-left" style="position: relative; top: 3px;">
                 @if($portfolio['type'] == 'images')
                 <i class="glyphicon glyphicon-camera"></i>
                 @endif

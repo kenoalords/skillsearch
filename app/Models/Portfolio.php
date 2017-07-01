@@ -111,6 +111,11 @@ class Portfolio extends Model
       
     }
 
+    public function scopeHasThumbnail($query)
+    {
+      return $query->whereNotNull('thumbnail');
+    }
+
     public function views()
     {
       return $this->morphMany(View::class, 'viewable');

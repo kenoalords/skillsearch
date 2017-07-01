@@ -1,32 +1,33 @@
 <template>
     <div id="service-request" class="padded">
-        <div class="alert alert-success" role="alert" v-if="status" v-html="status">
-        </div>
+        <div class="alert alert-success" role="alert" v-if="status" v-html="status"></div>
         <div class="alert alert-danger" role="alert" v-if="formErrors" v-for="error in formErrors">
             {{error[0]}}
         </div>
-        <h2><span class="bold">Hire {{firstName}}</span> <span class="thin"> | Request any of {{firstName}}'s services</span></h2>
-        <p class="text-info"><i class="glyphicon glyphicon-info-sign"></i> All fields are required</p>
-        <hr>
         <div>
-            <div class="form-group">
-                <p>Select the service you will like to request for? <span class="text-muted"></span></p>
-                <label v-if="userServices" v-for="service in userServices">
-                    <input type="checkbox" v-bind:value="service.skill" v-model="services"> {{ service.skill }}
-                </label>
-            </div>
+            <h2><span class="bold">Contact {{firstName}}</span> <span class="thin"> | Request any of {{firstName}}'s services</span></h2>
+            <p class="text-info"><i class="glyphicon glyphicon-info-sign"></i> All fields are required</p>
+            <hr>
+            <div>
+                <div class="form-group">
+                    <p>Select the service you will like to inquire about? <span class="text-muted"></span></p>
+                    <label v-if="userServices" v-for="service in userServices">
+                        <input type="checkbox" v-bind:value="service.skill" v-model="services"> {{ service.skill }}
+                    </label>
+                </div>
 
-            <div class="form-group">
-                <input type="text" v-model="subject" class="form-control" placeholder="Subject">
-            </div>
+                <div class="form-group">
+                    <input type="text" v-model="subject" class="form-control" placeholder="Subject">
+                </div>
 
-            <div class="form-group">
-                <textarea v-model="body" class="form-control" placeholder="Make your request" rows="3"></textarea>
-            </div>
+                <div class="form-group">
+                    <textarea v-model="body" class="form-control" placeholder="Make your request" rows="3"></textarea>
+                </div>
 
-            <div class="form-group clearfix">
-                <button id="submitRequest" class="btn btn-primary pull-left" v-on:click.prevent="submitRequest" :disabled="isSubmitting">Submit Request</button>
-                <a :href="'/' + username" class="btn btn-basic pull-right">Back to profile</a>
+                <div class="form-group clearfix">
+                    <button id="submitRequest" class="btn btn-primary pull-left" v-on:click.prevent="submitRequest" :disabled="isSubmitting">Send Message</button>
+                    <a :href="'/' + username" class="btn btn-basic pull-right">Back to profile</a>
+                </div>
             </div>
         </div>
     </div>

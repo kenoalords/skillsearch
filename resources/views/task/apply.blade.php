@@ -21,7 +21,7 @@
 		    </div>
 		</div>
 	@else
-		@if ( count($user['portfolios']) < 0 )
+		@if ( count($user['portfolios']) < 3 )
 			@if($task['closed'] !== 1)
 			<div class="container">
 			    <div class="row padded" style="background: #fff; border: 1px solid #eee; margin-top: 3em">
