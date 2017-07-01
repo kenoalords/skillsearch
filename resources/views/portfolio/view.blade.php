@@ -86,7 +86,7 @@
 
     @if(count($others))
         <div id="showcase" class="other-works col-md-10 col-md-offset-1">
-            <div class="">    
+            <div class="row">    
                 <div class="col-sm-12">
                     <h4 class="bold">More From {{$portfolio['user_profile']['fullname']}}</h4>
                     <hr>

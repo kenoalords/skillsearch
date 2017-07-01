@@ -2,20 +2,19 @@
 
 @section('thumbnail', asset('public/logo-b.png'))
 @section('type', 'article')
-@section('metadescription', 'We want to hear from you, contact Skillsearch Nigeria on Twitter @SkillsearchNG')
-
+@section('metadescription', 'We want to hear from you, contact '. config('app.name') .' on Twitter @SkillsearchNG')
+@section('title', 'Contact')
 @section('content')
 	
-	<div id="hero" class="page padded text-center">
-		<h1>Contact Us</h1>
+	<div id="points-header" class="page padded text-center">
+		<h1 class="bold">Contact Us</h1>
 	</div>
 	<div id="page" class="container">
 		<div class="col-sm-8 col-sm-offset-2">
 			<div class="padded text-center">
-				<p><strong>Questions, Comments or Concerns?</strong></p>
-				<p>We want to hear from you. Send us a mail <a href="mailto:info@skillsearch.com.ng">info@skillsearch.com.ng</a></p>
-				<p>OR</p>
-				<p><a href="https://twitter.com/skillsearchng" class="btn btn-primary" target="_blank">
+				<h3>Questions, Comments or Recommendations?</h3>
+				<p>We want to hear from you. Send us a mail <a href="mailto:info@skillsearch.com.ng">info[@]skillsearch.com.ng</a></p>
+				<p>Or <a href="https://twitter.com/skillsearchng" class="btn btn-default" target="_blank">
 					<i class="fa fa-twitter"></i> Tweet <strong>@SkillsearchNG</strong>
 				</a></p>
 			</div>

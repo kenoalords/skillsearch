@@ -158,10 +158,11 @@
     <footer id="site-footer" class="padded">
         <div class="container" id="sub-footer">
             <div class="col-xs-6 col-sm-6 col-md-4">
-                <h4>Company Info</h4>
+                <h4>About</h4>
                 <ul>
-                    <li><a href="/about">About Us</a></li>
+                    <li><a href="/about">Us</a></li>
                     <li><a href="/how-it-works">How It Works</a></li>
+                    <li><a href="/points">Points</a></li>
                     <li><a href="/contact">Contact Us</a></li>
                 </ul>
             </div>
@@ -187,12 +188,12 @@
         <div class="container text-center">
             <hr>
             <div class="clearfix">
-                <ul class="list-inline pull-left" id="social-links">
-                    <li><a href="https://www.facebook.com/skillsearchng/" target="_blank"><i class="fa fa-facebook-square"></i></a></li>
-                    <li><a href="https://twitter.com/skillsearchng"><i class="fa fa-twitter"></i></a></li>
-                    <!-- <li><a href="https://plus.google.com/skillsearchng"><i class="fa fa-google-plus-square"></i></a></li> -->
-                </ul>
-                <div class="pull-right">
+                
+                <p class="text-center" id="social-links">
+                    <a href="https://www.facebook.com/skillsearchng/" target="_blank"><i class="fa fa-facebook-square"></i></a>
+                    <a href="https://twitter.com/skillsearchng"><i class="fa fa-twitter"></i></a>
+                </p>
+                <div class="text-center bold text-muted" style="letter-spacing: 1px">
                     <small>Skillsearch Nigeria &copy; Copyright <?php echo date('Y') ?> a <a href="http://clickmedia.com.ng" target="_blank">Clickmedia Solutions Project</a></small>
                 </div>
             </div>

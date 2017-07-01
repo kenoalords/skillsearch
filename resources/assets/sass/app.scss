@@ -794,17 +794,24 @@ ul.profile-meta{
 }
 
 #site-footer{
-	background: #222;
-	color: rgba(255,255,255,.6);
+	background: #3b4f5c;
+	color: #fff;
+	&.padded{
+		padding: 5em 0;
+	}
 	hr{
 		opacity: .1;
 	}
 	#social-links{
-		font-size: 1.5em;
-		li{
-			a{
-				color: #fff;
-				opacity: .8;
+		font-size: 2em;
+		a{
+			color: #fff;
+			opacity: .4;
+			transition: all .3s ease-in-out;
+			display: inline-block;
+			margin: 0 5px;
+			&:hover{
+				opacity: 1;
 			}
 		}
 	}
@@ -929,6 +936,9 @@ body.loading:before{
 		position: relative;
 		background: #fff;
 		padding: .5em;
+		&.whiteCard{
+			margin-bottom: 0;
+		}
 		&.video{
 			a{
 				&:before{
@@ -988,7 +998,7 @@ body.loading:before{
 #sub-footer{
 	a{
 		color: #fff;
-		opacity: .5;
+		opacity: .7;
 		transition: all .3s ease-in-out;
 		&:hover{
 			opacity: 1;
@@ -998,10 +1008,10 @@ body.loading:before{
 		list-style: none;
 		padding-left: 0;
 		margin-left: 0;
-		font-size: 87.5%;
+		font-size: 14px;
 	}
 	p{
-		font-size: 75%;
+		font-size: 14px;
 		a{
 			text-decoration: underline;
 			opacity: 1;
@@ -1009,9 +1019,9 @@ body.loading:before{
 	}
 	h4{
 		color: #fff;
-		text-transform: uppercase;
+		text-transform: capitalize;
 		margin-bottom: 1.2em;
-		font-size: 1em;
+		font-size: 1.3em;
 		letter-spacing: 1px;
 	}
 }

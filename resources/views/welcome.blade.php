@@ -10,7 +10,7 @@
 <div id="hero">
     <div class="container">
         <div class="col-md-8 col-md-offset-2 text-center">
-            <h1 class="thin" style="font-size: 1.5em">Showcase &amp; Discover Skilled People in Nigeria.</h1>
+            <h1 class="thin" style="font-size: 1.5em"><span class="bold">Showcase &amp; Discover</span> Skilled People in Nigeria.</h1>
             <br>
             <p>
                 <a href="/people" class="btn btn-primary bold">Discover People</a>

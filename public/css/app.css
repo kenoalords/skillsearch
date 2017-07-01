@@ -10722,8 +10722,12 @@ ul.profile-meta li {
 }
 
 #site-footer {
-  background: #222;
-  color: rgba(255, 255, 255, 0.6);
+  background: #3b4f5c;
+  color: #fff;
+}
+
+#site-footer.padded {
+  padding: 5em 0;
 }
 
 #site-footer hr {
@@ -10731,12 +10735,20 @@ ul.profile-meta li {
 }
 
 #site-footer #social-links {
-  font-size: 1.5em;
+  font-size: 2em;
 }
 
-#site-footer #social-links li a {
+#site-footer #social-links a {
   color: #fff;
-  opacity: .8;
+  opacity: .4;
+  -webkit-transition: all .3s ease-in-out;
+  transition: all .3s ease-in-out;
+  display: inline-block;
+  margin: 0 5px;
+}
+
+#site-footer #social-links a:hover {
+  opacity: 1;
 }
 
 form.boxed-form {
@@ -10877,6 +10889,10 @@ body.loading:before {
   padding: .5em;
 }
 
+#showcase .image-wrapper.whiteCard {
+  margin-bottom: 0;
+}
+
 #showcase .image-wrapper.video a:before {
   content: "";
   position: absolute;
@@ -10937,7 +10953,7 @@ body.loading:before {
 
 #sub-footer a {
   color: #fff;
-  opacity: .5;
+  opacity: .7;
   -webkit-transition: all .3s ease-in-out;
   transition: all .3s ease-in-out;
 }
@@ -10950,11 +10966,11 @@ body.loading:before {
   list-style: none;
   padding-left: 0;
   margin-left: 0;
-  font-size: 87.5%;
+  font-size: 14px;
 }
 
 #sub-footer p {
-  font-size: 75%;
+  font-size: 14px;
 }
 
 #sub-footer p a {
@@ -10964,9 +10980,9 @@ body.loading:before {
 
 #sub-footer h4 {
   color: #fff;
-  text-transform: uppercase;
+  text-transform: capitalize;
   margin-bottom: 1.2em;
-  font-size: 1em;
+  font-size: 1.3em;
   letter-spacing: 1px;
 }
 
