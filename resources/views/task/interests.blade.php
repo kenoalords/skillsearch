@@ -5,7 +5,7 @@
 
 <div>
     <div class="container">
-    	<div class="row padded" style="background: #fff">
+    	<div class="row padded" style="background: #fff; margin-top: 3em; border: 1px solid #d3e0e9">
     		<div class="col-md-10 col-md-offset-1">
     			<h1><span class="bold">Job</span> <span class="thin">Applications</span></h1>
     			<hr>
@@ -26,7 +26,7 @@
     		</div>
     	</div>
 
-    	<div class="row padded" style="background: #fff; margin-top: 3em">
+    	<div class="row padded" style="background: #fff; margin-top: 3em; border: 1px solid #d3e0e9">
     		<div class="col-md-10 col-md-offset-1">
     			<h4><span class="bold">{{ count($task['applications']) }} Job</span> <span class="thin">Applications</span></h1>
     			<hr>

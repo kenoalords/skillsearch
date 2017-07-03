@@ -23,6 +23,13 @@ blockquote {
     text-align: left;
 }
 
+blockquote {
+    border-left: 2px solid #eee;
+    margin-left: 1em;
+    padding-left: 1em;
+    font-style: italic;
+}
+
 a {
     color: #3869D4;
 }
@@ -211,7 +218,7 @@ img {
     border-radius: 3px;
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.16);
     color: #FFF;
-    display: inline-block;
+    display: block;
     text-decoration: none;
     -webkit-text-size-adjust: none;
 }

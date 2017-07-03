@@ -8,7 +8,7 @@
     	<div class="row" style="margin: 2em -15px">
     		@include('task.partials.navigation', ['page'=>'application'])
 	    </div>
-    	<div class="row padded" style="background: #fff;">
+    	<div class="row padded" style="background: #fff; border: 1px solid #d3e0e9">
     		<div class="col-md-10 col-md-offset-1">
     			<div class="clearfix">
     				<h1 class="pull-left"><span class="bold">{{ count($applications) }} Job</span> <span class="thin">{{ str_plural('Application', count($applications)) }}</span></h1>
@@ -20,7 +20,7 @@
 		
 		@if(count($applications) > 0)
 		@foreach ( $applications as $application )
-    	<div class="row padded" style="background: #fff; margin-top: 2em; border: 1px solid #eee">
+    	<div class="row padded" style="background: #fff; margin-top: 2em; border: 1px solid #d3e0e9">
     		<div class="col-md-10 col-md-offset-1">
 				<div>
 					<p>{{ $application['application'] }}</p>

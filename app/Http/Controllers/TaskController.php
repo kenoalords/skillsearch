@@ -25,6 +25,7 @@ use App\Mail\JobRejectNotification;
 use App\Mail\JobApprovalNotification;
 use App\Mail\TaskApplicationNotification;
 use App\Mail\ApplicationAcceptanceNotification;
+use App\Mail\JobApplicationResponseNotification;
 use App\Mail\JobBroadcastNotification;
 
 class TaskController extends Controller
@@ -227,6 +228,23 @@ class TaskController extends Controller
                                         ->transformWith(new ApplicationResponseTransformer)
                                         ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                                         ->toArray();
+        // Sender
+        // Receiver
+        // Task
+        $task = Task::find($request->task_id);
+        $application = Application::find($request->application_id);
+        $sender = null;
+        $receiver = null;
+
+        if($application->user_id === $request->user()->id){
+            $receiver = $task->user;
+            $sender = $application->user;
+        } else {
+            $receiver = $application->user;
+            $sender = $task->user;
+        }
+
+        Mail::to($receiver)->send(new JobApplicationResponseNotification($sender, $receiver, $task, $application));
         return response()->json($applicationResponse, 200);
     }
 
