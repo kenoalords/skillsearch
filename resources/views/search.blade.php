@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+@section('title', {{Request::get('term')}})
 @include('search-form') 
 <div class="container padded">
 	

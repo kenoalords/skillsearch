@@ -6,9 +6,11 @@ use Mail;
 use App\Models\User;
 use App\Models\VerifyUser;
 use App\Models\ContactInvite;
+use App\Models\Task;
 use App\Mail\ContactInviteReminder;
 use App\Mail\CronTestEmail;
 use App\Mail\InstagramNotificationMail;
+use App\Transformers\SimpleTaskTransformer;
 use App\Mail\VerificationReminderMail;
 use App\Mail\JobPromotionNotification;
 use Illuminate\Console\Scheduling\Schedule;
@@ -65,12 +67,17 @@ class Kernel extends ConsoleKernel
         // Job Promotion Notification Schedule Mail
         $schedule->call(function(){
             $users = ContactInvite::get();
+            $tasks = Task::isPublic()->isApproved()->orderDesc()->take(5)->get();
+            $tasks = fractal()->collection($tasks)
+                              ->transformWith(new SimpleTaskTransformer)
+                              ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                              ->toArray();
             if($users->count()){
-                $users->each( function( $user, $key ) {
-                    Mail::to($user->email)->send( new JobPromotionNotification() );
+                $users->each( function( $user, $key ) use ($tasks) {
+                    Mail::to($user->email)->send( new JobPromotionNotification($tasks) );
                 });
             }
-        })->weekly()->thursdays()->at('08:15')->timezone('Africa/Lagos');
+        })->weekly()->mondays()->at('17:00')->timezone('Africa/Lagos');
 
         $schedule->call(function(){
             $users = User::get();

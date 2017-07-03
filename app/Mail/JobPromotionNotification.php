@@ -11,14 +11,15 @@ class JobPromotionNotification extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
+    private $tasks;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($tasks)
     {
-        //
+        $this->tasks = $tasks;
     }
 
     /**
@@ -28,8 +29,9 @@ class JobPromotionNotification extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->from(config('app.mail_from_address'), 'Keno from ' . config('app.name'))
-                    ->subject('Let\'s Find You The Best Hands in Nigeria')
-                    ->markdown('email.job.promo');
+        return $this->from(config('app.mail_from_address'), 'Jobs via ' . config('app.name'))
+                    ->subject('Latest Jobs on ' . config('app.name'))
+                    ->markdown('email.job.promo')
+                    ->with('tasks', $this->tasks);
     }
 }
