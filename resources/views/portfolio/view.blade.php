@@ -17,10 +17,19 @@
                 </div> -->
                 <div class="portfolio-meta">
                     <ul class="list-inline">
-                        <li><a href="/{{$portfolio['user']}}" class="bold"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="{{$portfolio['user_profile']['avatar']}}" alt="{{$portfolio['user_profile']['fullname']}}" class="img-circle b-lazy user-avatar" width="24" height="24"> {{$portfolio['user_profile']['fullname']}}</a></li>
+                        <li><a href="/{{$portfolio['user']}}" class="bold">
+                                <h4 class="bold">
+                                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="{{$portfolio['user_profile']['avatar']}}" alt="{{$portfolio['user_profile']['fullname']}}" class="img-circle b-lazy user-avatar" width="24" height="24">
+                                     {{$portfolio['user_profile']['fullname']}}
+                                </h4>
+                            </a>
+                            <div class="bold">
+                                <span class="label label-info label-xs" style="color: #fff">{{ $portfolio['user_profile']['following'] }} Following</span>
+                                <span class="label label-info label-xs" style="color: #fff">{{ $portfolio['user_profile']['followers'] }} {{ $portfolio['user_profile']['followers'] > 1 ? 'Follwers' : 'Follower' }}</span>
+                            </div>
+                        </li>
                         <li class="pull-right"><follow username="{{$portfolio['user']}}"></follow></li>
                     </ul>
-                    <hr>
                     <h1 class="bold">{{ ucwords(strtolower($portfolio['title'])) }}</h1>                    
                     <p>{{$portfolio['description']}}</p>
                     <ul class="list-inline text-muted" style="font-weight: 600; font-size: 12px; margin-top: 1em;">
@@ -69,7 +78,11 @@
                     <video-player video-url="{{$file->getFile()}}"></video-player>
                 @endforeach
             @endif
-            <like-button id="{{$portfolio['uid']}}"></like-button>
+            <ul class="list-inline">
+                <li><like-button id="{{$portfolio['uid']}}"></like-button></li>
+                <li><follow username="{{$portfolio['user']}}"></follow></li>
+            </ul>
+            
             <hr>
             <div>@include('includes.share.portfolio', ['url'=>Request::url()])</div>
             
@@ -77,7 +90,7 @@
             <a href="/login" class="btn btn-primary">Login or Register</a> to comment or like
             @endif
 
-            <portfolio-comments uid="{{ $portfolio['uid'] }}"></portfolio-comments>
+            <portfolio-comments uid="{{ $portfolio['uid'] }}" avatar="{{ $avatar }}"></portfolio-comments>
             @endif
 
             

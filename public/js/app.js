@@ -28614,6 +28614,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
     data: function data() {
@@ -28626,12 +28633,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             isReplyActive: null,
             isReplySubmitting: false,
             reply: null,
-            isLiking: false
+            isLiking: false,
+            userImage: this.avatar
         };
     },
 
     props: {
-        uid: null
+        uid: null,
+        avatar: null
     },
     methods: {
         getComments: function getComments() {
@@ -63245,6 +63254,20 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', [(_vm.user) ? _c('div', {
     staticClass: "whiteCard"
   }, [_c('div', {
+    staticClass: "media"
+  }, [_c('div', {
+    staticClass: "media-left"
+  }, [_c('img', {
+    staticClass: "img-circle",
+    attrs: {
+      "src": _vm.userImage,
+      "alt": "Avatar",
+      "width": "36",
+      "height": "36"
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "media-body"
+  }, [_c('div', {
     staticClass: "form-group"
   }, [_c('textarea', {
     directives: [{
@@ -63255,8 +63278,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     staticClass: "form-control",
     attrs: {
-      "rows": "3",
-      "placeholder": "Share a comment..."
+      "rows": "2",
+      "placeholder": "Write a comment"
     },
     domProps: {
       "value": _vm._s(_vm.comment)
@@ -63268,7 +63291,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   })]), _vm._v(" "), _c('button', {
-    staticClass: "btn btn-primary",
+    staticClass: "btn btn-primary btn-xs",
     attrs: {
       "disabled": _vm.isSubmitting
     },
@@ -63278,7 +63301,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.submitComment()
       }
     }
-  }, [_vm._v(_vm._s(_vm.isSubmitting ? 'Submitting...' : 'Submit Comment'))])]) : _vm._e(), _vm._v(" "), (_vm.comments) ? _c('div', {
+  }, [_vm._v(_vm._s(_vm.isSubmitting ? 'Submitting...' : 'Comment'))])])])]) : _vm._e(), _vm._v(" "), (_vm.comments) ? _c('div', {
     attrs: {
       "id": "comments"
     }
@@ -63298,8 +63321,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       attrs: {
         "src": comment.profile.data.avatar,
         "alt": comment.profile.data.first_name,
-        "width": "48",
-        "height": "48"
+        "width": "36",
+        "height": "36"
       }
     })])]), _vm._v(" "), _c('div', {
       staticClass: "media-body"
@@ -63433,8 +63456,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         attrs: {
           "src": reply.profile.data.avatar,
           "alt": reply.profile.data.first_name,
-          "width": "36",
-          "height": "36"
+          "width": "24",
+          "height": "24"
         }
       })])]), _vm._v(" "), _c('div', {
         staticClass: "media-body"

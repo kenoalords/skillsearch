@@ -18,17 +18,17 @@
                 @endif
             </span>
 
-            <ul class="list-inline clearfix pull-right">
+            <ul class="list-inline clearfix pull-right bold">
                 <li>
-                    <small><i class="glyphicon glyphicon-heart"></i> 
+                    <small class="bold"><i class="glyphicon glyphicon-heart"></i> 
                     {{$portfolio['likes_count']}} </small>
                 </li>
                 <li>
-                     <small><i class="glyphicon glyphicon-comment"></i> 
+                     <small class="bold"><i class="glyphicon glyphicon-comment"></i> 
                     {{$portfolio['comment_count']}}</small>
                 </li>
                 <li>
-                     <small><i class="glyphicon glyphicon-eye-open"></i> 
+                     <small class="bold"><i class="glyphicon glyphicon-eye-open"></i> 
                     {{$portfolio['views']}}</small>
                 </li>
             </ul>

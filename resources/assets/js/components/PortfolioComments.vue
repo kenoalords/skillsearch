@@ -1,17 +1,24 @@
 <template>
     <div>
         <div v-if="user" class="whiteCard">
-            <div class="form-group">
-                <textarea v-model="comment" class="form-control" rows="3" placeholder="Share a comment..."></textarea>
+            <div class="media">
+                <div class="media-left">
+                    <img :src="userImage" alt="Avatar" class="img-circle" width="36" height="36">
+                </div>
+                <div class="media-body">
+                    <div class="form-group">
+                        <textarea v-model="comment" class="form-control" rows="2" placeholder="Write a comment"></textarea>
+                    </div>
+                    <button class="btn btn-primary btn-xs" v-on:click.prevent="submitComment()" :disabled="isSubmitting">{{isSubmitting ? 'Submitting...' : 'Comment'}}</button>  
+                </div>
             </div>
-            <button class="btn btn-primary" v-on:click.prevent="submitComment()" :disabled="isSubmitting">{{isSubmitting ? 'Submitting...' : 'Submit Comment'}}</button>
         </div>
         <div v-if="comments"  id="comments">
             <h3 class="bold">{{comments.length}} {{comments.length > 1 ? 'Comments' : 'Comment'}}</h3>
             <div class="media" v-for="comment in comments">
                 <div class="media-left">
                     <a :href="'/'+comment.profile.data.username">
-                        <img :src="comment.profile.data.avatar" :alt="comment.profile.data.first_name" width="48" height="48" class="img-circle">
+                        <img :src="comment.profile.data.avatar" :alt="comment.profile.data.first_name" width="36" height="36" class="img-circle">
                     </a>
                 </div>
                 <div class="media-body">
@@ -47,7 +54,7 @@
                         <div class="media" v-for="reply in comment.replies.data">
                             <div class="media-left">
                                 <a v-bind:href="'/'+reply.profile.data.username">
-                                    <img :src="reply.profile.data.avatar" :alt="reply.profile.data.first_name" width="36" height="36" class="img-circle">
+                                    <img :src="reply.profile.data.avatar" :alt="reply.profile.data.first_name" width="24" height="24" class="img-circle">
                                 </a>
                             </div>
                             <div class="media-body">
@@ -85,10 +92,12 @@
                 isReplySubmitting: false,
                 reply: null,
                 isLiking: false,
+                userImage: this.avatar,
             }
         },
         props: {
-            uid: null
+            uid: null,
+            avatar: null
         },
         methods: {
             getComments(){

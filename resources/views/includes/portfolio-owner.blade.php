@@ -1,6 +1,6 @@
 <div class="col-xs-12 col-sm-6 col-md-3">
 
-    <div class="image-wrapper">
+    <div class="whiteCard image-wrapper">
         <a href="{{ $portfolio['link']['url'] }}">
             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" data-src="{{ $portfolio['thumbnail'] }}" alt="{{$portfolio['title']}}" class="img-responsive b-lazy">
         </a>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use App\Models\User;
 use App\Models\Portfolio;
 use App\Models\File;
@@ -250,7 +251,7 @@ class PortfolioController extends Controller
         return response()->json($portfolio, 200);
     }
 
-    public function view(User $user, Portfolio $portfolio)
+    public function view(Request $request, User $user, Portfolio $portfolio)
     {
         // $this->authorize('view', $portfolio);
         $info = fractal()->item($portfolio)
@@ -261,10 +262,15 @@ class PortfolioController extends Controller
                         ->transformWith(new PortfolioTransformer)
                         ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                         ->toArray();
+        $avatar = '';
+        if(Auth::user()) {
+            $avatar = Auth::user()->profile->getAvatar();
+        }
         return view('portfolio.view')->with([
             'portfolio' => $info,
             'files'     => $portfolio->files()->get(),
-            'others'    => $others
+            'others'    => $others,
+            'avatar'    => $avatar,
         ]);
     }
 
