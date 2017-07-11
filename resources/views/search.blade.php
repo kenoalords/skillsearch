@@ -1,8 +1,11 @@
 @extends('layouts.app')
-
+@section('title', Request::get('term') )
 @section('content')
-@section('title', {{Request::get('term')}})
-@include('search-form') 
+
+<div class="padded">
+	@include('search-form') 
+</div>
+
 <div class="container padded">
 	
 	@if(count($profiles) > 0)
