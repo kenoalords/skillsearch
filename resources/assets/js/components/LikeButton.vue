@@ -1,6 +1,6 @@
 <template>
     <span>
-        <a v-on:click.prevent="submitLike" class="btn" v-bind:class="{ 'btn-default' : !hasLiked, 'btn-primary' : hasLiked }">
+        <a v-on:click.prevent="submitLike" class="label label-sm btn btn-block" v-bind:class="{ 'label-basic' : !hasLiked, 'btn-danger' : hasLiked }">
             <i class="glyphicon glyphicon-heart"></i> {{count}}
             {{ (count < 2) ? 'Like' : 'Likes'}}
         </a>

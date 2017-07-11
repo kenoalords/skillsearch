@@ -46,12 +46,30 @@ class People extends Controller
                             ->transformWith(new PortfolioTransformer)
                             ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                             ->toArray();
-    	// dd(collect($portfolios));
-        $others = fractal()->collection($profile->getOtherProfiles($user)->isPublic()->take(4)->get())
+    	// dd($skills);
+        $others = User::where('id', '!=', $user->id)->whereHas('skills', function($query) use ($skills){
+            $skillset = [];
+            foreach($skills as $skill){
+                $skillset[] = $skill->skill;
+            }
+            $query->whereIn('skill', $skillset);
+        })->has('portfolio')->take(10)->get();
+
+        $other_profiles = [];
+        if($others){
+            foreach($others as $user){
+                $other = $user->profile()->isPublic()->get()->first();
+                if($other){
+                    $other_profiles[] = fractal()->item($other)
                             ->transformWith(new ProfileTransformers)
                             ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                             ->toArray();
-        // dd($others);
+                }
+            }
+        }
+        
+        
+        // dd($other_profiles);
         $instagram = $user->instagram()->first();
         
     	return view('profile.profile')->with([
@@ -60,7 +78,7 @@ class People extends Controller
             'instagram' => $instagram,
             'portfolios'=> $portfolios,
             'name'      => $user->name,
-            'others'    => $others
+            'others'    => $other_profiles
     	]);
     }
 
@@ -76,17 +94,35 @@ class People extends Controller
     public function about(Request $request, User $user)
     {
         $profile = $user->profile()->get()->first();
+        $skills = $user->skills()->get();
+        $others = User::where('id', '!=', $user->id)->whereHas('skills', function($query) use ($skills){
+            $skillset = [];
+            foreach($skills as $skill){
+                $skillset[] = $skill->skill;
+            }
+            $query->whereIn('skill', $skillset);
+        })->has('portfolio')->take(10)->get();
 
-        $others = fractal()->collection($profile->getOtherProfiles($user)->isPublic()->take(4)->get())
+        $other_profiles = [];
+        if($others){
+            foreach($others as $user){
+                $other = $user->profile()->isPublic()->get()->first();
+                if($other){
+                    $other_profiles[] = fractal()->item($other)
                             ->transformWith(new ProfileTransformers)
                             ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                             ->toArray();
+                }
+            }
+        }
+
         $instagram = $user->instagram()->first();
+
         return view('profile.profile-about')->with([
             'profile' => $profile,
             'instagram' => $instagram,
             'name'  => $user->name,
-            'others' => $others
+            'others' => $other_profiles
         ]);
     }
 
@@ -94,16 +130,33 @@ class People extends Controller
     {
         $token = $user->instagram()->first();
         $profile = $user->profile()->get()->first();
-        $others = fractal()->collection($profile->getOtherProfiles($user)->isPublic()->take(4)->get())
+        $skills = $user->skills()->get();
+        $others = User::where('id', '!=', $user->id)->whereHas('skills', function($query) use ($skills){
+            $skillset = [];
+            foreach($skills as $skill){
+                $skillset[] = $skill->skill;
+            }
+            $query->whereIn('skill', $skillset);
+        })->has('portfolio')->take(10)->get();
+
+        $other_profiles = [];
+        if($others){
+            foreach($others as $user){
+                $other = $user->profile()->isPublic()->get()->first();
+                if($other){
+                    $other_profiles[] = fractal()->item($other)
                             ->transformWith(new ProfileTransformers)
                             ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                             ->toArray();
+                }
+            }
+        }
 
         return view('profile.profile-instagram')->with([
                     'instaUser'  => $token,
                     'name'  => $user->name,
                     'profile' => $profile,
-                    'others' => $others
+                    'others' => $other_profiles
                 ]);
     }
 

@@ -16,21 +16,26 @@
                     <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=" data-src="{{$portfolio['thumbnail']}}" alt="{{ $portfolio['title'] }}" class="img-responsive b-lazy">
                 </div> -->
                 <div class="portfolio-meta">
+                    <h1 class="bold">{{ ucwords(strtolower($portfolio['title'])) }}</h1>   
                     <ul class="list-inline">
-                        <li><a href="/{{$portfolio['user']}}" class="bold">
-                                <h4 class="bold">
+                        <li>
+                            <a href="/{{$portfolio['user']}}" class="bold">
+                                <h5 class="bold">
                                     <img src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="{{$portfolio['user_profile']['avatar']}}" alt="{{$portfolio['user_profile']['fullname']}}" class="img-circle b-lazy user-avatar" width="24" height="24">
                                      {{$portfolio['user_profile']['fullname']}}
-                                </h4>
+                                </h5>
                             </a>
                             <div class="bold">
-                                <span class="label label-info label-xs" style="color: #fff">{{ $portfolio['user_profile']['following'] }} Following</span>
-                                <span class="label label-info label-xs" style="color: #fff">{{ $portfolio['user_profile']['followers'] }} {{ $portfolio['user_profile']['followers'] > 1 ? 'Follwers' : 'Follower' }}</span>
+                                <ul class="list-inline">
+                                    <li><follow username="{{$portfolio['user']}}"></follow></li>
+                                    <li><span class="small text-muted">{{ $portfolio['user_profile']['following'] }} Following</span></li>
+                                    <li><span class="small text-muted">{{ $portfolio['user_profile']['followers'] }} {{ $portfolio['user_profile']['followers'] > 1 ? 'Follwers' : 'Follower' }}</span></li>
+                                </ul>
                             </div>
                         </li>
-                        <li class="pull-right"><follow username="{{$portfolio['user']}}"></follow></li>
+                        <!-- <li class="pull-right"></li> -->
                     </ul>
-                    <h1 class="bold">{{ ucwords(strtolower($portfolio['title'])) }}</h1>                    
+                    <hr>               
                     <p>{{$portfolio['description']}}</p>
                     <ul class="list-inline text-muted" style="font-weight: 600; font-size: 12px; margin-top: 1em;">
                         <li><i class="glyphicon glyphicon-eye-open"></i> {{ $portfolio['views'] }} {{ str_plural('View', $portfolio['views'])}}</li>

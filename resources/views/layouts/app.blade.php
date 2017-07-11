@@ -117,6 +117,9 @@
                                             <a href="{{ route('approve_jobs') }}">
                                                 Job Approval
                                             </a>
+                                            <a href="{{ route('linkedin_contacts') }}">
+                                                Linkedin Contacts
+                                            </a>
                                         @endif
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();

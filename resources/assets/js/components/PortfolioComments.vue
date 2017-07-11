@@ -7,9 +7,9 @@
                 </div>
                 <div class="media-body">
                     <div class="form-group">
-                        <textarea v-model="comment" class="form-control" rows="2" placeholder="Write a comment"></textarea>
+                        <textarea v-model="comment" class="form-control" rows="2" placeholder="Leave your thoughts here..."></textarea>
                     </div>
-                    <button class="btn btn-primary btn-xs" v-on:click.prevent="submitComment()" :disabled="isSubmitting">{{isSubmitting ? 'Submitting...' : 'Comment'}}</button>  
+                    <button class="btn btn-default btn-xs" v-on:click.prevent="submitComment()" :disabled="isSubmitting">{{isSubmitting ? 'Submitting...' : 'Comment'}}</button>  
                 </div>
             </div>
         </div>
@@ -27,12 +27,10 @@
                          <small class="">{{ comment.date }}</small>
                     </h4>
                     <p v-html="comment.comment"></p>
+                    <a href="#" class="bold pull-right like-btn big" v-on:click.prevent="submitCommentLike(comment)" v-bind:class="{ active : isLiking }"><i class="fa fa-heart"></i> <span :id="'comment-'+comment.id">{{ comment.likes }}</span></a>
                     <ul class="list-inline">
-                        <li>
-                            <a href="#" class="bold " v-on:click.prevent="submitCommentLike(comment)" v-bind:class="{ active : isLiking }"><i class="fa fa-heart"></i> <span :id="'comment-'+comment.id">{{ comment.likes }} {{ comment.likes > 1 ? 'Likes' : 'Like' }}</span></a>
-                        </li>
                         <li v-if="user">
-                           <a href="#" v-on:click.prevent="toggleReplyField(comment.id)" class="bold "><i class="fa fa-comments"></i> {{comment.replies.data.length}} {{comment.replies.data.length > 1 ? 'Replies' : 'Reply'}} </a>
+                           <a href="#" v-on:click.prevent="toggleReplyField(comment.id)" class="bold"><i class="fa fa-reply"></i> Reply</a>
                         </li>
                         <li v-if="user && comment.user_id === user_id">
                            <a href="#" v-on:click.prevent="deleteComment(comment)" class="bold "><i class="fa fa-close"></i> Delete</a>
@@ -62,10 +60,8 @@
                                     <a v-bind:href="'/'+reply.profile.data.username">{{reply.profile.data.first_name}} {{reply.profile.data.last_name}} <span v-html="isVerifiedUser(reply.profile.data.verified)"></span></a> <small class="">{{ reply.date }}</small>
                                 </h4>
                                 <p v-html="reply.comment"></p>
+                                <a href="#" class="bold pull-right like-btn small" v-on:click.prevent="submitCommentLike(reply)" v-bind:class="{ active : isLiking }"><i class="fa fa-heart"></i> {{ reply.likes }}</a>
                                 <ul class="list-inline">
-                                    <li>
-                                        <a href="#" class="bold " v-on:click.prevent="submitCommentLike(reply)" v-bind:class="{ active : isLiking }"><i class="fa fa-heart"></i> {{ reply.likes }} {{ reply.likes > 1 ? 'Likes' : 'Like' }}</a>
-                                    </li>
                                     <li v-if="user && reply.user_id === user_id">
                                        <a href="#" v-on:click.prevent="deleteReply(reply, comment.id)" class="bold "><i class="fa fa-close"></i> Delete</a>
                                     </li>

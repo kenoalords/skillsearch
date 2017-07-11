@@ -176,6 +176,7 @@ return [
         Laravel\Scout\ScoutServiceProvider::class,
         Nahid\Talk\TalkServiceProvider::class,
         Artdarek\OAuth\OAuthServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -239,6 +240,7 @@ return [
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'Talk' => Nahid\Talk\Facades\Talk::class,
         'OAuth'     => Artdarek\OAuth\Facade\OAuth::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ],
 
 ];

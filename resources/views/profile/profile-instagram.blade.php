@@ -7,47 +7,35 @@
 
 @section('content')
 
-<div id="profile-back">
+<div id="profile-back" style="background: url({{ $profile->getUserBackground() }}); background-size: cover">
     <div class="user-background">
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" data-src="{{ $profile->getUserBackground() }}" class="b-lazy" alt="{{ $profile->first_name }} {{ $profile->last_name }}">
+    </div>
+    <div class="user-meta">
+        <div class="container">
+            <div class="col-md-6 col-md-offset-3">
+                <div style="margin-bottom: 1em">
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" data-src="{{ $profile->getAvatar() }}" width="100" height="100" class="img-circle avatar b-lazy" style="margin-bottom: 0">
+                </div>
+                <div>
+                    <h1 class="small-header">{{ $profile->first_name }} {{ $profile->last_name }} {!! identity_check($profile->getVerified()) !!}</h1>
+                    
+                    <p><i class="glyphicon glyphicon-map-marker"></i> {{ $profile->location }}</p>
+                    <p class="skills-default">
+                    @foreach ($profile->skills as $skill)
+                        <a href="/search?term={{ urlencode($skill->skill) }}" class="label label-xs label-default">{{ $skill->skill }}</a>
+                    @endforeach
+                    </p>
+                </div>
+            </div>
+        </div><!-- end container -->
     </div>
 </div>
 
 <div class="container">
     <div class="row">
         <div class="clearfix row">
-            <div class="col-md-3">
-                <div class="white-boxed">
-                    <div class="text-center">
-                        <div style="margin-bottom: 1em">
-                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" data-src="{{ $profile->getAvatar() }}" width="100" height="100" class="img-circle avatar b-lazy" style="margin-bottom: 0">
-                        </div>
-                        <div>
-                            <h1 class="small-header">{{ $profile->first_name }} {{ $profile->last_name }} {!! identity_check($profile->getVerified()) !!}</h1>
-                            <p><i class="glyphicon glyphicon-map-marker"></i> {{ $profile->location }}</p>
-                            <p class="skills-default">
-                            @foreach ($profile->skills as $skill)
-                                <a href="/search?term={{ urlencode($skill->skill) }}" class="label label-xs label-default">{{ $skill->skill }}</a>
-                            @endforeach
-                            </p>
-                        </div>
-                    </div>
-                    <br>
-                    <div>
-                        <p><follow username="{{$name}}"></follow></p>
-                        
-                        @if(Auth::user() && Auth::user()->id !== $profile->user_id)
-                            <a href="{{ route('hire', ['user' => $name] )}}" class="btn btn-success btn-sm btn-block"><i class="fa fa-envelope"></i> Contact Me</a>
-                        @endif
 
-                        @if(!Auth::user())
-                            <a href="{{ route('hire', ['user' => $name] )}}" class="btn btn-success btn-sm btn-block"><i class="fa fa-envelope"></i> Contact Me</a>
-                        @endif
-                     </div>
-                </div>
-            </div>
-
-            <div class="col-md-9">
+            <div class="">
                 <div id="user-menu">
                     <nav>
                         <ul class="nav nav-tabs">
@@ -71,24 +59,15 @@
                     @endif
                 </div>
             </div>
-            
-            @if(count($others) > 0)
-            <div id="others" class="col-md-12 padded">
-                <div class="container-fluid">
-                    <h4 class="text-center">More People</h4>
-                    <hr>
-                </div>
-                <div class="container-fluid">
-                    @each('includes.profile-tag', $others, 'profile')
-                </div>
-            </div>
-            @endif
-            
         </div>
-
         
-
-        
+        @if ( count($others) )
+            <div class="row padded">
+                <h4 class="bold text-center">Similar People</h4>
+                <hr>
+                @each('profile.person-tag', $others, 'profile')
+            </div>
+        @endif
 
     </div>
 </div>
