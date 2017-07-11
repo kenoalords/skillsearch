@@ -163,7 +163,7 @@ class People extends Controller
     public function instagramFeed(Request $request, User $user, InstagramService $instagram)
     {
         $token = $user->instagram()->first();
-        $media = $instagram->getUserRecentMedia($token->access_token);
+        $media = $instagram->getUserRecentMedia($token['access_token']);
         
         if($media->meta->code === 200){
             return response()->json($media->data);

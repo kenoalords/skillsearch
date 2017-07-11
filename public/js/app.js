@@ -65860,7 +65860,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         'grid-sizer': _vm.feeds.indexOf(feed) == 0
       }
     }, [_c('div', {
-      staticClass: "image-wrapper",
+      staticClass: "image-wrapper whiteCard",
       class: feed.type,
       staticStyle: {
         "margin-bottom": "2.3em"

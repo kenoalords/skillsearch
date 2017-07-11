@@ -14,7 +14,7 @@
         <div v-if="feeds" id="showcase" class="row" style="padding: 0px">
             <div class="grid">
                 <div class="col-xs-12 col-sm-4 col-md-4 grid-item" :class="{'grid-sizer' : feeds.indexOf(feed) == 0 }" v-for="feed in feeds">
-                    <div class="image-wrapper" :class="feed.type" style="margin-bottom:2.3em">
+                    <div class="image-wrapper whiteCard" :class="feed.type" style="margin-bottom:2.3em">
                         <a :href="feed.link" target="_blank" :data-image="feed.images.standard_resolution.url" v-on:click.prevent="showImage(feed)">
                             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" :data-src="feed.images.standard_resolution.url" width="320" height="320" :alt="feed.user.full_name" class="img-responsive b-lazy instagram-image">
                         </a>
