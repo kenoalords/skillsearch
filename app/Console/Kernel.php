@@ -6,6 +6,7 @@ use Mail;
 use App\Models\User;
 use App\Models\VerifyUser;
 use App\Models\ContactInvite;
+use App\Models\LinkedinContacts;
 use App\Models\Task;
 use App\Mail\ContactInviteReminder;
 use App\Mail\CronTestEmail;
@@ -13,6 +14,7 @@ use App\Mail\InstagramNotificationMail;
 use App\Transformers\SimpleTaskTransformer;
 use App\Mail\VerificationReminderMail;
 use App\Mail\JobPromotionNotification;
+use App\Mail\LinkedinContactMailingList;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -91,6 +93,15 @@ class Kernel extends ConsoleKernel
                 });
             }
         })->weekly()->thursdays()->at('14:49')->timezone('Africa/Lagos');
+
+        $schedule->call(function(){
+            $users = LinkedinContacts::get();
+            if($users->count()){
+                $users->each( function( $user, $key ) {
+                    Mail::to($user->email)->send( new LinkedinContactMailingList($user) );
+                });
+            }
+        })->weekly()->wednesdays()->at('16:15')->timezone('Africa/Lagos');
     }
 
     /**

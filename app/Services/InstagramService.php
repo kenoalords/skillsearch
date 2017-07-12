@@ -20,6 +20,7 @@ class InstagramService
 
 	public function __construct($config)
 	{
+		// dd($config);
 		$this->client_id = $config['client_id'];
 		$this->client_secret = $config['client_secret'];
 		$this->redirect = $config['redirect'];
