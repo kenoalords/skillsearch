@@ -8,13 +8,14 @@
 @section('content')
     <div class="container padded">
         <div class="col-md-10 col-md-offset-1">
-            <h1><span class="bold">Linkedin </span><span class="thin">Contacts</span></h1>
+            <h1><span class="bold">{{$contacts}} Linkedin </span><span class="thin">Contacts</span></h1>
             <hr>
+            <h3>Upload Linkedin Contacts</h3>
             <form action="{{ route('submit_linkedin_contacts') }}" method="post" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <div class="form-group">
                     <label for="upload">
-                        <input type="file" name="upload"> Upload Linkedin Export File CSV.
+                        <input type="file" name="upload">
                     </label>
                 </div>
                 <div class="form-group">
@@ -23,28 +24,16 @@
             </form>
 
             <hr>
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Email</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if($contacts->count())
-                            @foreach($contacts as $contact)
-                            <tr>
-                                <td>{{ $contact->first_name }}</td>
-                                <td>{{ $contact->last_name }}</td>
-                                <td>{{ $contact->email }}</td>
-                            </tr>
-                            @endforeach
-                        @endif
-                    </tbody>
-                </table>
-            </div>
+            
+            <h3>Delete Contacts</h3>
+            <form action="{{ route('delete_linkedin_contacts') }}" method="post">
+                {{ csrf_field() }}
+                <div class="form-group">
+                    <label for="emails">Enter each email addresses on a new line</label>
+                    <textarea name="emails" id="emails" rows="10" class="form-control"></textarea>
+                </div>
+                <button type="submit" class="btn btn-danger">Delete Contacts</button>
+            </form>
         </div>
     </div>
 @endsection

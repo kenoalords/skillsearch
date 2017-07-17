@@ -10,7 +10,7 @@ class LinkedinContactController extends Controller
 {
     public function index( Request $request, LinkedinContacts $linkedinContacts )
     {
-    	$contacts = $linkedinContacts->all();
+    	$contacts = $linkedinContacts->count();
     	return view('linkedin.index')->with(['contacts'=>$contacts]);
     }
 
@@ -34,5 +34,18 @@ class LinkedinContactController extends Controller
     		}
     		return redirect('home/linkedin_upload');
     	});
+    }
+
+    public function delete( Request $request, LinkedinContacts $linkedinContacts )
+    {
+        $emails = $request->emails;
+        $emails = explode("\r\n", $emails);
+        if(count($emails) > 0){
+            foreach ($emails as $email){
+                $email = str_replace(' ', '', trim($email));
+                $linkedinContacts->where('email', $email)->delete();
+            }
+            return redirect('home/linkedin_upload');
+        }
     }
 }

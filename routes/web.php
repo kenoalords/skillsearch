@@ -64,6 +64,7 @@ Route::group(['middleware'=>'auth'], function(){
 		Route::get('/jobs', 'TaskController@approveJobs')->name('approve_jobs');
 		Route::get('/linkedin_upload', 'LinkedinContactController@index')->name('linkedin_contacts');
 		Route::post('/linkedin_upload/submit', 'LinkedinContactController@upload')->name('submit_linkedin_contacts');
+		Route::post('/linkedin_upload/delete', 'LinkedinContactController@delete')->name('delete_linkedin_contacts');
 	});
 	
 	Route::post('/home/upload', 'HomeController@uploadBackgroundImage');
