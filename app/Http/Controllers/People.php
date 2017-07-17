@@ -53,7 +53,9 @@ class People extends Controller
                 $skillset[] = $skill->skill;
             }
             $query->whereIn('skill', $skillset);
-        })->has('portfolio')->take(10)->get();
+        })->whereHas('portfolio', function($query){
+            $query->where('is_public', true);
+        })->take(10)->get();
 
         $other_profiles = [];
         if($others){
@@ -70,7 +72,7 @@ class People extends Controller
         
         
         // dd($other_profiles);
-        $instagram = $user->instagram()->first();
+        $instagram = $profile->user->instagram()->first();
         
     	return view('profile.profile')->with([
     		'profile' 	=> $profile,
@@ -116,7 +118,9 @@ class People extends Controller
             }
         }
 
-        $instagram = $user->instagram()->first();
+        // dd($profile);
+
+        $instagram = $profile->user->instagram()->first();
 
         return view('profile.profile-about')->with([
             'profile' => $profile,
@@ -151,12 +155,13 @@ class People extends Controller
                 }
             }
         }
-
+        $instagram = $profile->user->instagram()->first();
         return view('profile.profile-instagram')->with([
                     'instaUser'  => $token,
                     'name'  => $user->name,
                     'profile' => $profile,
-                    'others' => $other_profiles
+                    'others' => $other_profiles,
+                    'instagram' => $instagram,
                 ]);
     }
 

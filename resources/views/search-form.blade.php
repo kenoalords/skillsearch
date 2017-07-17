@@ -1,5 +1,5 @@
 <form action="/search" method="get" class="row">
-	<div class="container">
+	<div class="row">
 		<div class="col-md-10 col-md-offset-1">
 			<div class="col-md-5 search-input">
 				<div class="input-group">
@@ -14,7 +14,7 @@
 		        </div>
 			</div>
 			<div class="col-md-2 search-input">
-				<button type="submit" class="btn btn-default btn-block"><i class="glyphicon glyphicon-search"></i> Search</button>
+				<button type="submit" class="btn btn-success btn-block"><i class="glyphicon glyphicon-search"></i> Find</button>
 			</div>
 		</div>
 	</div>

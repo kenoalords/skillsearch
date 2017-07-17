@@ -28617,6 +28617,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
     data: function data() {
@@ -63336,8 +63347,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       domProps: {
         "innerHTML": _vm._s(comment.comment)
       }
-    }), _vm._v(" "), _c('a', {
-      staticClass: "bold pull-right like-btn big",
+    }), _vm._v(" "), _c('ul', {
+      staticClass: "list-inline"
+    }, [_c('li', [_c('a', {
+      staticClass: "bold",
       class: {
         active: _vm.isLiking
       },
@@ -63356,9 +63369,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       attrs: {
         "id": 'comment-' + comment.id
       }
-    }, [_vm._v(_vm._s(comment.likes))])]), _vm._v(" "), _c('ul', {
-      staticClass: "list-inline"
-    }, [(_vm.user) ? _c('li', [_c('a', {
+    }, [_vm._v(_vm._s(comment.likes))])])]), _vm._v(" "), (_vm.user) ? _c('li', [_c('a', {
       staticClass: "bold",
       attrs: {
         "href": "#"
@@ -63385,6 +63396,20 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('i', {
       staticClass: "fa fa-close"
     }), _vm._v(" Delete")])]) : _vm._e()]), _vm._v(" "), (_vm.isReplyActive === comment.id) ? _c('div', [_c('div', {
+      staticClass: "media"
+    }, [_c('div', {
+      staticClass: "media-left"
+    }, [_c('img', {
+      staticClass: "img-circle",
+      attrs: {
+        "src": _vm.userImage,
+        "alt": "Avatar",
+        "width": "36",
+        "height": "36"
+      }
+    })]), _vm._v(" "), _c('div', {
+      staticClass: "media-body"
+    }, [_c('div', {
       staticClass: "form-group"
     }, [_c('textarea', {
       directives: [{
@@ -63395,7 +63420,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }],
       staticClass: "form-control",
       attrs: {
-        "rows": "2",
+        "rows": "1",
         "placeholder": "Reply..."
       },
       domProps: {
@@ -63410,7 +63435,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     })]), _vm._v(" "), _c('div', {
       staticClass: "form-group"
     }, [_c('button', {
-      staticClass: "btn btn-default",
+      staticClass: "btn btn-default btn-xs",
       attrs: {
         "disabled": _vm.isReplySubmitting
       },
@@ -63420,8 +63445,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.submitReply(comment.id)
         }
       }
-    }, [_vm._v("Submit Reply")]), _vm._v(" "), _c('small', [_c('a', {
-      staticClass: "btn btn-basic ",
+    }, [_vm._v("Reply")]), _vm._v(" "), _c('small', [_c('a', {
+      staticClass: "btn btn-basic btn-xs",
       attrs: {
         "href": "#"
       },
@@ -63431,7 +63456,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.closeReply()
         }
       }
-    }, [_vm._v("Close")])])])]) : _vm._e(), _vm._v(" "), (comment.replies.data) ? _c('div', {
+    }, [_c('i', {
+      staticClass: "fa fa-close"
+    }), _vm._v(" Close")])])])])])]) : _vm._e(), _vm._v(" "), (comment.replies.data) ? _c('div', {
       staticClass: "replies"
     }, [(comment.replies.data.length > 0) ? _c('div', [_c('h4', {
       staticClass: "bold text-muted",
@@ -63452,8 +63479,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         attrs: {
           "src": reply.profile.data.avatar,
           "alt": reply.profile.data.first_name,
-          "width": "24",
-          "height": "24"
+          "width": "36",
+          "height": "36"
         }
       })])]), _vm._v(" "), _c('div', {
         staticClass: "media-body"
@@ -63471,8 +63498,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         domProps: {
           "innerHTML": _vm._s(reply.comment)
         }
-      }), _vm._v(" "), _c('a', {
-        staticClass: "bold pull-right like-btn small",
+      }), _vm._v(" "), _c('ul', {
+        staticClass: "list-inline"
+      }, [_c('li', [_c('a', {
+        staticClass: "bold",
         class: {
           active: _vm.isLiking
         },
@@ -63487,9 +63516,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }, [_c('i', {
         staticClass: "fa fa-heart"
-      }), _vm._v(" " + _vm._s(reply.likes))]), _vm._v(" "), _c('ul', {
-        staticClass: "list-inline"
-      }, [(_vm.user && reply.user_id === _vm.user_id) ? _c('li', [_c('a', {
+      }), _vm._v(" " + _vm._s(reply.likes))])]), _vm._v(" "), (_vm.user && reply.user_id === _vm.user_id) ? _c('li', [_c('a', {
         staticClass: "bold ",
         attrs: {
           "href": "#"

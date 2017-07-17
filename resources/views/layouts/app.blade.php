@@ -108,7 +108,7 @@
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
                                         <a href="/home">My Account</a>
-                                        <a href="{{ route('requests') }}">Requests</a>
+                                        <a href="{{ route('requests') }}">Messages</a>
                                         <a href="/profile/portfolio">Portfolio</a>
                                         <a href="/profile/portfolio/instagram">Instagram Feed</a>
                                         <a href="{{ route('user_jobs') }}">Jobs</a>

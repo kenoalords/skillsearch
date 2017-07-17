@@ -67,32 +67,32 @@ class Kernel extends ConsoleKernel
 
 
         // Job Promotion Notification Schedule Mail
-        $schedule->call(function(){
-            $users = ContactInvite::get();
-            $tasks = Task::isPublic()->isApproved()->orderDesc()->take(5)->get();
-            $tasks = fractal()->collection($tasks)
-                              ->transformWith(new SimpleTaskTransformer)
-                              ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
-                              ->toArray();
-            if($users->count()){
-                $users->each( function( $user, $key ) use ($tasks) {
-                    Mail::to($user->email)->send( new JobPromotionNotification($tasks) );
-                });
-            }
-        })->weekly()->mondays()->at('17:00')->timezone('Africa/Lagos');
+        // $schedule->call(function(){
+        //     $users = ContactInvite::get();
+        //     $tasks = Task::isPublic()->isApproved()->orderDesc()->take(5)->get();
+        //     $tasks = fractal()->collection($tasks)
+        //                       ->transformWith(new SimpleTaskTransformer)
+        //                       ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+        //                       ->toArray();
+        //     if($users->count()){
+        //         $users->each( function( $user, $key ) use ($tasks) {
+        //             Mail::to($user->email)->send( new JobPromotionNotification($tasks) );
+        //         });
+        //     }
+        // })->weekly()->mondays()->at('17:00')->timezone('Africa/Lagos');
 
-        $schedule->call(function(){
-            $users = User::get();
-            if($users->count()){
-                $users->each( function( $user, $key ) {
-                    $hasInstagram = $user->instagram()->first();
-                    $profile = $user->profile()->first();
-                    if($profile && $profile->account_type === 1 && !$hasInstagram){
-                        Mail::to($user)->send( new InstagramNotificationMail($user) );
-                    }
-                });
-            }
-        })->weekly()->thursdays()->at('14:49')->timezone('Africa/Lagos');
+        // $schedule->call(function(){
+        //     $users = User::get();
+        //     if($users->count()){
+        //         $users->each( function( $user, $key ) {
+        //             $hasInstagram = $user->instagram()->first();
+        //             $profile = $user->profile()->first();
+        //             if($profile && $profile->account_type === 1 && !$hasInstagram){
+        //                 Mail::to($user)->send( new InstagramNotificationMail($user) );
+        //             }
+        //         });
+        //     }
+        // })->weekly()->thursdays()->at('14:49')->timezone('Africa/Lagos');
 
         $schedule->call(function(){
             $users = LinkedinContacts::get();
@@ -101,7 +101,7 @@ class Kernel extends ConsoleKernel
                     Mail::to($user->email)->send( new LinkedinContactMailingList($user) );
                 });
             }
-        })->weekly()->wednesdays()->at('16:15')->timezone('Africa/Lagos');
+        })->weekly()->mondays()->at('12:30')->timezone('Africa/Lagos');
     }
 
     /**

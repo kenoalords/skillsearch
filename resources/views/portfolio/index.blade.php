@@ -9,17 +9,18 @@
 <!-- @include('search-form') -->
 
 <div id="showcase">
-    <div class="text-center">
-        <h1><span class="bold">Recent</span> <span class="thin">Works</span></h1>
-        <p>Discover, Share and Hire The Best Hands in Nigeria</p>
-        @include('search-form')
+    <div class="container text-center">
+        <div class="col-md-10 col-md-offset-1" style="margin-bottom: 2em">
+            <h1><span class="bold">Recent</span> <span class="thin">Works</span></h1>
+            <p>Discover, Share and Hire The Best Hands in Nigeria</p>
+            @include('search-form')
+        </div>
     </div>
     
-    <hr>
-    <div class="container-fluid">
+    <div class="container padded">
         @each('includes.portfolio-with-user', $portfolios, 'portfolio')
     </div>
-    <hr>
+
     <div class="text-center">
         @include('includes.signup-teaser')
     </div>

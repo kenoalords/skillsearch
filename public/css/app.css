@@ -10538,15 +10538,16 @@ small {
 }
 
 #hero {
-  padding: 3em 0;
-  background: url(/images/hero-back.jpg?7b8647c1687788d61e37e588c7b2644e) repeat-x center;
+  padding: 12em 1em 14em 1em;
+  background: url(/images/banner.jpg?6e8409b619c2eb19a5abc1489198329e) no-repeat center;
+  background-size: cover;
   position: relative;
 }
 
 #hero:before {
   content: "";
   position: absolute;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(59, 79, 92, 0.7);
   top: 0;
   right: 0;
   left: 0;
@@ -10562,12 +10563,30 @@ small {
 
 #hero h1 {
   color: #fff;
-  margin-bottom: 1em;
   font-weight: 700;
+}
+
+#hero h4 {
+  color: #fff;
 }
 
 #hero .input-group-addon {
   background: #fff;
+}
+
+#hero p {
+  display: block;
+  margin-top: 2em;
+}
+
+#hero p a {
+  color: #fff;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+#hero p a:hover {
+  color: #3097D1;
 }
 
 #hero .btn-primary {
@@ -10755,13 +10774,17 @@ ul.profile-meta li {
   background: #111;
   opacity: .1;
   top: 0;
-  left: 11px;
+  left: 18px;
   height: 100%;
 }
 
 #comments > .media .media-body .replies .media .media-left {
   position: relative;
   z-index: 1;
+}
+
+#comments > .media .media-body .replies .media .media-left a img {
+  border: 2px solid #fff;
 }
 
 #comments > .media:last-of-type .media-body {
@@ -11495,6 +11518,10 @@ ul.no-style-list .list-group-item img.avatar {
   .search-input {
     width: 100% !important;
     margin-bottom: 10px;
+  }
+
+  #hero {
+    padding: 10em 0;
   }
 
   #hero .btn-primary {

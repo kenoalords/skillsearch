@@ -9,35 +9,47 @@
 <!-- @include('search-form') -->
 <div id="hero">
     <div class="container">
-        <div class="col-md-8 col-md-offset-2 text-center">
-            <h1 class="thin" style="font-size: 1.5em"><span class="bold">Showcase &amp; Discover</span> Skilled People in Nigeria.</h1>
+        <div class="col-md-10 col-md-offset-1 text-center">
+            <h1 class="thin">Find &amp; Hire the <em class="bold">Best Hands</em> in Nigeria</h1>
+            <!-- <h4 class="bold">in Nigeria</h4> -->
             <br>
-            <p>
+            @include('search-form')
+            <!-- <p>
                 <a href="/people" class="btn btn-primary bold">Discover People</a>
-            </p>
-                        
+            </p> -->
+            @if(!Auth::user())
+            <p>Want to showcase your skills? <a href="/register">Sign Up!</a></p>
+            @endif          
         </div>
     </div>
 </div>
 
 <div id="showcase">
-    <div class="row">
-        @each('includes.portfolio-with-user', $portfolios, 'portfolio')
+    <div class="container">
+        <div class="clearfix">
+            <h3 class="thin pull-left"><span class="bold">Latest</span> Works</h3>
+            <a href="/work" class="btn btn-basic pull-right" style="margin-top: 2em"><i class="fa fa-th-large"></i> View All</a>
+        </div>
+        
+        <hr>
+        <div class="row">
+            @each('includes.portfolio-with-user', $portfolios, 'portfolio')
+        </div>
+        <div class="text-center" style="margin-bottom: 2em;">
+            <a href="/work" class="btn btn-primary">Discover more work</a>
+        </div>
+        @if(!Auth::user())
+        <hr>
+        <div class="text-center padded">
+            @include('includes.signup-teaser')
+        </div>
+        @endif
     </div>
-    <div class="text-center" style="margin-bottom: 2em;">
-        <a href="/work" class="btn btn-primary">Discover more work</a>
-    </div>
-    @if(!Auth::user())
-    <hr>
-    <div class="text-center padded">
-        @include('includes.signup-teaser')
-    </div>
-    @endif
 </div>
 
 <div id="how">
     <div class="container text-center padded">
-        <h2>How it works</h2>
+        <h2>How it <em class="bold">works</em></h2>
         <div class="col-sm-6 col-md-3">
             <!-- <img src="{{asset('public/signup.png')}}" alt="" class="img-responsive"> -->
             <i class="fa fa-id-badge"></i>

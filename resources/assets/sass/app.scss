@@ -604,13 +604,14 @@ small{
 }
 
 #hero{
-	padding: 3em 0;
-	background: url('../images/hero-back.jpg') repeat-x center;
+	padding: 12em 1em 14em 1em;
+	background: url('../images/banner.jpg') no-repeat center;
+	background-size: cover;
 	position: relative;
 	&:before{
 		content: "";
 		position: absolute;
-		background: rgba(0,0,0,.2);
+		background: rgba(59,79,92,.7);
 		top: 0;
 		right: 0;
 		left: 0;
@@ -624,12 +625,27 @@ small{
 	}
 	h1{
 		color: #fff;
-		margin-bottom: 1em;
 		font-weight: 700;
+	}
+	h4{
+		color: #fff;
 	}
 	.input-group-addon{
 		background: #fff;
 	}
+	p{
+		display: block;
+		margin-top: 2em;
+		a{
+			color: #fff;
+			font-weight: 700;
+			text-decoration: underline;
+			&:hover{
+				color: #3097D1;
+			}
+		}
+	}
+	
 
 	.btn-primary{
 		background: linear-gradient(#0096ff, #005dff);
@@ -808,12 +824,17 @@ ul.profile-meta{
 						background: #111;
 						opacity: .1;
 						top: 0;
-						left: 11px;
+						left: 18px;
 						height: 100%;
 					}
 					.media-left{
 						position:relative;
 						z-index: 1;
+						a{
+							img{
+								border:2px solid #fff;
+							}
+						}
 					}
 					.media-body{
 						
@@ -1512,6 +1533,7 @@ ul.no-style-list{
 	}
 
 	#hero {
+		padding: 10em 0;
 		.btn-primary{
 			padding-right: 2em;
 			padding-left: 2em;

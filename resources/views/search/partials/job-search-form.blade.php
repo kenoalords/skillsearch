@@ -12,7 +12,7 @@
                 </select>
             </div>
             <div class="col-sm-5 search-input">
-                <input type="text" class="form-control" placeholder="Location" name="location" value="{{Request::get('location')}}">
+                <input type="text" class="form-control" placeholder="Location e.g Lekki, Lagos" name="location" value="{{Request::get('location')}}">
             </div>
             <div class="col-sm-2 search-input">
                 <button class="btn btn-default btn-block" type="submit"><i class="fa fa-search"></i> Search</button>

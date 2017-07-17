@@ -39,25 +39,33 @@
                 <div id="user-menu">
                     <nav>
                         <ul class="nav nav-tabs">
-                            <li role="presentation"><a href="/{{$name}}">Works</a></li>
-                            <li role="presentation"><a href="/{{$name}}/about">About</a></li>
+                            <li role="presentation"><a href="/{{$profile->user->name}}">Works</a></li>
+                            <li role="presentation"><a href="/{{$profile->user->name}}/about">About</a></li>
                             @if($profile->user->instagram()->first())
-                            <li role="presentation" class="active"><a href="/{{$name}}/instagram">Instagram</a></li>
+                            <li role="presentation" class="active"><a href="/{{$profile->user->name}}/instagram">Instagram</a></li>
                             @endif
                         </ul>
                     </nav>
                 </div>
-                <div class="">
-                    <instagram user="{{$name}}"></instagram>
-                    @if($instaUser)
-                        <p style="margin-top: 1em">
-                            <a href="https://instagram.com/{{$instaUser->username}}" target="_blank" class="btn btn-info">
+                <instagram user="{{$profile->user->name}}"></instagram>
+                <ul class="list-inline row">
+                    <li><follow username="{{$profile->user->name}}"></follow></li>
+                    @if($instagram)
+                        <li>
+                            <a href="/{{$profile->user->name}}/instagram" class="label btn btn-info btn-xs">
                                 <i class="fa fa-instagram"></i>
-                                 Follow me on Instagram
+                                 <span class="bold">My Instagram</span> <span class="thin">Feed</span>
                             </a>
-                        </p>
+                        </li>
                     @endif
-                </div>
+                    @if(Auth::user() && Auth::user()->id !== $profile->user_id)
+                        <li><a href="{{ route('hire', ['user' => $profile->user->name] )}}" class="label btn btn-success btn-xs"><i class="fa fa-envelope"></i> Contact Me</a></li>
+                    @endif
+
+                    @if(!Auth::user())
+                        <li><a href="{{ route('hire', ['user' => $profile->user->name] )}}" class="label btn btn-success btn-xs"><i class="fa fa-envelope"></i> Contact Me</a></li>
+                    @endif
+                 </ul>
             </div>
         </div>
         
