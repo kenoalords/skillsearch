@@ -125,4 +125,23 @@ class InviteContactController extends Controller
     {
     	return view('contacts.thankyou');
     }
+
+    public function deleteInvites(Request $request, ContactInvite $contactInvite)
+    {
+    	$invites = $contactInvite->count();
+    	return view('contacts.delete')->with('invites', $invites);
+    }
+
+    public function delete( Request $request, ContactInvite $contactInvite )
+    {
+        $emails = $request->emails;
+        $emails = explode("\r\n", $emails);
+        if(count($emails) > 0){
+            foreach ($emails as $email){
+                $email = str_replace(' ', '', trim($email));
+                $contactInvite->where('email', $email)->forceDelete();
+            }
+            return redirect('invite/delete');
+        }
+    }
 }

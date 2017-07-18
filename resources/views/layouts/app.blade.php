@@ -120,6 +120,7 @@
                                             <a href="{{ route('linkedin_contacts') }}">
                                                 Linkedin Contacts
                                             </a>
+                                            <a href="{{ route('delete_invites') }}">Manage Invites</a>
                                         @endif
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();

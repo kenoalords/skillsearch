@@ -41,9 +41,13 @@ Route::get('/invite/gmail', 'InviteContactController@gmailContactInvite');
 Route::post('/invite/gmail', 'InviteContactController@gmailContactInviteRequest');
 Route::get('/invite/success', 'InviteContactController@thankYou');
 
+
 Route::get('/jobs/submit', 'TaskController@submitJobTeaser');
 
 Route::group(['middleware'=>'auth'], function(){
+
+	Route::get('/invite/delete', 'InviteContactController@deleteInvites')->name('delete_invites')->middleware('is_admin');
+	Route::post('/invite/delete', 'InviteContactController@delete')->middleware('is_admin');
 
 	Route::post('/comment/{comment}/like', 'CommentController@likeComment');
 	Route::delete('/comment/{comment}/delete', 'CommentController@deleteComment');
