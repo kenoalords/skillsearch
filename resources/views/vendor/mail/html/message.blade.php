@@ -21,10 +21,6 @@
     {{-- Footer --}}
     @slot('footer')
         @component('mail::footer')
-            [![Follow us on Twitter]({{asset('public/twitter-icon.png')}})](https://twitter.com/skillsearchng)
-            [![Follow us on Facebook]({{asset('public/facebook-icon.png')}})](https://facebook.com/skillsearchng)
-            [![Follow us on Instagram]({{asset('public/instagram-icon.png')}})](https://instagram/skillsearch)
-            
             {{ date('Y') }} {{ config('app.name') }}. All rights reserved.
         @endcomponent
     @endslot

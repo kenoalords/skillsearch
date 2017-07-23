@@ -2,7 +2,7 @@
 @section('title', Request::get('term') )
 @section('content')
 
-<div class="padded">
+<div class="padded container">
 	@include('search-form') 
 </div>
 
@@ -15,7 +15,7 @@
 		@each('profile.person-tag', $profiles, 'profile')
 	</div>
 	@else
-	<div class="container-fluid">
+	<div class="container">
 		<div class="text-center">
 			<h1 style="font-size: 6em"><i class="fa fa-frown-o"></i></h1>
 			<h3 class="thin">Sorry we couldn't find any result matching your search criteria</h3>

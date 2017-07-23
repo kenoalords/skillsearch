@@ -290,3 +290,29 @@ img {
     font-size: 15px;
     text-align: center;
 }
+
+#profiles{
+    margin: 1em 0;
+}
+
+#profiles a{
+    text-decoration: none;
+    color: #3097D1;
+}
+
+#profiles tr{
+    display: block;
+    margin-bottom: .5em;
+    padding-bottom: .5em;
+    border-bottom: 1px solid #eee;
+}
+
+#profiles tr:last-of-type{
+    border-bottom: none;
+}
+
+#profiles td small{
+    display: block;
+    margin-top: 3px;
+    color: #aaa;
+}

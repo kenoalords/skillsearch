@@ -6,4 +6,8 @@
 {!! strip_tags($subcopy) !!}
 @endif
 
+@if (isset($profile))
+{!! $profile !!}
+@endif
+
 {!! strip_tags($footer) !!}

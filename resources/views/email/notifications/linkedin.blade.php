@@ -1,22 +1,16 @@
 @component('mail::message')
-@if($contact->first_name)
-# Hi {{ $contact->first_name }},
-@endif
 
-Hiring can be time consuming and expensive and often times Organizations and Entrepreneurs miss the crucial details when hiring a new member that fits in best with your team.
+# Find the best {{$term[1]}} for your projects today and achieve more quickly.
 
-Whether you are hiring for short-term or long-term projects, knowing who matches your requirements the most is a huge time saver.
-
-![Help is a click away]({{asset('public/help-banner.jpg')}})
-
-On [{{config('app.name')}}]({{$url}}), hundreds of professionals in Nigeria with diverse skills are uploading and updating their portfolios making it easy for you to hire.
-
-From [Photographers](http://bit.ly/2tNbWti) to [Makeup Artists](http://bit.ly/2uRlxPU), [Event Planners](http://bit.ly/2tIgbbn), [Copywriters](http://bit.ly/2teiqQ5), [Film Makers](http://bit.ly/2uiHeLZ), [Web Designers](http://bit.ly/2vcsYRm), [Graphics Designer](http://bit.ly/2tIOnUj) and [lots more]({{$url}}), you can find a new hand for hire from the comfort of your home or office.
-
-@component('mail::button', ['url' => $url])
-Find the best hands now
+@component('mail::profile', ['profiles'=>$profiles])
 @endcomponent
 
-Regards,<br>
-### Adedeji Stevens via {{ config('app.name') }}
+Browse over **3,622** skilled people and jobs on [{{config('app.name')}}]({{config('app.url')}}) for Free!
+
+@component('mail::button', ['url' => $url, 'color'=>'green'])
+Find More {{$term[1]}}
+@endcomponent
+
+Join [{{config('app.name')}}]({{config('app.url')}}) to submit your projects and hire only the best. It's free to use
+
 @endcomponent

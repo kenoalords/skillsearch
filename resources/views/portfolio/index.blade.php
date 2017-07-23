@@ -11,7 +11,7 @@
 <div id="showcase">
     <div class="container text-center">
         <div class="col-md-10 col-md-offset-1" style="margin-bottom: 2em">
-            <h1><span class="bold">Recent</span> <span class="thin">Works</span></h1>
+            <h1><span class="bold">Recent</span> <span class="thin">Portfolio</span></h1>
             <p>Discover, Share and Hire The Best Hands in Nigeria</p>
             @include('search-form')
         </div>

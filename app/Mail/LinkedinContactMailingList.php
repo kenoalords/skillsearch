@@ -13,14 +13,18 @@ class LinkedinContactMailingList extends Mailable implements ShouldQueue
     use Queueable, SerializesModels;
 
     private $contact;
+    private $profiles;
+    private $term;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(LinkedinContacts $contact)
+    public function __construct(LinkedinContacts $contact, $profiles, $term)
     {
         $this->contact = $contact;
+        $this->profiles = json_decode($profiles);
+        $this->term = $term;
     }
 
     /**
@@ -30,13 +34,15 @@ class LinkedinContactMailingList extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        $subject = ($this->contact->first_name != '') ? $this->contact->first_name . ', Don\'t Hire Another Creative Person Until You\'ve Read This' : 'Don\'t Hire Another Creative Person Until You\'ve Read This';
+        $subject = ($this->contact->first_name != '') ? $this->contact->first_name . ', Don\'t Hire Another '.$this->term[1].' Until You\'ve Seen This' : 'Don\'t Hire Another '.$this->term[1].' Until You\'ve Seen This';
         return $this->subject($subject)
                     ->from(config('app.mail_from_address'), 'Adedeji Stevens')
                     ->markdown('email.notifications.linkedin')
                     ->with([
-                        'contact' => $this->contact,
-                        'url'   => route('people') . '/?utm_source=newsletter&utm_medium=email&utm_campaign=linkedin_contact_promo&utm_content=linkedin_contact'
+                        'contact'   => $this->contact,
+                        'profiles'  => $this->profiles,
+                        'term'      => $this->term,
+                        'url'       => config('app.url') . '/search/?term='.urlencode($this->term[0]).'&utm_source=newsletter&utm_medium=email&utm_campaign=profile_promotion&utm_content=linkedin_contact'
                     ]);
     }
 }

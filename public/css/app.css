@@ -9925,6 +9925,7 @@ video::-webkit-media-text-track-display {
 #app {
   min-height: 80vh;
   margin-bottom: 3em;
+  margin-top: 3em;
 }
 
 body {
@@ -9985,6 +9986,13 @@ p {
 .media-buttons#stop-audio {
   position: relative;
   top: -5px;
+}
+
+.portfolio-icon {
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  color: #fff;
 }
 
 .b-lazy {

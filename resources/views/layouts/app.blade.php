@@ -55,7 +55,7 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-default navbar-static-top container-fluid" id="primary-nav">
+        <nav class="navbar navbar-default navbar-fixed-top container-fluid" id="primary-nav">
             <div class="container">
                 <div class="navbar-header">
 

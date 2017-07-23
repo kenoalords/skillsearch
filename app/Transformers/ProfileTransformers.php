@@ -24,7 +24,7 @@ class ProfileTransformers extends TransformerAbstract
 			'first_name'=> $profile->first_name,
 			'last_name'	=> $profile->last_name,
 			'avatar'	=> $profile->getAvatar(),
-			'location'	=> $profile->location,
+			'location'	=> ucwords($profile->location),
 			'gender'	=> $profile->gender,
 			'bio'		=> $profile->bio,
 			'fullname'	=> $profile->first_name . ' ' . $profile->last_name,
@@ -32,6 +32,7 @@ class ProfileTransformers extends TransformerAbstract
 			'has_instagram'	=> ($instagram) ? true : false,
 			'followers'	=> $profile->user->getFollowers($profile->user),
 			'following'	=> $profile->user->getFollowing(),
+			'url'		=> route('view_profile', ['user'=>$username]),
 		];
 	}
 
