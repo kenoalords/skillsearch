@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use Mail;
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\VerifyUser;
 use App\Models\ContactInvite;
@@ -119,10 +120,12 @@ class Kernel extends ConsoleKernel
             }
             if($users->count()){
                 $users->each( function( $user, $key ) use ($other_profiles, $term) {
-                    Mail::to($user->email)->send( new LinkedinContactMailingList($user, json_encode($other_profiles), $term ));
+                    $when = Carbon::now()->addSeconds(5*$key);
+                    Mail::to($user->email)->later($when, new LinkedinContactMailingList($user, json_encode($other_profiles), $term ));
                 });
             }
-        })->weekly()->mondays()->at('13:30')->timezone('Africa/Lagos');
+        })->weekly()->mondays()->at('13:00')->timezone('Africa/Lagos');
+        //
 
         // Photographer Promotion
         $schedule->call(function(){
@@ -147,7 +150,8 @@ class Kernel extends ConsoleKernel
             }
             if($users->count()){
                 $users->each( function( $user, $key ) use ($other_profiles, $term) {
-                    Mail::to($user->email)->send( new LinkedinContactMailingList($user, json_encode($other_profiles), $term ));
+                    $when = Carbon::now()->addSeconds(5*$key);
+                    Mail::to($user->email)->later($when, new LinkedinContactMailingList($user, json_encode($other_profiles), $term ));
                 });
             }
         })->weekly()->tuesdays()->at('13:30')->timezone('Africa/Lagos');
@@ -175,7 +179,8 @@ class Kernel extends ConsoleKernel
             }
             if($users->count()){
                 $users->each( function( $user, $key ) use ($other_profiles, $term) {
-                    Mail::to($user->email)->send( new LinkedinContactMailingList($user, json_encode($other_profiles), $term ));
+                    $when = Carbon::now()->addSeconds(5*$key);
+                    Mail::to($user->email)->later($when, new LinkedinContactMailingList($user, json_encode($other_profiles), $term ));
                 });
             }
         })->weekly()->wednesdays()->at('13:30')->timezone('Africa/Lagos');
@@ -203,7 +208,8 @@ class Kernel extends ConsoleKernel
             }
             if($users->count()){
                 $users->each( function( $user, $key ) use ($other_profiles, $term) {
-                    Mail::to($user->email)->send( new LinkedinContactMailingList($user, json_encode($other_profiles), $term ));
+                    $when = Carbon::now()->addSeconds(5*$key);
+                    Mail::to($user->email)->later($when, new LinkedinContactMailingList($user, json_encode($other_profiles), $term ));
                 });
             }
         })->weekly()->thursdays()->at('13:30')->timezone('Africa/Lagos');
