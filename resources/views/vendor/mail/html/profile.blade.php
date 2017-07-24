@@ -1,3 +1,4 @@
+@if($profiles)
 <table cellpadding="5" cellspacing="0" id="profiles" width="100%">
 @foreach($profiles as $profile)
     <tr>
@@ -16,3 +17,4 @@
     </tr>
 @endforeach
 </table>
+@endif
