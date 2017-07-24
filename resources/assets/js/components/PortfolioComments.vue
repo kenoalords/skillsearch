@@ -1,5 +1,6 @@
 <template>
     <div>
+        <h3 class="bold"><i class="fa fa-comments"></i> Share your thoughts</h3>
         <div v-if="user" class="whiteCard">
             <div class="media">
                 <div class="media-left">
@@ -7,14 +8,14 @@
                 </div>
                 <div class="media-body">
                     <div class="form-group">
-                        <textarea v-model="comment" class="form-control" rows="2" placeholder="Leave your thoughts here..."></textarea>
+                        <textarea v-model="comment" class="form-control" rows="2" placeholder="Leave your comment here..."></textarea>
                     </div>
                     <button class="btn btn-default btn-xs" v-on:click.prevent="submitComment()" :disabled="isSubmitting">{{isSubmitting ? 'Submitting...' : 'Comment'}}</button>  
                 </div>
             </div>
         </div>
         <div v-if="comments"  id="comments">
-            <h3 class="bold">{{comments.length}} {{comments.length > 1 ? 'Comments' : 'Comment'}}</h3>
+            <h4 class="bold">{{comments.length}} {{comments.length > 1 ? 'Comments' : 'Comment'}}</h4>
             <div class="media" v-for="comment in comments">
                 <div class="media-left">
                     <a :href="'/'+comment.profile.data.username">

@@ -262,6 +262,9 @@ class PortfolioController extends Controller
                         ->transformWith(new PortfolioTransformer)
                         ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                         ->toArray();
+
+        $similar = $this->similar($portfolio);
+        // dd($similar);
         $avatar = '';
         if(Auth::user()) {
             $avatar = Auth::user()->profile->getAvatar();
@@ -271,7 +274,30 @@ class PortfolioController extends Controller
             'files'     => $portfolio->files()->get(),
             'others'    => $others,
             'avatar'    => $avatar,
+            'similar'   => $similar,
         ]);
+    }
+
+    public function similar(Portfolio $portfolio)
+    {
+        if($portfolio->skills){
+            $skills = explode(', ', $portfolio->skills);
+            $similar = Portfolio::whereIn('skills', $skills)->where([
+                    ['is_public', '=', 1],
+                    ['thumbnail', '!=', null],
+                    ['id', '!=', $portfolio->id]
+                ])->inRandomOrder()->take(9)->get();
+            // dd($similar);
+            if($similar){
+                $portfolios = fractal()->collection($similar)
+                        ->transformWith(new PortfolioTransformer)
+                        ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                        ->toArray();
+                return $portfolios;
+            }
+        } else {
+            return;
+        }
     }
 
     public function homepagePortfolio(Portfolio $portfolio, Skills $skills)
@@ -296,5 +322,27 @@ class PortfolioController extends Controller
                         ->toArray();
         $skills = $skills->orderAlphabetically()->get();
         return view('portfolio.index')->with(['portfolios' => $portfolios, 'skills' => $skills ]);
+    }
+
+    public function workSearchPage(Request $request, Skills $skills)
+    {
+        if($request->term){
+            $similar = Portfolio::where('skills', 'like', '%'.$request->term.'%')->where([
+                    ['is_public', '=', 1],
+                    ['thumbnail', '!=', null],
+                ])->inRandomOrder()->take(16)->get();
+            // dd($similar);
+            if($similar){
+                $portfolios = fractal()->collection($similar)
+                        ->transformWith(new PortfolioTransformer)
+                        ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                        ->toArray();
+                $skills = $skills->orderAlphabetically()->get();
+                return view('portfolio.search')->with(['portfolios'=>$portfolios, 'skills'=>$skills]);
+            }
+        } else {
+            return;
+        }
+        
     }
 }

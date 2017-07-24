@@ -28628,6 +28628,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
     data: function data() {
@@ -63258,7 +63259,7 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [(_vm.user) ? _c('div', {
+  return _c('div', [_vm._m(0), _vm._v(" "), (_vm.user) ? _c('div', {
     staticClass: "whiteCard"
   }, [_c('div', {
     staticClass: "media"
@@ -63286,7 +63287,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "form-control",
     attrs: {
       "rows": "2",
-      "placeholder": "Leave your thoughts here..."
+      "placeholder": "Leave your comment here..."
     },
     domProps: {
       "value": _vm._s(_vm.comment)
@@ -63312,7 +63313,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "id": "comments"
     }
-  }, [_c('h3', {
+  }, [_c('h4', {
     staticClass: "bold"
   }, [_vm._v(_vm._s(_vm.comments.length) + " " + _vm._s(_vm.comments.length > 1 ? 'Comments' : 'Comment'))]), _vm._v(" "), _vm._l((_vm.comments), function(comment) {
     return _c('div', {
@@ -63532,7 +63533,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }), _vm._v(" Delete")])]) : _vm._e()])])])
     })], 2) : _vm._e()])])
   })], 2) : _vm._e()])
-},staticRenderFns: []}
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('h3', {
+    staticClass: "bold"
+  }, [_c('i', {
+    staticClass: "fa fa-comments"
+  }), _vm._v(" Share your thoughts")])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()

@@ -19,6 +19,23 @@ function formatSkills($skills){
 	return $skills[0]['skill'];
 }
 
+function skill_links($skills){
+    if($skills){
+        $skills = explode(',', $skills);
+        $markup = [];
+        $string = '';
+        foreach ($skills as $skill) {
+            # code...
+            array_push($markup, '<a href="/work/search/?term='.urlencode(trim($skill)).'">'.$skill.'</a>');
+        }
+        if(!empty($markup)){
+            $string = implode(', ', $markup);
+        }
+        return $string;
+    }   
+    return;
+}
+
 function getRatings($count){
 	$count = floor((int)$count);
     $star = '';

@@ -11699,23 +11699,23 @@ ul.no-style-list .list-group-item img.avatar {
 }
 
 .share-links li a {
-  color: #333;
+  color: #fff;
   opacity: .7;
-  width: 36px;
-  height: 36px;
+  width: 48px;
+  height: 48px;
   display: table-cell;
-  background: #ddd;
+  background: #3097D1;
   text-align: center;
-  border-radius: 36px;
+  border-radius: 48px;
+  font-size: 1.8em;
   vertical-align: middle;
-  -webkit-transition: all .3s ease-in-out;
-  transition: all .3s ease-in-out;
+  -webkit-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
+  opacity: .5;
 }
 
 .share-links li a:hover {
   opacity: 1;
-  background: #3097D1;
-  color: #fff;
 }
 
 .col-xs-15,

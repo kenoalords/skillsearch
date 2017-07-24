@@ -1,25 +1,25 @@
 <div class="col-xs-12 col-sm-4 col-md-3">
     <div class="image-wrapper whiteCard padding-1">
-        <span class="portfolio-icon">
-            @if($portfolio['type'] == 'images')
-            <i class="glyphicon glyphicon-camera"></i>
-            @endif
-            @if($portfolio['type'] == 'video')
-            <i class="glyphicon glyphicon-facetime-video"></i>
-            @endif
-            @if($portfolio['type'] == 'audio')
-            <i class="glyphicon glyphicon-music"></i>
-            @endif
-        </span>
+        
         <a href="{{ $portfolio['link']['url'] }}">
             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" data-src="{{ $portfolio['thumbnail'] }}" alt="{{$portfolio['title']}}" class="b-lazy img-responsive">
             
         </a>
         <div class="p-content clearfix">
             <!-- <h5 class="bold"><a href="{{ $portfolio['link']['url'] }}">{{ str_limit($portfolio['title'], 20) }}</a></h5> -->
-            
+            <span class="pull-left">
+                @if($portfolio['type'] == 'images')
+                <i class="glyphicon glyphicon-camera"></i>
+                @endif
+                @if($portfolio['type'] == 'video')
+                <i class="glyphicon glyphicon-facetime-video"></i>
+                @endif
+                @if($portfolio['type'] == 'audio')
+                <i class="glyphicon glyphicon-music"></i>
+                @endif
+            </span>
 
-            <ul class="list-inline clearfix pull-right bold">
+            <ul class="list-inline clearfix pull-right bold" style="margin-bottom: 0">
                 <li>
                     <small class="bold"><i class="glyphicon glyphicon-heart"></i> 
                     {{$portfolio['likes_count']}} </small>
