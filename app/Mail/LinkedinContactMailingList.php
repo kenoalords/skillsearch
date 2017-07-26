@@ -20,7 +20,7 @@ class LinkedinContactMailingList extends Mailable implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(LinkedinContacts $contact, $profiles, $term)
+    public function __construct($contact, $profiles, $term)
     {
         $this->contact = $contact;
         $this->profiles = json_decode($profiles);

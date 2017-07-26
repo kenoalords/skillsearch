@@ -44,18 +44,18 @@ class Kernel extends ConsoleKernel
         //          ->hourly();
 
         // Send out reminder emails for invites
-        $schedule->call(function(){
+        // $schedule->call(function(){
 
-            $reminder = ContactInvite::getSentInvites()->get();
-            $reminder->each(function($item, $key){
-                $user = User::where('email', $item->email)->first();
-                if(!$user){
-                    $when = Carbon::now()->addSeconds(10*$key);
-                    Mail::to($item->email)->later($when, new ContactInviteReminder($item->invitee_name, $item->email));
-                }
-            });
+        //     $reminder = ContactInvite::getSentInvites()->get();
+        //     $reminder->each(function($item, $key){
+        //         $user = User::where('email', $item->email)->first();
+        //         if(!$user){
+        //             $when = Carbon::now()->addSeconds(10*$key);
+        //             Mail::to($item->email)->later($when, new ContactInviteReminder($item->invitee_name, $item->email));
+        //         }
+        //     });
 
-        })->weekly()->tuesdays()->at('10:00')->timezone('Africa/Lagos');
+        // })->weekly()->tuesdays()->at('10:00')->timezone('Africa/Lagos');
 
         // $schedule->call(function(){
 
@@ -99,33 +99,33 @@ class Kernel extends ConsoleKernel
         // })->weekly()->thursdays()->at('14:49')->timezone('Africa/Lagos');
 
         // Graphics Designer Promotion
-        $schedule->call(function(){
-            $term = ['Graphics Designer', 'Graphics Designer'];
-            $users = LinkedinContacts::get();
-            $profiles = User::where('id', '!=', 1)->whereHas('skills', function($query) use ($term){
-                $query->whereIn('skill', $term);
-            })->whereHas('portfolio', function($query){
-                $query->where('is_public', true);
-            })->inRandomOrder()->take(5)->get(); 
-            $other_profiles = [];
-            if($profiles){
-                foreach($profiles as $user){
-                    $other = $user->profile()->isPublic()->get()->first();
-                    if($other){
-                        $other_profiles[] = fractal()->item($other)
-                                ->transformWith(new ProfileTransformers)
-                                ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
-                                ->toArray();
-                    }
-                }
-            }
-            if($users->count()){
-                $users->each( function( $user, $key ) use ($other_profiles, $term) {
-                    $when = Carbon::now()->addSeconds(10*$key);
-                    Mail::to($user->email)->later($when, new LinkedinContactMailingList($user, json_encode($other_profiles), $term ));
-                });
-            }
-        })->weekly()->mondays()->at('13:00')->timezone('Africa/Lagos');
+        // $schedule->call(function(){
+        //     $term = ['Graphics Designer', 'Graphics Designer'];
+        //     $users = LinkedinContacts::get();
+        //     $profiles = User::where('id', '!=', 1)->whereHas('skills', function($query) use ($term){
+        //         $query->whereIn('skill', $term);
+        //     })->whereHas('portfolio', function($query){
+        //         $query->where('is_public', true);
+        //     })->inRandomOrder()->take(5)->get(); 
+        //     $other_profiles = [];
+        //     if($profiles){
+        //         foreach($profiles as $user){
+        //             $other = $user->profile()->isPublic()->get()->first();
+        //             if($other){
+        //                 $other_profiles[] = fractal()->item($other)
+        //                         ->transformWith(new ProfileTransformers)
+        //                         ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+        //                         ->toArray();
+        //             }
+        //         }
+        //     }
+        //     if($users->count()){
+        //         $users->each( function( $user, $key ) use ($other_profiles, $term) {
+        //             $when = Carbon::now()->addSeconds(10*$key);
+        //             Mail::to($user->email)->later($when, new LinkedinContactMailingList($user, json_encode($other_profiles), $term ));
+        //         });
+        //     }
+        // })->weekly()->mondays()->at('13:00')->timezone('Africa/Lagos');
         //
 
         // Photographer Promotion
@@ -213,7 +213,36 @@ class Kernel extends ConsoleKernel
                     Mail::to($user->email)->later($when, new LinkedinContactMailingList($user, json_encode($other_profiles), $term ));
                 });
             }
-        })->weekly()->thursdays()->at('13:30')->timezone('Africa/Lagos');
+        })->weekly()->thursdays()->at('10:30')->timezone('Africa/Lagos');
+
+        // Contact Invites Profile Promotion
+        $schedule->call(function(){
+            $term = ['Makeup Artists', 'Makeup Artists'];
+            $users = ContactInvite::get();
+            $profiles = User::where('id', '!=', 1)->whereHas('skills', function($query) use ($term){
+                $query->whereIn('skill', $term);
+            })->whereHas('portfolio', function($query){
+                $query->where('is_public', true);
+            })->inRandomOrder()->take(5)->get(); 
+            $other_profiles = [];
+            if($profiles){
+                foreach($profiles as $user){
+                    $other = $user->profile()->isPublic()->get()->first();
+                    if($other){
+                        $other_profiles[] = fractal()->item($other)
+                                ->transformWith(new ProfileTransformers)
+                                ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                                ->toArray();
+                    }
+                }
+            }
+            if($users->count()){
+                $users->each( function( $user, $key ) use ($other_profiles, $term) {
+                    $when = Carbon::now()->addSeconds(10*$key);
+                    Mail::to($user->email)->later($when, new LinkedinContactMailingList($user, json_encode($other_profiles), $term ));
+                });
+            }
+        })->weekly()->thursdays()->at('12:30')->timezone('Africa/Lagos');
     }
 
     /**
