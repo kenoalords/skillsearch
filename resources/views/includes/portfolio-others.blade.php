@@ -1,4 +1,4 @@
-<div class="col-xs-12 col-sm-4 col-md-4" style="margin-bottom: 1em">
+<div class="col-xs-12 col-sm-6 col-md-4" style="margin-bottom: 1em">
     <div class="image-wrapper whiteCard padding-1" style="margin-bottom: 0.1em">
         <a href="{{ $portfolio['link']['url'] }}">
             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" data-src="{{ $portfolio['thumbnail'] }}" alt="{{$portfolio['title']}}" class="b-lazy img-responsive">

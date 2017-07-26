@@ -1,13 +1,15 @@
 @extends('layouts.app')
 
 @section('title', Request::get('term') )
-@section('metadescription', 'Find amazing works in ' . Request::get('term') . ' done by skilled people')
+@section('metadescription', 'Find amazing works in ' . Request::get('term') . ' done by skilled people in Nigeria')
 
 @section('content')
 
-<div  class="container padded" style="margin-top: 4em;">
-    <h1 class="bold medium-header">Portfolios in <em>{{Request::get('term')}}</em></h1>
-    <hr>
+<div id="points-header">
+    <h1 class="thin medium-header text-center">Portfolios in <span class="bold">{{Request::get('term')}}</span></h1>
+</div>
+
+<div  class="container padded" style="margin-top: 2em;">
     @if(count($portfolios) > 0)
     <div class="row">
         @each('includes.portfolio-with-user', $portfolios, 'portfolio')

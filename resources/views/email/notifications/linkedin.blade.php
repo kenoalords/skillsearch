@@ -2,8 +2,10 @@
 
 # Find the best {{$term[1]}} for your projects today and achieve more quickly.
 
+@if($profiles)
 @component('mail::profile', ['profiles'=>$profiles])
 @endcomponent
+@endif
 
 Browse over **3,622** skilled people and jobs on [{{config('app.name')}}]({{config('app.url')}}) for Free!
 

@@ -50,23 +50,24 @@ class Kernel extends ConsoleKernel
             $reminder->each(function($item, $key){
                 $user = User::where('email', $item->email)->first();
                 if(!$user){
-                    Mail::to($item->email)->send(new ContactInviteReminder($item->invitee_name, $item->email));
+                    $when = Carbon::now()->addSeconds(10*$key);
+                    Mail::to($item->email)->later($when, new ContactInviteReminder($item->invitee_name, $item->email));
                 }
             });
 
         })->weekly()->tuesdays()->at('10:00')->timezone('Africa/Lagos');
 
-        $schedule->call(function(){
+        // $schedule->call(function(){
 
-            $verify = VerifyUser::get();
-            if($verify->count()){
-                $verify->each( function($item, $key) {
-                    $user = User::where('id', $item->user_id)->first();
-                    Mail::to($user)->send( new VerificationReminderMail( $user->name, $item->verify_key ) );
-                });
-            }
+        //     $verify = VerifyUser::get();
+        //     if($verify->count()){
+        //         $verify->each( function($item, $key) {
+        //             $user = User::where('id', $item->user_id)->first();
+        //             Mail::to($user)->send( new VerificationReminderMail( $user->name, $item->verify_key ) );
+        //         });
+        //     }
 
-        })->weekly()->fridays()->at('10:00')->timezone('Africa/Lagos');
+        // })->weekly()->fridays()->at('10:00')->timezone('Africa/Lagos');
 
 
         // Job Promotion Notification Schedule Mail
@@ -120,7 +121,7 @@ class Kernel extends ConsoleKernel
             }
             if($users->count()){
                 $users->each( function( $user, $key ) use ($other_profiles, $term) {
-                    $when = Carbon::now()->addSeconds(5*$key);
+                    $when = Carbon::now()->addSeconds(10*$key);
                     Mail::to($user->email)->later($when, new LinkedinContactMailingList($user, json_encode($other_profiles), $term ));
                 });
             }
@@ -150,7 +151,7 @@ class Kernel extends ConsoleKernel
             }
             if($users->count()){
                 $users->each( function( $user, $key ) use ($other_profiles, $term) {
-                    $when = Carbon::now()->addSeconds(5*$key);
+                    $when = Carbon::now()->addSeconds(10*$key);
                     Mail::to($user->email)->later($when, new LinkedinContactMailingList($user, json_encode($other_profiles), $term ));
                 });
             }
@@ -179,7 +180,7 @@ class Kernel extends ConsoleKernel
             }
             if($users->count()){
                 $users->each( function( $user, $key ) use ($other_profiles, $term) {
-                    $when = Carbon::now()->addSeconds(5*$key);
+                    $when = Carbon::now()->addSeconds(10*$key);
                     Mail::to($user->email)->later($when, new LinkedinContactMailingList($user, json_encode($other_profiles), $term ));
                 });
             }
@@ -208,7 +209,7 @@ class Kernel extends ConsoleKernel
             }
             if($users->count()){
                 $users->each( function( $user, $key ) use ($other_profiles, $term) {
-                    $when = Carbon::now()->addSeconds(5*$key);
+                    $when = Carbon::now()->addSeconds(10*$key);
                     Mail::to($user->email)->later($when, new LinkedinContactMailingList($user, json_encode($other_profiles), $term ));
                 });
             }

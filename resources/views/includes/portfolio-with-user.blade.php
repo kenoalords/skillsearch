@@ -1,4 +1,4 @@
-<div class="col-xs-12 col-sm-4 col-md-3" style="margin-bottom: 1em">
+<div class="col-xs-12 col-sm-6 col-md-3" style="margin-bottom: 1em">
     <div class="image-wrapper whiteCard padding-1" style="margin-bottom: 0.1em">
         
         <a href="{{ $portfolio['link']['url'] }}">

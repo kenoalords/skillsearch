@@ -6,9 +6,6 @@
 
  To see how many people like your portfolio, visit your portfolio on [Skillsearch Nigeria]({{config('app.url')}})
 
-@component('mail::profile', ['url'=>'http://skillsearch.com.ng'])
-@endcomponent
-
 @component('mail::button', ['url' => $url])
 Click to view
 @endcomponent
