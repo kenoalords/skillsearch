@@ -177,7 +177,8 @@ return [
         Nahid\Talk\TalkServiceProvider::class,
         Artdarek\OAuth\OAuthServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
-
+        MetricLoop\TransformerMaker\TransformerMakerServiceProvider::class,
+        
         /*
          * Application Service Providers...
          */

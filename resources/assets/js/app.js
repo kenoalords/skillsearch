@@ -40,6 +40,8 @@ Vue.component('task-form-apply', require('./components/TaskFormApply.vue'));
 Vue.component('job-actions', require('./components/JobActions.vue'));
 Vue.component('flag-job', require('./components/FlagJob.vue'));
 Vue.component('save-job', require('./components/SaveJob.vue'));
+Vue.component('blog-like', require('./components/BlogLike.vue'));
+Vue.component('blog-subscribe', require('./components/BlogSubscribe.vue'));
 
 const app = new Vue({
     el: '#app'
@@ -47,28 +49,23 @@ const app = new Vue({
 
 var bLazy = new Blazy();
 
+
 // var masonry = new Masonry();
 // var imagesLoaded = new imagesLoaded();
 
-var waypoint = $('#user-badge').waypoint({
+var waypoint = $('#portfolio-body').waypoint({
 	handler: function(direction){
 		var userBadge = $('#user-badge'),
-			portfolio = $('#portfolio');
-		if(direction === 'down' && $(window).outerWidth() > 540){
-			userBadge.addClass('fixit');
-			portfolio.css({
-				'margin-top' : userBadge.outerHeight() + 'px',
-			});
+			portfolio = $('#portfolio-summary');
+		if(direction === 'down'){
+			portfolio.addClass('reveal');
 		}
 
 		if(direction === 'up'){
-			userBadge.removeClass('fixit');
-			portfolio.css({
-				'margin-top' : 0,
-			});
+			portfolio.removeClass('reveal');
 		}
 	},
-	offset: 0
+	offset: 100
 });
 
 $('body').on('click', '#google-invite', function(e){
@@ -118,9 +115,5 @@ $('body').on('click', '#delete-instagram', function(e){
 	e.preventDefault();
 	$('#instagram-notification').slideUp('fast');
 });
-
-
-
-
 
 

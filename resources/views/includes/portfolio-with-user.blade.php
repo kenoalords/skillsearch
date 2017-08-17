@@ -1,4 +1,4 @@
-<div class="col-xs-12 col-sm-6 col-md-3" style="margin-bottom: 1em">
+<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" style="margin-bottom: 1em">
     <div class="image-wrapper whiteCard padding-1" style="margin-bottom: 0.1em">
         
         <a href="{{ $portfolio['link']['url'] }}">
@@ -7,7 +7,7 @@
         </a>
         <div class="p-content clearfix">
             <!-- <h5 class="bold"><a href="{{ $portfolio['link']['url'] }}">{{ str_limit($portfolio['title'], 20) }}</a></h5> -->
-            <span class="pull-left">
+            <!-- <span class="pull-left">
                 @if($portfolio['type'] == 'images')
                 <i class="glyphicon glyphicon-camera"></i>
                 @endif
@@ -17,11 +17,11 @@
                 @if($portfolio['type'] == 'audio')
                 <i class="glyphicon glyphicon-music"></i>
                 @endif
-            </span>
+            </span> -->
 
-            <ul class="list-inline clearfix pull-right bold" style="margin-bottom: 0">
-                <li>
-                    <small class="bold"><i class="glyphicon glyphicon-heart"></i> 
+            <ul class="list-inline clearfix portfolio-meta" style="margin-bottom: 0">
+                <li class="bold">
+                    <small class="bold"><i class="fa fa-thumbs-up"></i> 
                     {{$portfolio['likes_count']}} </small>
                 </li>
                 <li>

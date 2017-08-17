@@ -51,4 +51,7 @@ window.axios.defaults.headers.common = {
 window.Blazy = require('blazy');
 window.Waypoint = require('waypoints/lib/jquery.waypoints.min');
 window.Wavesurfer = require('wavesurfer.js/dist/wavesurfer.min');
+window.MediumEditor = require('medium-editor/dist/js/medium-editor.js');
 window.datepicker = require('bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js');
+window.selectpicker = require('bootstrap-select/dist/js/bootstrap-select.min.js');
+window.Cropper = require('cropperjs/dist/cropper.min.js');

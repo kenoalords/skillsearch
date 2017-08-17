@@ -10,8 +10,12 @@ class Blog extends Model
 	use Orderable;
     
     protected $fillable = [
-    	'title', 'excerpt', 'body', 'slug', 'image', 'status', 'is_public'
+    	'title', 'excerpt', 'body', 'slug', 'image', 'status', 'is_public', 'uid', 'category', 'allow_comments'
     ];
+
+    public function getRouteKeyName(){
+        return 'uid';
+    }
 
     public function user()
     {
@@ -37,5 +41,22 @@ class Blog extends Model
     {
     	return $this->morphMany(Comment::class, 'commentable');
     }
+
+    public function subscribers()
+    {
+        return $this->hasMany(Subscriber::class);
+    }
+
+    // public function getImage()
+    // {
+    //     if(!$this->image){
+    //         if(Storage::exists($this->image)){
+    //             return asset($this->image);
+    //         }
+    //         return config('skillsearch.s3.images') . '/' . $this->image;
+    //     } else {
+    //         return asset($this->image);
+    //     }
+    // }
 
 }

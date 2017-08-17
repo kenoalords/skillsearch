@@ -74,10 +74,7 @@ Route::group(['middleware'=>'auth'], function(){
 	
 	Route::post('/home/upload', 'HomeController@uploadBackgroundImage');
 
-	// BLOG ROUTES
-	// Route::get('/blog/add', 'BlogController@addBlogPost');
-	// Route::post('/blog/add', 'BlogController@submitBlogPost');
-	// Route::post('/blog/add/image', 'BlogController@submitBlogPostImage');
+	
 
 	Route::group(['prefix'=>'profile'], function(){
 
@@ -147,7 +144,20 @@ Route::group(['middleware'=>'auth'], function(){
 		// Delete Account
 		Route::get('/delete', 'UserProfileController@deleteAccount');
 		Route::get('/delete/proceed', 'UserProfileController@deleteAccountConfirm');
+
+		// BLOG ROUTES
+		Route::get('/blog', 'BlogController@userBlog');
+		Route::get('/blog/add', 'BlogController@addBlogPost');
+		Route::post('/blog/add', 'BlogController@submitBlogPost');
+		Route::get('/blog/{blog}/edit', 'BlogController@editBlogPost');
+		Route::post('/blog/add/image', 'BlogController@submitBlogPostImage');
 	});
+	
+	// Subscribe Registered User To Blog
+	Route::post('/blog/subscribe/{blog}/user', 'BlogController@subscribeRegisteredUser');
+	Route::post('/blog/subscribe/{blog}/check', 'BlogController@checkBlogSubscription');
+	Route::get('/blog/like/{blog}/check', 'BlogController@checkBlogLike');
+	Route::post('/blog/like/{blog}/submit', 'BlogController@submitBlogLike');
 
 	// Send Message Routes
 	Route::get('/{user}/message', 'MessageController@message')->name('send_message');
@@ -169,6 +179,8 @@ Route::group(['middleware'=>'auth'], function(){
 	Route::post('/likes/{portfolio}', 'LikesController@add');
 	Route::delete('/likes/{portfolio}', 'LikesController@remove');
 });
+
+Route::post('/blog/subscribe/{blog}/visitor', 'BlogController@subscribeVisitor');
 
 // Verify User Email Account Route
 Route::get('/verify', 'HomeController@verify')->name('verify');
@@ -203,6 +215,7 @@ Route::get('/{user}/about', 'People@about')->name('about');
 Route::get('/{user}/instagram', 'People@instagram')->name('instagram');
 Route::get('/{user}/instagram/feed', 'People@instagramFeed')->name('instagram_feed');
 Route::get('/{user}/portfolio/{portfolio}', 'PortfolioController@view')->name('view_portfolio');
+Route::get('/{user}/blog/{blog}/{slug}', 'BlogController@singleBlog')->name('blog');
 
 Route::get('/autocomplete_cities/{cities}', 'HomeController@getCities');
 Route::get('/skills/all', 'HomeController@getSkills');

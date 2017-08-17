@@ -19,8 +19,16 @@
   "dependencies": {
     "blazy": "^1.8.2",
     "bootstrap-datepicker": "^1.6.4",
+    "bootstrap-wysiwyg": "^2.0.1",
+    "cropperjs": "^1.0.0-rc.3",
+    "jquery-ui": "^1.12.1",
+    "jquery.ui.widget": "^1.10.3",
     "masonry-layout": "^4.2.0",
+    "medium-editor": "^5.23.1",
+    "medium-editor-insert-plugin": "^2.4.1",
     "pluralize": "^4.0.0",
+    "quilljs": "^0.18.1",
+    "summernote": "^0.8.6",
     "vuejs-datepicker": "^0.7.12",
     "wavesurfer.js": "^1.4.0",
     "waypoints": "^4.0.1"

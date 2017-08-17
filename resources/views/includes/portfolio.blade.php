@@ -20,7 +20,7 @@
 
             <ul class="list-inline clearfix pull-right">
                 <li>
-                    <small><i class="glyphicon glyphicon-heart"></i> 
+                    <small><i class="fa fa-thumbs-up"></i> 
                     {{$portfolio['likes_count']}} </small>
                 </li>
                 <li>

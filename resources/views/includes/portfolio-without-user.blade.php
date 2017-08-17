@@ -1,4 +1,4 @@
-<div class="col-xs-12 col-sm-6 col-md-3">
+<div class="col-xs-12 col-sm-6 col-md-4">
     <div class="whiteCard padding-1">
         <a href="{{ $portfolio['link']['url'] }}">
             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" data-src="{{ $portfolio['thumbnail'] }}" alt="{{$portfolio['title']}}" class="b-lazy img-responsive">
@@ -20,7 +20,7 @@
 
             <ul class="list-inline clearfix pull-right">
                 <li>
-                    <small><i class="glyphicon glyphicon-heart"></i> 
+                    <small><i class="fa fa-thumbs-up"></i> 
                     {{$portfolio['likes_count']}} </small>
                 </li>
                 <li>

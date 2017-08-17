@@ -7,32 +7,58 @@
 
 @section('content')
 
-<div  class="container">
-    <div class="row padded">                
+<div id="portfolio-summary">
+    <div class="container">
         <div class="col-md-10 col-md-offset-1">
-
-            <div class="clearfix">
-                <!-- <div class="col-sm-3">
-                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=" data-src="{{$portfolio['thumbnail']}}" alt="{{ $portfolio['title'] }}" class="img-responsive b-lazy">
-                </div> -->
-                <div class="portfolio-meta">
-                    <a href="/{{$portfolio['user']}}" class="bold">
-                        <h5 class="bold">
-                            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="{{$portfolio['user_profile']['avatar']}}" alt="{{$portfolio['user_profile']['fullname']}}" class="img-circle b-lazy user-avatar" width="24" height="24">
-                             {{$portfolio['user_profile']['fullname']}}
-                        </h5>
-                    </a>
-                    <h1 class="bold">{{ ucwords(strtolower($portfolio['title'])) }}</h1>                       
-                    <p>{{$portfolio['description']}}</p>
-                    <ul class="list-inline" style="font-weight: 600; font-size: 12px; margin-top: 1em;">
-                        <li><i class="glyphicon glyphicon-eye-open"></i> {{ $portfolio['views'] }} {{ str_plural('View', $portfolio['views'])}}</li>
-                        <li> {{ $portfolio['date'] }}</li>
-                        @if($portfolio['url'])
-                            <li><a href="{{route('external_link', ['url'=>$portfolio['url']])}}" target="_blank" class="bold">Link <i class="glyphicon glyphicon-new-window"></i></a></li>
-                        @endif
-                    </ul>
+            <div class="media">
+                <div class="media-left">
+                    <img src="{{$portfolio['thumbnail']}}" data-src="" alt="{{ $portfolio['title'] }}" class="img-circle media-object" width="48" height="48">
+                </div>
+                <div class="media-body">
+                    <div class="pull-left">
+                        <h4 class="bold" style="margin: 0px">{{ ucwords(strtolower($portfolio['title'])) }}</h4>
+                        <p style="margin: 0px; line-height: 1"><small>by <a href="/{{$portfolio['user']}}" class="bold">
+                            {{$portfolio['user_profile']['fullname']}}
+                        </a></small></p>
+                    </div>
+                    <div class="pull-right hidden-sm hidden-xs">
+                        <like-button id="{{$portfolio['uid']}}"></like-button>
+                    </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<div id="portfolio-header">
+    <div class="container">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="col-sm-4">
+                <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=" data-src="{{$portfolio['thumbnail']}}" alt="{{ $portfolio['title'] }}" class="img-responsive b-lazy whiteCard padding-1">
+            </div>
+            <div class="col-sm-8">
+                <a href="/{{$portfolio['user']}}" class="bold">
+                    <h5 class="bold">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="{{$portfolio['user_profile']['avatar']}}" alt="{{$portfolio['user_profile']['fullname']}}" class="img-circle b-lazy user-avatar" width="24" height="24">
+                         {{$portfolio['user_profile']['fullname']}}
+                    </h5>
+                </a>
+                <h1 class="bold">{{ ucwords(strtolower($portfolio['title'])) }}</h1>                       
+                <p>{{$portfolio['description']}}</p>
+                <ul class="list-inline" style="font-weight: 600; font-size: 12px; margin-top: 1em;">
+                    <li><i class="glyphicon glyphicon-eye-open"></i> {{ $portfolio['views'] }} {{ str_plural('View', $portfolio['views'])}}</li>
+                    <li> {{ $portfolio['date'] }}</li>
+                    @if($portfolio['url'])
+                        <li><a href="{{route('external_link', ['url'=>$portfolio['url']])}}" target="_blank" class="bold">Link <i class="glyphicon glyphicon-new-window"></i></a></li>
+                    @endif
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div  class="container" id="portfolio-body">
+    <div class="row padded" style="margin-top: 3em">                
+        <div class="col-md-10 col-md-offset-1">
             
             @if($portfolio['is_public'] === 0 )
             <div class="alert alert-info">
@@ -75,7 +101,7 @@
             @if($portfolio['skills'])
             <p class="text-muted">Tags: {!! skill_links($portfolio['skills']) !!}</p>
             @endif
-            <ul class="list-inline">
+            <ul class="list-inline clearfix hidden-md hidden-lg">
                 <li><like-button id="{{$portfolio['uid']}}"></like-button></li>
             </ul>
             <hr>
@@ -83,7 +109,7 @@
                 <div class="media">
                     <div class="media-left">
                         <a href="/{{$portfolio['user']}}">
-                            <img src="{{$portfolio['user_profile']['avatar']}}" alt="{{$portfolio['user_profile']['fullname']}}" class="img-circle" width="64" height="64">
+                            <img src="{{$portfolio['user_profile']['avatar']}}" alt="{{$portfolio['user_profile']['fullname']}}" class="img-circle" width="48" height="48">
                         </a>
                     </div>
                     <div class="media-body">

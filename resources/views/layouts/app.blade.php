@@ -34,8 +34,11 @@
     <!-- Styles -->
     <link rel="icon" href="{{ asset('public/favicon.png') }}" type="image/png">
     <link href="{{ asset('css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/medium-editor.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    <link href="{{ asset('css/bootstrap-select.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/cropper.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    
     <!-- Scripts -->
     <script>
         window.Laravel  = {!! json_encode([
@@ -67,7 +70,6 @@
     /></noscript>
     <!-- DO NOT MODIFY -->
     <!-- End Facebook Pixel Code -->
-
 </head>
 <body>
     <div id="app">
@@ -239,7 +241,6 @@
 
             autocomplete = new google.maps.places.Autocomplete(inputState, options);
         }
-
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" async></script>
     <!-- <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script> -->
@@ -254,5 +255,6 @@
       ga('send', 'pageview');
 
     </script>
+
 </body>
 </html>

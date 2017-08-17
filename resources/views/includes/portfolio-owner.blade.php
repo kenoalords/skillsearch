@@ -1,4 +1,4 @@
-<div class="col-xs-12 col-sm-6 col-md-3">
+<div class="col-xs-12 col-sm-6 col-md-4">
 
     <div class="whiteCard image-wrapper">
         <a href="{{ $portfolio['link']['url'] }}">
@@ -11,7 +11,7 @@
                 </strong>
                 <ul class="list-inline pull-right">
                     <li>
-                        <small><i class="glyphicon glyphicon-heart"></i> 
+                        <small><i class="fa fa-thumbs-up"></i> 
                         {{$portfolio['likes_count']}} </small>
                     </li>
                     <li>
