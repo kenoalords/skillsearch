@@ -20,7 +20,7 @@ mix.js('node_modules/video.js/dist/video.min.js', 'public/js')
 	.copy('node_modules/jplayer/dist/skin/pink.flag/css/jplayer.pink.flag.min.css', 'public/css')
 	.js('resources/assets/js/app.js', 'public/js')
 	.sass('node_modules/toastr/toastr.scss', 'public/css')
-	.sass('resources/assets/sass/app.scss', 'public/css');
+	.sass('resources/assets/sass/app-new.scss', 'public/css');
 
 
 

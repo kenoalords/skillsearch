@@ -20,7 +20,7 @@
     <link rel="icon" href="{{ asset('public/favicon.png') }}" type="image/png">
     <link rel="stylesheet" href="{{ asset('css/semantic.min.css') }}">
     <link href="{{ asset('css/toastr.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/app-new.css') }}" rel="stylesheet">
     <!-- Scripts -->
     <script>
         window.Laravel  = {!! json_encode([
