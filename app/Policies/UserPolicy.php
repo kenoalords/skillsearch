@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\User;
 use App\Models\User;
+use App\Models\Phone;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class UserPolicy
@@ -17,7 +17,7 @@ class UserPolicy
      * @param  \App\Models\User  $user
      * @return mixed
      */
-    public function view(User $user, User $user)
+    public function view(User $user)
     {
         //
     }
@@ -40,7 +40,7 @@ class UserPolicy
      * @param  \App\Models\User  $user
      * @return mixed
      */
-    public function update(User $user, User $user)
+    public function update(User $user)
     {
         //
     }
@@ -52,7 +52,7 @@ class UserPolicy
      * @param  \App\Models\User  $user
      * @return mixed
      */
-    public function delete(User $user, User $user)
+    public function delete(User $user)
     {
         //
     }
@@ -60,5 +60,10 @@ class UserPolicy
     public function is_admin(User $user)
     {
         return $user->is_admin === 1;
+    }
+
+    public function owns_phone(User $user, Phone $phone)
+    {
+        return $user->id === $phone->user_id;
     }
 }

@@ -47,7 +47,8 @@ class ServiceRequestController extends Controller
                         ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                         ->toArray());
         // dd($data);
-     	return view('requests.index')->with(['requests' => $data]);
+        $profile = $user->profile()->first();
+     	return view('requests.index')->with(['requests' => $data, 'profile' => $profile]);
     }
 
     public function getServiceRequestResponses(Request $request, ServiceRequestResponse $response)

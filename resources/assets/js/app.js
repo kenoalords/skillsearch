@@ -13,7 +13,10 @@ require('./bootstrap');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example', require('./components/Example.vue'));
+// Vue.component('example', require('./components/Example.vue'));
+Vue.component('referral-code', require('./components/ReferralCode.vue'));
+Vue.component('referral', require('./components/Referral.vue'));
+Vue.component('contact-request', require('./components/ContactRequest.vue'));
 // Vue.component('location', require('./components/Location.vue'));
 Vue.component('skills', require('./components/Skills.vue'));
 Vue.component('upload-image', require('./components/UploadProfileImage.vue'));
@@ -42,69 +45,54 @@ Vue.component('flag-job', require('./components/FlagJob.vue'));
 Vue.component('save-job', require('./components/SaveJob.vue'));
 Vue.component('blog-like', require('./components/BlogLike.vue'));
 Vue.component('blog-subscribe', require('./components/BlogSubscribe.vue'));
+Vue.component('phone-number', require('./components/PhoneNumber.vue'));
 
 const app = new Vue({
     el: '#app'
 });
 
 var bLazy = new Blazy();
-
-
-// var masonry = new Masonry();
-// var imagesLoaded = new imagesLoaded();
-
-var waypoint = $('#portfolio-body').waypoint({
-	handler: function(direction){
-		var userBadge = $('#user-badge'),
-			portfolio = $('#portfolio-summary');
-		if(direction === 'down'){
-			portfolio.addClass('reveal');
-		}
-
-		if(direction === 'up'){
-			portfolio.removeClass('reveal');
-		}
-	},
-	offset: 100
-});
+// var jplayer = new jPlayer();
 
 $('body').on('click', '#google-invite', function(e){
 	$('body').addClass('loading');
 });
 
-if($('#audio').length > 0){
-	loadAndPlayAudioFile();
-}
+// if($('#audio').length > 0){
+// 	loadAndPlayAudioFile();
+// }
 
-function loadAndPlayAudioFile(){
-	var audio = $('#audio').data('src');
-	var wavesurfer = Wavesurfer.create({
-		container: '#audio',
-		waveColor: '#93b3ca',
-		progressColor: '#0e74bc',
-		barWidth: 2
-	});
+// function loadAndPlayAudioFile(){
+// 	var audio = $('#audio').data('src');
+// 	var wavesurfer = Wavesurfer.create({
+// 		container: '#audio',
+// 		waveColor: '#93b3ca',
+// 		progressColor: '#0e74bc',
+// 		barWidth: 2
+// 	});
 
-	wavesurfer.load(audio);
+// 	wavesurfer.load(audio);
 
-	$('body').on('click', '#play-audio', function(e){
-		e.preventDefault();
-		if(!wavesurfer.isPlaying()){
-			$('#play-audio').find('i').removeClass('fa-play').addClass('fa-pause');
-			wavesurfer.play();
-		} else {
-			$('#play-audio').find('i').removeClass('fa-pause').addClass('fa-play');
-			wavesurfer.pause();
-		}
-	})
-	.on('click', '#stop-audio', function(e){
-		e.preventDefault();
-		if(wavesurfer.isPlaying()){
-			$('#play-audio').find('i').removeClass('fa-pause').addClass('fa-play');
-		}
-		wavesurfer.stop();
-	});
-}
+// 	$('body').on('click', '#play-audio', function(e){
+// 		e.preventDefault();
+// 		if(!wavesurfer.isPlaying()){
+// 			$('#play-audio').find('i').removeClass('fa-play').addClass('fa-pause');
+// 			wavesurfer.play();
+// 		} else {
+// 			$('#play-audio').find('i').removeClass('fa-pause').addClass('fa-play');
+// 			wavesurfer.pause();
+// 		}
+// 	})
+// 	.on('click', '#stop-audio', function(e){
+// 		e.preventDefault();
+// 		if(wavesurfer.isPlaying()){
+// 			$('#play-audio').find('i').removeClass('fa-pause').addClass('fa-play');
+// 		}
+// 		wavesurfer.stop();
+// 	});
+// }
+
+
 
 $('body').on('click', '#delete-instagram', function(e){
 	if(!confirm('Are you sure you want to delete this Instagram account? This action cannot be undone.')){
@@ -116,4 +104,64 @@ $('body').on('click', '#delete-instagram', function(e){
 	$('#instagram-notification').slideUp('fast');
 });
 
+$('.ui.sticky').sticky({
+	context: '#sidebar',
+	offset: 70,
+});
+
+var dropdownDefault;
+if ($('.ui.selection').length > 0){
+	dropdownDefault = $('.ui.selection').find('div.menu')[0].dataset.default;
+}
+// console.log(dropdownDefault);
+
+$('.ui.checkbox').checkbox();
+$('.ui.dropdown').dropdown('set selected', dropdownDefault);
+// $('#gender').dropdown();
+$('.ui.progress').progress();
+
+$('body').on('click', '#get-location', function(e){
+	e.preventDefault();
+	UserLocation.getLocation();
+});
+
+var UserLocation = {
+	getLocation: function(){
+		var pos;
+		if(UserLocation.canGeolocate){
+			pos = navigator.geolocation.getCurrentPosition(function(position){
+				console.log(position);
+			});
+		} else {
+			alert('Sorry your browser does not support this feature');
+		}
+	},
+	canGeolocate: function(){
+		return ("geolocation" in navigator) ? true : false;
+	},
+}
+
+import jPlayer from 'jplayer';
+
+$("#jquery_jplayer_1").jPlayer({
+    ready: function () {
+      $(this).jPlayer("setMedia", {
+        // title: $('#jquery_jplayer_1').data('title'),
+        m4a: $('#jquery_jplayer_1').data('src'),
+      });
+    },
+    cssSelectorAncestor: "#jp_container_1",
+    swfPath: "/js",
+    supplied: "m4a",
+    useStateClassSkin: true,
+    autoBlur: false,
+    smoothPlayBar: true,
+    keyEnabled: true,
+    remainingDuration: true,
+    toggleDuration: true
+});
+
+$('#mobile-menu-admin').sidebar({
+    // context: $('#app')
+}).sidebar('attach events', '#mobile-admin-trigger');
 

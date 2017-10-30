@@ -1,52 +1,47 @@
-<div class="col-sm-12 person-tag">
-    <div class="media">
-        <div class="media-left">
-            <a href="{{ route('view_profile', [ 'user'=>$profile['username'] ]) }}">
-                <img src="{{ $profile['avatar'] }}" alt="{{ $profile['fullname'] }}" class="media-object img-circle" width="100" height="100">
-            </a>
-        </div>
-
-        <div class="media-body">
-            <div class="container-fluid row">
-                <div class="col-md-3">
-                    <h4 class="media-heading bold">
+<div class="ui container grid">
+    <div class="sixteen wide tablet six wide computer column">
+        <div class="ui unstackable items">
+            <div class="item">
+                <div class="ui tiny image">
+                    <a href="{{ route('view_profile', [ 'user'=>$profile['username'] ]) }}">
+                        <img src="{{ $profile['avatar'] }}" alt="{{ $profile['fullname'] }}" class="ui avatar" width="100" height="100">
+                    </a>
+                </div>
+                <div class="content">
+                    <h3 class="ui header">
                         <a href="{{ route('view_profile', ['user'=>$profile['username']]) }}">
                             {{ ucwords(strtolower($profile['fullname'])) }} {!! identity_check($profile['verified']) !!}
                         </a>
-                    </h4>
-                    <div class="bold">
-                        <span class="label label-info label-xs" style="color: #fff">{{ $profile['following'] }} Following</span>
-                        <span class="label label-info label-xs" style="color: #fff">{{ $profile['followers'] }} {{ $profile['followers'] > 1 ? 'Follwers' : 'Follower' }}</span>
+                    </h3>
+                    <div class="meta">
+                        <i class="icon marker"></i> {{ $profile['location'] }}
                     </div>
-                   <ul class="profile-meta">
-                        <li><i class="glyphicon glyphicon-map-marker"></i> {{ $profile['location'] }}</li> 
-                    </ul> 
+                    <div class="description large-screen-only">
+                        <p>{{ str_limit($profile['bio'], 75) }}</p>
+                        
+                    </div>
                     @if(count($profile['skills']) > 0)
-                    <div>
-                        @foreach ($profile['skills'] as $skill)
-                            <a href="/search/?term={{ $skill['skill'] }}" class="label label-default">{{ $skill['skill'] }}</a>
-                        @endforeach
-                    </div>
+                        <div class="extra">
+                            <!-- <h5>Skills</h5> -->
+                            @foreach ($profile['skills'] as $skill)
+                                <a href="/search/?term={{ $skill['skill'] }}" class="ui mini teal basic label">{{ $skill['skill'] }}</a>
+                            @endforeach
+                        </div>
                     @endif
-                    
-                    <p>{{ str_limit($profile['bio'], 75) }}</p>
-                    
+                    <div class="ui divider"></div>
+                    <a href="/{{$profile['username']}}/contact-request" class="ui tiny icon label"><i class="icon mail"></i>Request Contact</a>
                     @if($profile['has_instagram'] === true)
-                        <a href="/{{$profile['username']}}/instagram" class=""><i class="fa fa-instagram"></i> <span class="bold">Instagram</span> <span class="thin">Feed</span></a>
+                        <a href="/{{$profile['username']}}/instagram" class="ui tiny teal icon label"><i class="icon instagram"></i><span class="bold">Instagram</span> <span class="thin">Feed</span></a>
                     @endif
-                    <p>
-                        <a href="/{{$profile['username']}}/hire" class="btn btn-success btn-xs">Contact Me</a>
-                    </p>
-                    
-                </div> 
-                <div class="col-md-9 hidden-xs">
-                    <div class="row">
-                        @if(count($profile['portfolios']) > 0)
-                            @each('includes.portfolio-without-user', $profile['portfolios'], 'portfolio')
-                        @endif
-                    </div>
                 </div>
-            </div>          
+            </div>
         </div>
+    </div>
+    <div class="ten wide computer only column">
+        @if(count($profile['portfolios']) > 0)
+            <div class="ui three column grid">
+                @each('includes.portfolio-without-user', $profile['portfolios'], 'portfolio')
+            </div>
+        @endif
     </div>
 </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Services\InstagramService;
+use App\Transformers\ProfileTransformers;
 
 class InstagramPortfolioController extends Controller
 {
@@ -12,7 +13,7 @@ class InstagramPortfolioController extends Controller
     public function index(Request $request)
     {	
         $token = $request->user()->instagram()->first();
-    	return view('portfolio.instagram')->with('token', $token);
+    	return view('portfolio.instagram')->with(['token'=>$token]);
     }
 
     public function get(InstagramService $instagram)
@@ -24,11 +25,10 @@ class InstagramPortfolioController extends Controller
 	{
 		$token = $instagram->getUser($request);
         if($token){
-            return view('portfolio.instagram')->with('token', $token);
+            return view('portfolio.instagram')->with(['token'=>$token, 'profile'=>$profile]);
         } else {
             return view('portfolio.instagram')->with([
                 'token' => false,
-                
             ]);
         }
 	}
@@ -37,6 +37,6 @@ class InstagramPortfolioController extends Controller
     {
         $request->user()->instagram()->delete();
         $token = $request->user()->instagram()->first();
-        return view('portfolio.instagram')->with('token', $token);
+        return view('portfolio.instagram')->with(['token' => $token]);
     }
 }

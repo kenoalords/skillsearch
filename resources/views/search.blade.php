@@ -2,28 +2,34 @@
 @section('title', Request::get('term') )
 @section('content')
 
-<div class="padded container">
+<div class="padded" style="margin-top: 6em">
 	@include('search-form') 
 </div>
 
-<div class="container padded">
+<div class="">
 	
 	@if(count($profiles) > 0)
-	<div class="row">
-		<h1 class="thin text-center medium-header">We found {{count($profiles)}} {{ str_plural('profile', count($profiles)) }} matching your search</h1>
-		<hr>
-		@each('profile.person-tag', $profiles, 'profile')
+	<div class="ui centered container grid">
+		<div class="column">
+			<h1 class="ui medium header">{{Request::get('term')}} - {{count($profiles)}} match found</h1>
+			<div class="ui divider"></div>
+			@each('profile.person-tag', $profiles, 'profile')
+		</div>
 	</div>
 	@else
-	<div class="container">
-		<div class="text-center">
-			<h1 style="font-size: 6em"><i class="fa fa-frown-o"></i></h1>
-			<h3 class="thin">Sorry we couldn't find any result matching your search criteria</h3>
-			<p class="bold">But you can help by inviting your friends to grow our community.</p>
-			<p><a href="/invite" class="btn btn-success"><i class="fa fa-envelope"></i> Invite your friends from Gmail</a></p>
+	<div class="ui centered container grid">
+		<div class="center aligned column">
+			<h1 class="ui icon header">
+				<i class="icon frown"></i>
+				Nothing found!
+			</h1>
+			<p>You can help grow our community by inviting your friends.</p>
+			<p><a href="/invite" class="ui icon labeled google plus button"><i class="icon google plus"></i> Invite your friends from Gmail</a></p>
 		</div>
 	</div>
 	@endif
     
 </div>
+<div class="padded"></div>
+@include('includes.skills')
 @endsection

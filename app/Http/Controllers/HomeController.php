@@ -6,12 +6,15 @@ use Mail;
 use App\Models\User;
 use App\Models\VerifyUser;
 use App\Models\Profile;
+use App\Models\Task;
 use App\Models\City;
 use App\Models\Skills;
 use App\Models\Activity;
 use App\Models\ContactInvite;
 use App\Models\Instagram;
+use App\Models\Portfolio;
 use App\Mail\ResendVerificationMail;
+use App\Mail\EmailBroadcast;
 use App\Http\Requests\UserProfileRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,6 +22,11 @@ use Illuminate\Support\Facades\Storage;
 use League\Fractal\Resource\Collection;
 use App\Transformers\FollowersTransformer;
 use App\Jobs\UserImageJob;
+use App\Transformers\ProfileTransformers;
+use App\Transformers\PortfolioTransformer;
+use App\Transformers\UserTransformers;
+use App\Transformers\SimpleUserTransformers;
+use App\Transformers\TaskTransformer;
 
 class HomeController extends Controller
 {
@@ -37,25 +45,40 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, ContactInvite $invite)
+    public function index(Request $request, ContactInvite $invite, Portfolio $portfolio, User $user, Task $task)
     {   
-        $following = $request->user()->followers()->pluck('following_id');
-        $activities = Activity::whereIn('user_id', $following)->latestFirst()->get();
-        // dd($activities);
-        if($activities){
-            $activities = fractal()->collection($activities)
-                                ->transformWith(new FollowersTransformer)
+        $following = $request->user()->followers()->pluck('following_id')->all();
+        $portfolios = $portfolio->whereIn('user_id', $following)->orderBy('created_at', 'desc')->limit(2)->get();
+        $user_profile = $request->user()->profile()->first();
+        
+        $activities = fractal()->collection($portfolios)
+                                ->transformWith(new PortfolioTransformer)
                                 ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                                 ->toArray();
-        } else {
-            $activities = null;
+        // dd($activities);
+        $tasks = fractal()->collection($tasks = $task->isPublic()->isApproved()->orderDesc()->take(5)->get())
+                          ->transformWith(new TaskTransformer)
+                          ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                          ->toArray();
+        $people = null;
+        if(!$activities){
+            $defaults = [
+                'location'  => '%Lagos',
+            ];
+
+            $collection = $user->where('id', '!=', $request->user()->id)->has('portfolio')->withCount(['portfolio' => function($query){
+                                $query->where('is_public', true);
+                            }])->orderBy('portfolio_count', 'desc')->take(10)->get();
+            $people = fractal()->collection($collection)
+                            ->transformWith(new UserTransformers)
+                            ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                            ->toArray();
         }
 
         $email = $request->user()->email;
         $inviteStatus = true;
         $gmailCheck =  preg_match('/(@gmail.com)$/', $email); //$request->user()->email
-        // $instagram = $request->user()->instagram()->count();
-        // dd($instagram);
+
         if($gmailCheck){
             $hasInvited = $invite->where('invitee_email', $email)->get();
             if($hasInvited->count()){
@@ -64,14 +87,20 @@ class HomeController extends Controller
                 $inviteStatus = false;
             }
         }
-        $points = $request->user()->points()->first();
+        $user = fractal()->item($user_profile)
+                            ->transformWith(new ProfileTransformers)
+                            ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                            ->toArray();
+
+
+
         return view('home')->with([
-            'user'      => $request->user(),
-            'profile'   => $request->user()->profile()->get()->first(),
+            'user'      => $user,
             'activities'=> $activities,
             'gmail'     => (bool)$gmailCheck,
             'invite_status' => $inviteStatus,
-            'points'    => ($points) ? (int)$points->points : 0
+            'profiles'  => $people, 
+            'tasks'     => $tasks,
         ]);
     }
 
@@ -166,7 +195,7 @@ class HomeController extends Controller
         $skills = $skill->get();
 
         $this->validate($request, [
-            'bio' => 'required|min:200|max:2000'
+            'bio' => 'required'
         ]);
 
         $profile->bio = $request->bio;
@@ -203,6 +232,30 @@ class HomeController extends Controller
         dispatch(new UserImageJob($image));
 
         return response()->json($image, 200);
+    }
+
+    public function membersEmailBroadcast(Request $request)
+    {
+        $this->authorize('is_admin', $request->user());
+        return view('admin.email-broadcast');
+    }
+
+    public function submitEmailBroadcast(Request $request, User $users)
+    {
+        $this->authorize('is_admin', $request->user());
+        $users = $users->all();
+        $subject = $request->subject;
+        $body = $request->body;
+        $image_link = $request->image_link;
+        $url = ($request->url) ? $request->url : '';
+        $button_text = ($request->button_text) ? $request->button_text : 'Learn more';
+        if($users){
+            foreach ($users as $key => $user){
+                Mail::to($user->email)->send(new EmailBroadcast($user, $subject, $body, $url, $button_text, $image_link));
+            }
+            $request->session()->put('status', 'Bon voyage!! Email broadcast sent');
+            return redirect('/home');
+        }
     }
 
 }

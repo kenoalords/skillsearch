@@ -1,8 +1,8 @@
 <template>
     <span>
-        <a v-on:click.prevent="submitLike" class="circle circle-big circle-default" v-bind:class="{ 'circle-default' : !hasLiked, 'circle-active' : hasLiked }">
-            <i class="fa fa-thumbs-up"></i> 
-        </a> <span class="bold text-stats">{{count}} {{ count > 1 ? 'Likes' : 'Like' }}</span>
+        <a v-on:click.prevent="submitLike" class="ui circular extra huge icon button" v-bind:class="{ 'purple' : hasLiked }">
+            <i class="icon thumbs up"></i> 
+        </a> <span class="like-count">{{count}}</span>
          <!-- <small class="text-muted"> {{formatCount(count)}}</small> -->
     </span>
 </template>

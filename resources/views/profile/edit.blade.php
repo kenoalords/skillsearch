@@ -1,86 +1,78 @@
-@extends('layouts.app')
+@extends('layouts.admin')
+
+@section('title', 'Edit Profile')
 
 @section('content')
-<div class="container">
-    <!-- @include('includes.profile-head') -->
-    <div class="row padded">
-        
-        <div class="col-md-10 col-md-offset-1">
-            @if(Request::session()->has('status'))
-                <div class="alert alert-success">
-                    <i class="glyphicon glyphicon-ok-sign"></i>
-                    {{Request::session()->pull('status')}}
-                    <a href="/home" class="pull-right">Go back</a>
-                </div>
-            @endif
-            <div class="clearfix">
-                <h3 class="pull-left" style="margin-top:0">Edit Profile</h3>
-                <a href="/home" class="btn btn-basic pull-right"><i class="glyphicon glyphicon-home"></i> Back to profile</a>
-            </div>
-            <hr>
-            <upload-image img-src="{{ $profile->getAvatar() }}"></upload-image>
-            <div class="panel panel-default">
-
-                <div class="panel-body">
-                    <form action="/profile/edit" method="post">
-                        {{ csrf_field() }}
-                        {{ method_field('PUT') }}
-                        <div class="form-group{{ $errors->has('bio') ? ' has-error' : '' }}">
-                            <label for="bio" class="control-label">Bio</label>
-                            <p><small>Tell us a little about yourself</small></p>
-                            <div class="">
-                                <textarea name="bio" class="form-control" rows="3" autofocus>{{ $profile->bio ? $profile->bio : old('bio') }}</textarea>
-                                @if ($errors->has('bio'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('bio') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-                        
-                        @if (!$profile->gender)
-                        <div class="form-group{{ $errors->has('gender') ? ' has-error' : '' }}">
-                            <label for="gender" class="control-label">Gender</label>
-                            <div class="">
-                                <select name="gender" class="form-control">
-                                    <option value="">Select gender</option>
-                                    <option value="male" {{ (old('gender') == 'male') ? 'selected' : ''   }}>Male</option>
-                                    <option value="female" {{ (old('gender') == 'female') ? 'selected' : ''   }}>Female</option>
-                                </select>
-                                @if ($errors->has('gender'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('gender') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-                        @endif
-                        
-                        <div class="form-group {{ $errors->has('user_location') ? ' has-error' : '' }}">
-                            <label for="location">Choose your primary location</label>
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-map-marker"></i></span>
-                                <input type="text" name="user_location" id="geolocation" class="form-control" value="{{ (old('user_location')) ? old('user_location') :$profile->location}}">
-                            </div>
-                            @if ($errors->has('user_location'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('user_location') }}</strong>
-                                </span>
-                            @endif
-                        </div>
-
-                        @if ( $profile->account_type == 1 )
-                            
-                            <skills></skills>
-
-                        @endif
-
-                        <button type="submit" class="btn btn-primary">Save Profile</button>
-
-                    </form>
-                </div>
+    @if(Request::session()->has('status'))
+        <div class="ui icon success message">
+            <i class="icon check circle"></i>
+            <div class="content">
+                {{Request::session()->pull('status')}}
             </div>
         </div>
+    @endif
+    <div class="ui row">
+        <h1 class="ui dividing header">Edit Profile</h1>
     </div>
-</div>
+    <div class="ui row">
+        <upload-image img-src="{{ $profile->getAvatar() }}"></upload-image>
+        <div class="ui divider"></div>
+        <form action="/profile/edit" method="post" class="ui form" id="profile-edit-form">
+            {{ csrf_field() }}
+            {{ method_field('PUT') }}
+            <div class="field{{ $errors->has('bio') ? ' error' : '' }}">
+                <h4 class="ui header">Tell us a little about yourself</h4>
+                <textarea name="bio" rows="5" autofocus>{{ $profile->bio ? $profile->bio : old('bio') }}</textarea>
+                @if ($errors->has('bio'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('bio') }}</strong>
+                    </span>
+                @endif
+            </div>
+            <div class="ui two fields">
+                <div class="field{{ $errors->has('gender') ? ' error' : '' }}">
+                    <h4 class="ui header">Gender</h4>
+                    <div class="ui selection dropdown" id="gender">
+                        <div class="default text">Select Gender</div>
+                        <i class="dropdown icon"></i>
+                        <input type="hidden" name="gender">
+                        <div class="menu" data-default="{{$profile->gender}}">
+                            <div class="item" data-value="male">Male</div>
+                            <div class="item" data-value="female">Female</div>
+                        </div>
+                        @if ($errors->has('gender'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('gender') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                </div>
+                
+                <div class="field {{ $errors->has('user_location') ? ' error' : '' }}">
+                    <h4 class="ui header">Enter your location <span class="ui grey">(City, State)</span></h4>
+                    <div class="ui action input">
+                        <input type="text" name="user_location" id="geolocation" value="{{ (old('user_location')) ? old('user_location') :$profile->location}}">
+                        <!-- <button id="get-location" class="ui red labeled icon button">
+                            <i class="marker icon"></i>
+                            Get Location
+                        </button> -->
+                    </div>
+                    @if ($errors->has('user_location'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('user_location') }}</strong>
+                        </span>
+                    @endif
+                </div>
+            </div>
+
+            @if ( $profile->account_type == 1 )
+                <div class="field">
+                    <skills></skills>
+                </div>
+            @endif
+
+            <button type="submit" class="ui primary large button">Save Profile</button>
+
+        </form>
+    </div>
 @endsection

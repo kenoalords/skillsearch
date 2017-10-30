@@ -12,6 +12,7 @@ class PortfolioTransformer extends TransformerAbstract
 	public function transform(Portfolio $portfolio)
 	{
 		$status = VerifyIdentity::where('user_id', $portfolio->user_id)->first();
+		$number = $portfolio->user->phone()->first();
 		return [
 			'title'		=> $portfolio->title,
 			'description'=> $portfolio->description,
@@ -41,6 +42,7 @@ class PortfolioTransformer extends TransformerAbstract
 				'avatar'		=> $portfolio->user->profile->getAvatar(),
 				'following'		=> $portfolio->user->getFollowing(),
 				'followers'		=> $portfolio->user->getFollowers($portfolio->user),
+				'phone'			=> $number['number'],
 			],
 			'views'		=> $portfolio->views()->count(),
 		];

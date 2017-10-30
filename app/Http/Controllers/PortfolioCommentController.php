@@ -12,6 +12,7 @@ use App\Services\PointService;
 use Illuminate\Http\Request;
 use App\Transformers\CommentTransformer;
 use App\Http\Requests\CommentFormRequest;
+use App\Events\CommentPostedEvent;
 
 class PortfolioCommentController extends Controller
 {
@@ -32,6 +33,7 @@ class PortfolioCommentController extends Controller
     		'reply_id'	=> $request->get('id', null),
     	]);
 
+        // event(new CommentPostedEvent($comment, $portfolio));
 
         if($request->get('id') == ''){
             if($portfolio->user_id !== $request->user()->id){
@@ -47,6 +49,8 @@ class PortfolioCommentController extends Controller
         if($portfolio->user_id !== $request->user()->id){
             $pointService->addPoint($request->user(), 'comment');
         }
+
+
 
     	return response()->json(
     		fractal()->item($comment)

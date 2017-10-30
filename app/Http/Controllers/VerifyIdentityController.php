@@ -12,7 +12,8 @@ class VerifyIdentityController extends Controller
     public function verify(Request $request)
     {
     	$user = $request->user()->identity()->first();
-    	return view('profile.identity')->with('user', $user);
+        $profile = $request->user()->profile()->first();
+    	return view('profile.identity')->with(['user'=>$user, 'profile'=>$profile]);
     }
 
     public function upload(Request $request)

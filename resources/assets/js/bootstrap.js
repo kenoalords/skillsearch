@@ -11,7 +11,7 @@ window.$ = window.jQuery = require('jquery');
 
 // window.jQuery.noConflict();
 
-require('bootstrap-sass');
+// require('bootstrap-sass');
 
 /**
  * Vue is a modern JavaScript library for building interactive web interfaces
@@ -41,17 +41,21 @@ window.axios.defaults.headers.common = {
  * allows your team to easily build robust real-time web applications.
  */
 
-// import Echo from "laravel-echo"
+ import Pusher from 'pusher-js';
 
-// window.Echo = new Echo({
-//     broadcaster: 'pusher',
-//     key: 'your-pusher-key'
-// });
+import Echo from "laravel-echo";
+
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: '5dd8d9c511c47f1ba475',
+    cluster: 'eu',
+});
 
 window.Blazy = require('blazy');
-window.Waypoint = require('waypoints/lib/jquery.waypoints.min');
-window.Wavesurfer = require('wavesurfer.js/dist/wavesurfer.min');
-window.MediumEditor = require('medium-editor/dist/js/medium-editor.js');
-window.datepicker = require('bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js');
-window.selectpicker = require('bootstrap-select/dist/js/bootstrap-select.min.js');
-window.Cropper = require('cropperjs/dist/cropper.min.js');
+// window.Waypoint = require('waypoints/lib/jquery.waypoints.min');
+// window.Wavesurfer = require('wavesurfer.js/dist/wavesurfer.min');
+// window.MediumEditor = require('medium-editor/dist/js/medium-editor.js');
+// window.datepicker = require('bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js');
+// window.selectpicker = require('bootstrap-select/dist/js/bootstrap-select.min.js');
+// window.Cropper = require('cropperjs/dist/cropper.min.js');
+window.sticky = require('semantic-ui-css/semantic.min.js');

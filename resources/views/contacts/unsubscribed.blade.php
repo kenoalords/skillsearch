@@ -3,7 +3,7 @@
 @section('thumbnail', asset('public/logo-b.png'))
 @section('type', 'article')
 @section('title', 'Unsubscribe')
-@section('metadescription', 'Invite your friends from gmail and yahoo to connect with you on skillsearch.')
+@section('metadescription', 'Invite your friends from gmail and yahoo to connect with you on ' . config('app.name'))
 
 @section('content')
     

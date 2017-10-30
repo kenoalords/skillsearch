@@ -1,39 +1,32 @@
 <template>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">Select your skills</div>
-
-                <div class="panel-body" id="skills-list">
-                    <div v-if="skills" class="list-group" id="skills">
-                        <a v-for="skill in skills" class="list-group-item" v-on:click.prevent="addSkill(skill)">
+    <div class="ui two column grid">
+        <div class="left aligned column">
+            <div class="ui small header">Select your skills</div>
+            <div class="" id="skills-list">
+                <div v-if="skills" class="ui relaxed divided selection list" id="skills">
+                    <a v-for="skill in skills" class="item" v-on:click.prevent="addSkill(skill)">
+                        <i class="icon arrow right"></i>
+                        <div class="content">
                             {{ skill.skill }}
-                            <div class="pull-right">
-                                <i class="glyphicon glyphicon-chevron-right"></i>
-                            </div>
-                        </a>
-                    </div>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">Selected skills</div>
-
-                <div class="panel-body">
-                    <div v-if="getUserSkills" class="list-group" id="selectedSkills">
-                        <a v-for="skill in selectedSkills" class="list-group-item" v-on:click.prevent="removeSkill(skill)">
-                            {{ skill.skill }}
-                            <div class="pull-right">
-                                <i class="glyphicon glyphicon-remove"></i>
-                            </div>
-                        </a>
+        <div class="left aligned column">
+            <div class="ui small header">Selected skills</div>
+            <div v-if="getUserSkills" class="ui relaxed divided selection list" id="selectedSkills">
+                <a v-for="skill in selectedSkills" class="item" v-on:click.prevent="removeSkill(skill)">
+                    <i class="icon close"></i>
+                    <div class="content">
+                        {{ skill.skill }}
                     </div>
-                    <div v-if="selectedSkills == null">
-                        <p>You have not selected any skills</p>
-                    </div>
-                </div>
+                    
+                </a>
+            </div>
+            <div v-if="selectedSkills == null">
+                <p>You have not selected any skills</p>
             </div>
         </div>
     </div>

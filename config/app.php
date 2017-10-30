@@ -12,8 +12,8 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name'          => 'Skillsearch Nigeria',
-    'description'   => 'Hire The Best Skilled People In Nigeria',
+    'name'          => 'Ubanji',
+    'description'   => 'Showcase Your Creativity',
     'mail_from_address'  => env('MAIL_FROM_ADDRESS'),
     // 'thumbnail'     => asset('public/skillsearc-nigeria-social-image.jpg'),
 
@@ -178,17 +178,20 @@ return [
         Artdarek\OAuth\OAuthServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         MetricLoop\TransformerMaker\TransformerMakerServiceProvider::class,
+        \Torann\GeoIP\GeoIPServiceProvider::class,
         
         /*
          * Application Service Providers...
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
+        App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\InstagramPortfolioServiceProvider::class,
         App\Providers\PointServiceProvider::class,
+        App\Providers\ComposeServiceProvider::class,
+
     ],
 
     /*
@@ -242,6 +245,7 @@ return [
         'Talk' => Nahid\Talk\Facades\Talk::class,
         'OAuth'     => Artdarek\OAuth\Facade\OAuth::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'GeoIP' => \Torann\GeoIP\Facades\GeoIP::class,
     ],
 
 ];

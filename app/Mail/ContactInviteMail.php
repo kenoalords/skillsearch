@@ -43,7 +43,7 @@ class ContactInviteMail extends Mailable implements ShouldQueue
 
         // Send the invite
         return $this->from(env('MAIL_FROM_ADDRESS'), $invitee_name . ' via ' . config('app.name'))
-                    ->subject($invitee_name . ' Invites you to join Skillsearch Nigeria')
+                    ->subject($invitee_name . ' Invites you to join ' . config('app.name'))
                     ->markdown('invites.invite')
                     ->with([
                             'invitee_name'  => $invitee_name,

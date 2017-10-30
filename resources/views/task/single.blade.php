@@ -10,31 +10,30 @@
     @include('includes.identity-warning', ['name'=>$task['profile']['fullname']])
 @endif
                 
-<div class="container">
-    <div class="row padded whiteCard" style="background: #fff; margin-top: 3em;">
-        <div class="col-md-10 col-md-offset-1">
+<div class="" style="margin-top: 6em;">
+    <div class="ui container grid">
+        <div class="twelve wide column">
             @if($task['is_approved'] === 1)
                 @include('task.partials.single-task', ['task'=>$task])
             @else
-                <h1>{{$task['title']}}</h1>
+                <h1 class="ui header">{{$task['title']}}</h1>
 
-                <ul class="list-inline" style="font-size: .875em">
-                    <li><img src="{{$task['profile']['avatar']}}" alt="{{$task['profile']['fullname']}}" class="img-circle" width="16" height="16"> <span class="bold"><a href="{{ config('app.url') . '/' . $task['profile']['username'] }}">{{ $task['profile']['fullname'] }} {!! identity_check($task['profile']['verified']) !!}</a></span></li>
-                    <li>in <a href="#" class="bold">{{$task['category']}}</a></li>
-                    <li class="bold"><i class="fa fa-map-marker"></i> {{$task['location']}}</li>
-                    <li class="bold">{{count($task['applications'])}} {{ str_plural( 'Application', count($task['applications']) ) }}</li>
-                    <li class="bold"><em>{{$task['date']}}</em></li>
+                <div class="ui horizontal list" style="font-size: .875em">
+                    <div class="item"><img src="{{$task['profile']['avatar']}}" alt="{{$task['profile']['fullname']}}" class="ui avatar image" width="16" height="16"> <a href="{{ config('app.url') . '/' . $task['profile']['username'] }}">{{ $task['profile']['fullname'] }} {!! identity_check($task['profile']['verified']) !!}</a></div>
+                    <div class="item">in <a href="#" class="bold">{{$task['category']}}</a></div>
+                    <div class="item"><i class="fa fa-map-marker"></i> {{$task['location']}}</div>
+                    <div class="item">{{count($task['applications'])}} {{ str_plural( 'Application', count($task['applications']) ) }}</div>
+                    <div class="item">{{$task['date']}}</div>
                     @if($task['budget'])
-                        <li class="pull-right">
-                            <span class="budget bold">₦{{ number_format($task['budget']) }}</span>
-                        </li>
+                        <div class="item">
+                            <span class="budget item">₦{{ number_format($task['budget']) }}</span>
+                        </div>
                     @endif
                     @if($task['budget_type'])
-                        <li class="bold">**{{ $task['budget_type'] }}</li>
+                        <div class="item">**{{ $task['budget_type'] }}</div>
                     @endif
-                </ul>
+                </div>
                 <p class="label label-warning">Pending Approval</p>
-                <hr>
                 
 
                 @if(Auth::user() && Auth::user()->is_admin === 1)
@@ -49,18 +48,19 @@
 
     @if(count($others) > 0)
     
-    <div class="whiteCard row padded" id="jobs">
-        <div class="col-md-10 col-md-offset-1">
-            <h4 class="container-fluid bold" style="margin-bottom: 0">Other Jobs<hr></h4>
+    <div class="ui container grid" style="margin-top: 3em;">
+        <div class="twelve wide column">
+            <h4 class="ui grey dividing header">Other Jobs</h4>
             @each('task.partials.task', $others, 'task')
         </div>
     </div>
     @endif
 
-    <div class="container-fluid text-center padded">
-        <h1><i class="fa fa-hand-o-down"></i></h1>
-        <h2>Do you have an upcoming project or job?</h2>
-        <p>Let the best hands come to you. <a href="{{ route('add_task') }}" class="btn btn-sm btn-success">Submit Your Project Today</a></p>
+    <div class="ui center aligned padded grid" style="margin-top: 3em !important;">
+        <div class="white padded column">
+            <h2 class="ui header">Do you have an upcoming job?</h2>
+            <a href="{{ route('add_task') }}" class="ui green button">Post a job</a>
+        </div>
     </div>
 </div>
 @endsection

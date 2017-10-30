@@ -1,18 +1,19 @@
 <template>
-    <div class="panel panel-default">
-        <div class="panel-heading">Change profile image</div>
+    <div class="">
 
-        <div class="panel-body">
-            <label v-if="!isUploading" class="text-center" style="display:block">
+        <div class="" style="margin-top:1em;">
+            <label v-if="!isUploading" class="text-center" style="display:block; margin-bottom: 1em">
                 <img v-bind:src="imageSrc" class="img-circle">
-                <input type="file" id="fileupload" v-on:change="uploadProfileImage" class="invisible">
-                <div>
-                    <span class="btn btn-default"><i class="glyphicon glyphicon-camera"></i> Upload avatar</span>
-                </div>
+                <input type="file" id="fileupload" v-on:change="uploadProfileImage" style="display: none">
             </label>
-
+        
             <div class="progress" v-if="isUploading && !uploadingComplete">
                 <div class="progress-bar" role="progressbar" v-bind:style="{ width: progress + '%'}"></div>
+            </div>
+
+            <div class="ui small header">
+                Change profile image
+                <span class="sub header">Click image above to change profile picture</span>
             </div>
         </div>
     </div>

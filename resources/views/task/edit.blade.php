@@ -1,7 +1,7 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('content')
-<div class="container">
+<div class="">
     <task-form skills="{{$skills}}" edit="{{$task}}"></task-form>
 </div>
 @endsection

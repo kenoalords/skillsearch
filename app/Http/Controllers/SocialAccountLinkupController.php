@@ -26,7 +26,7 @@ class SocialAccountLinkupController extends Controller
             	'provider_user_id'	=> $request->social_id,
             	'provider'			=> $request->provider,
             ]);
-            $request->session()->flash('status', 'You can now log into Skillsearch with your ' . $request->provider . ' account.');
+            $request->session()->flash('status', 'You can now login with your ' . $request->provider . ' account.');
             return redirect('/home');
         } else {
         	$request->session()->flash('status', 'Your password is incorrect');

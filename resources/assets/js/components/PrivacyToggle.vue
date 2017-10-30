@@ -1,8 +1,7 @@
 <template>
     <span>
-        <button class="btn btn-default" v-on:click.prevent="togglePrivacy">
-        <i class="fa" v-bind:class="{'fa-lock' : !isPublic, 'fa-unlock' : isPublic}"></i>
-        {{ !isPublic ? 'Make Profile Public' : 'Make Profile Private' }}
+        <button class="ui icon mini button" v-on:click.prevent="togglePrivacy" v-bind:class="{'red' : !isPublic, 'green' : isPublic}">
+            <i class="icon " v-bind:class="{'lock' : !isPublic, 'unlock' : isPublic}"></i>
         </button>
     </span>
 </template>

@@ -22,6 +22,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\PortfolioFilesUploadEvent' => [
             'App\Listeners\PortfolioFilesUploadEventListener'
         ],
+        'App\Events\CommentPostedEvent' => [
+            'App\Listeners\CommentPostedEventListener'
+        ],
     ];
 
     /**

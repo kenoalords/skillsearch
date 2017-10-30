@@ -1,53 +1,43 @@
-<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" style="margin-bottom: 1em">
-    <div class="image-wrapper whiteCard padding-1" style="margin-bottom: 0.1em">
-        
-        <a href="{{ $portfolio['link']['url'] }}">
-            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" data-src="{{ $portfolio['thumbnail'] }}" alt="{{$portfolio['title']}}" class="b-lazy img-responsive">
+<div class="eight wide mobile five wide tablet four wide computer column">
+    <div class="ui fluid card">
+        <div class="content tablet-only">
+            <a href="{{ $portfolio['user'] }}" style="font-size: .875em; font-weight: 700">
+                <img src="{{ $portfolio['user_profile']['avatar'] }}" alt="{{ $portfolio['user_profile']['fullname'] }}" class="ui avatar image">
+                 {{ $portfolio['user_profile']['first_name'] }} {!! identity_check($portfolio['verified']) !!}
+            </a>
+        </div>
+        <div class="ui fluid image">
+            <a href="{{ $portfolio['link']['url'] }}" style="line-height: 0; display: block;">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" data-src="{{ $portfolio['thumbnail'] }}" alt="{{$portfolio['title']}}" class=" b-lazy">
+            </a>
+            @if(Auth::user() && ( $portfolio['user_id'] === Auth::user()->id ) )
+            <div class="action-links">
+                <a href="{{route('edit_portfolio', ['portfolio'=>$portfolio['uid']])}}" class=""><i class="icon write"></i></a>
+                <a href="{{route('delete_portfolio', ['portfolio'=>$portfolio['uid']])}}" class=""><i class="icon delete"></i></a>
+            </div>
+            @endif
+        </div>
+        <div class="content">
+            <div class="small bold">
+                <!-- <div class="right floated meta">14h</div> -->
+                <a href="{{ $portfolio['user'] }}" class="large-screen-only">
+                    <img src="{{ $portfolio['user_profile']['avatar'] }}" alt="{{ $portfolio['user_profile']['fullname'] }}" class="ui avatar image">
+                     {{ $portfolio['user_profile']['first_name'] }} {!! identity_check($portfolio['verified']) !!}
+                </a>
+
+                <span class="right floated meta large-screen-only">
+                    <span class="bold"><i class="fa fa-thumbs-up"></i> {{$portfolio['likes_count']}} </span>
+                    <span class="bold" style="margin-left: 1em"><i class="fa fa-comment"></i> {{$portfolio['comment_count']}}</span>
+                </span>
+
+                <span class="meta mobile-only tablet-only">
+                    <span class="bold"><i class="fa fa-thumbs-up"></i> {{$portfolio['likes_count']}} </span>
+                    <span class="bold" style="margin-left: 1em"><i class="fa fa-comment"></i> {{$portfolio['comment_count']}}</span>
+                </span>
+            </div>
             
-        </a>
-        <div class="p-content clearfix">
-            <!-- <h5 class="bold"><a href="{{ $portfolio['link']['url'] }}">{{ str_limit($portfolio['title'], 20) }}</a></h5> -->
-            <!-- <span class="pull-left">
-                @if($portfolio['type'] == 'images')
-                <i class="glyphicon glyphicon-camera"></i>
-                @endif
-                @if($portfolio['type'] == 'video')
-                <i class="glyphicon glyphicon-facetime-video"></i>
-                @endif
-                @if($portfolio['type'] == 'audio')
-                <i class="glyphicon glyphicon-music"></i>
-                @endif
-            </span> -->
-
-            <ul class="list-inline clearfix portfolio-meta" style="margin-bottom: 0">
-                <li class="bold">
-                    <small class="bold"><i class="fa fa-thumbs-up"></i> 
-                    {{$portfolio['likes_count']}} </small>
-                </li>
-                <li>
-                     <small class="bold"><i class="glyphicon glyphicon-comment"></i> 
-                    {{$portfolio['comment_count']}}</small>
-                </li>
-                <li>
-                     <small class="bold"><i class="glyphicon glyphicon-eye-open"></i> 
-                    {{$portfolio['views']}}</small>
-                </li>
-            </ul>
         </div>
-    </div>
-
-    <div class="portfolio-credit">
-        <div class="media">
-            <div class="media-left media-middle">
-                <img src="{{ $portfolio['user_profile']['avatar'] }}" alt="{{ $portfolio['user_profile']['fullname'] }}" width="20" height="20" class="img-circle ">
-            </div>
-            <div class="media-body">
-                <div class="media-heading pull-left">
-                    <a href="/{{ $portfolio['user'] }}">
-                        {{ $portfolio['user_profile']['fullname'] }} {!! identity_check($portfolio['verified']) !!}
-                    </a>
-                </div>
-            </div>
-        </div>
+        
+        
     </div>
 </div>

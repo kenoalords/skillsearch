@@ -1,117 +1,90 @@
 <div class="">
-    <div class="clearfix"> 
-        <div class="pull-left">
-            <img src="{{$task['profile']['avatar']}}" alt="{{$task['profile']['fullname']}}" class="img-circle" width="24" height="24"> <span class="bold"><a href="{{ config('app.url') . '/' . $task['profile']['username'] }}">{{ $task['profile']['fullname'] }} {!! identity_check($task['profile']['verified']) !!}</a></span> <em class="text-muted">{{$task['date']}}</em>
-        </div>
-        <div class="pull-right">
-            <a href="{{ url()->previous() }}" class="text-muted"><i class="fa fa-arrow-left"></i> Back</a>
-        </div>
-    </div>
-    <hr>
-    <h1 class="bold">{{ $task['title'] }}</h1>
-    <ul class="list-inline" style="font-size: .875em">
+    <h1 class="ui huge header">{{ $task['title'] }}</h1>
+    <div class="ui horizontal small list">
 <!--         <li><img src="{{$task['profile']['avatar']}}" alt="{{$task['profile']['fullname']}}" class="img-circle" width="16" height="16"> <span class="bold"><a href="{{ config('app.url') . '/' . $task['profile']['username'] }}">{{ $task['profile']['fullname'] }} {!! identity_check($task['profile']['verified']) !!}</a></span></li>
- -->        
-        <li>in <a href="#" class="bold">{{$task['category']}}</a></li>
-        <li class="bold"><i class="fa fa-map-marker"></i> {{$task['location']}}</li>
-        <li class="bold">{{count($task['applications'])}} {{ str_plural( 'Application', count($task['applications']) ) }}</li>
-        <li class="bold"><em>{{$task['date']}}</em></li>
-        
-        @if($task['budget'])
-            <li class="pull-right">
-                <span class="budget bold">₦{{ number_format($task['budget']) }}</span>
-            </li>
-        @endif
-        @if($task['budget_type'])
-            <li class="bold">**{{ $task['budget_type'] }}</li>
-        @endif
-        @if($task['expires_at'])
-            <li class="bold text-warning">Expires {{ $task['expires_human'] }}</li>
-        @endif
-    </ul>
-    <br><br>
-    <p>
+ -->     
+        <div class="item">
+            <img src="{{$task['profile']['avatar']}}" alt="{{$task['profile']['fullname']}}" class="ui avatar image"> <a href="{{ config('app.url') . '/' . $task['profile']['username'] }}">{{ $task['profile']['fullname'] }} {!! identity_check($task['profile']['verified']) !!}</a>
+        </div>
+        <div class="item">{{$task['date']}}</div>  
+        <div class="item">in <a href="#" class="bold">{{$task['category']}}</a></div>
+        <div class="item"><i class="icon marker"></i> {{$task['location']}}</div>
+    </div>
+    @if($task['budget'])
+        <div class="item">
+            <span class="ui huge red header">
+                ₦{{ number_format($task['budget']) }}
+                @if($task['budget_type'])
+                    <div class="sub header">{{ $task['budget_type'] }}</div>
+                @endif
+            </span>
+        </div>
+    @endif
+    
+    <p style="margin-top: 2em">
         {!! nl2br($task['description']) !!}
     </p>
     @if($task['expires_human'])
-    <h4 class="bold text-warning">Expires {{ $task['expires_human'] }}</h4>
+    <h4 class="ui header">Expires {{ $task['expires_human'] }}</h4>
     @endif
-    <br>
     @include('includes.share.job', ['task'=>$task])
-    <ul class="list-inline clearfix">
+    <div class="ui small horizontal list">
         @if(Auth::user() && Auth::user()->id === $task['user_id'])
-        <li><a href="{{ route('task_interest', ['task'=>$task['id']]) }}" class="btn btn-success btn-xs"><i class="fa fa-user"></i> View Applications</a></li>
+        <div class="item"><a href="{{ route('task_interest', ['task'=>$task['id']]) }}" class="ui green icon labeled button"><i class="icon user"></i>View applications</a></div>
         @else
-        <li>
+        <div class="item">
             @if( $task['application_limit'] > 0 && $task['application_limit'] !== -1)
                 @if( $task['application_left'] > 0 )
                     @if($task['closed'] === 0)
-                        <a href="{{ route('apply', ['task'=>$task['id'], 'slug'=>$task['slug']] ) }}" class="btn btn-success btn-xs">Submit Application</a>
+                        <a href="{{ route('apply', ['task'=>$task['id'], 'slug'=>$task['slug']] ) }}" class="ui icon labeled green button"><i class="icon write"></i>Apply</a>
                     @else
-                        <span class="label label-success"><i class="fa fa-lock"></i> Closed</span>
+                        <span class="ui icon labeled green button disabled"><i class="icon lock"></i>Closed</span>
                     @endif
                 @else
-                    <span class="text-warning bold">Application Limit Reached!</span>
+                    <span class="ui red text">Application Limit Reached!</span>
                 @endif
             @else
                 @if($task['closed'] === 0)
-                    <a href="{{ route('apply', ['task'=>$task['id'], 'slug'=>$task['slug']] ) }}" class="btn btn-success btn-xs">Submit Application</a>
+                    <a href="{{ route('apply', ['task'=>$task['id'], 'slug'=>$task['slug']] ) }}" class="ui icon labeled green button"><i class="icon write"></i>Apply</a>
                 @else
-                    <span class="label label-success"><i class="fa fa-lock"></i> Closed</span>
+                    <span class="ui icon labeled green button disabled"><i class="icon lock"></i> Closed</span>
                 @endif
             @endif
-        </li>
+        </div>
         
-        <li class="pull-right">
+        <div class="right floated item">
             @if($task['closed'] === 0)
                 <save-job job-id="{{$task['id']}}"></save-job>
                 <flag-job job-id="{{$task['id']}}"></flag-job>
             @endif
-        </li>
+        </div>
         @endif
-    </ul>
+    </div>
 
-    <hr>
+    <div class="ui divider"></div>
     <div class="">
         <div class="">
-            <h4 class="bold" style="margin-bottom: 2em;">
+            <h3 class="ui header" style="margin-bottom: 2em;">
                 {{count($task['applications'])}} {{ str_plural( 'Application', count($task['applications']) ) }}
-            </h4>
+            </h3>
             @if($task['applications'])
-                <div id="applications">
+                <div class="ui divided relaxed list">
                     @foreach($task['applications'] as $application)
-                        <div class="media">
-                            <div class="media-left">
-                                <a href="{{ route('view_profile', [ 'user'=>$application['profile']['username'] ]) }}">
-                                    <img src="{{ $application['profile']['avatar'] }}" alt="{{ $application['profile']['fullname'] }}" width="64" height="64" class="img-circle media-object"> 
-                                    
-                                </a>
-                            </div>
-
-                            <div class="media-body">
-                                <div class="media-heading">
+                        <div class="item">
+                            <img src="{{ $application['profile']['avatar'] }}" alt="{{ $application['profile']['fullname'] }}" width="64" height="64" class="ui avatar image"> 
+                            <div class="content">
+                                <div class="header">
                                     <a href="{{ route('view_profile', [ 'user'=>$application['profile']['username'] ]) }}" class="">
-                                    <span class="bold">{{ $application['profile']['fullname']}} {!! identity_check($application['profile']['verified']) !!}
-                                            <small class="text-muted"><em>{{ $application['date'] }}</em></small>
-                                        </span>
+                                    {{ $application['profile']['fullname']}} {!! identity_check($application['profile']['verified']) !!}
                                     </a>
-                                    <span class="budget bold pull-right" style="font-size: 1.2em">
-                                        ₦{{ number_format($application['budget']) }}
-                                    </span>
+                                </div>
+                                <div class="description">
                                     @if($application['profile']['location'])
                                     <p>
-                                        <small><i class="fa fa-map-marker"></i> {{$application['profile']['location']}}</small>
+                                        <small><i class="icon marker"></i> {{$application['profile']['location']}}</small>
                                     </p>
                                     @endif
                                 </div>
-                                @if(count($application['profile']['skills']) > 0)
-                                <div class="skills">
-                                    @foreach ($application['profile']['skills'] as $skill)
-                                        <a href="/search/?term={{ $skill['skill'] }}" class="label label-default">{{ $skill['skill'] }}</a>
-                                    @endforeach
-                                </div>
-                                @endif
-                                
                             </div>
                         </div>
                     @endforeach

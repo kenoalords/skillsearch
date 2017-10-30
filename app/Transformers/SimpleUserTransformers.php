@@ -5,6 +5,7 @@ namespace App\Transformers;
 use App\Models\Profile;
 use App\Models\Portfolio;
 use App\Models\User;
+use App\Models\Phone;
 use App\Models\SkillsRelations;
 use App\Transformers\PortfolioTransformer;
 use League\Fractal\TransformerAbstract;
@@ -17,7 +18,8 @@ class SimpleUserTransformers extends TransformerAbstract
 	public function transform(User $user){
 
 		$profile = Profile::where('user_id', $user->id)->first();
-
+		$phone = Phone::where('user_id', $user->id)->first();
+		// dd($phone);
 		return [
 			'username'	=> $user->name,
 			'first_name'=> $profile->first_name,
@@ -31,6 +33,7 @@ class SimpleUserTransformers extends TransformerAbstract
 			'has_instagram'	=> ($profile->user->instagram()->first()) ? true : false,
 			'followers'	=> $profile->user->getFollowers($user),
 			'following'	=> $profile->user->getFollowing(),
+			'phone'		=> ($phone) ? true : false,
 		];
 	}
 

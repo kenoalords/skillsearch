@@ -11,19 +11,17 @@
             <p>Sorry we could not load this instagram feed, please try again later.</p>
         </div>
 
-        <div v-if="feeds" id="showcase" class="row" style="padding: 0px">
-            <div class="grid">
-                <div class="col-xs-12 col-sm-4 col-md-4 grid-item" :class="{'grid-sizer' : feeds.indexOf(feed) == 0 }" v-for="feed in feeds">
-                    <div class="image-wrapper whiteCard" :class="feed.type" style="margin-bottom:2.3em">
-                        <a :href="feed.link" target="_blank" :data-image="feed.images.standard_resolution.url" v-on:click.prevent="showImage(feed)">
+        <div v-if="feeds" class="ui four column computer grid">
+            <div class="column" v-for="feed in feeds">
+                <div class="ui fluid card">
+                    <div :class="feed.type">
+                        <a :href="feed.link" target="_blank" :data-image="feed.images.standard_resolution.url" v-on:click.prevent="showImage(feed)" class="image">
                             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" :data-src="feed.images.standard_resolution.url" width="320" height="320" :alt="feed.user.full_name" class="img-responsive b-lazy instagram-image">
-                        </a>
-                        <div class="p-content">
-                            <ul class="list-inline" style="font-size: 87.5%">
-                                <li><i class="fa fa-heart"></i> {{feed.likes.count}} </li>
-                                <li><i class="fa fa-comments"></i> {{feed.comments.count}}</li>
-                            </ul>
-                        </div>
+                        </a>                     
+                    </div>
+                    <div class="extra contentt">
+                        <span><i class="fa fa-heart"></i> {{feed.likes.count}}</span>
+                        <span><i class="fa fa-comments"></i> {{feed.comments.count}}</span>
                     </div>
                 </div>
             </div><!-- end of grid -->
@@ -31,8 +29,8 @@
 
         <div id="instagram-overlay" v-if="isOverlay">
             <a id="close-overlay" href="#" class="btn btn-basic text-muted" v-on:click.prevent="closeOverlay()"><i class="fa fa-close"></i></a>
-            <div class="container">
-                <div class="instagram-media col-md-6 col-md-offset-3" v-if="currentlyViewing">
+            <div class="ui left aligned container" style="max-width: 640px !important;">
+                <div class="instagram-media" v-if="currentlyViewing">
                     <div v-if="currentlyViewing.type === 'image'">
                         <img :src="currentlyViewing.images.standard_resolution.url" :alt="currentlyViewing.user.full_name" class="img-responsive">
                     </div>
@@ -42,27 +40,31 @@
                         </video>
                     </div>
                 </div>
-                <div class="instagram-content col-md-6 col-md-offset-3">
-                    <div class="media">
-                        <div class="media-left">
-                            <a :href="'https://instagram.com/' + currentlyViewing.user.username">
-                                <img :src="currentlyViewing.user.profile_picture" :alt="currentlyViewing.user.full_name" width="48" height="48" class="img-circle">
-                            </a>
-                        </div>
-                        <div class="media-body">
-                            <h5 class="media-heading bold">
-                                <a :href="'https://instagram.com/' + currentlyViewing.user.username" target="_blank">
-                                    {{currentlyViewing.user.full_name}}
+                <div class="instagram-content">
+                    <div class="ui unstackable items">
+                        <div class="middle aligned item">
+                            <div class="ui tiny image">
+                                <a :href="'https://instagram.com/' + currentlyViewing.user.username">
+                                    <img :src="currentlyViewing.user.profile_picture" :alt="currentlyViewing.user.full_name" class="img-circle">
                                 </a>
-                            </h5>
-                            <ul class="list-inline bold">
-                                <li><i class="fa fa-heart"></i> {{currentlyViewing.likes.count}} </li>
-                                <li><i class="fa fa-comments"></i> {{currentlyViewing.comments.count}}</li>
-                            </ul>
+                            </div>
+                            <div class="content">
+                                <h5 class="header">
+                                    <a :href="'https://instagram.com/' + currentlyViewing.user.username" target="_blank">
+                                        {{currentlyViewing.user.full_name}}
+                                    </a>
+                                </h5>
+                                <div class="description">
+                                    <div class="ui horizontal list">
+                                        <div class="item"><i class="icon heart"></i> {{currentlyViewing.likes.count}}</div>
+                                        <div class="item"><i class="icon comments"></i> {{currentlyViewing.comments.count}}</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
-                    <hr>
+                    <div class="ui divider"></div>
                     <p v-if="currentlyViewing.caption">
                         {{ currentlyViewing.caption.text }}
                     </p>  

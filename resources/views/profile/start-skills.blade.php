@@ -1,18 +1,17 @@
 @extends('layouts.app')
-
+@section('title', 'Select your skills')
 @section('content')
-<div class="container">
-    <div class="row padded">
-        <div class="col-md-8 col-md-offset-2">
-            <h2 class="text-center">Select your skills</h2>
-            <p class="text-center">
-                You can select a maximum of 5 skills
-            </p>
-            <hr>
+
+<div class="ui container" style="padding-top: 4em">
+    <div class="ui centered six computer column grid">
+        <div class="white-boxed">
+
             <skills></skills>
-            <hr>
+
+            <div class="ui divider"></div>
+
             <div class="clearfix">
-            	<a href="/home" class="btn btn-primary pull-right">Continue <i class="glyphicon glyphicon-arrow-right"></i></a>
+                <a href="/home" class="ui fluid primary button">Continue <i class="icon arrow right"></i></a>
             </div>
         </div>
     </div>

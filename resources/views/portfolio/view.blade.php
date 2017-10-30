@@ -7,162 +7,214 @@
 
 @section('content')
 
-<div id="portfolio-summary">
-    <div class="container">
-        <div class="col-md-10 col-md-offset-1">
-            <div class="media">
-                <div class="media-left">
-                    <img src="{{$portfolio['thumbnail']}}" data-src="" alt="{{ $portfolio['title'] }}" class="img-circle media-object" width="48" height="48">
+<div id="" style="margin-top: 3.4em;">
+    <div class="ui">
+        <div class="ui padded grid row" id="sidebar">
+            <div class="sixteen wide mobile only column" style="background: #f9f9f9; box-shadow: 0 1px 6px rgba(2,2,2,.1); border-bottom: 1px solid #ddd;">
+                <div style="margin: 1em 0;">
+                    <img src="{{$portfolio['user_profile']['avatar']}}" alt="{{$portfolio['user_profile']['fullname']}}" class="ui avatar image"> <a href="/{{$portfolio['user']}}" class="bold">{{$portfolio['user_profile']['fullname']}}</a>
                 </div>
-                <div class="media-body">
-                    <div class="pull-left">
-                        <h4 class="bold" style="margin: 0px">{{ ucwords(strtolower($portfolio['title'])) }}</h4>
-                        <p style="margin: 0px; line-height: 1"><small>by <a href="/{{$portfolio['user']}}" class="bold">
-                            {{$portfolio['user_profile']['fullname']}}
-                        </a></small></p>
-                    </div>
-                    <div class="pull-right hidden-sm hidden-xs">
-                        <like-button id="{{$portfolio['uid']}}"></like-button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="portfolio-header">
-    <div class="container">
-        <div class="col-md-10 col-md-offset-1">
-            <div class="col-sm-4">
-                <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=" data-src="{{$portfolio['thumbnail']}}" alt="{{ $portfolio['title'] }}" class="img-responsive b-lazy whiteCard padding-1">
-            </div>
-            <div class="col-sm-8">
-                <a href="/{{$portfolio['user']}}" class="bold">
-                    <h5 class="bold">
-                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="{{$portfolio['user_profile']['avatar']}}" alt="{{$portfolio['user_profile']['fullname']}}" class="img-circle b-lazy user-avatar" width="24" height="24">
-                         {{$portfolio['user_profile']['fullname']}}
-                    </h5>
-                </a>
-                <h1 class="bold">{{ ucwords(strtolower($portfolio['title'])) }}</h1>                       
+                <img src="{{$portfolio['thumbnail']}}" alt="{{$portfolio['title']}}" class="ui fluid image">
+                <h1 class="ui header">{{ ucwords(strtolower($portfolio['title'])) }}</h1> 
+                                    
                 <p>{{$portfolio['description']}}</p>
-                <ul class="list-inline" style="font-weight: 600; font-size: 12px; margin-top: 1em;">
-                    <li><i class="glyphicon glyphicon-eye-open"></i> {{ $portfolio['views'] }} {{ str_plural('View', $portfolio['views'])}}</li>
-                    <li> {{ $portfolio['date'] }}</li>
+                <div class="ui mini divided grey horizontal list bold">
+                    <div class="item"><i class="icon eye"></i> {{ $portfolio['views'] }}</div>
+                    <div class="item"><i class="icon calendar"></i>{{ $portfolio['date'] }}</div>
                     @if($portfolio['url'])
-                        <li><a href="{{route('external_link', ['url'=>$portfolio['url']])}}" target="_blank" class="bold">Link <i class="glyphicon glyphicon-new-window"></i></a></li>
+                        <div class="item"><a href="{{route('external_link', ['url'=>$portfolio['url']])}}" target="_blank" class="bold">External Link <i class="icon sign out"></i></a></div>
                     @endif
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
-<div  class="container" id="portfolio-body">
-    <div class="row padded" style="margin-top: 3em">                
-        <div class="col-md-10 col-md-offset-1">
-            
-            @if($portfolio['is_public'] === 0 )
-            <div class="alert alert-info">
-                <i class="glyphicon glyphicon-eye-close"></i>
-                <span>This portfolio is currently set to <strong>Private</strong></span>
-            </div>
-            @endif
+                </div>
+                @if($portfolio['skills'])
+                    <p>{!! skill_links($portfolio['skills']) !!}</p> 
+                @endif
 
-            @if($portfolio['is_public'] === 1 || (Auth::user() && Auth::user()->id === $portfolio['user_id']))
-            
-            @if($portfolio['type'] === 'images')
+            </div>
+            <div class="sixteen wide mobile twelve wide tablet twelve wide computer column" style="background: #fff;box-shadow: 0 1px 16px rgba(2,2,2,.1); position: relative; z-index: 9; border-right: 1px solid #ddd">
+                @if($portfolio['is_public'] === 0 )
+                <div class="ui warning mini icon message" style="margin-bottom: 2.5em">
+                    <i class="icon lock"></i>
+                    <div class="content">
+                        <div class="header">This portfolio is currently set to <strong>Private</strong></div>
+                    </div>
+                </div>
+                @endif
+
+                @if($portfolio['is_public'] === 1 || (Auth::user() && Auth::user()->id === $portfolio['user_id']))
                 
-                @foreach ($files as $file)
-                    <div class="portfolio-image-wrapper">
-                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=" data-src="{{asset($file->getFile())}}" alt="{{ $portfolio['title'] }} Image" class="img-responsive whiteCard padding-1 b-lazy">
+                @if($portfolio['type'] === 'images')
+                    
+                    @foreach ($files as $file)
+                        <div class="portfolio-image-wrapper" style="margin: -1rem -1rem 2em">
+                            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=" data-src="{{asset($file->getFile())}}" alt="{{ $portfolio['title'] }} Image" class="ui fluid image b-lazy">
+                        </div>
+                    @endforeach
+
+                @endif
+
+                @if($portfolio['type'] === 'audio')
+                    @foreach ($files as $file)
+                        <!-- <div class="">
+                            <div id="audio" data-src="{{asset($file->getFile())}}"></div>
+                            <hr>
+                            <a href="#" class="media-buttons" id="play-audio"><i class="fa fa-play"></i></a>
+                            <a href="#" class="media-buttons" id="stop-audio"><i class="fa fa-stop"></i></a>
+                        </div> -->
+                        <div id="jquery_jplayer_1" class="jp-jplayer" data-src="{{asset($file->getFile())}}" data-title="{{$portfolio['title']}}"></div>
+                        <div id="jp_audio_wrapper" class="">
+                            <div id="jp_container_1" class="jp-audio" role="application" aria-label="media player">
+                          <div class="jp-type-single" style="text-align: center">
+                            <div class="jp-gui jp-interface">
+                              <div class="jp-volume-controls">
+                                
+                                
+                                <div class="jp-volume-bar">
+                                  <div class="jp-volume-bar-value"></div>
+                                </div>
+                              </div>
+                              <div class="jp-controls-holder" style="margin-top: 2em;">
+                                <div class="jp-controls ui middle aligned column">
+                                    <span class="jp-mute ui basic icon circular mini button" role="button" tabindex="0"><i class="icon mute"></i></span>
+                                    <button class="jp-play ui icon circular huge green basic button" role="button" tabindex="0"><i class="icon play"></i></button>
+                                    <button class="jp-stop ui icon circular red basic button" role="button" tabindex="0"><i class="icon stop"></i></button>
+                                    <span class="jp-volume-max ui basic icon circular mini button" role="button" tabindex="0"><i class="icon volume up"></i></span>
+                                </div>
+                                <div class="jp-progress">
+                                  <div class="jp-seek-bar">
+                                    <div class="jp-play-bar"></div>
+                                  </div>
+                                </div>
+                                <div class="ui">
+                                    <div class="jp-current-time ui large grey header" role="timer" aria-label="time" style="margin-top: 1em; margin-bottom: 0">&nbsp;</div>
+                                    <div class="jp-duration ui red sub header" role="timer" aria-label="duration" style="margin-top: 0;">&nbsp;</div>
+                                </div>
+                                <div class="jp-toggles" style="display: none;">
+                                  <button class="jp-repeat" role="button" tabindex="0">repeat</button>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="jp-details">
+                              <div class="jp-title" aria-label="title">&nbsp;</div>
+                            </div>
+                            <div class="jp-no-solution">
+                              <span>Update Required</span>
+                              To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
+                            </div>
+                          </div>
+                        </div>
+                        </div>
+                    @endforeach
+                @endif
+
+                @if($portfolio['type'] === 'video')
+                    @foreach ($files as $file)
+                        <video-player video-url="{{$file->getFile()}}"></video-player>
+                    @endforeach
+                @endif
+                
+                
+                <div class="ui centered one column grid padded" >
+                    <div class="column center aligned">
+                        <h3 class="ui header">Appreciate this work!</h3>
                     </div>
-                @endforeach
+                    <like-button id="{{$portfolio['uid']}}"></like-button>
+                </div>
+                <div class="white-boxed" style="margin: 3em -1rem -1rem; background: rgba(247,247,247,1); border-top: 1px solid #ddd; border-bottom: 1px solid #ddd">
+                    <div class="ui unstackable items" style="margin: 1em 0 2em">
+                        <div class="item">
+                            <div class="ui tiny image">
+                                <a href="/{{$portfolio['user']}}">
+                                    <img src="{{$portfolio['user_profile']['avatar']}}" alt="{{$portfolio['user_profile']['fullname']}}" class="avatar">
+                                </a>
+                            </div>
+                            <div class="content">
+                                <h3 class="ui header">
+                                    <a href="/{{$portfolio['user']}}" class="bold">{{$portfolio['user_profile']['fullname']}}</a>
+                                    <div class="sub header"><i class="icon marker"></i>{{$portfolio['user_profile']['location']}}</div>
+                                </h3>
+                                <p>{{$portfolio['user_profile']['bio']}}</p>
 
-            @endif
+                                <div class="ui horizontal list">
+                                    
+                                    @if(Auth::user() && Auth::user()->id !== $portfolio['user_id'])
+                                        <div class="item"><a href="{{ route('contact_request', ['user' => $portfolio['user']] )}}" class="ui icon labeled mini green button"><i class="icon mail"></i>Request Contact</a></div>
+                                    @endif
 
-            @if($portfolio['type'] === 'audio')
-                @foreach ($files as $file)
-                    <div class="whiteCard">
-                        <!-- <audio controls preload>
-                            <source src=""></audio>
-                        </audio> -->
-                        <div id="audio" data-src="{{asset($file->getFile())}}"></div>
-                        <hr>
-                        <a href="#" class="media-buttons" id="play-audio"><i class="fa fa-play"></i></a>
-                        <a href="#" class="media-buttons" id="stop-audio"><i class="fa fa-stop"></i></a>
+                                    @if(!Auth::user())
+                                        <div class="item"><a href="{{ route('contact_request', ['user' => $portfolio['user']] )}}" class="ui icon labeled mini green button"><i class="icon phone"></i>Request Contact</a></div>
+                                    @endif    
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                @endforeach
-            @endif
+                    
+                </div>
+                <div class="">
+                    @if(count($others))
+                        <div style="margin: 3em 0">
+                            <h3 class="ui header">More From {{$portfolio['user_profile']['fullname']}}</h3>
+                            <div class="ui grid">    
+                                @each('includes.portfolio-with-user', $others, 'portfolio')
+                            </div>
+                        </div>
+                    @endif
+                </div>
 
-            @if($portfolio['type'] === 'video')
-                @foreach ($files as $file)
-                    <video-player video-url="{{$file->getFile()}}"></video-player>
-                @endforeach
-            @endif
-            @if($portfolio['skills'])
-            <p class="text-muted">Tags: {!! skill_links($portfolio['skills']) !!}</p>
-            @endif
-            <ul class="list-inline clearfix hidden-md hidden-lg">
-                <li><like-button id="{{$portfolio['uid']}}"></like-button></li>
-            </ul>
-            <hr>
-            <div class="" style="margin-bottom: 2em">
-                <div class="media">
-                    <div class="media-left">
-                        <a href="/{{$portfolio['user']}}">
-                            <img src="{{$portfolio['user_profile']['avatar']}}" alt="{{$portfolio['user_profile']['fullname']}}" class="img-circle" width="48" height="48">
-                        </a>
-                    </div>
-                    <div class="media-body">
-                        <h4 style="margin: 0"><span class="thin text-muted"><em>by</em> </span> <a href="/{{$portfolio['user']}}" class="bold">{{$portfolio['user_profile']['fullname']}}</a></h4>
-                        <span class="text-muted"><i class="fa fa-map-marker"></i> {{$portfolio['user_profile']['location']}}</span>
-                        <p>{{$portfolio['user_profile']['bio']}}</p>
-
-                        <ul class="list-inline">
-                            @if(Auth::user() && Auth::user()->id !== $portfolio['user_id'])
-                                <li><a href="{{ route('hire', ['user' => $portfolio['user']] )}}" class="btn btn-success btn-xs" style="padding: 4px 20px"><i class="fa fa-envelope"></i> Contact Me</a></li>
-                            @endif
-
+                <div class="ui divider"></div>
+                
+                <div class="ui centered grid">
+                    <div class="sixteen wide mobile twelve wide tablet ten wide computer column">
+                        <div class="">
                             @if(!Auth::user())
-                                <li><a href="{{ route('hire', ['user' => $portfolio['user']] )}}" class="btn btn-success btn-xs" style="padding: 4px 20px"><i class="fa fa-envelope"></i> Contact Me</a></li>
+                                <h3 class="ui header">You must be <a href="/login" class="">logged in</a> to post a comment</h3>
+                                @endif
+
+                                <portfolio-comments uid="{{ $portfolio['uid'] }}" avatar="{{ $avatar }}"></portfolio-comments>
                             @endif
-                            <li><follow username="{{$portfolio['user']}}"></follow></li>
-                            <!-- <li><span>{{ $portfolio['user_profile']['following'] }} Following</span></li>
-                            <li><span>{{ $portfolio['user_profile']['followers'] }} {{ $portfolio['user_profile']['followers'] > 1 ? 'Follwers' : 'Follower' }}</span></li> -->
-                        </ul>
+                        </div>
                     </div>
+                </div>
+
+                <div class="ui grid">
+                    @if(count($similar) > 0)
+                        <div class="column">
+                            <h3 class="ui header">Similar Works</h3>
+                            <div class="ui grid">
+                                @each('includes.portfolio-with-user', $similar, 'portfolio')
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
-            <hr>
-            <div style="margin-bottom: 2em">@include('includes.share.portfolio', ['url'=>Request::url()])</div>
-            
-            @if(count($others))
-                <div style="margin: 3em 0">
-                    <h4 class="bold">More From {{$portfolio['user_profile']['fullname']}}</h4>
-                    <div class="row">    
-
-                        @each('includes.portfolio-others', $others, 'portfolio')
+            <div  class="four wide tablet only four wide computer only fixed column" style="background: #f9f9f9; box-shadow: 0 1px 6px rgba(2,2,2,.1); border-bottom: 1px solid #ddd;">
+                <div class="ui sticky">
+                    <div style="margin-bottom: 1em;">
+                        <img src="{{$portfolio['user_profile']['avatar']}}" alt="{{$portfolio['user_profile']['fullname']}}" class="ui avatar image"> <a href="/{{$portfolio['user']}}" class="bold">{{$portfolio['user_profile']['fullname']}}</a>
+                        <follow username="{{$portfolio['user']}}" class="right floated"></follow>
                     </div>
+                    <img src="{{$portfolio['thumbnail']}}" class="ui fluid image">
+                    <h1 class="ui medium header">{{ ucwords(strtolower($portfolio['title'])) }}</h1> 
+                                        
+                    <p>{{$portfolio['description']}}</p>
+                    <div class="ui mini divided grey horizontal list bold">
+                        <div class="item"><i class="icon eye"></i> {{ $portfolio['views'] }}</div>
+                        <div class="item"><i class="icon calendar"></i>{{ $portfolio['date'] }}</div>
+                        @if($portfolio['url'])
+                            <div class="item"><a href="{{route('external_link', ['url'=>$portfolio['url']])}}" target="_blank" class="bold">External Link <i class="icon sign out"></i></a></div>
+                        @endif
+                    </div>
+                    @if($portfolio['skills'])
+                        <p>{!! skill_links($portfolio['skills']) !!}</p> 
+                    @endif
+                    <div class="ui divider" style="visibility: hidden;"></div>
                 </div>
-            @endif
-                        
-            @if(!Auth::user())
-            <a href="/login" class="btn btn-primary">Login or Register</a> to comment or like
-            @endif
-
-            <portfolio-comments uid="{{ $portfolio['uid'] }}" avatar="{{ $avatar }}"></portfolio-comments>
-            @endif
-
-            
-            @if(count($similar) > 0)
-                <h3 class="bold" style="margin-top: 3em;">Similar Works</h3>
-                <div class="row">
-                    @each('includes.portfolio-others', $similar, 'portfolio')
-                </div>
-            @endif
+            </div>
         </div>
+        
+        
     </div>
-
-    
 </div>
+@include('includes.signup-teaser')
+@include('includes.skills')
 <register-view uid="{{$portfolio['uid']}}"></register-view>
 @endsection

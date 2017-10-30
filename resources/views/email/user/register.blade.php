@@ -3,7 +3,7 @@
 
 Happy to have you on board! 
 
-Skillsearch Nigeria will enable you to quickly build up powerful online portfolio and help you earn more recognition for your skills and ultimately, make more money.
+{{config('app.name')}} will enable you to quickly build up powerful online portfolio and help you earn more recognition for your skills and ultimately, make more money.
 
 ## So what's next?
 

@@ -7,30 +7,26 @@
 
 @section('content')
  
-<div class="container padded">
-        <div class="text-center">
-            <h1><span class="bold">Discover Talents</span> <span class="thin"> in Nigeria</span></h1>   
-    		<p>Find the right people for the Job.</p>
+<div class="ui row padded">
+        <div class="ui centered grid" style="margin: 2em 0 1em">
+            <h1 class="ui header">
+                Search People
+                <div class="sub header">Find the right people for your job.</div>
+            </h1>   
+    		<!-- <p>Find the right people for the Job.</p> -->
         </div>
         @include('search-form')
-        <hr>
+        <div class="padded">
+            <div class="ui divider"></div>
+        </div>
         @if ( count($profiles) )
-            <div class="row">
+            <div class="">
                 @each('profile.person-tag', $profiles, 'profile')
             </div>
         @endif
 </div>
-@if($skills->count())
-<div id="categories">
-    <div class="container padded">
-        <h4 class="bold">Browse Top Skills</h4>
-        <hr>
-        @foreach($skills as $skill)
-        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
-            <a href="/search?term={{ urlencode($skill->skill) }}"> {{ $skill->skill }} </a>
-        </div>
-        @endforeach
-    </div>
-</div>
-@endif
+@include('includes.signup-teaser')
+
+@include('includes.skills')
+
 @endsection

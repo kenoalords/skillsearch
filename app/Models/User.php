@@ -74,6 +74,16 @@ class User extends Authenticatable
         return $this->hasOne(Profile::class);
     }
 
+    public function referralCode()
+    {
+        return $this->hasOne(ReferralCode::class);
+    }
+
+    public function referral()
+    {
+        return $this->hasOne(Referrals::class);
+    }
+
     // Setup relationship with verify table
     public function verifyUser()
     {
@@ -82,6 +92,11 @@ class User extends Authenticatable
 
     public function skills(){
         return $this->morphMany('App\Models\SkillsRelations', 'skills');
+    }
+
+    public function contactRequest()
+    {
+        return $this->hasMany(ContactRequest::class);
     }
 
     public function portfolio(){

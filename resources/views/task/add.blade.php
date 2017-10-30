@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 @section('title', 'Submit Job')
 @section('content')
 @if($user['verified'] === false)

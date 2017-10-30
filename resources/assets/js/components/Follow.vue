@@ -6,8 +6,8 @@
             
         </ul> -->
         <span v-if="!is_self">
-            <a href="#" v-bind:class="{'label label-sm label-basic': can_follow, 'label label-sm label-primary' : !can_follow}" class="btn btn-block" v-on:click.prevent="handle">
-                <i class="glyphicon " v-bind:class="{'glyphicon-user': can_follow, 'glyphicon-ok' : !can_follow}"></i>
+            <a href="#" v-bind:class="{'basic': can_follow, 'blue' : !can_follow}" class="ui mini icon labeled button" v-on:click.prevent="handle">
+                <i class="icon user"></i>
                 {{ can_follow ? 'Follow' : 'Following' }}
             </a>
         </span>

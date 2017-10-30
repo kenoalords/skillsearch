@@ -1,58 +1,49 @@
 <template> 
 
-<div class="container">
-    <div class="col-md-8 col-md-offset-2">
-    <div class="clearfix">
-        <h3 class="pull-left bold" style="margin-top:0">Add Portfolio Item</h3>
-        <a href="/home" class="btn btn-basic pull-right bold text-muted"><i class="fa fa-arrow-left"></i> Back</a>
-    </div>
-    <hr>
+<div class="ui form">
+    <h2 class="ui header">Add Portfolio</h2>
+    <div class="ui divider"></div>
     <div class="row">
-        <div>
-            <h4 class="text-center bold">Upload Cover Image</h4>
+        <div class="field">
+            <h3 class="ui header">Upload Cover Image</h3>
             <label class="thumbnail-image" v-bind:class="{ saving : savingThumbnail }">
-                <input type="file" id="thumbnailImage" class="hidden" v-on:change="uploadThumbnail()" :disabled="savingThumbnail">
-                <img v-bind:src="thumbnail" v-if="thumbnail" class="img-responsive" id="thumbnail">
+                <input type="file" id="thumbnailImage" style="display: none" v-on:change="uploadThumbnail()" :disabled="savingThumbnail">
+                <img v-bind:src="thumbnail" v-if="thumbnail" class="ui fluid image" id="thumbnail">
             </label>
-            <p class="text-center"><small>Tip: select the best image to use as a thumbnail</small></p>
+            <p>Tip: select the best image to use as a thumbnail</p>
         </div>
         <div>
-            <div class="form-wrapper whiteCard">
-                <div class="form-group">
-                    <label>Title</label>
-                    <input type="text" class="form-control" v-model="title" placeholder="Portfolio title">
-                </div>
-                <div class="form-group">
-                    <label>Description (Optional)</label>
-                    <textarea class="form-control" rows="3" v-model="description" placeholder="Description"></textarea>
-                </div>
-                <div class="form-group" v-if="userSkills">
-                    <label>What skill/skills is this portfolio item associated with?</label><br>
-                    <label v-for="skill in userSkills" style="margin-right:1em;" class="thin">
-                        <input type="checkbox" v-model="portfolioSkills" v-bind:value="skill.skill"> {{ skill.skill }}
-                    </label>
+            <div class="field">
+                <h4 class="ui header">Title</h4>
+                <input type="text" v-model="title" placeholder="Portfolio title">
+            </div>
+            <div class="field">
+                <h4 class="ui header">Description (Optional)</h4>
+                <textarea rows="3" v-model="description" placeholder="Description"></textarea>
+            </div>
+
+            <h4 class="ui header">What skill/skills is this portfolio item associated with?</h4>
+            <div class="inline fields" v-if="userSkills">
+                <div class="field" v-for="skill in userSkills">
+                    <div class="ui checkbox">
+                        <label>{{ skill.skill }}</label>
+                        <input name="skill" type="checkbox" v-model="portfolioSkills" v-bind:value="skill.skill">
+                    </div>
                 </div>
             </div>
-            <hr>
-            <div class="form-wrapper whiteCard">
-                
-                <label>Portfolio type</label>
 
-                <div class="row">
-                    <div class="col-xs-12 col-sm-4">
-                        <label class="btn btn-default btn-block">
-                            <input type="radio" v-model="type" value="images" :disabled="uploadedImages.length > 0 ? true : false"> Images
-                        </label>
+            <div class="field">
+                <h4 class="ui header">Portfolio type</h4>
+                <div class="fields">
+                    <div class="field">
+                        <label><input type="radio" v-model="type" value="images" :disabled="uploadedImages.length > 0 ? true : false"> Images</label>
                     </div>
-                    <div class="col-xs-12 col-sm-4">
-                        <label class=" btn btn-default btn-block">
-                            <input type="radio" v-model="type" value="video" :disabled="uploadedImages.length > 0 ? true : false"> Video
-                        </label>
+                    <div class="field">
+                        <label><input type="radio" v-model="type" value="video" :disabled="uploadedImages.length > 0 ? true : false">
+                            Video</label>
                     </div>
-                    <div class="col-xs-12 col-sm-4">
-                        <label class=" btn btn-default btn-block">
-                            <input type="radio" v-model="type" value="audio" :disabled="uploadedImages.length > 0 ? true : false"> Audio
-                        </label>
+                    <div class="field">
+                        <label><input type="radio" v-model="type" value="audio" :disabled="uploadedImages.length > 0 ? true : false"> Audio</label>
                     </div>
                 </div>
             </div>
@@ -60,124 +51,131 @@
             <div class="alert alert-danger" role="alert" v-if="formErrors" v-for="error in formErrors">
                 {{error[0]}}
             </div>
-
-            <div class="form-wrapper whiteCard" v-if="type == 'images'">
-                <h4 class="bold">Upload Images</h4>
-                <p>You can upload up to 10 images. <span class="text-warning"><em>** Supported file formats are JPEG, JPG, PNG and GIF's</em></span></p>
-                <div class="" v-if="type == 'images'">
-                    <div class="progress" v-if="isUploading && !uploadingComplete">
-                        <div class="progress-bar" role="progressbar" v-bind:style="{ width: progress + '%'}"></div>
-                    </div>
-                    <label class="btn btn-primary btn-block" v-if="uploadedImages.length < 10 && !isUploading">
-                        <i class="glyphicon glyphicon-plus"></i> Select image
-                        <input type="file" id="fileUpload" style="display:none" v-on:change="uploadImage">
-                    </label>
-                    <p class="bold"><small>{{ uploadedImages.length }} out of 10 Images</small></p>
-                    <div class="list-group" v-if="uploadedImages" style="margin-top:2em">
-                        <div class="list-group-item" v-for="image in uploadedImages">
-                            <img v-bind:src=" image.link " style="width:auto; height: 70px;">
-                            <div class="pull-right">
-                                <a href="#" class="btn btn-basic" v-on:click.prevent="deleteFile(image)">
-                                    <i class="glyphicon glyphicon-trash"></i>
-                                </a>
-                            </div>
+            
+            <div class="field">
+                <div class="" v-if="type == 'images'" class="white-boxed bordered">
+                    <div class="ui info icon message">
+                        <i class="icon image"></i>
+                        <div class="content">
+                            <h4 class="header">Upload Images</h4>
+                            You can upload up to 10 images. ** Supported file formats are JPEG, JPG, PNG and GIF's
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <div class="form-wrapper whiteCard" v-if="type == 'audio'">
-                <h4 class="bold">Upload Audio</h4>
-                <p>You can upload 1 audio file. <span class="text-warning"><em>** Supported file format is MP3</em></span></p>
-                <div class="" v-if="type == 'audio'">
-                    <div class="progress" v-if="isUploading && !uploadingComplete">
-                        <div class="progress-bar" role="progressbar" v-bind:style="{ width: progress + '%'}"></div>
-                    </div>
-                    <label class="btn btn-primary btn-block" v-if="uploadedImages.length == 0 && !isUploading">
-                        <i class="glyphicon glyphicon-music"></i> Select Audio
-                        <input type="file" id="fileUpload" style="display:none" v-on:change="uploadImage">
-                    </label>
-                    <div class="list-group" v-if="uploadedImages" style="margin-top:2em">
-                        <div class="list-group-item" v-for="audio in uploadedImages">
-                            <audio controls preload="auto">
-                                <source type="audio/mp3" v-bind:src="audio.link"></source>
-                            </audio>
-                            <div class="pull-right">
-                                <a href="#" v-on:click.prevent="deleteFile(audio)">
-                                    <i class="glyphicon glyphicon-trash"></i> Delete
-                                </a>
-                            </div>
+                    <div class="" v-if="type == 'images'">
+                        <div class="progress" v-if="isUploading && !uploadingComplete">
+                            <div class="progress-bar" role="progressbar" v-bind:style="{ width: progress + '%'}"></div>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-wrapper whiteCard" v-if="type == 'video'">
-                <h4 class="bold">Upload Video</h4>
-                <p>You can upload 1 video file per portfolio item. <span class="text-warning"><em>** Supported file formats are MP4 &amp; MPEG</em></span></p>
-                <div class="" v-if="type == 'video'">
-                    <div class="progress" v-if="isUploading && !uploadingComplete">
-                        <div class="progress-bar" role="progressbar" v-bind:style="{ width: progress + '%'}"></div>
-                    </div>
-                    <label class="btn btn-primary btn-block" v-if="uploadedImages.length == 0 && !isUploading">
-                        <i class="glyphicon glyphicon-facetime-video"></i> Upload video
-                        <input type="file" id="fileUpload" style="display:none" v-on:change="uploadImage">
-                    </label>
-                    <div v-if="uploadedImages.length == 1">
-                        <p>You can change the video by deleting the currently uploaded video and uploading a new video</p>
-                    </div>
-                    <div class="list-group" v-if="uploadedImages" style="margin-top:2em">
-                        <div class="list-group-item" v-for="video in uploadedImages">
-                            <div class="embed-responsive embed-responsive-16by9">
-                            <video id="video">
-                                <source type="video/mp4" v-bind:src="video.link"></source>
-                            </video>
-                            </div>
-                            <hr>
-                            <div class="">
-                                <a href="#" v-on:click.prevent="deleteFile(video)" class="btn btn-danger btn-block">
-                                    <i class="glyphicon glyphicon-trash"></i> Delete
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div  class="form-wrapper whiteCard">
-                <div class="">
-                    <div class="row">                        
-                        <div class="col-sm-6">
-                            <label for="url">Portfolio link <span class="text-muted">(optional)</span></label>
-                            <input type="url" v-model="portfolioUrl" class="form-control" placeholder="http://example.com">
-                            <small>Enter an external url this portfolio links to</small>
-                        </div>
-                        <div class="col-sm-6">
-                            <label for="url">Completion date <span class="text-muted">(optional)</span></label>
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                                <input type="date" v-model="portfolioDate" class="form-control">
-                            </div>
-                            <small>Enter portfolio completion date</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-wrapper">
-                <div class="">
-                    <div>
-                        <label>
-                            <input type="checkbox" v-model="isPublic" value="1"> &nbsp; Make My Portfolio Public
+                        
+                        <label class="ui icon labeled green button" v-if="uploadedImages.length < 10 && !isUploading">
+                            <i class="icon download"></i> Select image
+                            <input type="file" id="fileUpload" style="display:none" v-on:change="uploadImage">
                         </label>
+                        <p><small>{{ uploadedImages.length }} out of 10 Images</small></p>
+                        <div class="ui middle aligned divided list" v-if="uploadedImages" style="margin-top:2em">
+                            <div class="item" v-for="image in uploadedImages">
+                                <img v-bind:src=" image.link " style="width:auto; height: 70px;">
+                                <div class="right floated content">
+                                    <a href="#" class="ui icon circular mini button" v-on:click.prevent="deleteFile(image)">
+                                        <i class="icon delete"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <hr>
-                    <div>
-                        <button class="btn btn-primary" v-on:click.prevent="savePortfolio" :disabled="!canSave">Save Portfolio</button>
-                        <span class="text-muted">{{ statusText }}</span>
+                </div>
+
+                <div class="" v-if="type == 'audio'" class="white-boxed bordered">
+                    <div class="ui info icon message">
+                        <i class="icon music"></i>
+                        <div class="content">
+                            <h4 class="header">Upload Audio</h4>
+                            You can upload 1 audio file in <strong>.MP3</strong> format
+                        </div>
+                    </div>
+                    
+                    <div class="" v-if="type == 'audio'">
+                        <div class="progress" v-if="isUploading && !uploadingComplete">
+                            <div class="progress-bar" role="progressbar" v-bind:style="{ width: progress + '%'}"></div>
+                        </div>
+                        <label class="ui teal icon labeled button" v-if="uploadedImages.length == 0 && !isUploading">
+                            <i class="icon music"></i> Select Audio
+                            <input type="file" id="fileUpload" style="display:none" v-on:change="uploadImage">
+                        </label>
+                        <div class="list-group" v-if="uploadedImages" style="margin-top:2em">
+                            <div class="list-group-item" v-for="audio in uploadedImages">
+                                <audio controls preload="auto">
+                                    <source type="audio/mp3" v-bind:src="audio.link"></source>
+                                </audio>
+                                <div class="pull-right">
+                                    <a href="#" v-on:click.prevent="deleteFile(audio)">
+                                        <i class="glyphicon glyphicon-trash"></i> Delete
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="" v-if="type == 'video'" class="white-boxed bordered">
+                    <div class="ui info icon message">
+                        <i class="icon video"></i>
+                        <div class="content">
+                            <h4 class="header">Upload Video</h4>
+                            You can upload 1 video file per portfolio item in <strong>.MP4 &amp; .MPEG</strong> format.
+                        </div>
+                    </div>                
+                    <div class="" v-if="type == 'video'">
+                        <div class="progress" v-if="isUploading && !uploadingComplete">
+                            <div class="progress-bar" role="progressbar" v-bind:style="{ width: progress + '%'}"></div>
+                        </div>
+                        <label class="ui icon labeled red button" v-if="uploadedImages.length == 0 && !isUploading">
+                            <i class="icon upload"></i> Upload video
+                            <input type="file" id="fileUpload" style="display:none" v-on:change="uploadImage">
+                        </label>
+                        <div v-if="uploadedImages.length == 1">
+                            <p>You can change the video by deleting the currently uploaded video and uploading a new video</p>
+                        </div>
+                        <div class="list-group" v-if="uploadedImages" style="margin-top:2em">
+                            <div class="list-group-item" v-for="video in uploadedImages">
+                                <div class="embed-responsive embed-responsive-16by9">
+                                <video id="video">
+                                    <source type="video/mp4" v-bind:src="video.link"></source>
+                                </video>
+                                </div>
+                                <hr>
+                                <div class="">
+                                    <a href="#" v-on:click.prevent="deleteFile(video)" class="btn btn-danger btn-block">
+                                        <i class="glyphicon glyphicon-trash"></i> Delete
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+            <div  class="two fields">
+                <div class="field">
+                    <h4 class="ui header">Portfolio link <span class="text-muted">(optional)</span></h4>
+                    <input type="url" v-model="portfolioUrl" placeholder="http://example.com">
+                    <small>Enter an external url this portfolio links to</small>
+                </div>
+                <!-- <div class="field">
+                    <h4 class="ui header">Completion date <span class="text-muted">(optional)</span></h4>
+                    <div class="ui input labeled">
+                        <span class="ui label">MM/DD/YYY</span>
+                        <input type="date" v-model="portfolioDate">
+                    </div>
+                </div> -->
+            </div>
+            
+            <div class="field">
+                <div class="ui checkbox">
+                    <input type="checkbox" v-model="isPublic" value="1">
+                    <label>Make My Portfolio Public</label>
+                </div>
+            </div>
+            <button class="ui primary button" v-on:click.prevent="savePortfolio" :disabled="!canSave">Submit</button>
+            <span class="text-muted">{{ statusText }}</span>
         </div>
     </div>
 </div>
@@ -213,6 +211,7 @@
                 isNew: false,
                 player: null,
                 formErrors : null,
+                progressEl: document.getElementById('#progress'),
             }
         },
         props: {
@@ -315,7 +314,7 @@
                 if(!file){
                     return false;
                 }
-                
+
                 if( _this.type === 'images' && images.indexOf(file.type) === -1 ){
                     alert('Please select an image file');
                     return false;
@@ -376,6 +375,7 @@
                         form.append('file', file);
                         form.append('uid', _this.uid);
                         form.append('type', _this.type);
+
                     axios({
                         method: 'post',
                         url: '/profile/portfolio/add',
@@ -417,6 +417,7 @@
             },
         },
         mounted() {
+            // this.progressEl.progress();
 
         }
     }

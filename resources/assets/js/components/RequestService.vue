@@ -1,32 +1,33 @@
 <template>
-    <div id="service-request" class="padded">
+    <div id="service-request" class="ui left aligned column">
         <div class="alert alert-success" role="alert" v-if="status" v-html="status"></div>
         <div class="alert alert-danger" role="alert" v-if="formErrors" v-for="error in formErrors">
             {{error[0]}}
         </div>
-        <div>
-            <h2><span class="bold">Contact {{firstName}}</span> <span class="thin"> | Request any of {{firstName}}'s services</span></h2>
-            <p class="text-info"><i class="glyphicon glyphicon-info-sign"></i> All fields are required</p>
-            <hr>
-            <div>
-                <div class="form-group">
-                    <p>Select the service you will like to inquire about? <span class="text-muted"></span></p>
-                    <label v-if="userServices" v-for="service in userServices">
-                        <input type="checkbox" v-bind:value="service.skill" v-model="services"> {{ service.skill }}
-                    </label>
-                </div>
-
-                <div class="form-group">
+        <h2 class="ui top attached header">
+            <img :src="avatar" class="ui medium circular image"> Contact {{firstName}}
+        </h2>
+        <div class="white-boxed">
+            <div class="ui form">
+                <div class="field">
                     <input type="text" v-model="subject" class="form-control" placeholder="Subject">
                 </div>
 
-                <div class="form-group">
+                <div class="field">
                     <textarea v-model="body" class="form-control" placeholder="Make your request" rows="3"></textarea>
                 </div>
 
-                <div class="form-group clearfix">
-                    <button id="submitRequest" class="btn btn-primary pull-left" v-on:click.prevent="submitRequest" :disabled="isSubmitting">Send Message</button>
-                    <a :href="'/' + username" class="btn btn-basic pull-right">Back to profile</a>
+                <p>Select the service you will like to inquire about? <span class="text-muted"></span></p>
+                <div class="field" v-if="userServices" v-for="service in userServices">
+                    <div class="ui checkbox">
+                        <input type="checkbox" v-bind:value="service.skill" v-model="services" class="hidden">
+                        <label>{{ service.skill }}</label>
+                    </div>
+                </div>
+
+                <div class="">
+                    <button id="submitRequest" class="ui primary button" v-on:click.prevent="submitRequest" :disabled="isSubmitting">Send Message</button>
+                    <a :href="'/' + username" class="">Back to profile</a>
                 </div>
             </div>
         </div>
@@ -52,6 +53,7 @@
             firstName: null,
             username: null,
             skills: null,
+            avatar: null,
         },
 
         methods: {

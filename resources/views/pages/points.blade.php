@@ -7,72 +7,87 @@
 
 @section('content')
 	
-	<div id="points-header" class="page padded text-center">
-		<h1 class="bold"><i class="fa fa-trophy"></i> Points</h1>
-		<h4><i class="fa fa-star"></i><i class="fa fa-star"></i> Earn points and get rewarded <i class="fa fa-star"></i><i class="fa fa-star"></i></h4>
+	<div id="points-header" class="page ui centered grid">
+        <div class="center aligned fourteen wide mobile eight wide tablet eight wide computer column">
+    		<h1 class="ui header">
+                Points
+            </h1>
+        </div>
 	</div>
-    <div id="page" class="container padded">
-    	<div class="col-sm-8 col-sm-offset-2 padded">
-    		<h3 class="bold">What are points?</h3>
-    		<p>
-    			Points are rewards given for performing various interactions on {{config('app.name')}}. These actions covers the main activites on the website and a few others. 
-    		</p>	
+    <div id="page" class="ui centered grid container" style="padding: 4em 1em">
+    	<div class="fourteen wide mobile twelve wide tablet twelve wide computer column">
+    		<h2 class="ui header">What are points?
+                <div class="sub header">
+                    Points are rewards given for performing various interactions on {{config('app.name')}}. These actions covers the main activites on the website and a few others. 
+                </div>
+            </h2>
+    			
+    		<h2 class="ui header">
+                Why do I need points?
+    			<div class="sub header">
+                    Earning points can greatly increase your profile and portfolio ranking on {{config('app.name')}} thereby connecting you with more clients and increasing your earnings.
+                </div>
+    		</h2>
+    		
 
-    		<h3 class="bold">Why do I need points?</h3>
-    		<h4 class="bold text-warning">
-    			<i class="fa fa-star"></i> Rank higher than everyone else <i class="fa fa-star"></i>
-    		</h4>
-    		<p>
-    			Earning points can greatly increase your profile and portfolio ranking on {{config('app.name')}} thereby connecting you with more clients and increasing your earnings.
-    		</p>
-
-    		<h3 class="bold">How do I earn points?</h3>
-    		<p>You earn points when you perform any of these action.</p>
-    		<table class="table table-bordered points-table">
-    			<thead><tr>
-    				<td><h4 class="bold"><i class="fa fa-line-chart"></i> Activity</h4></td>
-    				<td><h4 class="bold"><i class="fa fa-trophy"></i> Points</h4></td></tr>
-    			</thead>
+    		<h2 class="ui header">
+                How do I earn points?
+                <div class="sub header">You earn points when you perform any of these action;</div>
+            </h2>
+    		
+    		<table class="ui celled table">
     			<tbody>
     				<tr>
     					<td>
-    						<h4>Invite Friends</h4>
-    						<p>Earned when you invite your contacts from Gmail</p>
+    						<h4 class="ui header">
+                                Invite Friends
+                                <div class="sub header">Earned when you invite your contacts from Gmail</div>
+                            </h4>
     					</td>
     					<td><h4 class="bold text-gold">{{ config('services.points.invite') }} <small>Points</small></h4></td>
     				</tr>
     				<tr>
     					<td>
-    						<h4>Invite Signup</h4>
-    						<p>Earned when someone you invited registers on {{ config('app.name') }}</p>
+                            <h4 class="ui header">
+                                Invite Signup
+                                <div class="sub header">Earned when someone you invited registers on {{ config('app.name') }}</div>
+                            </h4>
     					</td>
     					<td><h4 class="bold text-gold">{{ config('services.points.invite_signup') }} <small>Points</small></h4></td>
     				</tr>
     				<tr>
     					<td>
-    						<h4>Follow</h4>
-    						<p>Earned when you follow other members</p>
+                            <h4 class="ui header">
+                                Follow
+                                <div class="sub header">Earned when you follow other members on {{ config('app.name') }}</div>
+                            </h4>
     					</td>
     					<td><h4 class="bold text-gold">{{ config('services.points.follow') }} <small>Points</small></h4></td>
     				</tr>
     				<tr>
     					<td>
-    						<h4>Comment</h4>
-    						<p>Earned when you post a comment on other members portfolio</p>
+                            <h4 class="ui header">
+                                Comment
+                                <div class="sub header">Earned when you post a comment on other members portfolio</div>
+                            </h4>
     					</td>
     					<td><h4 class="bold text-gold">{{ config('services.points.comment') }} <small>Points</small></h4></td>
     				</tr>
     				<tr>
     					<td>
-    						<h4>Like Portfolio</h4>
-    						<p>Earned when you like a portfolio posted by others</p>
+                            <h4 class="ui header">
+                                Like Portfolio
+                                <div class="sub header">Earned when you like a portfolio posted by others</div>
+                            </h4>
     					</td>
     					<td><h4 class="bold text-gold">{{ config('services.points.like') }} <small>Points</small></h4></td>
     				</tr>
     				<tr>
     					<td>
-    						<h4>Like Comment</h4>
-    						<p>Earned when you like a comment posted by others</p>
+                            <h4 class="ui header">
+                                Like Comment
+                                <div class="sub header">Earned when you like a comment posted by others</div>
+                            </h4>
     					</td>
     					<td><h4 class="bold text-gold">{{ config('services.points.comment_like') }} <small>Points</small></h4></td>
     				</tr>

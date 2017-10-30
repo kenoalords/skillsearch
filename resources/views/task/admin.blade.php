@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Find Jobs')
 @section('metadescription', 'Find jobs matching your skills on ' . config('app.name') . ' and submit applications')
@@ -6,26 +6,14 @@
 
 @section('content')
 
-<div class="container">
+@if ( count($tasks) > 0 )
+    <h2 class="ui header">{{ count($tasks) }} Jobs for Approval</h2>
+@endif
 
-    @if ( count($tasks) > 0 )
-    <div class="row" style="margin-top: 3em">
-        <h1 class="medium-header"><span class="bold">{{ count($tasks) }} Jobs</span> <span class="thin">For Approval</span></h1>
-    </div>
-    @endif
+@if ( count($tasks) > 0 )
+    @each('task.partials.task', $tasks, 'task')
+@else
+    <h2 class="ui red header">No jobs for approval</h2>
+@endif
 
-    <div class="row padded" id="jobs">
-        <div class="col-md-10 col-md-offset-1">
-            
-            @if ( count($tasks) > 0 )
-                @each('task.partials.task', $tasks, 'task')
-            @else
-                <div class="text-center">
-                    <h1><span class="bold">Fresh</span> &amp; <span class="thin">Clean</span></h1>
-                    <p>No jobs have been submitted for approval</p>
-                </div>
-            @endif
-        </div>
-    </div>
-</div>
 @endsection

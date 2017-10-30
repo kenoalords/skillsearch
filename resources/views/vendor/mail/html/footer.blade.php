@@ -4,7 +4,7 @@
             <tr>
                 <td class="content-cell" align="center">
                     <p><small style="color: #aaa">{{ Illuminate\Mail\Markdown::parse($slot) }}</small></p>
-                    <p><small style="color: #aaa">Lagos, Nigeria. <a href="mailto:info@skillsearch.com.ng">Contact Us</a></small></p>
+                    <p><small style="color: #aaa">Lagos, Nigeria. <a href="mailto:info@ubanji.com">Contact Us</a></small></p>
                 </td>
             </tr>
         </table>

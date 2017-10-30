@@ -33,7 +33,7 @@ class InviteAccepted extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->subject(ucwords($this->receiver_name) . ' Accepted Your Invitation to Skillsearch Nigeria')
+        return $this->subject(ucwords($this->receiver_name) . ' Accepted Your Invitation to ' . config('app.name'))
                     ->markdown('invites.accepted')
                     ->with([
                         'receiver_name' => $this->receiver_name,

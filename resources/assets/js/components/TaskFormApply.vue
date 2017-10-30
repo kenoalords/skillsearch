@@ -1,52 +1,43 @@
 <template>
-    <div class="container" style="background: #fff">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2 padded">
-                
-                <div>
-                    <h1 class="text-center"><span class="bold">Submit</span> <span class="thin">Application</span></h1>
-                    <hr>
-                    <div>
-                        <h5>Job Details</h5>
-                        <h3 class="bold">{{job.title}}</h3>
-                        <ul class="list-inline">
-                            <li>
-                                <a :href="job.href">
-                                    <img :src="job.profile.avatar" :alt="job.profile.fullname" width="24" height="24" class="img-circle">
-                                     <span>{{ job.profile.fullname }}</span>
-                                </a>
-                            </li>
-                            <li>
-                                <i class="fa fa-calendar"></i> {{ job.date }}
-                            </li>
-                            <li><span class="bold"><i class="fa fa-user"></i> {{ job.applications.length }} {{ job.applications.length > 1 ? 'Interests' : 'Interest' }}</span></li>
-                        </ul>
-                        <p>{{job.excerpt}}</p>
-                        <p><a :href="job.href" class="bold"><small>View Job</small></a></p>
-                        <hr>
-                        <form action="#" method="POST" class="boxed-form">
-                            
-                            <div class="form-group">
-                                <label for="application">Application Letter</label>
-                                <textarea id="application" class="form-control" rows="7" placeholder="Be as detailed as possible to increase your chances" v-model="application.application" v-on:keyup="checkFormInput()"></textarea>
-                            </div>
+    <div>
+        <h2 class="ui small grey header">Submit Application</h2>
 
-                            <div class="form-group">
-                                <h4 class="block-title bold" style="color:#31708f">Clients budget is <strong>N{{job.human_budget}}</strong></h4>
-                                <label for="budget">Your Proposed Budget</label>
-                                <div class="input-group">
-                                    <span class="input-group-addon">N</span>
-                                    <input type="number" class="form-control" v-model="application.budget" placeholder="e.g 50000">
-                                </div>
-                            </div>
-                            
-                            <div class="clearfix">
-                                <button type="submit" class="btn btn-success" style="padding: 10px 24px" v-on:click.prevent="submitApplication()" :disabled="!isComplete"> Submit your application</button>
-                            </div>
-                        </form>
+        <div>
+            <div class="ui large header">{{job.title}}</div>
+            <div class="ui horizontal list">
+                <div class="item">
+                    <a :href="job.href">
+                        <img :src="job.profile.avatar" :alt="job.profile.fullname" width="24" height="24" class="ui avatar image">
+                        {{ job.profile.fullname }}
+                    </a>
+                </div>
+                <div class="item">
+                    <i class="fa fa-calendar"></i> {{ job.date }}
+                </div>
+                <div class="item"><span class="bold"><i class="fa fa-user"></i> {{ job.applications.length }} {{ job.applications.length > 1 ? 'Interests' : 'Interest' }}</span></div>
+            </div>
+            <p>{{job.excerpt}}</p>
+            <p><a :href="job.href" class="bold"><small>View Job</small></a></p>
+            <div class="ui divider"></div>
+            <form action="#" method="POST" class="ui form">
+                <div class="field">
+                    <label for="application">Application Letter</label>
+                    <textarea id="application" class="form-control" rows="7" placeholder="Be as detailed as possible to increase your chances" v-model="application.application" v-on:keyup="checkFormInput()"></textarea>
+                </div>
+
+                <div class="field">
+                    <h4 class="ui red header">Clients budget is <strong>N{{job.human_budget}}</strong></h4>
+                    <label for="budget">Your Proposed Budget</label>
+                    <div class="ui labeled input">
+                        <div class="ui label">N</div>
+                        <input type="number" class="form-control" v-model="application.budget" placeholder="e.g 50000">
                     </div>
                 </div>
-            </div>
+                
+                <div class="clearfix">
+                    <button type="submit" class="ui primary button" v-on:click.prevent="submitApplication()" :disabled="!isComplete"> Submit your application</button>
+                </div>
+            </form>
         </div>
     </div>
 </template>

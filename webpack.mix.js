@@ -11,19 +11,18 @@ const { mix } = require('laravel-mix');
  |
  */
 
-mix.js('node_modules/waypoints/lib/jquery.waypoints.min.js', 'public/js')
-	.js('node_modules/wavesurfer.js/dist/wavesurfer.min.js', 'public/js')
-	.js('node_modules/masonry-layout/dist/masonry.pkgd.min.js', 'public/js')
-	.js('node_modules/video.js/dist/video.min.js', 'public/js')
+mix.js('node_modules/video.js/dist/video.min.js', 'public/js')
+	// .js('node_modules/jplayer/dist/jplayer/jquery.jplayer.min.js', 'public/js')
 	.js('node_modules/medium-editor/dist/js/medium-editor.js', 'public/js')
 	.js('node_modules/blazy/blazy.min.js', 'public/js')
-	.js('node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js', 'public/js')
-	.js('node_modules/bootstrap-select/dist/js/bootstrap-select.min.js', 'public/js')
-	.js('node_modules/cropperjs/dist/cropper.min.js', 'public/js')
-	.copy('node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css', 'public/css')
-	.copy('node_modules/medium-editor/dist/css/medium-editor.min.css', 'public/css')
-	.copy('node_modules/medium-editor/dist/css/themes/bootstrap.min.css', 'public/css')
-	.copy('node_modules/bootstrap-select/dist/css/bootstrap-select.min.css', 'public/css')
-	.copy('node_modules/cropperjs/dist/cropper.min.css', 'public/css')
+	.js('node_modules/semantic-ui-css/semantic.min.js', 'public/js')
+	.copy('node_modules/semantic-ui-css/semantic.min.css', 'public/css')
+	.copy('node_modules/jplayer/dist/skin/pink.flag/css/jplayer.pink.flag.min.css', 'public/css')
 	.js('resources/assets/js/app.js', 'public/js')
+	.sass('node_modules/toastr/toastr.scss', 'public/css')
 	.sass('resources/assets/sass/app.scss', 'public/css');
+
+
+
+
+

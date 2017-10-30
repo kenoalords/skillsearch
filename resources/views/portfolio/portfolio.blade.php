@@ -1,43 +1,31 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'My Portfolio')
 
 @section('content')
-<div class="container">
-    <div class="row padded">
-        @include('includes.status')
-        <h2><span class="bold">Portfolio</span> <span class="thin">| Showcase your work</span></h2>
-        <p>Create your portfolio and share with friends</p>
-        <br>
-        <div class="clearfix">
-            <a href="/profile/portfolio/add" class="btn btn-primary pull-left">
-                <strong><i class="glyphicon glyphicon-plus-sign"></i> Add portfolio item</strong>
-            </a>
-            <a href="/home" class="btn btn-basic pull-right"><i class="glyphicon glyphicon-home"></i> Back to profile</a>
-        </div>
-        <hr>
-
-        @if(count($portfolios) < 3)
-        <div class="alert alert-warning">
-            <i class="fa fa-warning"></i> You need a minimun of <span class="bold">3 portfolio items</span> to apply for jobs
-        </div>
-        @endif
-        
-        @if ($portfolios)
-            <div class="row">
-                @each('includes.portfolio-owner', $portfolios, 'portfolio')
-            </div>
-            <!-- <p><a href="/profile/portfolio/add" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Add item</a></p> -->
-        @else
-            
-            <div class="text-center">
-                <h2>Oops!!!</h2>
-                <p>You do not have any portfolio item</p>
-                <p><a href="/profile/portfolio/add" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i> Add item</a></p>
-            </div>
-
-        @endif
-
+<div class="">
+    @include('includes.status')
+    <h1 class="ui header">
+        Portfolio
+        <div class="sub header">Create your portfolio and share with friends</div>
+    </h1>
+    <div class="ui divider"></div>
+    @if(count($portfolios) < 3)
+    <div class="ui warning message">
+        <i class="icon warning circle"></i> You need a minimun of 3 portfolio items to apply for jobs
     </div>
+    @endif
+    
+    @if ($portfolios)
+        <div class="ui grid">
+            @each('includes.portfolio-with-user', $portfolios, 'portfolio')
+        </div>
+        <div class="divider ui" style="visibility: hidden;"></div>
+        <p><a href="/profile/portfolio/add" class="ui icon labeled primary button"><i class="icon plus"></i> Add portfolio item</a></p>
+    @else
+       <a href="/profile/portfolio/add" class="ui primary icon labeled button"><i class="icon plus"></i> Add portfolio item</a>
+
+    @endif
+
 </div>
 @endsection

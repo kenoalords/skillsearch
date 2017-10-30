@@ -1,78 +1,62 @@
-@extends('layouts.app')
+@extends('layouts.user')
 
 @section('title', 'Login')
-@section('metadescription', 'Login or signup to join hundreds of people using Skillsearch Nigeria to promote their works')
+@section('metadescription', 'Login or signup to join hundreds of people using '.config('app.name').' to promote their works')
 @section('thumbnail', config('app.thumbnail'))
 @section('type', 'portfolio')
 
 @section('content')
 <div class="container">
-    <div class="row padded">
-        <div class="col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
-            <h3 class="text-center">Login</h3>
+    <form class="ui form" role="form" method="POST" action="{{ route('login') }}">
+        {{ csrf_field() }}
 
-            <div class="panel panel-default boxed">
-                
-                <div class="panel-body">
-                    
-                    <form class="" role="form" method="POST" action="{{ route('login') }}">
-                        {{ csrf_field() }}
-
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <div class="">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus placeholder="E-Mail Address">
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <div class="">
-                                <input id="password" type="password" class="form-control" name="password" required placeholder="Password">
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary btn-block">
-                                Login
-                            </button>
-                            
-                            <p class="text-center">
-                                <a class="btn btn-link" href="{{ route('password.request') }}">
-                                    Forgot Your Password?
-                                </a>
-                            </p>
-                        </div>
-                    </form>
-
-                    <hr>
-                    <a href="{{route('google')}}" class="btn btn-block btn-success"><i class="fa fa-google"></i> Sign in with Google</a>
-                    
-                    <a href="{{route('facebook')}}" class="btn btn-block btn-primary"><i class="fa fa-facebook"></i> Sign in with Facebook</a>
-                </div>
+        <div class="field{{ $errors->has('email') ? ' error' : '' }}">
+            <div class="ui left icon input">
+                <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus placeholder="E-Mail Address">
+                <i class="icon at"></i>
             </div>
-            <div class="text-center">
-                <h4 class="thin">Don't have an account? <a href="/register" class="bold">Sign up</a></h4>
+            @if ($errors->has('email'))
+                <span class="ui pointing red basic label">
+                    <strong>{{ $errors->first('email') }}</strong>
+                </span>
+            @endif
+        </div>
+
+        <div class="field{{ $errors->has('password') ? ' error' : '' }}">
+            <div class="ui left icon input">
+                <input id="password" type="password" name="password" required placeholder="Password">
+                <i class="icon key"></i>
+            </div>
+            @if ($errors->has('password'))
+                <span class="ui pointing red basic label">
+                    <strong>{{ $errors->first('password') }}</strong>
+                </span>
+            @endif
+        </div>
+
+        <div class="field">
+            <div class="ui checkbox">
+                <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
+                <label> Remember Me</label>
             </div>
         </div>
-    </div>
+
+        <div class="field">
+            <button type="submit" class="ui primary fluid button">
+                Login
+            </button>
+        </div>
+        <h4><a href="{{ route('password.request') }}">Forgot Your Password?</a></h4>
+        <div class="ui divider"></div>
+        <div class="field">
+            <a href="{{route('google')}}" class="ui icon google plus labeled fluid button"><i class="icon google"></i> Sign in with Google</a>
+        </div>
+        <div class="field">
+            <a href="{{route('facebook')}}" class="ui icon facebook labeled fluid button"><i class="icon facebook"></i> Sign in with Facebook</a>
+        </div>
+        <div class="field">
+            <h4>Don't have an account? <a href="/register" class="bold">Sign up</a></h4>
+        </div>
+    </form>
 </div>
 @endsection

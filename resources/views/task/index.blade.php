@@ -1,25 +1,14 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 @section('title', 'Jobs')
 @section('content')
-<div class="container">
 
-    <div class="row" style="margin-top: 2em">
-        @include('task.partials.navigation', ['page'=>'index'])
+<h2 class="ui header">Jobs</h2>
+@if ( count($tasks) > 0 )
+	<div class="ui divided very relaxed list">
+    	@each('task.partials.task', $tasks, 'task')
     </div>
+@else
+    <p>You have not submitted any job yet</p>
+@endif
 
-    <div class="row padded" id="jobs">
-        <div class="col-md-10 col-md-offset-1">
-            <div class="clearfix">
-                <h2 class="pull-left">Jobs</h2>
-            </div>
-            <hr>
-            
-            @if ( count($tasks) > 0 )
-                @each('task.partials.task', $tasks, 'task')
-            @else
-                <p>You have not submitted any job yet</p>
-            @endif
-        </div>
-    </div>
-</div>
 @endsection

@@ -107,15 +107,34 @@ class UserProfileController extends Controller
 
     public function phoneIndex(Request $request){
     	$phones = Auth::user()->phone()->get();
-        $profile = $request->user()->profile;
-    	// dd($phones);
-    	return view('profile.phone')->with(['phones' => $phones, 'profile' => $profile]);
+    	return view('profile.phone')->with(['phones' => $phones]);
     }
 
     public function phoneAdd(Request $request){
-    	// dd($phones);
-        $profile = $request->user()->profile;
-    	return view('profile.phone_add')->with('profile', $profile);
+    	return view('profile.phone_add');
+    }
+
+    public function phoneEdit(Request $request, Phone $phone){
+        $this->authorize('edit', $phone);
+        return view('profile.phone_edit')->with('phone', $phone);
+    }
+
+    public function phoneEditSave(Request $request, Phone $phone){
+        $this->authorize('edit', $phone);
+        $phone->number = $request->phone;
+        $phone->save();
+        return redirect()->route('phone');
+    }
+
+    public function phoneDelete(Request $request, Phone $phone){
+        $this->authorize('edit', $phone);
+        return view('profile.phone_delete')->with('phone', $phone);
+    }
+
+    public function phoneDeleteSubmit(Request $request, Phone $phone){
+        $this->authorize('edit', $phone);
+        $phone->delete();
+        return redirect()->route('phone');
     }
 
     public function phoneAddNew(Request $request){
@@ -125,7 +144,7 @@ class UserProfileController extends Controller
 
 	    Auth::user()->phone()->create([
 	    	'number'	=> $request->phone,
-            'is_private'=> $request->is_private
+            'is_private'=> 1
 	    ]);
 
 	    return redirect()->route('phone');
@@ -148,7 +167,7 @@ class UserProfileController extends Controller
 
         $store = $request->file('image')->store('public');
 
-        Image::make(storage_path() . '/app/' . $store)->fit(100)->save();
+        Image::make(storage_path() . '/app/' . $store)->fit(200)->save();
 
 
         $profile->avatar = $store;
@@ -200,7 +219,8 @@ class UserProfileController extends Controller
     // Delete user account
     public function deleteAccount(Request $request)
     {
-        return view('profile.delete')->with('user', $request->user);
+        $profile = $request->user()->profile()->first();
+        return view('profile.delete')->with(['user'=>$request->user, 'profile'=>$profile]);
     }
 
     // Confirm delete 
@@ -219,9 +239,10 @@ class UserProfileController extends Controller
         return redirect('/');
     }
 
-    public function verifyUserAccounts()
+    public function verifyUserAccounts(Request $request)
     {
-        return view('verify-accounts');
+        $profile = $request->user()->profile()->first();
+        return view('verify-accounts')->with('profile', $profile);
     }
 
     public function getVerifyUserAccounts(Request $request)

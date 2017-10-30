@@ -38,7 +38,8 @@ class TaskController extends Controller
                           ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                           ->toArray();
         // dd($tasks);
-		return view('task.index')->with('tasks', $tasks);
+        $profile = $request->user()->profile()->first();
+		return view('task.index')->with(['tasks' => $tasks, 'profile' => $profile]);
 	}
 
     public function add(Request $request, Skills $s)
@@ -49,10 +50,11 @@ class TaskController extends Controller
                           ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                           ->toArray();
         // dd($user);
+        $profile = $request->user()->profile()->first();
         if(!$user['first_name'] || !$user['last_name'] || !$user['location']){
             return view('task.cant_add');
         }
-    	return view('task.add')->with(['skills' => $skills, 'user' => $user]);
+    	return view('task.add')->with(['skills' => $skills, 'user' => $user, 'profile' => $profile]);
     }
 
     public function createTask(TaskFormRequest $request)
@@ -97,9 +99,11 @@ class TaskController extends Controller
     	$this->authorize('edit', $task);
 
     	$skills = $s->all();
+        $profile = $request->user()->profile()->first();
     	return view('task.edit')->with([
     		'task' 		=> json_encode($task),
-    		'skills'	=> $skills
+    		'skills'	=> $skills,
+            'profile'   => $profile
     	]);
     }
 
@@ -180,9 +184,14 @@ class TaskController extends Controller
         if(!$user['first_name'] || !$user['last_name'] || !$user['location']){
             return view('task.cant_apply');
         }
-
+        $profile = $request->user()->profile()->first();
         $applied = $application->where([ 'user_id'=>$request->user()->id, 'task_id' => $task->id ])->first();
-        return view('task.apply')->with(['task' => $job, 'user' => $user, 'applied' => $applied ]);
+        return view('task.apply')->with([
+                'task' => $job, 
+                'user' => $user, 
+                'applied' => $applied, 
+                'profile' => $profile 
+            ]);
     }
 
     public function submitApplicationForTask( Request $request, Task $task )
@@ -204,7 +213,8 @@ class TaskController extends Controller
                           ->transformWith(new TaskTransformer)
                           ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                           ->toArray();
-        return view('task.interests')->with('task', $task);
+        $profile = $request->user()->profile()->first();
+        return view('task.interests')->with(['task'=>$task, 'profile'=>$profile]);
     }
 
     public function applications( Request $request ){
@@ -212,7 +222,8 @@ class TaskController extends Controller
                           ->transformWith(new ApplicationTransformer)
                           ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                           ->toArray();
-        return view('task.applications')->with('applications', $applications);
+        $profile = $request->user()->profile()->first();
+        return view('task.applications')->with(['applications' => $applications, 'profile' => $profile ]);
     }
 
     public function submitApplicationResponse( Request $request, ApplicationResponse $response )
@@ -255,7 +266,8 @@ class TaskController extends Controller
                           ->transformWith(new TaskTransformer)
                           ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                           ->toArray();
-        return view('task.admin')->with([ 'tasks' => $tasks ]);
+        $profile = $request->user()->profile()->first();
+        return view('task.admin')->with([ 'tasks' => $tasks, 'profile' => $profile ]);
     }
 
     public function rejectJob( Request $request, Task $task )
@@ -356,7 +368,8 @@ class TaskController extends Controller
                 array_push($savedJobs, $task);
             }
         }
-        return view('task.saved')->with('tasks', $savedJobs);
+        $profile = $request->user()->profile()->first();
+        return view('task.saved')->with(['tasks'=>$savedJobs, 'profile'=>$profile]);
     }
 
     // Accept application

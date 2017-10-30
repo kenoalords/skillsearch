@@ -5,13 +5,15 @@
 
 @section('content')
 
-<div id="points-header">
-    <h1 class="thin medium-header text-center">Portfolios in <span class="bold">{{Request::get('term')}}</span></h1>
+<div class="ui centered grid padded">
+    <h1 class="ui icon header">
+        {{Request::get('term')}} Showcase
+    </h1>
 </div>
-
-<div  class="container padded" style="margin-top: 2em;">
+<div class="ui divider"></div>
+<div class="ui container padded">
     @if(count($portfolios) > 0)
-    <div class="row">
+    <div class="ui centered grid">
         @each('includes.portfolio-with-user', $portfolios, 'portfolio')
     </div>
     @else
@@ -21,17 +23,6 @@
     @endif
 </div>
 
-@if($skills->count())
-<div id="categories">
-    <div class="container padded">
-        <h4 class="bold">Browse Portfolio by Category</h4>
-        <hr>
-        @foreach($skills as $skill)
-        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
-            <a href="/work/search/?term={{ urlencode($skill->skill) }}"> {{ $skill->skill }} </a>
-        </div>
-        @endforeach
-    </div>
-</div>
-@endif
+@include('includes.skills')
+
 @endsection

@@ -1,57 +1,66 @@
-<div class="job" id="job-{{$task['id']}}">
-	<div class="container-fluid">
+<div class="item" id="job-{{$task['id']}}">
+	<div class="">
 		<div>
-			@if(Auth::user() && Auth::user()->id === $task['user_id'])
-				@if($task['is_approved'] && !$task['is_rejected'])
-					<span class="label label-primary"><i class="fa fa-check-circle"></i> Approved</span>
-				@elseif($task['is_rejected'])
-					<span class="label label-danger"><i class="fa fa-close"></i> Rejected</span>
-				@else
-					<span class="label label-warning"><i class="fa fa-check-circle"></i> Pending</span>
-				@endif
-				@if($task['closed'] === 1)
-					<span class="label label-success"><i class="fa fa-lock"></i> Closed</span>
-				@endif
-			@endif
-			<h3 style="line-height: 1.7" class="bold job-title">
-				<a href="{{ route('task', [ 'task'=>$task['id'], 'slug'=>$task['slug'] ]) }}">
+			
+			<h3 class="ui grey header">
+				<a href="{{ route('task', [ 'task'=>$task['id'], 'slug'=>$task['slug'] ]) }}" class="grey-link">
 					{{$task['title']}}
 				</a>
 			</h3>
-			<ul class="list-inline" style="font-size: .875em">
-				<li>
-					<img src="{{$task['profile']['avatar']}}" alt="{{$task['profile']['fullname']}}" class="img-circle" width="18" height="18"> <span class="bold"><a href="{{ config('app.url') . '/' . $task['profile']['username'] }}">{{ $task['profile']['fullname'] }} {!! identity_check($task['profile']['verified']) !!}</a></span>
-				</li>
-				<li>in <a href="#" class="bold">{{$task['category']}}</a></li>
-				<li class="bold"><i class="fa fa-map-marker"></i> {{$task['location']}}</li>
-				<li>{{$task['date']}}</li>
-				@if($task['budget'])
-					<li class="pull-right text-right">
-						<span class="text-warning bold budget">₦{{ number_format($task['budget']) }}</span>
-						@if($task['budget_type'])
-							<span style="display: block; font-size: .875em" class="bold">{{ $task['budget_type'] }}</span>
-						@endif
-					</li>
-				@else
-					<li class="pull-right text-right">
-						<span class="text-warning bold budget">₦0</span>
-					</li>
-				@endif
+			<div class="ui tiny grey horizontal list" style="margin-top: 0">
+				<div class="item">
+					<img src="{{$task['profile']['avatar']}}" alt="{{$task['profile']['fullname']}}" class="ui avatar image" width="18" height="18"> <span class="bold"><a href="{{ config('app.url') . '/' . $task['profile']['username'] }}">{{ $task['profile']['fullname'] }} {!! identity_check($task['profile']['verified']) !!}</a></span>
+				</div>
+				<div class="item">in <a href="#" class="bold">{{$task['category']}}</a></div>
+				<div class="item"><i class="icon marker"></i> {{$task['location']}}</div>
+				<div class="item">{{$task['date']}}</div>
+				
 				@if($task['expires_at'])
-		            <li class="bold text-warning">Expires {{ $task['expires_human'] }}</li>
+		            <div class="item">Expires {{ $task['expires_human'] }}</div>
 		        @endif
-			</ul>
+			</div>
+			
 			<p>
-				{{ str_limit($task['description'], 100) }}
+				{{ str_limit($task['description'], 150) }}
 			</p>
-			<ul class="list-inline">
-				<li class="bold">
+			<div class="ui horizontal list">
+				@if($task['budget'])
+					<div class="item">
+						<span class="ui large red header">
+							₦{{ number_format($task['budget']) }}
+							@if($task['budget_type'])
+								<span class="sub header">{{ $task['budget_type'] }}</span>
+							@endif
+						</span>
+						
+					</div>
+				@else
+					<div class="item">
+						<span class="ui red large header">₦0</span>
+					</div>
+				@endif
+				@if(Auth::user() && Auth::user()->id === $task['user_id'])
+					
+					<div class="item">
+						@if($task['is_approved'] && !$task['is_rejected'])
+							<span class="label label-primary"><i class="fa fa-check-circle"></i> Approved</span>
+						@elseif($task['is_rejected'])
+							<span class="label label-danger"><i class="fa fa-close"></i> Rejected</span>
+						@else
+							<span class="label label-warning"><i class="fa fa-check-circle"></i> Pending</span>
+						@endif
+						@if($task['closed'] === 1)
+							<span class="label label-success"><i class="fa fa-lock"></i> Closed</span>
+						@endif
+					</div>
+				@endif
+				<div class="item">
 					<a href="{{ route('task', [ 'task'=>$task['id'], 'slug'=>$task['slug'] ]) }}">
 						{{count($task['applications'])}} {{ str_plural( 'Application', count($task['applications']) ) }}
 					</a>
-				</li>
+				</div>
 				@if( $task['application_limit'] > 0 )
-					<li class="bold">
+					<div class="item">
 					@if( $task['application_left'] > 0 )
 						<a href="{{ route('task', [ 'task'=>$task['id'], 'slug'=>$task['slug'] ]) }}" class="text-warning">
 							{{ $task['application_left'] }} {{ str_plural( 'Slot', $task['application_left'] ) }} Left
@@ -59,17 +68,17 @@
 					@else
 						<span class="text-warning">Application Limit Reached!</span>
 					@endif
-					</li>
+					</div>
 				@endif
 				@if(Auth::user() && Auth::user()->id === $task['user_id'])
-					<li><a href="{{ route('task_interest', ['task'=>$task['id']]) }}"><i class="fa fa-user"></i> View Applications</a></li>
+					<div class="item"><a href="{{ route('task_interest', ['task'=>$task['id']]) }}"><i class="fa fa-user"></i> View Applications</a></div>
 					@if($task['closed'] !== 1)
-					<li><a href="{{ route('edit_task', ['task'=>$task['id']]) }}"><i class="fa fa-pencil-square-o"></i> Edit</a></li>
-					<li class="pull-right"><a href="{{ route('delete_task', ['task'=>$task['id']]) }}"><i class="fa fa-close"></i> Delete</a></li>
+					<div class="item"><a href="{{ route('edit_task', ['task'=>$task['id']]) }}"><i class="fa fa-pencil-square-o"></i> Edit</a></div>
+					<div class="item"><a href="{{ route('delete_task', ['task'=>$task['id']]) }}"><i class="fa fa-close"></i> Delete</a></div>
 					@endif
 				@endif
-			</ul>
-
+			</div>
+			
 		</div>
 		
 	</div>

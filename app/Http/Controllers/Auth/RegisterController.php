@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use Mail;
 use App\Models\User;
 use App\Models\ContactInvite;
+use App\Models\ReferralCode;
 use App\Events\UserEvents;
 use App\Services\PointService;
 use App\Http\Controllers\Controller;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Crypt;
 use App\Mail\InviteAccepted;
+use App\Mail\ReferralNotification;
 
 class RegisterController extends Controller
 {
@@ -59,7 +61,8 @@ class RegisterController extends Controller
             'password'      => 'required|min:6|confirmed',
             'first_name'    => 'required|min:3|max:32',
             'last_name'     => 'required|min:3|max:32',
-            'account_type'  => 'required|in:1,0'
+            'account_type'  => 'required|in:1,0',
+            'referral_code' => 'nullable|exists:referral_codes,code',
         ]);
     }
 
@@ -82,6 +85,17 @@ class RegisterController extends Controller
             'last_name'     => $data['last_name'],
             'account_type'  => $data['account_type'],
         ]);
+
+        if($data['referral_code']){
+            $ref = ReferralCode::where('code', $data['referral_code'])->first();
+            $ref_user = $ref->user_id;
+            $user->referral()->create([
+                'referrer_id'   => $ref_user,
+            ]);
+            $ref_data = User::where('id', $ref_user)->first();
+            $fullname = ucwords($data['first_name'] . ' ' . $data['last_name']);
+            Mail::to($ref_data)->send(new ReferralNotification($ref_data, $fullname, $data['name']));
+        }
 
         // Generate user verify token and store in database
         $verify_key = Crypt::encryptString($data['email']);

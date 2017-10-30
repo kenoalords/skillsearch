@@ -1,76 +1,93 @@
-@extends('layouts.app')
+@extends('layouts.admin')
+
+@section('title', 'Dashboard')
 
 @section('content')
-
-<div class="row">
-
-    @include('includes.profile-head')
-    <div class="container padded">
-        <div class="col-md-3 col-sm-4">
-            @include('includes.sidebar')
+    @include('includes.status')
+    <!-- <div class="ui center aligned column grid">
+        <div class="column white-boxed">
+            <h4 class="bold text-gold" style="font-size: 3em;"><i class="fa fa-trophy"></i> {{$user['points']}} <small>{{str_plural('Point', $user['points'])}} Earned</small></h4>
+            <p>Earn points to boost your profile on {{ config('app.name') }} <span class="bold"><a href="{{route('points')}}">Find out more</a></span></p>
         </div>
-        <div class="col-md-9 col-sm-8">
-            @include('includes.status')
-            
-            <div class="white-boxed text-center">
-                <div class="">
-                    <h4 class="bold text-gold" style="font-size: 3em;"><i class="fa fa-trophy"></i> {{$points}} <small>{{str_plural('Point', $points)}} Earned</small></h4>
-                    <p>Earn points to boost your profile on {{ config('app.name') }} <span class="bold"><a href="{{route('points')}}">Find out more</a></span></p>
-                </div>
+    </div> -->
+    @if(!$user['phone'])
+        <div class="ui warning icon message">
+            <i class="icon phone"></i>
+            <div class="content">
+                <div class="header">You have not added your contact number</div>
+                <p>Add a phone number potential clients can reach you on quickly. </p>
+                <a href="{{route('add_phone')}}" class="ui small icon labeled green button"><i class="icon plus"></i>Add contact number</a>
             </div>
-            <hr>
-            @if($profile->user->instagram()->count() == 0)
-            <div id="instagram-notification">
-                <div class="white-boxed text-center">
-                    <p><img src="{{ asset('public/instagram-teaser.jpg') }}" alt="Instagram"></p>
-                    <p>Connect your instagram account and showcase more of your work</p>
-                    <p>
-                        <a href="/profile/portfolio/instagram" class="btn btn-success"><i class="fa fa-instagram"></i> Get Started</a>
-                        <a href="#" class="btn btn-basic text-muted" id="close-instagram-notification"><i class="fa fa-close"></i> Close</a>
-                    </p>
-                </div>
-                <hr>
-            </div>
-            @endif
-            
-            @if($profile->verified_email === 0)
-                <div class="alert alert-danger dismissable">
-                    <p>
-                        Your email address <strong>{{$profile->user->email}}</strong> has not been verified, please check your inbox and click on the verification link. <a href="{{route('verify')}}">Resend verification link</a>
-                    </p>
-                </div>
-                <hr>
-            @endif
-
-            @if($gmail === true && $invite_status === false)
-                <div class="white-boxed text-center clearfix" style="padding: 2em;">
-                    <p><img src="{{asset('public/gmail.png')}}" alt="Invite friends from Gmail" style="width: 120px; height: auto"></p>
-                    <p>Find and connect with your friends already using {{config('app.name')}} to find new client</p>
-                    <a href="/invite/gmail" class="btn btn-success" id="google-invite"><i class="fa fa-envelope"></i> Find Friends and Connect</a>
-                </div>
-                <hr>
-            @endif
-
-            @if(!$profile->identity)
-                    <p class="text-info"><i class="glyphicon glyphicon-info-sign"></i> Verify your identity and increase your ranking instantly and improve your credibility score <strong><a href="{{ route('verify_identity') }}" class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-info-sign"></i> Verify my identity</a></strong></p>
-            @endif
-            @if($profile->identity && $profile->identity->status === 0)
-                    <p class="alert alert-info"><i class="glyphicon glyphicon-info-sign"></i> We are processing your identity verification request. You will be notified via email once it has been verified</p>
-            @endif
-            <!-- <h4><i class="glyphicon glyphicon-graph"></i> Feed</h4> -->
-            @if($activities)
-        	<div id="activities">
-        		@each('includes.activity', $activities, 'activity')
-        	</div>
-            @endif
-
-            @if(!$activities)
-            <div id="activities" class="padded text-center">
-                <p style="font-size: 3em"><i class="glyphicon glyphicon-thumbs-down"></i></p>
-                <p>Your activity log in empty</p>
-            </div>
-            @endif
         </div>
-    </div>
-</div>
+    @endif
+
+    @if(!$user['has_instagram'])
+        @include('includes.instagram')
+    @endif
+    
+    @if($user['verified_email'] === 0)
+        <div class="ui warning mini icon message">
+            <i class="icon warning sign"></i>
+            <div class="content">
+                <div class="header">Please verify your email address <strong>{{Request::user()->email}}</strong>. <a href="{{route('verify')}}">Resend verification link</a></div>
+            </div>
+        </div>
+    @endif
+
+    @if($gmail === true && $invite_status === false)
+        @include('includes.gmail-invite')
+    @endif
+
+    @if(!$user['verified'])
+            <div class="ui warning icon mini message">
+                <i class="icon warning sign"></i> 
+                <div class="content">
+                    <div class="header">Verify your identity and increase your ranking instantly and improve your credibility score <strong><a href="{{ route('verify_identity') }}">Verify my identity</a></strong>
+                    </div>
+                </div>
+            </div>
+    @endif
+
+    {{-- @if($user['account_type'] === 1)
+        <h3 class="ui header">Your Portfolio</h3>
+        @if(count($user['portfolios']) > 0)
+            <div class="ui container grid" style="margin-left: -1rem !important;">
+                @foreach($user['portfolios'] as $portfolio)
+                    @include('includes.portfolio-with-user', $portfolio)
+                @endforeach
+            </div>
+        @endif
+        <div style="margin: 1em 0"><a href="/profile/portfolio/add" class="ui basic grey icon labeled button"><i class="icon add"></i>Add portfolio item</a></div>
+    @endif --}}
+
+    @if($activities)
+        <h3 class="ui header">
+            Recent portfolio of people you follow
+        </h3>
+    	<div class="ui container grid" style="margin-left: -1rem !important;">
+    		@each('includes.portfolio-with-user', $activities, 'portfolio')
+    	</div>
+    @endif
+
+    @if(!$activities && $profiles !== null)
+        <h3 class="ui header">
+            Connect
+            <div class="sub header">Connect and discover new works daily from amazing talents</div>
+        </h3>
+        <div class="ui divider"></div>
+        <div class="">
+            @each('profile.person-follow-tag', $profiles, 'profile');
+        </div>
+    @endif
+
+    @if ( count($tasks) > 0 )
+        <h3 class="ui dividing header" style="margin-top: 3em">
+            Recent Jobs
+            <!-- <div class="sub header"></div> -->
+        </h3>
+        <div class="ui divided very relaxed list">
+            @each('task.partials.task', $tasks, 'task')
+        </div>
+    @endif
+    
 @endsection

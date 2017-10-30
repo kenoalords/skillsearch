@@ -1,7 +1,7 @@
-<form action="{{ route('job_search') }}" class="job-form search-form">
+<form action="{{ route('job_search') }}" class="ui form" id="searchform">
     <div>
-        <div class="row">
-            <div class="col-sm-5 search-input">
+        <div class="ui fields">
+            <div class="field">
                 <select name="skill" class="form-control">
                     <option value="">Choose Category</option>
                     @if($skills->count())
@@ -11,11 +11,11 @@
                     @endif
                 </select>
             </div>
-            <div class="col-sm-5 search-input">
+            <div class="field">
                 <input type="text" class="form-control" placeholder="Location e.g Lekki, Lagos" name="location" value="{{Request::get('location')}}">
             </div>
-            <div class="col-sm-2 search-input">
-                <button class="btn btn-default btn-block" type="submit"><i class="fa fa-search"></i> Search</button>
+            <div class="field">
+                <button class="ui primary button" type="submit"><i class="fa fa-search"></i> Search</button>
             </div>
         </div>
     </div>

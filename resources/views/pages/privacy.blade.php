@@ -2,7 +2,7 @@
 
 @section('thumbnail', asset('public/logo-b.png'))
 @section('type', 'article')
-@section('metadescription', 'Find out how Skillsearch Nigeria can help promote your works and get you hired!')
+@section('metadescription', 'Find out how '.config('app.name').' can help promote your works and get you hired!')
 @section('title', 'Privacy Policy')
 
 @section('content')

@@ -30,7 +30,7 @@ class UserRegistrationNotification extends Mailable
      */
     public function build()
     {
-        return $this->subject('Welcome to Skillsearch Nigeria')
+        return $this->subject('Welcome to ' . config('app.name'))
                     ->markdown('email.user.register')->with('name', $this->name);
     }
 }

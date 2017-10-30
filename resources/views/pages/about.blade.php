@@ -6,19 +6,19 @@
 @section('title', 'About')
 @section('content')
 	
-	<div id="points-header" class="page padded text-center">
-		<h1 class="bold">About</h1>
+	<div id="points-header" class="page ui centered grid">
+		<h1 class="ui large header">About</h1>
 	</div>
-	<div id="page" class="container">
-		<div class="col-sm-8 col-sm-offset-2">
+	<div id="page" class="ui centered grid container">
+		<div class="fourteen wide mobile eight wide tablet six wide computer column">
 			<div class="padded">
 				<!-- <h3>What are you good at?</h3> -->
 				<p>
-					{{config('app.name')}} is a community of skilled people showcasing their awesome talent and getting hired.
+					{{config('app.name')}} is a community of creative people showcasing their awesome works and getting hired.
 				</p>
 
 				<p>
-					With the ever increasing demand for skilled services in Nigeria, {{config('app.name')}} provides an innovative and interactive online platform to help people showcase their skills across various categories and get hired.
+					With the ever increasing demand for creative services in Nigeria, {{config('app.name')}} provides an innovative and interactive online platform to help people showcase their works across various categories and get hired.
 				</p>
 
 				<p>

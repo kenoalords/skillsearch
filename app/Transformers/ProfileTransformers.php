@@ -18,12 +18,17 @@ class ProfileTransformers extends TransformerAbstract
 
 		$username = User::where('id', $profile->user_id)->pluck('name')->first();
 		$instagram = $profile->user->instagram()->first();
+		$user_points = $profile->user->points()->first();
+		$points = ($user_points) ? (int)$user_points->points : 0;
+		$phone = $profile->user->phone()->first();
 
 		return [
+			'user_id'	=> $profile->user_id,
 			'username'	=> $username,
 			'first_name'=> $profile->first_name,
 			'last_name'	=> $profile->last_name,
 			'avatar'	=> $profile->getAvatar(),
+			'background'=> $profile->getUserBackground(),
 			'location'	=> ucwords($profile->location),
 			'gender'	=> $profile->gender,
 			'bio'		=> $profile->bio,
@@ -33,6 +38,10 @@ class ProfileTransformers extends TransformerAbstract
 			'followers'	=> $profile->user->getFollowers($profile->user),
 			'following'	=> $profile->user->getFollowing(),
 			'url'		=> route('view_profile', ['user'=>$username]),
+			'points'	=> $points,
+			'verified_email'	=> $profile->verified_email,
+			'account_type'		=> $profile->account_type,
+			'phone'		=> $phone['number'],
 		];
 	}
 

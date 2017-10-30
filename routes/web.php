@@ -58,6 +58,9 @@ Route::group(['middleware'=>'auth'], function(){
 		Route::get('/start', 'UserProfileController@setupUserProfile')->name('start');
 		Route::post('/start', 'UserProfileController@saveSocialUserProfile');
 
+		Route::get('/referral', 'ReferralCodeController@index')->name('referral');
+		Route::get('/referral/generate', 'ReferralCodeController@generate');
+
 		Route::get('/start-twitter', 'UserProfileController@setupTwitterUserProfile')->name('start_twitter');
 		Route::post('/start-twitter', 'UserProfileController@saveTwitterSocialUserProfile');
 
@@ -70,11 +73,14 @@ Route::group(['middleware'=>'auth'], function(){
 		Route::get('/linkedin_upload', 'LinkedinContactController@index')->name('linkedin_contacts');
 		Route::post('/linkedin_upload/submit', 'LinkedinContactController@upload')->name('submit_linkedin_contacts');
 		Route::post('/linkedin_upload/delete', 'LinkedinContactController@delete')->name('delete_linkedin_contacts');
+		Route::get('/contact-requests', 'ContactRequestController@requests')->name('user_contact_requests');
+		Route::post('/contact-requests/{contact_request}/approve', 'ContactRequestController@approveRequest');
 	});
 	
 	Route::post('/home/upload', 'HomeController@uploadBackgroundImage');
 
-	
+	Route::get('/home/email-broadcast', 'HomeController@membersEmailBroadcast');
+	Route::post('/home/email-broadcast', 'HomeController@submitEmailBroadcast');
 
 	Route::group(['prefix'=>'profile'], function(){
 
@@ -87,6 +93,12 @@ Route::group(['middleware'=>'auth'], function(){
 		Route::get('/phone/add', 'UserProfileController@phoneAdd')->name('add_phone');
 		Route::post('/phone/add', 'UserProfileController@phoneAddNew');
 
+		Route::get('/phone/{phone}/edit', 'UserProfileController@phoneEdit')->name('edit_phone');
+		Route::post('/phone/{phone}/edit', 'UserProfileController@phoneEditSave')->name('edit_phone');
+
+		Route::get('/phone/{phone}/delete', 'UserProfileController@phoneDelete')->name('delete_phone');
+		Route::post('/phone/{phone}/delete', 'UserProfileController@phoneDeleteSubmit')->name('delete_phone');
+		
 		Route::get('/portfolio', 'PortfolioController@index')->name('portfolio_index');
 		Route::get('/portfolio/add', 'PortfolioController@add');
 		Route::post('/portfolio/add', 'PortfolioController@savePortfolio');
@@ -211,7 +223,12 @@ Route::get('/social/{portfolio}/share', 'SocialShareController@portfolio')->name
 
 Route::get('/{user}', 'People@profile')->name('view_profile');
 Route::get('/{user}/hire', 'People@hire')->name('hire');
-Route::get('/{user}/about', 'People@about')->name('about');
+
+// CONTACT REQUEST
+Route::get('/{user}/contact-request', 'ContactRequestController@index')->name('contact_request');
+Route::post('/{user}/contact-request/submit', 'ContactRequestController@submit')->name('contact_request_post');
+Route::get('/{user}/contact-request/status', 'ContactRequestController@status')->name('contact_request_status');
+
 Route::get('/{user}/instagram', 'People@instagram')->name('instagram');
 Route::get('/{user}/instagram/feed', 'People@instagramFeed')->name('instagram_feed');
 Route::get('/{user}/portfolio/{portfolio}', 'PortfolioController@view')->name('view_portfolio');

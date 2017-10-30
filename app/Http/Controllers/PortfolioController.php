@@ -29,13 +29,17 @@ class PortfolioController extends Controller
                             ->transformWith(new PortfolioTransformer)
                             ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                             ->toArray();
-    	return view('portfolio.portfolio')->with(['portfolios' => $portfolios]);
+    	return view('portfolio.portfolio')->with(
+            [
+                'portfolios'    => $portfolios,
+            ]
+        );
     }
 
     public function add(Request $request)
     {
         $skills = $request->user()->skills()->get();
-    	return view('portfolio.add')->with('skills', $skills);
+    	return view('portfolio.add')->with(['skills' => $skills]);
     }
 
     public function edit(Request $request, Portfolio $portfolio)
@@ -43,6 +47,7 @@ class PortfolioController extends Controller
         $this->authorize('edit', $portfolio);
     	$files = $portfolio->files()->get();
         $skills = $request->user()->skills()->get();
+        
         // dd($files->link);
     	return view('portfolio.edit')->with([
     		'portfolio' => $portfolio,
@@ -197,9 +202,10 @@ class PortfolioController extends Controller
         }
     }
 
-    public function delete(Portfolio $portfolio, PointService $pointService)
+    public function delete(Request $request, Portfolio $portfolio, PointService $pointService)
     {
-        return view('portfolio.delete')->with('portfolio', $portfolio);
+        
+        return view('portfolio.delete')->with(['portfolio' => $portfolio]);
     }
 
     public function deletePortfolio(Request $request, Portfolio $portfolio, PointService $pointService)
@@ -302,15 +308,13 @@ class PortfolioController extends Controller
 
     public function homepagePortfolio(Portfolio $portfolio, Skills $skills)
     {
-        $portfolios = fractal()->collection($portfolio->isPublic()->hasThumbnail()->latestFirst()->take(12)->get())
+        $portfolios = fractal()->collection($portfolio->isPublic()->hasThumbnail()->latestFirst()->take(24)->get())
                         ->transformWith(new PortfolioTransformer)
                         ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                         ->toArray();
-        $skills = $skills->orderAlphabetically()->get();
 
         return view('welcome')->with([
             'portfolios' => $portfolios,
-            'skills'    => $skills,
         ]);
     }
 
@@ -327,7 +331,7 @@ class PortfolioController extends Controller
     public function workSearchPage(Request $request, Skills $skills)
     {
         if($request->term){
-            $similar = Portfolio::where('skills', 'like', '%'.$request->term.'%')->where([
+            $similar = Portfolio::where('skills', 'like', '%'.$request->term)->where([
                     ['is_public', '=', 1],
                     ['thumbnail', '!=', null],
                 ])->inRandomOrder()->take(16)->get();
