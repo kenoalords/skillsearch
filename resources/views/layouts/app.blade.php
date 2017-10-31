@@ -131,10 +131,10 @@
                     <div class="right aligned column">
                         <div class="ui horizontal list">
                             <div class="item">
-                                <a href="https://www.facebook.com/skillsearchng/" target="_blank" class="ui icon facebook circular mini button"><i class="icon facebook"></i></a>
+                                <a href="https://www.facebook.com/ubanjicreatives/" target="_blank" class="ui icon facebook circular mini button"><i class="icon facebook"></i></a>
                             </div>
                             <div class="item">
-                                <a href="https://twitter.com/skillsearchng" class="ui icon twitter circular mini button"><i class="icon twitter"></i></a>
+                                <a href="https://instagram.com/ubanjicreatives" class="ui icon instagram circular mini button"><i class="icon instagram"></i></a>
                             </div>
                         </div>
                     </div>

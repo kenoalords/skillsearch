@@ -12,5 +12,6 @@
 @endcomponent
 @endif
 
-## Keno from {{ config('app.name') }}
+Regards<br>
+##{{ config('app.name') }} Team
 @endcomponent

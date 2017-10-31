@@ -20,7 +20,7 @@
     
 </div>
 @if(!Auth::user())
-    <p style="text-align: center; margin-top: 2em; font-weight: bold">Want to showcase your creative work? <a href="/register" style="font-weight: bold">Sign up now.</a></p>
+    <p style="text-align: center; margin-top: 2em; font-weight: bold">Want to showcase your creative works? <a href="/register" style="font-weight: bold">Start Here.</a></p>
     @endif
 <div id="showcase">
     <div class="ui container">
