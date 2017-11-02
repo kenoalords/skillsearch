@@ -19,7 +19,7 @@ mix.js('node_modules/video.js/dist/video.min.js', 'public/js')
 	.copy('node_modules/semantic-ui-css/semantic.min.css', 'public/css')
 	.copy('node_modules/jplayer/dist/skin/pink.flag/css/jplayer.pink.flag.min.css', 'public/css')
 	.js('resources/assets/js/app.js', 'public/js')
-	.sass('node_modules/toastr/toastr.scss', 'public/css')
+	.sass('node_modules/toastr/build/toastr.min.css', 'public/css')
 	.sass('resources/assets/sass/app-new.scss', 'public/css');
 
 
