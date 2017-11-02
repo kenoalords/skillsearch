@@ -45,6 +45,7 @@ class PortfolioTransformer extends TransformerAbstract
 				'phone'			=> $number['number'],
 			],
 			'views'		=> $portfolio->views()->count(),
+			'has_liked'	=> $portfolio->userHasLiked(),
 		];
 	}
 }

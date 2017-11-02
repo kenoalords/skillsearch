@@ -20,7 +20,8 @@
                 </a>
 
                 <span class="right floated meta">
-                    <span class="bold"><i class="icon thumbs up"></i> {{$portfolio['likes_count']}} </span>
+                    <!-- <span class="bold"><i class="icon thumbs up"></i> {{$portfolio['likes_count']}} </span> -->
+                    <like-button id="{{$portfolio['uid']}}" class="bold" likes="{{$portfolio['likes_count']}}" liked="{{$portfolio['has_liked']}}"></like-button>
                     <span class="bold" style="margin-left: 1em"><i class="fa fa-comment"></i> {{$portfolio['comment_count']}}</span>
                 </span>
             </div>

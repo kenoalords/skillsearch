@@ -68,7 +68,11 @@ class Portfolio extends Model
 
     public function userHasLiked()
     {
-        return (bool)$this->likes()->where(['user_id' => Auth::user()->id, 'likeable_id' => $this->id ])->count();
+        if(Auth::user()){
+          return (bool)$this->likes()->where(['user_id' => Auth::user()->id, 'likeable_id' => $this->id ])->count();
+        } else {
+          return false;
+        }
     }
 
     public function getLikesAttribute()

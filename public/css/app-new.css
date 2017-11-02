@@ -1768,7 +1768,26 @@ ol {
 }
 
 .portfolio-meta {
-  margin-left: 1em;
+  color: #222;
+}
+
+.portfolio-meta a,
+.portfolio-meta .like-count {
+  color: #222;
+  opacity: .5;
+  -webkit-transition: all .3s ease-out;
+  transition: all .3s ease-out;
+}
+
+.portfolio-meta a:hover,
+.portfolio-meta .like-count:hover {
+  opacity: 1;
+}
+
+.portfolio-meta .like_btn.liked a,
+.portfolio-meta .like_btn.liked .like-count {
+  color: #21ba45 !important;
+  opacity: 1 !important;
 }
 
 .whiteCard {
@@ -2342,7 +2361,7 @@ body.loading:before {
   opacity: 1;
 }
 
-.like-count {
+span.big .like-count {
   display: inline-block;
   font-size: 2.5em;
   font-weight: 700;

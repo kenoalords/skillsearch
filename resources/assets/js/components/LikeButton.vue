@@ -1,9 +1,11 @@
 <template>
     <span>
-        <a v-on:click.prevent="submitLike" class="ui circular extra huge icon button" v-bind:class="{ 'purple' : hasLiked }">
-            <i class="icon thumbs up"></i> 
-        </a> <span class="like-count">{{count}}</span>
-         <!-- <small class="text-muted"> {{formatCount(count)}}</small> -->
+        <span class="like_btn" :class="{'big' : size, 'liked' : hasLiked}" :id="pid">
+            <a v-on:click.prevent="submitLike" class="" v-bind:class="{ 'purple' : hasLiked, 'ui circular extra huge green icon button' : size }">
+                <i class="icon thumbs up" v-if="size"></i> 
+                <i class="fa fa-thumbs-up" v-else="!size"></i>
+            </a> <span class="like-count">{{count}}</span>
+        </span>
     </span>
 </template>
 
@@ -12,14 +14,19 @@
         data(){
             return{
                 isLoggedIn: null,
-                count: null,
+                count: this.likes,
                 canLike: false,
-                hasLiked: false,
+                hasLiked: (this.liked == '1') ? true : false,
                 isUserLoggedIn: window.Laravel.userLoggedIn,
+                size: (this.big == 'true') ? true : false,
+                pid: this.id,
             }
         },
         props: {
             id: null,
+            big: null,
+            likes: null,
+            liked: null,
         },
 
         methods: {
@@ -78,8 +85,7 @@
             }
         },
         mounted() {
-            console.log(this.isUserLoggedIn);
-            this.getLikes();
+            // this.getLikes();
         }
     }
 </script>

@@ -25,14 +25,14 @@
                      {{ $portfolio['user_profile']['first_name'] }} {!! identity_check($portfolio['verified']) !!}
                 </a>
 
-                <span class="right floated meta large-screen-only">
-                    <span class="bold"><i class="fa fa-thumbs-up"></i> {{$portfolio['likes_count']}} </span>
-                    <span class="bold" style="margin-left: 1em"><i class="fa fa-comment"></i> {{$portfolio['comment_count']}}</span>
+                <span class="right floated meta large-screen-only portfolio-meta">
+                    <like-button id="{{$portfolio['uid']}}" class="bold" likes="{{$portfolio['likes_count']}}" liked="{{$portfolio['has_liked']}}"></like-button>
+                    <span class="bold" style="margin-left: 1em"><a href="{{ $portfolio['link']['url'] }}#comments"><i class="fa fa-comment"></i> {{$portfolio['comment_count']}}</a></span>
                 </span>
 
-                <span class="meta mobile-only tablet-only">
-                    <span class="bold"><i class="fa fa-thumbs-up"></i> {{$portfolio['likes_count']}} </span>
-                    <span class="bold" style="margin-left: 1em"><i class="fa fa-comment"></i> {{$portfolio['comment_count']}}</span>
+                <span class="meta mobile-only tablet-only portfolio-meta">
+                    <like-button id="{{$portfolio['uid']}}" class="bold" likes="{{$portfolio['likes_count']}}" liked="{{$portfolio['has_liked']}}"></like-button>
+                    <span class="bold" style="margin-left: 1em"><a href="{{ $portfolio['link']['url'] }}#comments"><i class="fa fa-comment"></i> {{$portfolio['comment_count']}}</a></span>
                 </span>
             </div>
             

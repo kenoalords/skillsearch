@@ -36602,20 +36602,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = {
     data: function data() {
         return {
             isLoggedIn: null,
-            count: null,
+            count: this.likes,
             canLike: false,
-            hasLiked: false,
-            isUserLoggedIn: window.Laravel.userLoggedIn
+            hasLiked: this.liked == '1' ? true : false,
+            isUserLoggedIn: window.Laravel.userLoggedIn,
+            size: this.big == 'true' ? true : false,
+            pid: this.id
         };
     },
 
     props: {
-        id: null
+        id: null,
+        big: null,
+        likes: null,
+        liked: null
     },
 
     methods: {
@@ -36670,8 +36677,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     mounted: function mounted() {
-        console.log(this.isUserLoggedIn);
-        this.getLikes();
+        // this.getLikes();
     }
 };
 
@@ -83026,10 +83032,17 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('span', [_c('a', {
-    staticClass: "ui circular extra huge icon button",
+  return _c('span', [_c('span', {
+    staticClass: "like_btn",
     class: {
-      'purple': _vm.hasLiked
+      'big': _vm.size, 'liked': _vm.hasLiked
+    },
+    attrs: {
+      "id": _vm.pid
+    }
+  }, [_c('a', {
+    class: {
+      'purple': _vm.hasLiked, 'ui circular extra huge green icon button': _vm.size
     },
     on: {
       "click": function($event) {
@@ -83037,11 +83050,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.submitLike($event)
       }
     }
-  }, [_c('i', {
+  }, [(_vm.size) ? _c('i', {
     staticClass: "icon thumbs up"
+  }) : _c('i', {
+    staticClass: "fa fa-thumbs-up"
   })]), _vm._v(" "), _c('span', {
     staticClass: "like-count"
-  }, [_vm._v(_vm._s(_vm.count))])])
+  }, [_vm._v(_vm._s(_vm.count))])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {

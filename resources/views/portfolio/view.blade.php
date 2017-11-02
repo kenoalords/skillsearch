@@ -117,7 +117,7 @@
                     <div class="column center aligned">
                         <h3 class="ui header">Appreciate this work!</h3>
                     </div>
-                    <like-button id="{{$portfolio['uid']}}"></like-button>
+                    <like-button id="{{$portfolio['uid']}}" big="true" likes="{{$portfolio['likes_count']}}" liked="{{$portfolio['has_liked']}}"></like-button>
                 </div>
                 <div class="white-boxed" style="margin: 3em -1rem -1rem; background: rgba(247,247,247,1); border-top: 1px solid #ddd; border-bottom: 1px solid #ddd">
                     <div class="ui unstackable items" style="margin: 1em 0 2em">

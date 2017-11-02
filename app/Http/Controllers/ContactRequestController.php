@@ -28,7 +28,7 @@ class ContactRequestController extends Controller
     public function submit(ContactRequestValidation $request, User $user)
     {
     	$ip = $request->ip();
-    	$geoip = geoip()->getLocation('41.58.90.226');
+    	$geoip = geoip()->getLocation($ip);
     	// dd($geoip);
     	$post = $user->contactRequest()->create([
     				'fullname'	=> $request->fullname,
