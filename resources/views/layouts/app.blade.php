@@ -33,10 +33,8 @@
     
     <!-- Styles -->
     <link rel="icon" href="{{ asset('public/favicon.png') }}" type="image/png">
-    <!-- <link rel="stylesheet" href="{{ asset('css/medium-editor.min.css') }}"> -->
-    <!-- <link rel="stylesheet" href="{{ asset('css/jplayer.pink.flag.min.css') }}"> -->
-    <link rel="stylesheet" href="{{ asset('css/semantic.min.css') }}">
-    <link href="{{ asset('css/app-new.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ mix('/css/all.css') }}">
+    <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
     <!-- Scripts -->
     <script>
         window.Laravel  = {!! json_encode([
@@ -145,7 +143,7 @@
     
     
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ mix('/js/app.js') }}"></script>
  
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

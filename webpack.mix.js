@@ -12,16 +12,16 @@ const { mix } = require('laravel-mix');
  */
 
 mix.js('node_modules/video.js/dist/video.min.js', 'public/js')
-	// .js('node_modules/jplayer/dist/jplayer/jquery.jplayer.min.js', 'public/js')
 	.js('node_modules/medium-editor/dist/js/medium-editor.js', 'public/js')
 	.js('node_modules/blazy/blazy.min.js', 'public/js')
 	.js('node_modules/semantic-ui-css/semantic.min.js', 'public/js')
-	.copy('node_modules/semantic-ui-css/semantic.min.css', 'public/css')
-	.copy('node_modules/jplayer/dist/skin/pink.flag/css/jplayer.pink.flag.min.css', 'public/css')
+	.combine([
+		'node_modules/semantic-ui-css/semantic.min.css',
+		'node_modules/toastr/build/toastr.min.css'
+		], 'public/css/all.css')
 	.js('resources/assets/js/app.js', 'public/js')
-	.sass('node_modules/toastr/build/toastr.min.css', 'public/css')
-	.sass('resources/assets/sass/app-new.scss', 'public/css');
-
+	.sass('resources/assets/sass/app.scss', 'public/css')
+	.version();
 
 
 

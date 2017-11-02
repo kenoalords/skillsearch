@@ -172,8 +172,23 @@ p, ul, ol{
 }
 
 .portfolio-meta{
-	// opacity: .5;
-	margin-left:1em;
+	color: #222;
+	a, .like-count{
+		color: #222;
+		opacity: .5;
+		transition: all .3s ease-out;
+		&:hover{
+			opacity: 1;
+		}
+	}
+	.like_btn {
+		&.liked{
+			a, .like-count{
+				color: #21ba45 !important;
+				opacity: 1 !important;
+			}
+		}
+	}
 }
 
 .whiteCard{
@@ -1040,13 +1055,15 @@ body.loading:before{
 	}
 }
 
-.like-count{
-	display: inline-block;
-    // margin-left: 0.5em;
-    font-size: 2.5em;
-    font-weight: 700;
-    color: #333;
-    text-shadow: 0 1px 1px #fff;
+span.big{
+	.like-count{
+		display: inline-block;
+	    // margin-left: 0.5em;
+	    font-size: 2.5em;
+	    font-weight: 700;
+	    color: #333;
+	    text-shadow: 0 1px 1px #fff;
+	}
 }
 
 #site-footer{

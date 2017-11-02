@@ -1,9 +1,9 @@
 {
-  "/js/app.js": "/js/app.js",
-  "/js/video.min.js": "/js/video.min.js",
-  "/css/toastr.css": "/css/toastr.css",
-  "/css/app-new.css": "/css/app-new.css",
-  "/js/medium-editor.js": "/js/medium-editor.js",
-  "/js/semantic.min.js": "/js/semantic.min.js",
-  "/js/blazy.min.js": "/js/blazy.min.js"
+  "/js/app.js": "/js/app.ade5f38a4e7adae07a89.js",
+  "/js/video.min.js": "/js/video.min.b127c63a07cd5d6f54bf.js",
+  "/css/app.css": "/css/app.b2e03d13c35018b03087.css",
+  "/js/medium-editor.js": "/js/medium-editor.75fd0e43b632d9cc292f.js",
+  "/js/semantic.min.js": "/js/semantic.min.18522ffd440d5a4ffc18.js",
+  "/js/blazy.min.js": "/js/blazy.min.77348c627b8423a95765.js",
+  "/css/all.css": "/css/all.115a4f6f8bf9a810cdcdcd034a634e27.css"
 }

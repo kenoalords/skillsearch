@@ -18,9 +18,8 @@
     
     <!-- Styles -->
     <link rel="icon" href="{{ asset('public/favicon.png') }}" type="image/png">
-    <link rel="stylesheet" href="{{ asset('css/semantic.min.css') }}">
-    <link href="{{ asset('css/toastr.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/app-new.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ mix('/css/all.css') }}">
+    <link href="{{ mix('css/app-new.css') }}" rel="stylesheet">
     <!-- Scripts -->
     <script>
         window.Laravel  = {!! json_encode([
@@ -103,10 +102,8 @@
     
     
     
-    <!-- Scripts -->
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyASRW46rAvktIC7IsJFva1gKbPKBYlrpQo&libraries=places&region=ng" async></script>
     <!-- <script src="{{ asset('js/semantic.min.js') }}"></script> -->
-    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ mix('js/app.js') }}"></script>
 
     <script>
         var inputState = document.getElementById('geolocation');
@@ -119,9 +116,7 @@
             autocomplete = new google.maps.places.Autocomplete(inputState, options);
         }
     </script>
-    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" async></script>
-    <!-- <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script> -->
-    <!-- <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script> -->
+    
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
