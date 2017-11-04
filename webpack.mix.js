@@ -17,7 +17,7 @@ mix.js('node_modules/video.js/dist/video.min.js', 'public/js')
 	.js('node_modules/semantic-ui-css/semantic.min.js', 'public/js')
 	.combine([
 		'node_modules/semantic-ui-css/semantic.min.css',
-		'node_modules/toastr/build/toastr.min.css'
+		'node_modules/toastr/build/toastr.css'
 		], 'public/css/all.css')
 	.js('resources/assets/js/app.js', 'public/js')
 	.sass('resources/assets/sass/app.scss', 'public/css')

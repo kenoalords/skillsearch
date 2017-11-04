@@ -2735,6 +2735,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_toastr__ = __webpack_require__("./node_modules/toastr/toastr.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_toastr___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_toastr__);
 //
 //
 //
@@ -2746,6 +2748,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -2797,6 +2800,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.count++;
                 this.hasLiked = true;
                 this.like();
+                __WEBPACK_IMPORTED_MODULE_0_toastr___default.a.success('Liked!');
             } else if (this.hasLiked === true) {
                 this.count--;
                 this.hasLiked = false;

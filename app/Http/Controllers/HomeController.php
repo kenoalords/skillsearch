@@ -48,7 +48,7 @@ class HomeController extends Controller
     public function index(Request $request, ContactInvite $invite, Portfolio $portfolio, User $user, Task $task)
     {   
         $following = $request->user()->followers()->pluck('following_id')->all();
-        $portfolios = $portfolio->whereIn('user_id', $following)->orderBy('created_at', 'desc')->limit(2)->get();
+        $portfolios = $portfolio->whereIn('user_id', $following)->orderBy('created_at', 'desc')->limit(16)->get();
         $user_profile = $request->user()->profile()->first();
         
         $activities = fractal()->collection($portfolios)
