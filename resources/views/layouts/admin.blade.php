@@ -19,7 +19,7 @@
     <!-- Styles -->
     <link rel="icon" href="{{ asset('public/favicon.png') }}" type="image/png">
     <link rel="stylesheet" href="{{ mix('/css/all.css') }}">
-    <link href="{{ mix('css/app-new.css') }}" rel="stylesheet">
+    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     <!-- Scripts -->
     <script>
         window.Laravel  = {!! json_encode([
