@@ -306,15 +306,24 @@ class PortfolioController extends Controller
         }
     }
 
-    public function homepagePortfolio(Portfolio $portfolio, Skills $skills)
+    public function homepagePortfolio(Request $request, Portfolio $portfolio, Skills $skills)
     {
-        $portfolios = fractal()->collection($portfolio->isPublic()->hasThumbnail()->latestFirst()->take(24)->get())
+        $records = $portfolio->isPublic()->hasThumbnail();
+        // $per_page = 3;
+        // $offset = (int)$request->get('page') * ($per_page - 1);
+        // $total = $records->count();
+        // $links = (int)ceil($total/$offset);
+        // dd($offset);
+        $paginate = $records->paginate(24);
+
+        $portfolios = fractal()->collection($records->latestFirst()->get())
                         ->transformWith(new PortfolioTransformer)
                         ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                         ->toArray();
 
         return view('welcome')->with([
-            'portfolios' => $portfolios,
+            'portfolios'    => $portfolios,
+            'links'         => $paginate,
         ]);
     }
 

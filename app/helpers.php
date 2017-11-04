@@ -106,3 +106,23 @@ function human_number($n) {
     
     return number_format($n);
 }
+
+function ubanji_paginate($pages)
+{
+    if(!$pages)
+        return;
+    
+    $class = '';
+    $r = '<div class="ui pagination menu">';
+    for($i = 1; $i <= $pages; $i++)
+    {
+        if($_GET['page'] && (int)$_GET['page'] === $i){
+            $class = 'active';
+        }
+        $r .= '<a href="?page='.$i.'" class="item '.$class.'">'.$i.'</a>';
+    }
+    return $r .= '</div>';
+}
+
+
+

@@ -16,8 +16,7 @@
 </div>
 
 <div id="home-search" class="padded">
-    @include('search-form')
-    
+    @include('search-form')  
 </div>
 @if(!Auth::user())
     <p style="text-align: center; margin-top: 2em; font-weight: bold">Want to showcase your creative works? <a href="/register" style="font-weight: bold">Start Here.</a></p>
@@ -27,8 +26,8 @@
         <div class="ui centered grid">
             @each('includes.portfolio-with-user', $portfolios, 'portfolio')
         </div>
-        <div class="ui centered container grid" style="margin: 2em !important;">
-            <a href="/work" class="ui button green">Discover more work</a>
+        <div class="ui center aligned container" style="margin: 2em !important;">
+            {{ $links->links() }}
         </div>
         
     </div>
