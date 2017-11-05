@@ -95930,68 +95930,33 @@ Vue.component('blog-subscribe', __webpack_require__("./resources/assets/js/compo
 Vue.component('phone-number', __webpack_require__("./resources/assets/js/components/PhoneNumber.vue"));
 
 var app = new Vue({
-  el: '#app'
+	el: '#app'
 });
 
 var bLazy = new Blazy();
 // var jplayer = new jPlayer();
 
 $('body').on('click', '#google-invite', function (e) {
-  $('body').addClass('loading');
+	$('body').addClass('loading');
 });
 
-// if($('#audio').length > 0){
-// 	loadAndPlayAudioFile();
-// }
-
-// function loadAndPlayAudioFile(){
-// 	var audio = $('#audio').data('src');
-// 	var wavesurfer = Wavesurfer.create({
-// 		container: '#audio',
-// 		waveColor: '#93b3ca',
-// 		progressColor: '#0e74bc',
-// 		barWidth: 2
-// 	});
-
-// 	wavesurfer.load(audio);
-
-// 	$('body').on('click', '#play-audio', function(e){
-// 		e.preventDefault();
-// 		if(!wavesurfer.isPlaying()){
-// 			$('#play-audio').find('i').removeClass('fa-play').addClass('fa-pause');
-// 			wavesurfer.play();
-// 		} else {
-// 			$('#play-audio').find('i').removeClass('fa-pause').addClass('fa-play');
-// 			wavesurfer.pause();
-// 		}
-// 	})
-// 	.on('click', '#stop-audio', function(e){
-// 		e.preventDefault();
-// 		if(wavesurfer.isPlaying()){
-// 			$('#play-audio').find('i').removeClass('fa-pause').addClass('fa-play');
-// 		}
-// 		wavesurfer.stop();
-// 	});
-// }
-
-
 $('body').on('click', '#delete-instagram', function (e) {
-  if (!confirm('Are you sure you want to delete this Instagram account? This action cannot be undone.')) {
-    return false;
-  }
+	if (!confirm('Are you sure you want to delete this Instagram account? This action cannot be undone.')) {
+		return false;
+	}
 }).on('click', '#close-instagram-notification', function (e) {
-  e.preventDefault();
-  $('#instagram-notification').slideUp('fast');
+	e.preventDefault();
+	$('#instagram-notification').slideUp('fast');
 });
 
 $('.ui.sticky').sticky({
-  context: '#sidebar',
-  offset: 70
+	context: '#sidebar',
+	offset: 70
 });
 
 var dropdownDefault;
 if ($('.ui.selection').length > 0) {
-  dropdownDefault = $('.ui.selection').find('div.menu')[0].dataset.default;
+	dropdownDefault = $('.ui.selection').find('div.menu')[0].dataset.default;
 }
 // console.log(dropdownDefault);
 
@@ -96001,49 +95966,64 @@ $('.ui.dropdown').dropdown('set selected', dropdownDefault);
 $('.ui.progress').progress();
 
 $('body').on('click', '#get-location', function (e) {
-  e.preventDefault();
-  UserLocation.getLocation();
+	e.preventDefault();
+	UserLocation.getLocation();
 });
 
 var UserLocation = {
-  getLocation: function getLocation() {
-    var pos;
-    if (UserLocation.canGeolocate) {
-      pos = navigator.geolocation.getCurrentPosition(function (position) {
-        console.log(position);
-      });
-    } else {
-      alert('Sorry your browser does not support this feature');
-    }
-  },
-  canGeolocate: function canGeolocate() {
-    return "geolocation" in navigator ? true : false;
-  }
+	getLocation: function getLocation() {
+		var pos;
+		if (UserLocation.canGeolocate) {
+			pos = navigator.geolocation.getCurrentPosition(function (position) {
+				console.log(position);
+			});
+		} else {
+			alert('Sorry your browser does not support this feature');
+		}
+	},
+	canGeolocate: function canGeolocate() {
+		return "geolocation" in navigator ? true : false;
+	}
 };
 
 
 
 $("#jquery_jplayer_1").jPlayer({
-  ready: function ready() {
-    $(this).jPlayer("setMedia", {
-      // title: $('#jquery_jplayer_1').data('title'),
-      m4a: $('#jquery_jplayer_1').data('src')
-    });
-  },
-  cssSelectorAncestor: "#jp_container_1",
-  swfPath: "/js",
-  supplied: "m4a",
-  useStateClassSkin: true,
-  autoBlur: false,
-  smoothPlayBar: true,
-  keyEnabled: true,
-  remainingDuration: true,
-  toggleDuration: true
+	ready: function ready() {
+		$(this).jPlayer("setMedia", {
+			// title: $('#jquery_jplayer_1').data('title'),
+			m4a: $('#jquery_jplayer_1').data('src')
+		});
+	},
+	cssSelectorAncestor: "#jp_container_1",
+	swfPath: "/js",
+	supplied: "m4a",
+	useStateClassSkin: true,
+	autoBlur: false,
+	smoothPlayBar: true,
+	keyEnabled: true,
+	remainingDuration: true,
+	toggleDuration: true
 });
 
 $('#mobile-menu-admin').sidebar({
-  // context: $('#app')
+	// context: $('#app')
 }).sidebar('attach events', '#mobile-admin-trigger');
+
+$('body').on('click', '#load-more', function (e) {
+	e.preventDefault();
+	var id = document.getElementById('load-more').dataset.page;
+	$('#load-more').addClass('loading');
+	axios.get('/load-more/' + id).then(function (response) {
+		if (response.data.html) {
+			$('#portfolio-data').append(response.data.html);
+			$('#load-more').removeClass('loading');
+			document.getElementById('load-more').dataset.page = parseInt(id) + 1;
+		} else {
+			$('#load-more').hide();
+		}
+	});
+});
 
 /***/ }),
 

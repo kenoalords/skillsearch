@@ -306,25 +306,36 @@ class PortfolioController extends Controller
         }
     }
 
-    public function homepagePortfolio(Request $request, Portfolio $portfolio, Skills $skills)
+    public function homepagePortfolio(Request $request, Portfolio $portfolio)
     {
         $records = $portfolio->isPublic()->hasThumbnail();
-        // $per_page = 3;
-        // $offset = (int)$request->get('page') * ($per_page - 1);
-        // $total = $records->count();
-        // $links = (int)ceil($total/$offset);
+        
         // dd($offset);
-        $paginate = $records->paginate(24);
+        // $paginate = $records->paginate(24);
 
-        $portfolios = fractal()->collection($records->latestFirst()->get())
+        $portfolios = fractal()->collection($records->latestFirst()->take(12)->get())
                         ->transformWith(new PortfolioTransformer)
                         ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                         ->toArray();
 
         return view('welcome')->with([
             'portfolios'    => $portfolios,
-            'links'         => $paginate,
         ]);
+    }
+
+    public function homepagePortfolioAjax(Request $request, Portfolio $portfolio)
+    {
+        $records = $portfolio->isPublic()->hasThumbnail();
+        $skip = (int)($request->page) * 12;
+        $portfolios = fractal()->collection($records->latestFirst()->skip($skip)->take(12)->get())
+                        ->transformWith(new PortfolioTransformer)
+                        ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                        ->toArray();
+        $data = '';
+        foreach ( $portfolios as $key => $portfolio ){
+            $data .= view('includes.portfolio-with-user', ['portfolio'=>$portfolio])->render();
+        }
+        return response()->json(['status'=>true, 'html'=>$data]);
     }
 
     public function workPage(Portfolio $portfolio, Skills $skills)

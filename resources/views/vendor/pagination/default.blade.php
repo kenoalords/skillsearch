@@ -30,7 +30,7 @@
         @if ($paginator->hasMorePages())
             <a href="{{ $paginator->nextPageUrl() }}" rel="next" class="item">&raquo;</a>
         @else
-            <div class="disabled item"><span>&raquo;</span>
+            <div class="disabled item"><span>&raquo;</span></div>
         @endif
     </div>
 @endif

@@ -23,11 +23,11 @@
     @endif
 <div id="showcase">
     <div class="ui container">
-        <div class="ui centered grid">
+        <div class="ui centered grid" id="portfolio-data">
             @each('includes.portfolio-with-user', $portfolios, 'portfolio')
         </div>
         <div class="ui center aligned container" style="margin: 2em !important;">
-            {{ $links->links() }}
+            <a href="#" id="load-more" class="ui button" data-page="1">Load More</a>
         </div>
         
     </div>
