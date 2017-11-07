@@ -95,9 +95,9 @@ class Profile extends Model
         }
     }
 
-    public function getFullname()
+    public function getFullnameAttribute()
     {
-      return $this->first_name . ' ' . $this->last_name;
+        return $this->first_name . ' ' . $this->last_name;
     }
 
     public function getUserBackground(){

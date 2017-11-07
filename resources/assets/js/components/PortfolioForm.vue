@@ -6,7 +6,7 @@
     <div class="row">
         <div class="field">
             <h3 class="ui header">Upload Cover Image</h3>
-            <label class="thumbnail-image" v-bind:class="{ saving : savingThumbnail }">
+            <label class="thumbnail-image" v-bind:class="{ 'saving' : savingThumbnail }">
                 <input type="file" id="thumbnailImage" style="display: none" v-on:change="uploadThumbnail()" :disabled="savingThumbnail">
                 <img v-bind:src="thumbnail" v-if="thumbnail" class="ui fluid image" id="thumbnail">
             </label>
@@ -133,21 +133,16 @@
                             <input type="file" id="fileUpload" style="display:none" v-on:change="uploadImage">
                         </label>
                         <div v-if="uploadedImages.length == 1">
-                            <p>You can change the video by deleting the currently uploaded video and uploading a new video</p>
+                            <p>You can change the video by deleting the currently uploaded video and upload a new video</p>
                         </div>
-                        <div class="list-group" v-if="uploadedImages" style="margin-top:2em">
-                            <div class="list-group-item" v-for="video in uploadedImages">
-                                <div class="embed-responsive embed-responsive-16by9">
-                                <video id="video">
-                                    <source type="video/mp4" v-bind:src="video.link"></source>
-                                </video>
-                                </div>
-                                <hr>
-                                <div class="">
-                                    <a href="#" v-on:click.prevent="deleteFile(video)" class="btn btn-danger btn-block">
-                                        <i class="glyphicon glyphicon-trash"></i> Delete
-                                    </a>
-                                </div>
+                        <div v-if="uploadedImages" style="margin-top:2em" v-for="video in uploadedImages">
+                            <video id="video" style="width:100%;" controls>
+                                <source type="video/mp4" :src="video.link"></source>
+                            </video>
+                            <div class="">
+                                <a href="#" v-on:click.prevent="deleteFile(video)" class="ui mini red button">
+                                    <i class="icon trash"></i> Delete
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -184,14 +179,14 @@
 </template>
 
 <script>
-    // import videojs from "video.js";
+    import videojs from "video.js";
     export default {
         data()  {
             var portfolio = this.portfolio ? JSON.parse(this.portfolio) : '',
                 files = (this.files) ? JSON.parse(this.files) : '',
                 skills = (this.skills) ? JSON.parse(this.skills) : '';
             return {
-                title: (portfolio.title) ? portfolio.title : 'Untitled',
+                title: (portfolio.title) ? portfolio.title : this.name + ' Portfolio',
                 description: (portfolio.description) ? portfolio.description : '',
                 type: (portfolio.type) ? portfolio.type : null,
                 isPublic : (portfolio.is_public) ? portfolio.is_public : 0,
@@ -203,11 +198,12 @@
                 statusText : null,
                 userSkills : skills, 
                 portfolioSkills: [],
+                selectedSkills:(portfolio.skills !== null) ? portfolio.skills.split(", ") : null,
                 canSave: (portfolio.uid) ? true : false,
                 portfolioUrl: (portfolio.url) ? portfolio.url : null,
                 portfolioDate: (portfolio.completion_date) ? portfolio.completion_date : null,
                 savingThumbnail: false,
-                thumbnail : (portfolio.thumbnail) ?  window.skillsearch.s3images +'/'+ portfolio.thumbnail : null,
+                thumbnail : (portfolio.thumbnail) ? portfolio.thumbnail : null,
                 isNew: false,
                 player: null,
                 formErrors : null,
@@ -218,6 +214,7 @@
             portfolio : null,
             files : null,
             skills: null,
+            name: null,
         },
         methods: {
             savePortfolio() {
@@ -320,10 +317,10 @@
                     return false;
                 }
 
-                // if( _this.type === 'video' && video.indexOf(file.type) === -1 ){
-                //     alert('Please select a video file to upload');
-                //     return false;
-                // }
+                if( _this.type === 'video' && video.indexOf(file.type) === -1 ){
+                    alert('Please select a video file to upload');
+                    return false;
+                }
 
                 if( _this.type === 'audio' && audio.indexOf(file.type) === -1 ){
                     alert('Please select an audio file to upload');
@@ -358,12 +355,13 @@
                         _this.uploadedImages.push(response.data.file);
                         _this.canSave = true;
                         
+                        
                     })
                     .catch( (e) => {
                         _this.isUploading = false;
                         _this.uploadingComplete = true;
                         _this.formErrors = e.response.data;
-                        // console.log(error)
+                        console.log(e)
                     }); 
                 } else {
                     _this.progress = 0;
@@ -392,10 +390,9 @@
                         _this.isUploading = false;
                         _this.uploadingComplete = true;
                         _this.uploadedImages.push(response.data.file);
-                        
                     })
                     .catch( (e) => {
-                        // console.log(error)
+                        console.log(e);
                         _this.isUploading = false;
                         _this.uploadingComplete = true;
                         _this.formErrors = e.response.data;
@@ -417,8 +414,7 @@
             },
         },
         mounted() {
-            // this.progressEl.progress();
-
+            // this.player = videojs("video");
         }
     }
 </script>

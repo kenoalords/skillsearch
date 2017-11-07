@@ -877,6 +877,32 @@ body.loading:before{
 
 // ****************************************** NEW STYLE ***********************************
 
+.thumbnail-image{
+	display: block;
+	width: 300px;
+	height: 300px;
+	border-radius: 2px;
+	border: 2px dashed #ddd;
+	position: relative;
+	text-align: center;
+}
+
+.thumbnail-image:before{
+	content: "\f03e";
+	font-size: 3em;
+	display: block;
+	position: absolute;
+	width: 100%;
+	font-family: "FontAwesome";
+	color: #999;
+	top: 35%;
+	left: 0;
+
+	&.saving{
+		content: "Uploading thumbnail...";
+	}
+}
+
 .white-boxed{
 	padding:2em;
 	background-color:#fff;

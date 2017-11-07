@@ -39,7 +39,9 @@ class PortfolioController extends Controller
     public function add(Request $request)
     {
         $skills = $request->user()->skills()->get();
-    	return view('portfolio.add')->with(['skills' => $skills]);
+        $profile = $request->user()->profile()->first();
+        $name = ($profile) ? $profile->first_name . ' ' . $profile->last_name : 'Untitled Portfolio';
+    	return view('portfolio.add')->with(['skills' => $skills, 'name'=>$name]);
     }
 
     public function edit(Request $request, Portfolio $portfolio)
@@ -47,8 +49,11 @@ class PortfolioController extends Controller
         $this->authorize('edit', $portfolio);
     	$files = $portfolio->files()->get();
         $skills = $request->user()->skills()->get();
-        
-        // dd($files->link);
+        $portfolio = fractal()->item($portfolio)
+                        ->transformWith(new PortfolioTransformer)
+                        ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                        ->toArray();
+        // dd($portfolio);
     	return view('portfolio.edit')->with([
     		'portfolio' => $portfolio,
     		'files'		=> $files,
@@ -88,14 +93,6 @@ class PortfolioController extends Controller
     			'file'	=> $image_url
     		]);
 
-            if($request->is_public == 1){
-                // $pointService->addPoint($request->user, 'portfolio');
-                $portfolio->activity()->create([
-                    'user_id'=> $request->user()->id,
-                    'title' => 'updated their portfolio',
-                    'type'  => 'portfolio'
-                ]);
-            }
     		return response()->json([
     			'file' => [
                     'link'  => config('app.url').'/'.$file->file,
@@ -113,15 +110,7 @@ class PortfolioController extends Controller
 	    		'type'			=> $request->type
 	    	]);
 
-            if($request->is_public == 1){
-                $portfolio->activity()->create([
-                    'user_id'=> $request->user()->id,
-                    'title' => 'updated their portfolio',
-                    'type'  => 'portfolio'
-                ]);
-            }
-
-	    	if( $request->file && $request->type == 'images' ){
+	    	if( $request->file ){
 	    		$portfolio = $request->user()->portfolio()->where('uid', $uid)->first();
 	    		$image_url = $request->file('file')->store('public');
 	    		if($request->type == 'images'){
@@ -169,7 +158,7 @@ class PortfolioController extends Controller
             $portfolio = $request->user()->portfolio()->create([
                 'uid'   => $uid,
                 'title' => $request->title,
-                // 'thumbnail' => $thumbnail,
+                'thumbnail' => $thumbnail,
                 'is_public' => false
             ]);
             event(new PortfolioImageUploadEvent($portfolio, $thumbnail));
@@ -313,7 +302,7 @@ class PortfolioController extends Controller
         // dd($offset);
         // $paginate = $records->paginate(24);
 
-        $portfolios = fractal()->collection($records->latestFirst()->take(12)->get())
+        $portfolios = fractal()->collection($records->latestFirst()->take(2)->get())
                         ->transformWith(new PortfolioTransformer)
                         ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                         ->toArray();
@@ -326,8 +315,8 @@ class PortfolioController extends Controller
     public function homepagePortfolioAjax(Request $request, Portfolio $portfolio)
     {
         $records = $portfolio->isPublic()->hasThumbnail();
-        $skip = (int)($request->page) * 12;
-        $portfolios = fractal()->collection($records->latestFirst()->skip($skip)->take(12)->get())
+        $skip = (int)($request->page) * 2;
+        $portfolios = fractal()->collection($records->latestFirst()->skip($skip)->take(2)->get())
                         ->transformWith(new PortfolioTransformer)
                         ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                         ->toArray();

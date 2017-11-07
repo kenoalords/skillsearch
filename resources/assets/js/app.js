@@ -52,7 +52,7 @@ const app = new Vue({
 });
 
 var bLazy = new Blazy();
-// var jplayer = new jPlayer();
+// var waypoint = new Waypoint();
 
 $('body').on('click', '#google-invite', function(e){
 	$('body').addClass('loading');
@@ -130,20 +130,37 @@ $('#mobile-menu-admin').sidebar({
     // context: $('#app')
 }).sidebar('attach events', '#mobile-admin-trigger');
 
+var Portfolio = {
+	load: function(){
+		var id = document.getElementById('load-more').dataset.page;
+		$('#load-more').addClass('loading');
+		axios.get('/load-more/'+id).then(function(response){
+			if(response.data.html){
+				$('#portfolio-data').append(response.data.html);
+				$('#load-more').removeClass('loading')
+				document.getElementById('load-more').dataset.page = parseInt(id) + 1;
+			} else {
+				$('#load-more').hide();
+			}
+		});
+	}
+}
+
+// import waypoint from "waypoints/src/waypoint";
+
 $('body').on('click', '#load-more', function(e){
 	e.preventDefault();
-	var id = document.getElementById('load-more').dataset.page;
-	$('#load-more').addClass('loading');
-	axios.get('/load-more/'+id).then(function(response){
-		if(response.data.html){
-			$('#portfolio-data').append(response.data.html);
-			$('#load-more').removeClass('loading')
-			document.getElementById('load-more').dataset.page = parseInt(id) + 1;
-		} else {
-			$('#load-more').hide();
-		}
-	});
-})
+	Portfolio.load();
+});
+
+// var waypoints = $('#how').waypoint({
+//     // element: document.getElementById('how'),
+//     handler: function(direction){
+//         console.log(direction);
+//     }
+// });
+
+
 
 
 

@@ -42,83 +42,77 @@
 
                 @if($portfolio['is_public'] === 1 || (Auth::user() && Auth::user()->id === $portfolio['user_id']))
                 
-                @if($portfolio['type'] === 'images')
-                    
-                    @foreach ($files as $file)
-                        <div class="portfolio-image-wrapper" style="margin: -1rem -1rem 2em">
-                            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=" data-src="{{asset($file->getFile())}}" alt="{{ $portfolio['title'] }} Image" class="ui fluid image b-lazy">
-                        </div>
-                    @endforeach
+                    @if($portfolio['type'] === 'images')
+                        
+                        @foreach ($files as $file)
+                            <div class="portfolio-image-wrapper" style="margin: -1rem -1rem 2em">
+                                <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=" data-src="{{asset($file->getFile())}}" alt="{{ $portfolio['title'] }} Image" class="ui fluid image b-lazy">
+                            </div>
+                        @endforeach
 
-                @endif
+                    @endif
 
-                @if($portfolio['type'] === 'audio')
-                    @foreach ($files as $file)
-                        <!-- <div class="">
-                            <div id="audio" data-src="{{asset($file->getFile())}}"></div>
-                            <hr>
-                            <a href="#" class="media-buttons" id="play-audio"><i class="fa fa-play"></i></a>
-                            <a href="#" class="media-buttons" id="stop-audio"><i class="fa fa-stop"></i></a>
-                        </div> -->
-                        <div id="jquery_jplayer_1" class="jp-jplayer" data-src="{{asset($file->getFile())}}" data-title="{{$portfolio['title']}}"></div>
-                        <div id="jp_audio_wrapper" class="">
-                            <div id="jp_container_1" class="jp-audio" role="application" aria-label="media player">
-                          <div class="jp-type-single" style="text-align: center">
-                            <div class="jp-gui jp-interface">
-                              <div class="jp-volume-controls">
-                                
-                                
-                                <div class="jp-volume-bar">
-                                  <div class="jp-volume-bar-value"></div>
-                                </div>
-                              </div>
-                              <div class="jp-controls-holder" style="margin-top: 2em;">
-                                <div class="jp-controls ui middle aligned column">
-                                    <span class="jp-mute ui basic icon circular mini button" role="button" tabindex="0"><i class="icon mute"></i></span>
-                                    <button class="jp-play ui icon circular huge green basic button" role="button" tabindex="0"><i class="icon play"></i></button>
-                                    <button class="jp-stop ui icon circular red basic button" role="button" tabindex="0"><i class="icon stop"></i></button>
-                                    <span class="jp-volume-max ui basic icon circular mini button" role="button" tabindex="0"><i class="icon volume up"></i></span>
-                                </div>
-                                <div class="jp-progress">
-                                  <div class="jp-seek-bar">
-                                    <div class="jp-play-bar"></div>
+                    @if($portfolio['type'] === 'audio')
+                        @foreach ($files as $file)
+                            <div id="jquery_jplayer_1" class="jp-jplayer" data-src="{{asset($file->getFile())}}" data-title="{{$portfolio['title']}}"></div>
+                            <div id="jp_audio_wrapper" class="">
+                                <div id="jp_container_1" class="jp-audio" role="application" aria-label="media player">
+                              <div class="jp-type-single" style="text-align: center">
+                                <div class="jp-gui jp-interface">
+                                  <div class="jp-volume-controls">
+                                    
+                                    
+                                    <div class="jp-volume-bar">
+                                      <div class="jp-volume-bar-value"></div>
+                                    </div>
+                                  </div>
+                                  <div class="jp-controls-holder" style="margin-top: 2em;">
+                                    <div class="jp-controls ui middle aligned column">
+                                        <span class="jp-mute ui basic icon circular mini button" role="button" tabindex="0"><i class="icon mute"></i></span>
+                                        <button class="jp-play ui icon circular huge green basic button" role="button" tabindex="0"><i class="icon play"></i></button>
+                                        <button class="jp-stop ui icon circular red basic button" role="button" tabindex="0"><i class="icon stop"></i></button>
+                                        <span class="jp-volume-max ui basic icon circular mini button" role="button" tabindex="0"><i class="icon volume up"></i></span>
+                                    </div>
+                                    <div class="jp-progress">
+                                      <div class="jp-seek-bar">
+                                        <div class="jp-play-bar"></div>
+                                      </div>
+                                    </div>
+                                    <div class="ui">
+                                        <div class="jp-current-time ui large grey header" role="timer" aria-label="time" style="margin-top: 1em; margin-bottom: 0">&nbsp;</div>
+                                        <div class="jp-duration ui red sub header" role="timer" aria-label="duration" style="margin-top: 0;">&nbsp;</div>
+                                    </div>
+                                    <div class="jp-toggles" style="display: none;">
+                                      <button class="jp-repeat" role="button" tabindex="0">repeat</button>
+                                    </div>
                                   </div>
                                 </div>
-                                <div class="ui">
-                                    <div class="jp-current-time ui large grey header" role="timer" aria-label="time" style="margin-top: 1em; margin-bottom: 0">&nbsp;</div>
-                                    <div class="jp-duration ui red sub header" role="timer" aria-label="duration" style="margin-top: 0;">&nbsp;</div>
+                                <div class="jp-details">
+                                  <div class="jp-title" aria-label="title">&nbsp;</div>
                                 </div>
-                                <div class="jp-toggles" style="display: none;">
-                                  <button class="jp-repeat" role="button" tabindex="0">repeat</button>
+                                <div class="jp-no-solution">
+                                  <span>Update Required</span>
+                                  To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
                                 </div>
                               </div>
                             </div>
-                            <div class="jp-details">
-                              <div class="jp-title" aria-label="title">&nbsp;</div>
                             </div>
-                            <div class="jp-no-solution">
-                              <span>Update Required</span>
-                              To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
-                            </div>
-                          </div>
-                        </div>
-                        </div>
-                    @endforeach
-                @endif
+                        @endforeach
+                    @endif
 
-                @if($portfolio['type'] === 'video')
-                    @foreach ($files as $file)
-                        <video-player video-url="{{$file->getFile()}}"></video-player>
-                    @endforeach
-                @endif
+                    @if($portfolio['type'] === 'video')
+                        @foreach ($files as $file)
+                            <video-player video-url="{{$file->getFile()}}"></video-player>
+                        @endforeach
+                    @endif
                 
-                
-                <div class="ui centered one column grid padded" >
-                    <div class="column center aligned">
-                        <h3 class="ui header">Appreciate this work!</h3>
+                    <div class="ui centered one column grid padded" >
+                        <div class="column center aligned">
+                            <h3 class="ui header">Appreciate this work!</h3>
+                        </div>
+                        <like-button id="{{$portfolio['uid']}}" big="true" likes="{{$portfolio['likes_count']}}" liked="{{$portfolio['has_liked']}}"></like-button>
                     </div>
-                    <like-button id="{{$portfolio['uid']}}" big="true" likes="{{$portfolio['likes_count']}}" liked="{{$portfolio['has_liked']}}"></like-button>
-                </div>
+                @endif
                 <div class="white-boxed" style="margin: 3em -1rem -1rem; background: rgba(247,247,247,1); border-top: 1px solid #ddd; border-bottom: 1px solid #ddd">
                     <div class="ui unstackable items" style="margin: 1em 0 2em">
                         <div class="item">
@@ -170,7 +164,6 @@
                                 @endif
 
                                 <portfolio-comments uid="{{ $portfolio['uid'] }}" avatar="{{ $avatar }}"></portfolio-comments>
-                            @endif
                         </div>
                     </div>
                 </div>
@@ -185,6 +178,7 @@
                         </div>
                     @endif
                 </div>
+
             </div>
             <div  class="four wide tablet only four wide computer only fixed column" style="background: #f9f9f9; box-shadow: 0 1px 6px rgba(2,2,2,.1); border-bottom: 1px solid #ddd;">
                 <div class="ui sticky">
