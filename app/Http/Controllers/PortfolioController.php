@@ -302,7 +302,7 @@ class PortfolioController extends Controller
         // dd($offset);
         // $paginate = $records->paginate(24);
 
-        $portfolios = fractal()->collection($records->latestFirst()->take(2)->get())
+        $portfolios = fractal()->collection($records->latestFirst()->take(12)->get())
                         ->transformWith(new PortfolioTransformer)
                         ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                         ->toArray();
@@ -315,8 +315,8 @@ class PortfolioController extends Controller
     public function homepagePortfolioAjax(Request $request, Portfolio $portfolio)
     {
         $records = $portfolio->isPublic()->hasThumbnail();
-        $skip = (int)($request->page) * 2;
-        $portfolios = fractal()->collection($records->latestFirst()->skip($skip)->take(2)->get())
+        $skip = (int)($request->page) * 12;
+        $portfolios = fractal()->collection($records->latestFirst()->skip($skip)->take(12)->get())
                         ->transformWith(new PortfolioTransformer)
                         ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                         ->toArray();

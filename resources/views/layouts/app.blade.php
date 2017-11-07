@@ -143,12 +143,7 @@
     
     
     <!-- Scripts -->
-    <script src="{{ asset('js/jquery.waypoints.js') }}"></script>
     <script src="{{ mix('/js/app.js') }}"></script>
-
-    <script>
-        
-    </script>
  
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
