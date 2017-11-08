@@ -19,7 +19,8 @@ class SimpleUserTransformers extends TransformerAbstract
 
 		$profile = Profile::where('user_id', $user->id)->first();
 		$phone = Phone::where('user_id', $user->id)->first();
-		// dd($phone);
+		// $skills = $user->skills->get();
+		
 		return [
 			'username'	=> $user->name,
 			'first_name'=> $profile->first_name,

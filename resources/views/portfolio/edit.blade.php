@@ -2,6 +2,6 @@
 @section('title', 'Edit Portfolio')
 @section('content')
 <div class="padded">
-	<portfolio-form portfolio="{{ json_encode($portfolio) }}" files="{{ $files }}" skills="{{ $skills }}"></portfolio-form>
+	<portfolio-upload-form portfolio="{{ json_encode($portfolio) }}" user-skills="{{ json_encode($skills) }}"></portfolio-upload-form>
 </div>
 @endsection

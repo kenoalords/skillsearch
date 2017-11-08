@@ -104,6 +104,11 @@ Route::group(['middleware'=>'auth'], function(){
 		Route::get('/portfolio/add', 'PortfolioController@add');
 		Route::post('/portfolio/add', 'PortfolioController@savePortfolio');
 		Route::post('/portfolio/thumbnail', 'PortfolioController@savePortfolioThumbnail');
+		Route::post('/portfolio/add-thumbnail', 'PortfolioController@addPortfolioThumbnail');
+
+		Route::post('/portfolio/file-upload', 'PortfolioController@fileUpload');
+		Route::delete('/portfolio/file-upload/{portfolio}/{file}/delete', 'PortfolioController@deleteFileUpload');
+
 		Route::get('/portfolio/instagram', 'InstagramPortfolioController@index')->name('instagram_index');
 		Route::get('/portfolio/instagram/get', 'InstagramPortfolioController@get');
 		Route::get('/portfolio/instagram/delete', 'InstagramPortfolioController@delete');

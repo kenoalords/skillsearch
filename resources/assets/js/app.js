@@ -21,6 +21,7 @@ Vue.component('contact-request', require('./components/ContactRequest.vue'));
 Vue.component('skills', require('./components/Skills.vue'));
 Vue.component('upload-image', require('./components/UploadProfileImage.vue'));
 Vue.component('portfolio-form', require('./components/PortfolioForm.vue'));
+Vue.component('portfolio-upload-form', require('./components/PortfolioUploadForm.vue'));
 Vue.component('message', require('./components/Message.vue'));
 Vue.component('send-message', require('./components/SendMessage.vue'));
 Vue.component('follow', require('./components/Follow.vue'));

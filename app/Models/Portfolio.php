@@ -28,7 +28,7 @@ class Portfolio extends Model
 
    	public function files()
    	{
-   		return $this->morphMany('App\Models\File', 'fileable');
+   		return $this->morphMany(File::class, 'fileable');
    	}
 
    	public function user()

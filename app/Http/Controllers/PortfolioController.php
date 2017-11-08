@@ -14,8 +14,11 @@ use App\Events\PortfolioFilesUploadEvent;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use App\Transformers\PortfolioTransformer;
+use App\Transformers\SkillsTransformer;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use App\Jobs\DeleteFileFromS3Storage;
+use App\Jobs\UploadFileToS3;
+use App\Jobs\FileDeleteJob;
 
 
 class PortfolioController extends Controller
@@ -38,101 +41,56 @@ class PortfolioController extends Controller
 
     public function add(Request $request)
     {
-        $skills = $request->user()->skills()->get();
-        $profile = $request->user()->profile()->first();
-        $name = ($profile) ? $profile->first_name . ' ' . $profile->last_name : 'Untitled Portfolio';
-    	return view('portfolio.add')->with(['skills' => $skills, 'name'=>$name]);
+        $skills = fractal()->collection($request->user()->skills()->get())
+                        ->transformWith(new SkillsTransformer)
+                        ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                        ->toArray();
+    	return view('portfolio.add')->with(['skills' => $skills]);
     }
 
     public function edit(Request $request, Portfolio $portfolio)
     {
         $this->authorize('edit', $portfolio);
-    	$files = $portfolio->files()->get();
-        $skills = $request->user()->skills()->get();
         $portfolio = fractal()->item($portfolio)
                         ->transformWith(new PortfolioTransformer)
                         ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                         ->toArray();
-        // dd($portfolio);
+        $skills = fractal()->collection($request->user()->skills()->get())
+                        ->transformWith(new SkillsTransformer)
+                        ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                        ->toArray();
     	return view('portfolio.edit')->with([
     		'portfolio' => $portfolio,
-    		'files'		=> $files,
             'skills'    => $skills,
     	]);
     }
 
     public function savePortfolio(Request $request, PointService $pointService)
     {
-    	if($request->type == 'images'){
-    		$this->validate($request, [
-    			'file' => 'required|image'
-    		]);
-    	}
-
-    	if($request->type == 'audio'){
-    		$this->validate($request, [
-    			'file' => 'required|mimetypes:audio/mp3,audio/wav,audio/mpeg'
-    		]);
-    	}
-
-        if($request->type == 'video'){
-            $this->validate($request, [
-                'file' => 'required|mimetypes:video/mp4,video/mpeg'
-            ]);
+        if($request->uid !== "null"){
+            $portfolio = $request->user()->portfolio()->where('uid', $request->uid)->first();
+            $title = ($request->title !== "null") ? $request->title : 'Draft Portfolio';
+            $description = ($request->description !== "null") ? $request->description : '';
+            $is_public = ($request->action === "publish") ? true : false;
+            $portfolio->title = $title;
+            $portfolio->description = $description;
+            $portfolio->is_public = $is_public;
+            $portfolio->skills = $request->skills;
+            $portfolio->save();
+            return response()->json(true);
+        } else {
+            $uid = uniqid(true);
+            $title = ($request->title !== "null") ? $request->title : 'Draft Portfolio';
+            $description = ($request->description !== "null") ? $request->description : '';
+            $is_public = ($request->action === "publish") ? true : false;
+            $portfolio = $request->user()->portfolio()->create([
+                            'title'         => $title,
+                            'description'   => $description,
+                            'is_public'     => $is_public,
+                            'skills'        => $request->skills,
+                        ]);
+            return response()->json(true);
         }
-    	if( $request->uid && $request->file ){
-    		$portfolio = $request->user()->portfolio()->where('uid', $request->uid)->first();
-    		$image_url = $request->file('file')->store('public');
-    		if($request->type == 'images'){
-	    		Image::make(storage_path('/app/'.$image_url))->resize(1024, null, function($const){
-	    			$const->aspectRatio();
-	    		})->save();
-	    	}
-            event(new PortfolioFilesUploadEvent($image_url));
-    		$file = $portfolio->files()->create([
-    			'file'	=> $image_url
-    		]);
-
-    		return response()->json([
-    			'file' => [
-                    'link'  => config('app.url').'/'.$file->file,
-                    'id'    => $file->id
-                ]
-                
-    		]);
-    	} else {
-	    	$uid = uniqid(true);
-	    	$request->user()->portfolio()->create([
-	    		'title'			=> $request->title,
-	    		'description' 	=> $request->description,
-	    		'is_public'		=> (int)$request->is_public,
-	    		'uid'			=> $uid,
-	    		'type'			=> $request->type
-	    	]);
-
-	    	if( $request->file ){
-	    		$portfolio = $request->user()->portfolio()->where('uid', $uid)->first();
-	    		$image_url = $request->file('file')->store('public');
-	    		if($request->type == 'images'){
-		    		Image::make(storage_path('/app/'.$image_url))->resize(1024, null, function($const){
-		    			$const->aspectRatio();
-		    		})->save();
-		    	}
-                event(new PortfolioFilesUploadEvent($image_url));
-	    		$file = $portfolio->files()->create([
-	    			'file'	=> $image_url
-	    		]);
-	    		return response()->json([
-	    			'uid' => $uid,
-	    			'file' => [
-                        'link'  => config('app.url').'/'.$file->file,
-                        'id'    => $file->id
-                    ]
-	    		]);
-	    	} else {
-
-	    	}
-	    }
     }
 
     public function savePortfolioThumbnail(Request $request)
@@ -165,6 +123,112 @@ class PortfolioController extends Controller
             $url = config('app.url').'/'.$thumbnail;
             return response()->json(['uid'=>$uid, 'thumbnail' => $url], 200);
         }
+    }
+
+    public function addPortfolioThumbnail(Request $request)
+    {
+        $this->validate($request, [
+            'file'  => 'required|image'
+        ]);
+
+        $thumb = $request->file('file')->store('public');
+        Image::make(storage_path().'/app/'.$thumb)->fit(800)->save();
+        $user = $request->user();
+        $title = 'Draft Portfolio';
+        dispatch(new UploadFileToS3($thumb));
+
+        if($request->uid !== "null"){
+            $portfolio = $request->user()->portfolio()->where('uid', $request->uid)->first();
+            $portfolio->thumbnail = $thumb;
+            $portfolio->save();
+            $portfolio = fractal()->item($portfolio)
+                        ->transformWith(new PortfolioTransformer)
+                        ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                        ->toArray();
+            return response()->json($portfolio, 200);
+        } else {
+            $uid = uniqid(true);
+            $portfolio = $user->portfolio()->create([
+                        'uid'       => $uid,
+                        'title'     => $title,
+                        'thumbnail' => $thumb,
+                        'is_public' => false,
+                    ]);
+            
+            $portfolio = fractal()->item($portfolio)
+                        ->transformWith(new PortfolioTransformer)
+                        ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                        ->toArray();
+            return response()->json($portfolio, 200);
+        }
+    }
+
+    public function fileUpload(Request $request)
+    {
+        $this->validate($request, [
+            'file' => 'required|mimetypes:audio/mp3,audio/mpga,audio/mpeg,audio/wav,video/mp4,video/mpeg,image/png,image/jpg,image/jpeg,image/gif,'
+        ]);
+
+        $img_check = ['image/png','image/jpg','image/jpeg','image/gif'];
+        $file = $request->file('file')->store('public');
+
+        // reduce image size
+        if(in_array($request->type, $img_check)){
+            Image::make(storage_path('/app/'.$file))->resize(1240, null, function($const){
+                $const->aspectRatio();
+            })->save();
+        }
+
+        // Dispatch job to S3
+        dispatch(new UploadFileToS3($file));
+
+        if($request->uid !== "null"){
+
+            $portfolio = $request->user()->portfolio()->where('uid', $request->uid)->first();
+            $portfolio->files()->create([
+                'file'      => $file,
+                'file_type' => $request->type,
+            ]);
+
+            $portfolio = fractal()->item($portfolio)
+                        ->transformWith(new PortfolioTransformer)
+                        ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                        ->toArray();
+
+            return response()->json($portfolio, 200);
+
+        } else {
+            $uid = uniqid(true);
+            $title = 'Draft Portfolio';
+            
+            // Save Image to files
+            $portfolio = $request->user()->portfolio()->create([
+                            'uid'   => $uid,
+                            'title' => $title,
+                            'is_public' => false,
+                        ]);
+            // Save link to files table
+            $portfolio->files()->create([
+                'file'      => $file,
+                'file_type' => $request->type,
+            ]);
+
+            $portfolio = fractal()->item($portfolio)
+                        ->transformWith(new PortfolioTransformer)
+                        ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                        ->toArray();
+
+            return response()->json($portfolio, 200);
+            
+        }
+    }
+
+    public function deleteFileUpload(Request $request, Portfolio $portfolio, File $file)
+    {
+        $this->authorize('delete', $portfolio);
+        dispatch(new FileDeleteJob($file));
+        $file->delete();
+        return response()->json(true, 200);
     }
 
     public function update(Request $request, Portfolio $portfolio)

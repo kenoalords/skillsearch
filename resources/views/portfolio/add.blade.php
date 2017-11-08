@@ -4,7 +4,7 @@
 
 
 <div class="padded">
-	<portfolio-form skills="{{$skills}}" name="{{ $name }}"></portfolio-form>
+	<portfolio-upload-form user-skills="{{ json_encode($skills) }}"></portfolio-upload-form>
 </div>
 
 @endsection

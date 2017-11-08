@@ -9,7 +9,7 @@ class File extends Model
 {
     //
 
-    protected $fillable = ['type', 'file'];
+    protected $fillable = ['type', 'file', 'caption', 'file_type'];
     protected $appends = ['link'];
 
     public function fileable()

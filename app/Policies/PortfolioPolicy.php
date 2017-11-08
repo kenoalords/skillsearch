@@ -24,4 +24,9 @@ class PortfolioPolicy
     {
         return $user->id === $portfolio->user_id;
     }
+
+    public function delete(User $user, Portfolio $portfolio)
+    {
+        return $user->id === $portfolio->user_id;
+    }
 }

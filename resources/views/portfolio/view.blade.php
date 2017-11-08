@@ -42,18 +42,14 @@
 
                 @if($portfolio['is_public'] === 1 || (Auth::user() && Auth::user()->id === $portfolio['user_id']))
                 
-                    @if($portfolio['type'] === 'images')
-                        
-                        @foreach ($files as $file)
+                    @foreach ($files as $file)
+
+                        @if(in_array($file->file_type, ['image/jpeg', 'image/jpg', 'image/png', 'image/gif']))
                             <div class="portfolio-image-wrapper" style="margin: -1rem -1rem 2em">
                                 <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=" data-src="{{asset($file->getFile())}}" alt="{{ $portfolio['title'] }} Image" class="ui fluid image b-lazy">
-                            </div>
-                        @endforeach
-
-                    @endif
-
-                    @if($portfolio['type'] === 'audio')
-                        @foreach ($files as $file)
+                            </div>  
+                        @endif
+                        @if(in_array($file->file_type, ['audio/wav', 'audio/mp3', 'audio/mpga']))
                             <div id="jquery_jplayer_1" class="jp-jplayer" data-src="{{asset($file->getFile())}}" data-title="{{$portfolio['title']}}"></div>
                             <div id="jp_audio_wrapper" class="">
                                 <div id="jp_container_1" class="jp-audio" role="application" aria-label="media player">
@@ -97,14 +93,14 @@
                               </div>
                             </div>
                             </div>
-                        @endforeach
-                    @endif
+                        @endif
 
-                    @if($portfolio['type'] === 'video')
-                        @foreach ($files as $file)
-                            <video-player video-url="{{$file->getFile()}}"></video-player>
-                        @endforeach
-                    @endif
+                        @if(in_array($file->file_type, ['video/mp4']))
+                            <video-player video-url="{{$file->getFile()}}"></video-player> 
+                        @endif
+                    @endforeach
+
+                    
                 
                     <div class="ui centered one column grid padded" >
                         <div class="column center aligned">
