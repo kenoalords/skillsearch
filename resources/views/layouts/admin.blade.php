@@ -104,18 +104,6 @@
     
     <!-- <script src="{{ asset('js/semantic.min.js') }}"></script> -->
     <script src="{{ mix('js/app.js') }}"></script>
-
-    <script>
-        var inputState = document.getElementById('geolocation');
-        if(inputState){
-            var options = {
-              types: ['(cities)'],
-              componentRestrictions: {country: 'ng'}
-            };
-
-            autocomplete = new google.maps.places.Autocomplete(inputState, options);
-        }
-    </script>
     
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

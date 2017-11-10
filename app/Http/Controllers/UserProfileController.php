@@ -65,6 +65,7 @@ class UserProfileController extends Controller
             'bio'           => $request->bio,
             'account_type'  => $request->account_type,
             'location'      => $request->location,
+            'is_public'     => true,
         ]);
 
         $inviteCheck = ContactInvite::where('email', $request->user()->email)->first();
@@ -90,13 +91,18 @@ class UserProfileController extends Controller
     }
 
     public function store(UserProfileRequest $request){
+        
         // dd($request);
         $profile = $request->user()->profile;
         $profile->bio = $request->bio;
+        $profile->last_name = $request->last_name;
+        $profile->first_name = $request->first_name;
         $profile->gender = $request->gender;
         $profile->location = $request->user_location;
+        $profile->is_public = true;
     	
     	$profile->save();
+
 
     	$profile = $request->user()->profile;
     	$request->session()->flash('status', 'Your profile was saved successfully');
