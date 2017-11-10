@@ -65,6 +65,8 @@ Route::group(['middleware'=>'auth'], function(){
 		Route::get('/start-twitter', 'UserProfileController@setupTwitterUserProfile')->name('start_twitter');
 		Route::post('/start-twitter', 'UserProfileController@saveTwitterSocialUserProfile');
 
+		Route::get('/load-activity/{page}/{limit}', 'HomeController@loadActivitiesAjax');
+
 		Route::get('/start/skills', 'UserProfileController@setupUserSkills');
 		Route::get('/users-verify', 'UserProfileController@verifyUserAccounts')->name('verify_user_accounts');
 		Route::get('/users', 'UserProfileController@getVerifyUserAccounts');
@@ -216,7 +218,7 @@ Route::get('/job/{task}/{slug}', 'TaskController@getTask')->name('task');
 Route::get('/job/{task}/{slug}/apply', 'TaskController@applyForTask')->name('apply')->middleware('auth');
 Route::post('/job/{task}/{slug}/apply', 'TaskController@submitApplicationForTask');
 
-Route::get('/people', 'People@index')->name('people');
+Route::get('/people/{page?}', 'People@index')->name('people');
 
 // Link account routes
 Route::get('/account-merge', 'SocialAccountLinkupController@index')->name('merge_account');

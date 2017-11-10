@@ -144,6 +144,37 @@ var Portfolio = {
 				$('#load-more').hide();
 			}
 		});
+	},
+	loadActivities: function(){
+		var btn = document.getElementById('load-more-activity'),
+			id = btn.dataset.page,
+			limit = btn.dataset.limit;
+		$(btn).addClass('loading');
+		axios.get('/home/load-activity/'+id+'/'+limit).then(function(response){
+			if(response.data.html){
+				$('#user-portfolio-activity').append(response.data.html);
+				$(btn).removeClass('loading')
+				btn.dataset.page = parseInt(id) + 1;
+			}
+		}).catch( (error) => {
+			$(btn).hide();
+		});
+	}
+}
+
+var UserProfiles = {
+	loadDefault: function(){
+		var btn = document.getElementById("get-more-users"),
+			id = btn.dataset.page,
+			container = document.getElementById("peoples-list");
+		$(btn).addClass('loading');
+		axios.get('/people/'+id).then( (response) => {
+			$(btn).removeClass('loading');
+			$(container).append(response.data.html);
+			btn.dataset.page = parseInt(id) + 1;
+		}).catch( (error) => {
+			$(btn).hide();
+		});
 	}
 }
 
@@ -152,6 +183,16 @@ var Portfolio = {
 $('body').on('click', '#load-more', function(e){
 	e.preventDefault();
 	Portfolio.load();
+});
+
+$('body').on('click', '#load-more-activity', function(e){
+	e.preventDefault();
+	Portfolio.loadActivities();
+});
+
+$('body').on('click', '#get-more-users', function(e){
+	e.preventDefault();
+	UserProfiles.loadDefault();
 });
 
 // var waypoints = $('#how').waypoint({

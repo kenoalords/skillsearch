@@ -4,12 +4,7 @@
 
 @section('content')
     @include('includes.status')
-    <!-- <div class="ui center aligned column grid">
-        <div class="column white-boxed">
-            <h4 class="bold text-gold" style="font-size: 3em;"><i class="fa fa-trophy"></i> {{$user['points']}} <small>{{str_plural('Point', $user['points'])}} Earned</small></h4>
-            <p>Earn points to boost your profile on {{ config('app.name') }} <span class="bold"><a href="{{route('points')}}">Find out more</a></span></p>
-        </div>
-    </div> -->
+    
     @if(!$user['phone'])
         <div class="ui warning icon message">
             <i class="icon phone"></i>
@@ -64,9 +59,12 @@
         <h3 class="ui header">
             Recent portfolio of people you follow
         </h3>
-    	<div class="ui container grid" style="margin-left: -1rem !important;">
+    	<div class="ui container grid" style="margin-left: -1rem !important;" id="user-portfolio-activity">
     		@each('includes.portfolio-with-user', $activities, 'portfolio')
     	</div>
+        <div class="ui center aligned grid">
+            <a href="#" class="ui button" id="load-more-activity" data-page="1" data-limit="16">Load more</a>
+        </div>
     @endif
 
     @if(!$activities && $profiles !== null)
@@ -80,7 +78,7 @@
         </div>
     @endif
 
-    @if ( count($tasks) > 0 )
+    {{-- @if ( count($tasks) > 0 )
         <h3 class="ui dividing header" style="margin-top: 3em">
             Recent Jobs
             <!-- <div class="sub header"></div> -->
@@ -88,6 +86,6 @@
         <div class="ui divided very relaxed list">
             @each('task.partials.task', $tasks, 'task')
         </div>
-    @endif
+    @endif --}}
     
 @endsection

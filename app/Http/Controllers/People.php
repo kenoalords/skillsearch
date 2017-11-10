@@ -19,23 +19,38 @@ class People extends Controller
 {
     use Orderable;
 
-    public function index(User $user, Profile $profile, Skills $skills ){
+    public function index(Request $request, User $user, Profile $profile, Skills $skills ){
     	
-    	$collection = $user->has('portfolio')->withCount(['portfolio' => function($query){
-                                $query->where('is_public', true);
-                            }])->orderBy('portfolio_count', 'desc')->take(10)->get();
+        if(!$request->ajax()){
+            $people = $this->getProfiles(10, 0);
+            return view('profile.people')->with([
+                    'profiles'  => $people,
+                ]);
+        } else {
+            $peoples = $this->getProfiles(10, $request->page);
+            $html = '';
+            if($peoples){
+                foreach ( $peoples as $key => $people ){
+                    $html .= view('profile.person-tag', ['profile' => $people])->render();
+                }
+                return response()->json(['html'=>$html], 200);
+            } else {
+                return response()->json(false, 422);
+            }
+        } 	
+    }
 
-        $people = fractal()->collection($collection)
+    public function getProfiles($limit = 10, $offset=0)
+    {
+        $skip = (int)$offset * (int)$limit;
+        $collection = User::has('portfolio')->withCount(['portfolio' => function($query){
+                                $query->where('is_public', true);
+                            }])->orderBy('portfolio_count', 'desc')->skip($skip)->take($limit)->get();
+        // dd($collection);
+        return fractal()->collection($collection)
                             ->transformWith(new UserTransformers)
                             ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                             ->toArray();
-        $skills = $skills->orderAlphabetically()->get();
-
-        return view('profile.people')->with([
-                'profiles'  => $people,
-                'skills'    => $skills,
-            ]);
-
     }
 
 

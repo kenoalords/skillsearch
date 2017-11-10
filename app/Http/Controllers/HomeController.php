@@ -47,8 +47,9 @@ class HomeController extends Controller
      */
     public function index(Request $request, ContactInvite $invite, Portfolio $portfolio, User $user, Task $task)
     {   
-        $following = $request->user()->followers()->pluck('following_id')->all();
-        $portfolios = $portfolio->whereIn('user_id', $following)->orderBy('created_at', 'desc')->limit(16)->get();
+        
+        $portfolios = $this->getPortfolios(16);
+
         $user_profile = $request->user()->profile()->first();
         
         $activities = fractal()->collection($portfolios)
@@ -104,6 +105,30 @@ class HomeController extends Controller
         ]);
     }
 
+    public function getPortfolios($limit=16, $offset=0)
+    {
+        $following = Auth::user()->followers()->pluck('following_id')->all();
+        return Portfolio::whereIn('user_id', $following)->orderBy('created_at', 'desc')->isPublic()->skip($offset)->take($limit)->get();
+    }
+
+    public function loadActivitiesAjax(Request $request)
+    {
+        $offset = (int)$request->page * (int)$request->limit;
+        $portfolios = $this->getPortfolios((int)$request->limit, $offset);
+        $portfolios = fractal()->collection($portfolios)
+                            ->transformWith(new PortfolioTransformer)
+                            ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                            ->toArray();
+        if($portfolios){
+            $data = '';
+            foreach($portfolios as $key => $portfolio){
+                $data .= view('includes.portfolio-with-user', ['portfolio'=>$portfolio])->render();
+            }
+            return response()->json(['html'=>$data], 200);
+        } else {
+            return response()->json(false, 422);
+        }
+    }
 
     public function verify(Request $request){
         if(!Auth::user()){

@@ -20,8 +20,11 @@
             <div class="ui divider"></div>
         </div>
         @if ( count($profiles) )
-            <div class="">
+            <div class="" id="peoples-list">
                 @each('profile.person-tag', $profiles, 'profile')
+            </div>
+            <div class="ui center aligned grid" style="margin-top: 2em;">
+                <a href="#" data-page="1" id="get-more-users" class="ui button">Load more</a>
             </div>
         @endif
 </div>

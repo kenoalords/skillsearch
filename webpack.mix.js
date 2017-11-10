@@ -22,8 +22,8 @@ mix.js('node_modules/video.js/dist/video.min.js', 'public/js')
 		'node_modules/video.js/dist/video.css'
 		], 'public/css/all.css')
 	.js('resources/assets/js/app.js', 'public/js')
-	.sass('resources/assets/sass/app.scss', 'public/css');
-	// .version();
+	.sass('resources/assets/sass/app.scss', 'public/css')
+	.version();
 
 
 

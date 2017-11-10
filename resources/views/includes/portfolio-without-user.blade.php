@@ -2,7 +2,7 @@
     <div class="ui fluid card">
         <div class="image">
             <a href="{{ $portfolio['link']['url'] }}" style="line-height: 0; display: block;">
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" data-src="{{ $portfolio['thumbnail'] }}" alt="{{$portfolio['title']}}" class="b-lazy">
+                <img src="{{ $portfolio['thumbnail'] }}" alt="{{$portfolio['title']}}" class="ui fluid image">
             </a>
             @if(Auth::user() && ( $portfolio['user_id'] === Auth::user()->id ) )
             <div class="action-links">
