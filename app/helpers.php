@@ -55,7 +55,7 @@ function getRatings($count){
 
 function identity_check($i=false){
     if($i){
-        return ' <img src="'.asset("public/verified.svg").'" width="14" height="14" id="verified">';
+        return ' <img src="'.asset("public/verified.svg").'" width="14" height="14" id="verified" alt="Verified User">';
     }
 }
 

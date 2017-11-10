@@ -9,18 +9,20 @@
 
 <div id="" style="margin-top: 3.4em;">
     <div class="ui">
-        <div class="ui padded grid row" id="sidebar">
+        <div class="ui padded grid row" id="sidebar" itemscope itemtype="http://schema.org/CreativeWork">
             <div class="sixteen wide mobile only column" style="background: #f9f9f9; box-shadow: 0 1px 6px rgba(2,2,2,.1); border-bottom: 1px solid #ddd;">
-                <div style="margin: 1em 0;">
-                    <img src="{{$portfolio['user_profile']['avatar']}}" alt="{{$portfolio['user_profile']['fullname']}}" class="ui avatar image"> <a href="/{{$portfolio['user']}}" class="bold">{{$portfolio['user_profile']['fullname']}}</a>
+                <div style="margin: 1em 0;" itemprop="author" itemscope itemtype="http://schema.org/Person">
+                    <img src="{{$portfolio['user_profile']['avatar']}}" alt="{{$portfolio['user_profile']['fullname']}}" class="ui avatar image"> <a href="/{{$portfolio['user']}}" class="bold"><span itemprop="name">{{$portfolio['user_profile']['fullname']}}</span></a>
+                    <meta itemprop="image" content="{{$portfolio['user_profile']['avatar']}}">
                 </div>
                 <img src="{{$portfolio['thumbnail']}}" alt="{{$portfolio['title']}}" class="ui fluid image">
-                <h1 class="ui header">{{ ucwords(strtolower($portfolio['title'])) }}</h1> 
+                <h1 class="ui header" itemprop="name">{{ ucwords(strtolower($portfolio['title'])) }}</h1> 
                                     
-                <p>{{$portfolio['description']}}</p>
+                <p itemprop="description">{{$portfolio['description']}}</p>
                 <div class="ui mini divided grey horizontal list bold">
                     <div class="item"><i class="icon eye"></i> {{ $portfolio['views'] }}</div>
                     <div class="item"><i class="icon calendar"></i>{{ $portfolio['date'] }}</div>
+                    <meta itemprop="dateCreated" content="{{ $portfolio['created_at'] }}">
                     @if($portfolio['url'])
                         <div class="item"><a href="{{route('external_link', ['url'=>$portfolio['url']])}}" target="_blank" class="bold">External Link <i class="icon sign out"></i></a></div>
                     @endif
@@ -42,15 +44,17 @@
 
                 @if($portfolio['is_public'] === 1 || (Auth::user() && Auth::user()->id === $portfolio['user_id']))
                 
-                    @foreach ($files as $file)
+                    @foreach ($portfolio['files'] as $file)
 
-                        @if(in_array($file->file_type, ['image/jpeg', 'image/jpg', 'image/png', 'image/gif']))
-                            <div class="portfolio-image-wrapper" style="margin: -1rem -1rem 2em">
-                                <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=" data-src="{{asset($file->getFile())}}" alt="{{ $portfolio['title'] }} Image" class="ui fluid image b-lazy">
+                        @if(in_array($file['file_type'], ['image/jpeg', 'image/jpg', 'image/png', 'image/gif']))
+                            <div class="portfolio-image-wrapper" style="margin: -1rem -1rem 2em" itemprop="image" itemscope itemtype="http://schema.org/ImageObject">
+                                <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=" data-src="{{$file['file']}}" alt="{{ $portfolio['title'] }} Image" class="ui fluid image b-lazy" itemprop="thumbnail">
+                                <meta itemprop="url" content="{{ $file['file'] }}">
                             </div>  
                         @endif
-                        @if(in_array($file->file_type, ['audio/wav', 'audio/mp3', 'audio/mpga']))
-                            <div id="jquery_jplayer_1" class="jp-jplayer" data-src="{{asset($file->getFile())}}" data-title="{{$portfolio['title']}}"></div>
+                        @if(in_array($file['file_type'], ['audio/wav', 'audio/mp3', 'audio/mpga']))
+                            <div id="jquery_jplayer_1" class="jp-jplayer" data-src="{{$file['file']}}" data-title="{{$portfolio['title']}}"></div itemprop="audio" itemscope itemtype="http://schema.org/AudioObject">
+                                <meta itemprop="url" content="{{$file['file']}}">
                             <div id="jp_audio_wrapper" class="">
                                 <div id="jp_container_1" class="jp-audio" role="application" aria-label="media player">
                               <div class="jp-type-single" style="text-align: center">
@@ -95,8 +99,11 @@
                             </div>
                         @endif
 
-                        @if(in_array($file->file_type, ['video/mp4']))
-                            <video-player video-url="{{$file->getFile()}}"></video-player> 
+                        @if(in_array($file['file_type'], ['video/mp4']))
+                            <div itemprop="video" itemscope itemtype="http://schema.org/VideoObject">
+                                <video-player video-url="{{$file['file']}}"></video-player> 
+                                <meta itemprop="url" content="{{$file['file']}}">
+                            </div>
                         @endif
                     @endforeach
 
@@ -107,22 +114,24 @@
                             <h3 class="ui header">Appreciate this work!</h3>
                         </div>
                         <like-button id="{{$portfolio['uid']}}" big="true" likes="{{$portfolio['likes_count']}}" liked="{{$portfolio['has_liked']}}"></like-button>
+                        <meta itemprop="commentCount" content="{{$portfolio[
+                        'comment_count']}}">
                     </div>
                 @endif
                 <div class="white-boxed" style="margin: 3em -1rem -1rem; background: rgba(247,247,247,1); border-top: 1px solid #ddd; border-bottom: 1px solid #ddd">
-                    <div class="ui unstackable items" style="margin: 1em 0 2em">
+                    <div class="ui unstackable items" style="margin: 1em 0 2em" itemprop="author" itemscope itemtype="http://schema.org/Person">
                         <div class="item">
                             <div class="ui tiny image">
-                                <a href="/{{$portfolio['user']}}">
-                                    <img src="{{$portfolio['user_profile']['avatar']}}" alt="{{$portfolio['user_profile']['fullname']}}" class="avatar">
+                                <a href="/{{$portfolio['user']}}" itemprop="url">
+                                    <img src="{{$portfolio['user_profile']['avatar']}}" alt="{{$portfolio['user_profile']['fullname']}}" class="avatar" itemprop="image">
                                 </a>
                             </div>
                             <div class="content">
                                 <h3 class="ui header">
-                                    <a href="/{{$portfolio['user']}}" class="bold">{{$portfolio['user_profile']['fullname']}}</a>
-                                    <div class="sub header"><i class="icon marker"></i>{{$portfolio['user_profile']['location']}}</div>
+                                    <a href="/{{$portfolio['user']}}" class="bold" itemprop="url"><span itemprop="name">{{$portfolio['user_profile']['fullname']}}</span></a>
+                                    <div class="sub header"><i class="icon marker"></i><span itemprop="homeLocation">{{$portfolio['user_profile']['location']}}</span></div>
                                 </h3>
-                                <p>{{$portfolio['user_profile']['bio']}}</p>
+                                <p itemprop="description">{{$portfolio['user_profile']['bio']}}</p>
 
                                 <div class="ui horizontal list">
                                     
@@ -185,7 +194,7 @@
                     <img src="{{$portfolio['thumbnail']}}" class="ui fluid image">
                     <h1 class="ui medium header">{{ ucwords(strtolower($portfolio['title'])) }}</h1> 
                                         
-                    <p>{{$portfolio['description']}}</p>
+                    <p itemprop="description">{{$portfolio['description']}}</p>
                     <div class="ui mini divided grey horizontal list bold">
                         <div class="item"><i class="icon eye"></i> {{ $portfolio['views'] }}</div>
                         <div class="item"><i class="icon calendar"></i>{{ $portfolio['date'] }}</div>

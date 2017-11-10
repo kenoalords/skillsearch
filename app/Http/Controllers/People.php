@@ -7,6 +7,7 @@ use App\Models\Profile;
 use App\Models\Skills;
 use App\Models\SkillsRelations;
 use App\Transformers\ProfileTransformers;
+use App\Transformers\SearchProfileTransformers;
 use App\Transformers\UserTransformers;
 use App\Transformers\PortfolioTransformer;
 use App\Services\InstagramService;
@@ -82,7 +83,7 @@ class People extends Controller
                 $other = $user->profile()->isPublic()->get()->first();
                 if($other){
                     $other_profiles[] = fractal()->item($other)
-                            ->transformWith(new ProfileTransformers)
+                            ->transformWith(new SearchProfileTransformers)
                             ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                             ->toArray();
                 }

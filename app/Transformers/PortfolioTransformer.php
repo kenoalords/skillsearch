@@ -21,6 +21,7 @@ class PortfolioTransformer extends TransformerAbstract
 			'description'=> $portfolio->description,
 			'is_public'	=> $portfolio->is_public,
 			'date'		=> $portfolio->created_at->diffForHumans(),
+			'created_at'=> $portfolio->created_at,
 			'uid'		=> $portfolio->uid,
 			'skills'	=> $portfolio->skills,
 			'url'		=> ($portfolio->url !== 'null') ? $portfolio->url : '',
