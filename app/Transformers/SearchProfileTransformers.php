@@ -9,7 +9,7 @@ use App\Models\SkillsRelations;
 use App\Transformers\PortfolioTransformer;
 use League\Fractal\TransformerAbstract;
 
-class ProfileTransformers extends TransformerAbstract
+class SearchProfileTransformers extends TransformerAbstract
 {
 
 	protected $defaultIncludes = ['skills', 'portfolios'];
@@ -55,7 +55,7 @@ class ProfileTransformers extends TransformerAbstract
 		$portfolios = Portfolio::where([
 				['user_id', '=', $profile->user_id],
 				['is_public', '=', true]
-			])->latestFirst()->get();
+			])->latestFirst()->take(3)->get();
 		return $this->collection($portfolios, new PortfolioTransformer);
 	}
 }

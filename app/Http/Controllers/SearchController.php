@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Task;
 use App\Models\Skills;
 use App\Transformers\ProfileTransformers;
+use App\Transformers\SearchProfileTransformers;
 use App\Transformers\TaskTransformer;
 use Illuminate\Http\Request;
 use Laravel\Scout\Searchable;
@@ -19,7 +20,7 @@ class SearchController extends Controller
     {
     	$results = $profile->search( $request->term . ' ' . $request->location )->where('is_public', 1)->get();
         $people = fractal()->collection($results)
-                            ->transformWith(new ProfileTransformers)
+                            ->transformWith(new SearchProfileTransformers)
                             ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                             ->toArray();
         $collection = collect($people)->reject(function ($profile, $key){

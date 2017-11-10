@@ -49,7 +49,7 @@ class UserTransformers extends TransformerAbstract
 		$portfolios = Portfolio::where([
 				['user_id', '=', $user->id],
 				['is_public', '=', true]
-			])->take(3)->get();
+			])->latestFirst()->take(3)->get();
 		return $this->collection($portfolios, new PortfolioTransformer);
 	}
 }
