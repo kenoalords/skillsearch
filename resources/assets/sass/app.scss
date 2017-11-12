@@ -249,7 +249,7 @@ body.loading:before{
 	font-style: normal !important;
 }
 
-#verified{
+.verified{
 	width:16px;
 	height:auto;
 }
@@ -971,7 +971,7 @@ body.loading:before{
 }
 
 #hero{
-	padding: 8em 1em;
+	padding: 5em 1em;
 	background: url('../images/how-banner-2.jpg') no-repeat center;
 	background-size: cover;
 	position: relative;

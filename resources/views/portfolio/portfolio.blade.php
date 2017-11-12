@@ -7,7 +7,7 @@
     @include('includes.status')
     <h1 class="ui header">
         Portfolio
-        <div class="sub header">Create your portfolio and share with friends</div>
+        <div class="sub header">Upload &amp; Manage your works</div>
     </h1>
     <div class="ui divider"></div>
     @if(count($portfolios) < 3)
@@ -21,9 +21,9 @@
             @each('includes.portfolio-with-user', $portfolios, 'portfolio')
         </div>
         <div class="divider ui" style="visibility: hidden;"></div>
-        <p><a href="/profile/portfolio/add" class="ui icon labeled primary button"><i class="icon plus"></i> Add portfolio item</a></p>
+        <p><a href="/profile/portfolio/add" class="ui green icon button"><i class="icon plus"></i>Upload work</a></p>
     @else
-       <a href="/profile/portfolio/add" class="ui primary icon labeled button"><i class="icon plus"></i> Add portfolio item</a>
+       <a href="/profile/portfolio/add" class="ui green icon button"><i class="icon plus"></i>Upload work</a>
 
     @endif
 

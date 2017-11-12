@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="user">
+        <div v-if="user" class="white-boxed" style="padding: 1em;">
             <div class="ui unstackable items">
                 <div class="item">
                     <div class="ui mini image">
@@ -128,7 +128,8 @@
                 axios.post('/portfolio/'+this.uid+'/comment/add', data).then((response)=>{
                     _this.comment = null;
                     _this.isSubmitting = false;
-                    // _this.comments.unshift(response.data.data);
+                    iziToast.success({ title : 'Comment posted!'});
+                    _this.comments.unshift(response.data.data);
                     
                 });
             },
@@ -148,6 +149,7 @@
                     axios.delete('/comment/' + reply.id + '/delete').then((response)=>{
                         // console.log(response);
                         // _this.comments.splice(_this.comments.indexOf(comment), 1);
+                        iziToast.success({ title : 'Reply deleted!'});
                         _this.comments.map((comment, index)=>{
                             if(comment.id === commentId){
                                 _this.comments[index].replies.data.splice(_this.comments[index].replies.data.indexOf(reply), 1);
@@ -170,6 +172,7 @@
                 axios.post('/comment/' + comment.id + '/like', data).then((response)=>{
                     _this.isLiking = false;
                     comment.likes = response.data.likes;
+                    iziToast.success({ title : 'Liked!'});
                 })
             },
             submitReply(commentId){
@@ -183,6 +186,7 @@
                     _this.reply = null;
                     _this.isReplySubmitting = false;
                     _this.isReplyActive = null;
+                    iziToast.success({ title : 'Reply posted!'});
                     _this.comments.map((comment, index)=>{
                         if(comment.id === commentId){
                             _this.comments[index].replies.data.push(response.data.data)

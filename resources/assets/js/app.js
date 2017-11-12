@@ -17,7 +17,7 @@ require('./bootstrap');
 Vue.component('referral-code', require('./components/ReferralCode.vue'));
 Vue.component('referral', require('./components/Referral.vue'));
 Vue.component('contact-request', require('./components/ContactRequest.vue'));
-// Vue.component('location', require('./components/Location.vue'));
+Vue.component('comments', require('./components/Comments.vue'));
 Vue.component('skills', require('./components/Skills.vue'));
 Vue.component('upload-image', require('./components/UploadProfileImage.vue'));
 Vue.component('portfolio-form', require('./components/PortfolioForm.vue'));
@@ -47,12 +47,31 @@ Vue.component('save-job', require('./components/SaveJob.vue'));
 Vue.component('blog-like', require('./components/BlogLike.vue'));
 Vue.component('blog-subscribe', require('./components/BlogSubscribe.vue'));
 Vue.component('phone-number', require('./components/PhoneNumber.vue'));
+Vue.component('portfolio-list', require('./components/Portfolios.vue'));
+Vue.component('portfolio-item', require('./components/PortfolioItem.vue'));
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+
+    data(){
+    	return {
+
+    	}
+    },
+
+    methods: {
+    	
+    },
+    mounted(){
+    	
+    }
 });
 
-var bLazy = new Blazy();
+
+
+var bLazy = new Blazy({
+	offset: 0
+});
 // var waypoint = new Waypoint();
 
 $('body').on('click', '#google-invite', function(e){
@@ -132,19 +151,7 @@ $('#mobile-menu-admin').sidebar({
 }).sidebar('attach events', '#mobile-admin-trigger');
 
 var Portfolio = {
-	load: function(){
-		var id = document.getElementById('load-more').dataset.page;
-		$('#load-more').addClass('loading');
-		axios.get('/load-more/'+id).then(function(response){
-			if(response.data.html){
-				$('#portfolio-data').append(response.data.html);
-				$('#load-more').removeClass('loading')
-				document.getElementById('load-more').dataset.page = parseInt(id) + 1;
-			} else {
-				$('#load-more').hide();
-			}
-		});
-	},
+	
 	loadActivities: function(){
 		var btn = document.getElementById('load-more-activity'),
 			id = btn.dataset.page,
@@ -179,11 +186,6 @@ var UserProfiles = {
 }
 
 // import waypoint from "waypoints/src/waypoint";
-
-$('body').on('click', '#load-more', function(e){
-	e.preventDefault();
-	Portfolio.load();
-});
 
 $('body').on('click', '#load-more-activity', function(e){
 	e.preventDefault();

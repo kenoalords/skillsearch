@@ -12,7 +12,7 @@
 */
 
 Route::get('/', 'PortfolioController@homepagePortfolio')->name('home');
-Route::get('/load-more/{page}', 'PortfolioController@homepagePortfolioAjax');
+Route::get('/load-portfolio/{page?}/{limit?}', 'PortfolioController@homepagePortfolioAjax');
 
 Route::get('/search', 'SearchController@searchProfiles');
 Route::get('/search/jobs', 'SearchController@searchJobs')->name('job_search');

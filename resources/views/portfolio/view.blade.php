@@ -166,9 +166,10 @@
                         <div class="">
                             @if(!Auth::user())
                                 <h3 class="ui header">You must be <a href="/login" class="">logged in</a> to post a comment</h3>
-                                @endif
+                            @endif
 
-                                <portfolio-comments uid="{{ $portfolio['uid'] }}" avatar="{{ $avatar }}"></portfolio-comments>
+                            <portfolio-comments uid="{{ $portfolio['uid'] }}" avatar="{{ $avatar }}"></portfolio-comments>
+                            
                         </div>
                     </div>
                 </div>

@@ -28,7 +28,7 @@ class PortfolioController extends Controller
     public function index(Request $request)
     {
         
-        $portfolios = fractal()->collection($request->user()->portfolio()->get())
+        $portfolios = fractal()->collection($request->user()->portfolio()->latestFirst()->get())
                             ->transformWith(new PortfolioTransformer)
                             ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                             ->toArray();
@@ -127,17 +127,17 @@ class PortfolioController extends Controller
 
     public function addPortfolioThumbnail(Request $request)
     {
+        // return response()->json($request); die();
         $this->validate($request, [
             'file'  => 'required|image'
         ]);
 
         $thumb = $request->file('file')->store('public');
-        Image::make(storage_path().'/app/'.$thumb)->fit(800)->save();
+        Image::make(storage_path().'/app/'.$thumb)->fit(480)->save();
         $user = $request->user();
-        $title = 'Draft Portfolio';
         dispatch(new UploadFileToS3($thumb));
 
-        if($request->uid !== "null"){
+        if($request->uid !== null){
             $portfolio = $request->user()->portfolio()->where('uid', $request->uid)->first();
             $portfolio->thumbnail = $thumb;
             $portfolio->save();
@@ -150,7 +150,8 @@ class PortfolioController extends Controller
             $uid = uniqid(true);
             $portfolio = $user->portfolio()->create([
                         'uid'       => $uid,
-                        'title'     => $title,
+                        'title'     => $request->title,
+                        'description'=> $request->description,
                         'thumbnail' => $thumb,
                         'is_public' => false,
                     ]);
@@ -182,7 +183,7 @@ class PortfolioController extends Controller
         // Dispatch job to S3
         dispatch(new UploadFileToS3($file));
 
-        if($request->uid !== "null"){
+        if($request->uid !== null){
 
             $portfolio = $request->user()->portfolio()->where('uid', $request->uid)->first();
             $portfolio->files()->create([
@@ -197,29 +198,6 @@ class PortfolioController extends Controller
 
             return response()->json($portfolio, 200);
 
-        } else {
-            $uid = uniqid(true);
-            $title = 'Draft Portfolio';
-            
-            // Save Image to files
-            $portfolio = $request->user()->portfolio()->create([
-                            'uid'   => $uid,
-                            'title' => $title,
-                            'is_public' => false,
-                        ]);
-            // Save link to files table
-            $portfolio->files()->create([
-                'file'      => $file,
-                'file_type' => $request->type,
-            ]);
-
-            $portfolio = fractal()->item($portfolio)
-                        ->transformWith(new PortfolioTransformer)
-                        ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
-                        ->toArray();
-
-            return response()->json($portfolio, 200);
-            
         }
     }
 
@@ -286,9 +264,9 @@ class PortfolioController extends Controller
         });
 
         // Delete Activity
-        $activities->each(function($activity, $key){
-            $activity->delete();
-        });
+        // $activities->each(function($activity, $key){
+        //     $activity->delete();
+        // });
 
         // Delete Likes
         $likes->each(function($like, $key){
@@ -362,11 +340,7 @@ class PortfolioController extends Controller
     public function homepagePortfolio(Request $request, Portfolio $portfolio)
     {
         $records = $portfolio->isPublic()->hasThumbnail();
-        
-        // dd($offset);
-        // $paginate = $records->paginate(24);
-
-        $portfolios = fractal()->collection($records->latestFirst()->take(12)->get())
+        $portfolios = fractal()->collection($records->latestFirst()->take(2)->get())
                         ->transformWith(new PortfolioTransformer)
                         ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                         ->toArray();
@@ -379,16 +353,15 @@ class PortfolioController extends Controller
     public function homepagePortfolioAjax(Request $request, Portfolio $portfolio)
     {
         $records = $portfolio->isPublic()->hasThumbnail();
-        $skip = (int)($request->page) * 12;
-        $portfolios = fractal()->collection($records->latestFirst()->skip($skip)->take(12)->get())
+        $skip = (int)($request->page) * (int)$request->limit;
+        $portfolios = fractal()->collection($records->latestFirst()->skip($skip)->take($request->limit)->get())
                         ->transformWith(new PortfolioTransformer)
                         ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                         ->toArray();
-        $data = '';
-        foreach ( $portfolios as $key => $portfolio ){
-            $data .= view('includes.portfolio-with-user', ['portfolio'=>$portfolio])->render();
-        }
-        return response()->json(['status'=>true, 'html'=>$data]);
+        if($portfolios)
+            return response()->json($portfolios, 200);
+        else
+            return response()->json(false, 422);
     }
 
     public function workPage(Portfolio $portfolio, Skills $skills)

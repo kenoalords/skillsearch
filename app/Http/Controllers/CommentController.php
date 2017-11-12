@@ -10,6 +10,12 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
+
+    public function get(Request $request)
+    {
+        
+    }
+
     public function likeComment( Request $request, PointService $point, Comment $comment )
     {
     	$hasLiked = $comment->likes()->where('user_id', $request->user()->id)->first();

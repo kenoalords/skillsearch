@@ -61,7 +61,6 @@
                     <a class="item" href="/home"><i class="icon user"></i>{{ ucwords(Auth::user()->name) }}</a>
                 @endif
                 <a class="item" href="{{ route('people') }}">People</a>
-                <a class="item" href="{{ route('work') }}">Portfolio</a>
                 <a class="item" href="{{ route('tasks') }}">Jobs</a>
                 @if(!Auth::user())
                 <a href="/login" class="item">Login</a>
@@ -89,7 +88,6 @@
                     </a>
                 </div>
                 <a class="item large-screen-only" href="{{ route('people') }}">People</a>
-                <a class="item large-screen-only" href="{{ route('work') }}">Portfolio</a>
                 <a class="item large-screen-only" href="{{ route('tasks') }}">Jobs</a>
                 
                 <div class="right menu large-screen-only">
@@ -103,7 +101,9 @@
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                         {{ csrf_field() }}
                     </form>
-                    
+                    <div class="item">
+                        <a href="/profile/portfolio/add" class="ui green button"><i class="icon plus"></i>Upload work</a>
+                    </div>
                     @else
                         <a href="/login" class="item">Login</a>
                         <div class="item">
@@ -140,6 +140,7 @@
             </footer>  
         </div>
     </div>  
+    
     
     
     <!-- Scripts -->

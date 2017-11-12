@@ -26,7 +26,7 @@ function skill_links($skills){
         $string = '';
         foreach ($skills as $skill) {
             # code...
-            array_push($markup, '<a href="/work/search/?term='.urlencode(trim($skill)).'" class="ui mini circular label">'.$skill.'</a>');
+            array_push($markup, '<a href="/work/search/?term='.urlencode(trim($skill)).'" class="ui mini circular label" title="'.$skill.'">'.$skill.'</a>');
         }
         if(!empty($markup)){
             $string = implode(' ', $markup);
@@ -55,7 +55,7 @@ function getRatings($count){
 
 function identity_check($i=false){
     if($i){
-        return ' <img src="'.asset("public/verified.svg").'" width="14" height="14" id="verified" alt="Verified User">';
+        return ' <img src="'.asset("public/verified.svg").'" width="14" height="14" class="verified" alt="Verified User">';
     }
 }
 

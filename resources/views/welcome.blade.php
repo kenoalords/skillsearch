@@ -4,7 +4,6 @@
 @section('type', 'article')
 @section('title', 'Home')
 @section('metadescription', 'Showcase your skills, find latest jobs and get hired on Nigeria preferred skills promotion platform')
-
 @section('content')
 <!-- @include('search-form') -->
 <div id="hero">
@@ -23,13 +22,10 @@
     @endif
 <div id="showcase">
     <div class="ui container">
-        <div class="ui centered grid" id="portfolio-data">
-            @each('includes.portfolio-with-user', $portfolios, 'portfolio')
+        <div class="ui centered grid" id="portfolio-data" style="padding: 2em 0">
+            {{-- @each('includes.portfolio-with-user', $portfolios, 'portfolio') --}}
+            <portfolio-list></portfolio-list>
         </div>
-        <div class="ui center aligned container" style="margin: 2em !important;">
-            <a href="#" id="load-more" class="ui button" data-page="1">Load More</a>
-        </div>
-        
     </div>
 </div>
 

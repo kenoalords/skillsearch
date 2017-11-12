@@ -21,7 +21,6 @@ window.$ = window.jQuery = require('jquery');
 
 window.Vue = require('vue');
 
-
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
  * to our Laravel back-end. This library automatically handles sending the
@@ -52,10 +51,14 @@ window.Echo = new Echo({
 });
 
 window.Blazy = require('blazy');
-// window.Waypoint = require('waypoints/lib/jquery.waypoints.min');
-// window.Wavesurfer = require('wavesurfer.js/dist/wavesurfer.min');
-// window.MediumEditor = require('medium-editor/dist/js/medium-editor.js');
-// window.datepicker = require('bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js');
-// window.selectpicker = require('bootstrap-select/dist/js/bootstrap-select.min.js');
-// window.Cropper = require('cropperjs/dist/cropper.min.js');
+
 window.sticky = require('semantic-ui-css/semantic.min.js');
+window.toastr = require('toastr');
+window.iziToast = require('izitoast/dist/js/iziToast');
+
+iziToast.settings({
+	position: 'bottomLeft',
+	backgroundColor: '#222222',
+	theme: 'dark',
+	progressBarColor: '#eeeeee'
+});

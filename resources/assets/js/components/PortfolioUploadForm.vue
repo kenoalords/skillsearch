@@ -1,15 +1,6 @@
 <template>
     <div>
         <form action="#" class="ui form" id="portfolio-form" :class="{'loading' : isPosting}">
-            <div class="field white-boxed">
-                <h3 class="ui header">Upload thumbnail</h3>
-                <label for="thumbnail" class="thumbnail-image">
-                    <input type="file" style="display:none" id="thumbnail" 
-                        v-on:change.prevent="uploadThumbnail()">
-                    <img v-bind:src="p.thumbnail" v-if="p.thumbnail" class="ui fluid image">
-                </label>
-            </div>
-            
             <div class="white-boxed">
                 <div class="field">
                     <label for="title">Portfolio title</label>
@@ -21,9 +12,20 @@
                     <textarea rows="3" id="description" placeholder="Provide a short description about this portfolio" v-model="p.description"></textarea>
                 </div>
             </div>
+            <div class="field white-boxed">
+                <h3 class="ui header">Upload thumbnail</h3>
+                <label for="thumbnail" class="thumbnail-image">
+                    <input type="file" style="display:none" id="thumbnail" 
+                        v-on:change.prevent="uploadThumbnail()">
+                    <img v-bind:src="p.thumbnail" v-if="p.thumbnail" class="ui fluid image">
+                </label>
+            </div>
             
             <div class="field white-boxed">
-                <h3 class="ui header">Upload portfolio files</h3>
+                <h3 class="ui header">
+                    Upload portfolio files
+                    <div class="sub header">You can upload multiple files formats like Images(PNG, JPG, GIF), Audio(MP3) &amp; Videos(MP4)</div>
+                </h3>
 
                 <div v-if="p.files && p.files.length > 0" style="margin:2em 0">
                     <div class="ui grid">
@@ -82,7 +84,6 @@
 </template>
 
 <script>
-    import toastr from "toastr";
     export default {
         data() {
             return {
@@ -107,13 +108,24 @@
 
             uploadThumbnail: function()
             {
+                if(!this.p.hasOwnProperty('title')){
+                    iziToast.error({
+                        title: 'Oops!!!',
+                        message: 'Please enter your portfolio title',
+                        position: 'center',
+                        transitionOut: 'fadeOutUp',
+                    });
+                    return false;
+                }
                 var thumbnail = document.getElementById('thumbnail').files[0],
                     formData = new FormData(),
                     _this = this,
-                    uid = (this.p.uid) ? this.p.uid : null;
+                    uid = (this.p.uid) ? this.p.uid : '';
                     _this.isPosting = true;
                 formData.append('file', thumbnail);
                 formData.append('uid', uid);
+                formData.append('title', this.p.title);
+                formData.append('description', this.p.description);
 
                 axios({
                     method: "POST",
@@ -125,7 +137,10 @@
                 }).then((response)=>{
                     _this.isPosting = false;
                     _this.p = response.data;
-                    toastr.success('Thumbnail uploaded!');
+                    // console.log(response.data);
+                    iziToast.success({
+                        title: 'Thumbnail uploaded!',
+                    });
                 }).catch((error)=>{
                     _this.isPosting = false;
                 });
@@ -133,7 +148,18 @@
 
             uploadPortfolioFiles: function()
             {
+                if(!this.p.hasOwnProperty('title')){
+                    iziToast.error({
+                        title: 'Oops!!!',
+                        message: 'Please enter your portfolio title',
+                        position: 'center',
+                        transitionOut: 'fadeOutUp',
+                    });
+                    return false;
+                }
+
                 var files = document.getElementById('files-upload').files;
+
 
                 if(files.length > 0){
                     var formats = [
@@ -159,12 +185,11 @@
             uploadFile: function(file){
                 var formData = new FormData(),
                     _this = this,
-                    uid = (this.p.uid) ? this.p.uid : null;
+                    uid = (this.p.uid) ? this.p.uid : '';
                 _this.isPosting = true;
                 formData.append('uid', uid);
                 formData.append('file', file);
                 formData.append('type', file['type']);
-
                 axios({
                     method: "POST",
                     data: formData,
@@ -175,7 +200,9 @@
 
                 }).then( (response) => {
                     _this.isPosting = false;
-                    toastr.success('File uploaded!');
+                    iziToast.success({
+                        title: 'File uploaded!',
+                    });
                     _this.p = response.data;
                 }).catch( (error) => {
                     _this.isPosting = false;
@@ -188,7 +215,9 @@
                 if(window.confirm("Do you really want to delete this file?")){
                     axios.delete('/profile/portfolio/file-upload/'+uid+'/'+file.id+'/delete').then( (response) => {
                         _this.isPosting = false;
-                        toastr.success('File deleted!');
+                        iziToast.success({
+                            title: 'File deleted!',
+                        });
                         _this.p.files.splice(_this.p.files.indexOf(file), 1);
                     });
                 }
@@ -206,14 +235,20 @@
                 axios.post('/profile/portfolio/add', formData).then( (response) => {
                     _this.isPosting = false;
                     if(_this.action === 'save'){
-                        toastr.success('Portfolio saved!');
+                        iziToast.success({
+                            title: 'Portfolio saved successfully!',
+                            message: 'You rock!'
+                        });
                     } else {
-                        toastr.success('Portfolio published!');
+                        iziToast.success({
+                            title: 'Portfolio published successfully!',
+                            message: 'You rock!'
+                        });
                     }
-                    console.log(response);
+                    window.location.href = window.Laravel.url + '/profile/portfolio';
                 }).catch( (error) => {
                     _this.isPosting = false;
-                    console.log(error);
+                    // console.log(error);
                 });
             },
         },

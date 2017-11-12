@@ -10,7 +10,6 @@
 </template>
 
 <script>
-    import toastr from "toastr";
     export default {
         data(){
             return{
@@ -62,11 +61,17 @@
                     this.count++;
                     this.hasLiked = true;
                     this.like();
-                    toastr.success('Liked!');
+                    iziToast.success({
+                        title: 'Liked!',
+                        message: 'You rock!'
+                    });
                 } else if(this.hasLiked === true){
                     this.count--;
                     this.hasLiked = false;
                     this.unlike();
+                    iziToast.info({
+                        title: 'Unliked!',
+                    });
                 }
             },
 
