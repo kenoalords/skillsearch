@@ -88,7 +88,7 @@
                 axios.post('/home/contact-requests/'+request.id+'/approve').then((response)=>{
                     // console.log(toastr);
                     btn.removeClass('loading');
-                    toastr.success('Contact request approved!');
+                    iziToast.success({ title : 'Contact request approved!'});
                     if(response.data == 1){
                         var index = _this.pendingRequests.indexOf(request);
                         _this.pendingRequests.splice(index, 1);

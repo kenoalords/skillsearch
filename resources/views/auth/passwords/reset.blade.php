@@ -50,7 +50,7 @@
     </div>
 
     <div class="field">
-            <button type="submit" class="btn btn-primary btn-block">
+            <button type="submit" class="ui fluid primary button">
                 Reset Password
             </button>
         </div>
