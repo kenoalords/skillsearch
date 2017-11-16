@@ -2,7 +2,7 @@
 
 @section('thumbnail', asset('public/logo-b.png'))
 @section('type', 'article')
-@section('metadescription', 'We want to hear from you, contact '. config('app.name') .' on Twitter @_Ubanji')
+@section('metadescription', 'We want to hear from you, contact '. config('app.name') .' on Twitter @ubanjicreatives')
 @section('title', 'Contact')
 @section('content')
 	
@@ -17,8 +17,8 @@
 					<p class="sub header">We want to hear from you. Send us a mail <a href="mailto:info@ubanji.com">info[@]ubanji.com</a></p>
 				</h3>
 				
-				<p>Or <a href="https://twitter.com/_ubanji" class="ui twitter button" target="_blank">
-					<i class="fa fa-twitter"></i> Tweet <strong>@_Ubanji</strong>
+				<p><a href="https://twitter.com/ubanjicreatives" class="ui twitter button" target="_blank">
+					<i class="fa fa-twitter"></i> Tweet <strong>@ubanjicreatives</strong>
 				</a></p>
 			</div>
 		</div>

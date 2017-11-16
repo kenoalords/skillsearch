@@ -77,6 +77,9 @@ class PortfolioController extends Controller
             $portfolio->is_public = $is_public;
             $portfolio->skills = $request->skills;
             $portfolio->save();
+            if($is_public){
+                $pointService->addPoint($request->user(), 'upload_portfolio');
+            }
             return response()->json(true);
         } else {
             $uid = uniqid(true);
@@ -89,6 +92,9 @@ class PortfolioController extends Controller
                             'is_public'     => $is_public,
                             'skills'        => $request->skills,
                         ]);
+            if($is_public){
+                $pointService->addPoint($request->user(), 'upload_portfolio');
+            }
             return response()->json(true);
         }
     }

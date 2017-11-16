@@ -65,6 +65,7 @@ return [
         'comment'       => 25,
         'invite_signup' => 250,
         'portfolio'     => 15,
+        'upload_portfolio'=> 100,
         'follow'        => 35,
         'comment_like'  => 5,
     ],

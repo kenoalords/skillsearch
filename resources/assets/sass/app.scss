@@ -166,8 +166,8 @@ p, ul, ol{
 
 #page{
 	p{
-		font-size: 1.2em;
-		line-height: 2;
+		font-size: 1em;
+		line-height: 1.5;
 	}
 }
 
@@ -250,7 +250,7 @@ body.loading:before{
 }
 
 .verified{
-	width:16px;
+	width:16px !important;
 	height:auto;
 }
 
@@ -810,8 +810,8 @@ body.loading:before{
 
 
 #points-header{
-	background-color: #fff;
-	padding: 6em 0;
+	background-color: #f9f9f9;
+	padding: 3em 0;
 	border-bottom: 1px solid #eee;
 	h1{
 		font-size: 3em !important;

@@ -3,6 +3,10 @@
 @section('title', 'Dashboard')
 
 @section('content')
+    <h2 class="ui dividing header">
+        <span style="color: #e74c3c">You have earned {{number_format($user['points'])}} points.</span>
+        <div class="sub header">Want to earn more points? <a href="/points">Find out how.</a></div>
+    </h2>
     @include('includes.status')
     
     @if(!$user['phone'])
