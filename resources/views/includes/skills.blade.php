@@ -1,4 +1,4 @@
-<div class="padded">
+<div class="padded" id="popular-skills">
 	<div class="ui container">
 		<h4 class="ui header" style="text-transform: uppercase; letter-spacing: 2px">Popular Skill</h4>
 		<!-- <div class="ui divider" style="margin-bottom: 1em"></div> -->

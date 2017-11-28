@@ -4163,11 +4163,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     mounted: function mounted() {
         var $this = this;
         $this.load();
+        var howHeight = $('#how').length > 0 ? $('#how').height() : 0;
+        var subOffset = Math.round($('#popular-skills').height() + howHeight) + 100;
         $(window).on('scroll', function (e) {
             var position = $(window).scrollTop();
             var docHeight = $(document).height();
             var windowHeight = $(window).height();
-            var bottom = Math.round(docHeight) - windowHeight - 400;
+            var bottom = Math.round(docHeight) - windowHeight - subOffset;
 
             if (position > bottom && position < bottom + 50 && !$this.finished && !$this.isLoading) {
                 $this.load();

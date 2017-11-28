@@ -48,11 +48,13 @@
         mounted() {
             var $this = this;
             $this.load();
+            const howHeight = ($('#how').length > 0) ? $('#how').height() : 0;
+            const subOffset = Math.round($('#popular-skills').height() + howHeight) + 100;
             $(window).on('scroll', (e) => {
                 var position = $(window).scrollTop();
                 var docHeight = $(document).height();
                 const windowHeight = $(window).height();
-                const bottom =  (Math.round(docHeight) - windowHeight) - 400;
+                const bottom =  (Math.round(docHeight) - windowHeight) - subOffset;
 
                 if( position > bottom && position < (bottom + 50) && !$this.finished && !$this.isLoading){
                     $this.load();
