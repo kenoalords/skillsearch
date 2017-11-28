@@ -18,7 +18,7 @@
                 <img src="{{$portfolio['thumbnail']}}" alt="{{$portfolio['title']}}" class="ui fluid image">
                 <h1 class="ui header" itemprop="name">{{ ucwords(strtolower($portfolio['title'])) }}</h1> 
                                     
-                <p itemprop="description">{{$portfolio['description']}}</p>
+                <p itemprop="description">{{($portfolio['description'] != 'undefined') ? $portfolio['description'] : ''}}</p>
                 <div class="ui mini divided grey horizontal list bold">
                     <div class="item"><i class="icon eye"></i> {{ $portfolio['views'] }}</div>
                     <div class="item"><i class="icon calendar"></i>{{ $portfolio['date'] }}</div>
@@ -195,7 +195,7 @@
                     <img src="{{$portfolio['thumbnail']}}" class="ui fluid image">
                     <h1 class="ui medium header">{{ ucwords(strtolower($portfolio['title'])) }}</h1> 
                                         
-                    <p itemprop="description">{{$portfolio['description']}}</p>
+                    <p itemprop="description">{{($portfolio['description'] != 'undefined') ? $portfolio['description'] : ''}}</p>
                     <div class="ui mini divided grey horizontal list bold">
                         <div class="item"><i class="icon eye"></i> {{ $portfolio['views'] }}</div>
                         <div class="item"><i class="icon calendar"></i>{{ $portfolio['date'] }}</div>

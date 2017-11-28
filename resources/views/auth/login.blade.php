@@ -13,7 +13,7 @@
         <div class="field{{ $errors->has('email') ? ' error' : '' }}">
             <div class="ui left icon input">
                 <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus placeholder="E-Mail Address">
-                <i class="icon at"></i>
+                <i class="icon mail"></i>
             </div>
             @if ($errors->has('email'))
                 <span class="ui pointing red basic label">

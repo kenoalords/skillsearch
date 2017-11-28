@@ -1,9 +1,9 @@
 <template>
-    <div class="">
+    <div>
 
-        <div class="" style="margin-top:1em;">
-            <label v-if="!isUploading" class="text-center" style="display:block; margin-bottom: 1em">
-                <img v-bind:src="imageSrc" class="img-circle">
+        <div class="" style="margin:1em 0;">
+            <label id="user-avatar-upload" v-if="!isUploading" class="text-center">
+                <img v-bind:src="imageSrc" class="ui circular fluid image">
                 <input type="file" id="fileupload" v-on:change="uploadProfileImage" style="display: none">
             </label>
         

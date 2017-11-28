@@ -11,11 +11,12 @@
             </div>
         </div>
     @endif
+
     <div class="ui row">
-        <h1 class="ui dividing header">Edit Profile</h1>
-    </div>
-    <div class="ui row">
-        <upload-image img-src="{{ $profile->getAvatar() }}"></upload-image>
+        <div class="ui centered grid">
+            <upload-image img-src="{{ $profile->getAvatar() }}"></upload-image>
+        </div>
+        <h1 class="ui header">Edit Profile</h1>
         <div class="ui divider"></div>
         <form action="/profile/edit" method="post" class="ui form" id="profile-edit-form">
             {{ csrf_field() }}

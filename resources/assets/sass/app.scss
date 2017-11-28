@@ -626,6 +626,16 @@ body.loading:before{
 // 	}
 // }
 
+#user-avatar-upload{
+	width: 100%;
+	max-width: 140px;
+}
+
+.ui.circular.label, .ui.circular.labels .label{
+	padding-right: 1em !important;
+	padding-left: 1em !important;
+}
+
 #image-preview{
 	width:100%;
 	min-height:540px;
@@ -978,7 +988,7 @@ body.loading:before{
 	&:before{
 		content: "";
 		position: absolute;
-		background: rgba(0,0,0,.3);
+		background: rgba(0, 0, 0, .4);
 		top: 0;
 		right: 0;
 		left: 0;

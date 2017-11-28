@@ -61,7 +61,6 @@ class RegisterController extends Controller
             'password'      => 'required|min:6|confirmed',
             'first_name'    => 'required|min:3|max:32',
             'last_name'     => 'required|min:3|max:32',
-            'account_type'  => 'required|in:1,0',
             'referral_code' => 'nullable|exists:referral_codes,code',
         ]);
     }
@@ -83,7 +82,7 @@ class RegisterController extends Controller
         $user->profile()->create([
             'first_name'    => $data['first_name'],
             'last_name'     => $data['last_name'],
-            'account_type'  => $data['account_type'],
+            'account_type'  => 1,
             'is_public'     => true,
         ]);
 

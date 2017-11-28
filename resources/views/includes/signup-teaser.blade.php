@@ -1,7 +1,8 @@
+@if(!Auth::user())
 <div id="how" class="padded">
     <div class="ui grid container">
         
-        <div class="center aligned column" style="padding: 2em 1em; margin: 2em 0">
+        <div class="center aligned column" style="margin: 2em 0">
             <h2 class="ui huge header" style="color: #fff; font-size: 3em; text-shadow: 0 1px 1px rgba(0,0,0,.3); margin-bottom: .3em">
                 Showcase your creative works
                 <p class="sub header" style="color: #fff">&amp; attract the best clients</p>
@@ -12,3 +13,4 @@
         
     </div>
 </div>
+@endif

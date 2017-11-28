@@ -9,7 +9,7 @@
 <div id="hero">
     <div class="ui container">
         <div class="ui centered grid">
-            <h1><span class="beast">Showcase &amp; Discover</span> <br>Creative People in Nigeria</h1>          
+            <h1><span class="beast">Showcase &amp; Discover</span> <br>Creative People in Nigeria</h1>
         </div>
     </div>
 </div>

@@ -61,7 +61,7 @@ class SocialAuthController extends Controller
                 }
                 // insert a new user record
                 $user = User::create([
-                            'name'      => $username,
+                            'name'      => strtolower($username),
                             'email'     => $email,
                             'password'  => bcrypt(uniqid(true)),
                         ]);

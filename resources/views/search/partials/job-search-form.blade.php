@@ -2,7 +2,7 @@
     <div>
         <div class="ui fields">
             <div class="field">
-                <select name="skill" class="form-control">
+                <select name="skill" class="ui search dropdown">
                     <option value="">Choose Category</option>
                     @if($skills->count())
                         @foreach($skills as $skill)

@@ -4131,8 +4131,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             isLoading: false,
             page: 0,
-            limit: 16,
-            portfolios: []
+            limit: 8,
+            portfolios: [],
+            finished: false
         };
     },
 
@@ -4147,20 +4148,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.isLoading = true;
             axios.get('/load-portfolio/' + this.page + '/' + this.limit).then(function (response) {
                 _this.isLoading = false;
+                _this.page++;
                 response.data.forEach(function (value, key) {
                     _this.portfolios.push(value);
                 });
-                _this.page++;
             }).catch(function (error) {
                 _this.isLoading = false;
-                iziToast.error({ title: 'No more results!' });
-                // console.log(error);
+                // iziToast.error({ title : 'No more results!' })
+                _this.finished = true;
             });
         }
     },
 
     mounted: function mounted() {
-        this.load();
+        var $this = this;
+        $this.load();
+        $(window).on('scroll', function (e) {
+            var position = $(window).scrollTop();
+            var docHeight = $(document).height();
+            var windowHeight = $(window).height();
+            var bottom = Math.round(docHeight) - windowHeight - 400;
+
+            if (position > bottom && position < bottom + 50 && !$this.finished && !$this.isLoading) {
+                $this.load();
+            }
+        });
     }
 });
 
@@ -82773,18 +82785,17 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {}, [_c('div', {
+  return _c('div', [_c('div', {
     staticStyle: {
-      "margin-top": "1em"
+      "margin": "1em 0"
     }
   }, [(!_vm.isUploading) ? _c('label', {
     staticClass: "text-center",
-    staticStyle: {
-      "display": "block",
-      "margin-bottom": "1em"
+    attrs: {
+      "id": "user-avatar-upload"
     }
   }, [_c('img', {
-    staticClass: "img-circle",
+    staticClass: "ui circular fluid image",
     attrs: {
       "src": _vm.imageSrc
     }
@@ -86383,13 +86394,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticStyle: {
       "margin": "2em 0"
     }
-  }, [_c('a', {
+  }, [(!_vm.finished) ? _c('a', {
     staticClass: "ui button",
     class: {
       'loading': _vm.isLoading
     },
     attrs: {
-      "href": "#"
+      "href": "#",
+      "id": "auto-loader"
     },
     on: {
       "click": function($event) {
@@ -86397,7 +86409,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.load($event)
       }
     }
-  }, [_vm._v("Load more")])])])
+  }, [_vm._v("Load more")]) : _vm._e()])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {

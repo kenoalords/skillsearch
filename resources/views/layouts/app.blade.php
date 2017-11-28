@@ -106,10 +106,8 @@
                     </div>
                     @else
                         <a href="/login" class="item">Login</a>
-                        <div class="item">
-                            <a href="/register" class="ui green circular button">Sign Up</a>
-                        </div>
-                    @endif
+                        <a href="/register" class="item">Register</a>
+                    @endif 
                 </div>
             </nav>
             

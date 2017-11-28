@@ -70,7 +70,7 @@ class PortfolioController extends Controller
         if($request->uid !== "null"){
             $portfolio = $request->user()->portfolio()->where('uid', $request->uid)->first();
             $title = ($request->title !== "null") ? $request->title : 'Draft Portfolio';
-            $description = ($request->description !== "null") ? $request->description : '';
+            $description = ($request->description != "undefined") ? $request->description : '';
             $is_public = ($request->action === "publish") ? true : false;
             $portfolio->title = $title;
             $portfolio->description = $description;
@@ -84,7 +84,7 @@ class PortfolioController extends Controller
         } else {
             $uid = uniqid(true);
             $title = ($request->title !== "null") ? $request->title : 'Draft Portfolio';
-            $description = ($request->description !== "null") ? $request->description : '';
+            $description = ($request->description != "undefined") ? $request->description : '';
             $is_public = ($request->action === "publish") ? true : false;
             $portfolio = $request->user()->portfolio()->create([
                             'title'         => $title,

@@ -80,30 +80,7 @@
         </div>
     </div>
 
-    <div class="field {{ $errors->has('account_type') ? ' error' : '' }}">
-        <h4 class="ui dividing header">I Want To</h4>
-
-        <div class="field">
-            <div class="ui radio checkbox">
-                <label>Showcase my work</label>
-                <input type="radio" name="account_type" value="1">
-            </div>
-        </div>
-        <div class="field">
-            <div class="ui radio checkbox">
-                <label>Hire someone</label>
-                <input type="radio" name="account_type" value="0">
-            </div>
-        </div>
-
-        @if ($errors->has('account_type'))
-            <span class="ui pointing red basic label">
-                <strong>Please select an account type</strong>
-            </span>
-        @endif
-    </div>
-
-    <div class="field {{ $errors->has('referral_code') ? ' error' : '' }}">
+    <!-- <div class="field {{ $errors->has('referral_code') ? ' error' : '' }}">
         <label for="">Referral Code (Optional)</label>
         <input type="text" name="referral_code">
         @if ($errors->has('referral_code'))
@@ -111,7 +88,7 @@
             Your referral code is invalid
         </div>
         @endif
-    </div>
+    </div> -->
 
     <div class="field">
         <button type="submit" class="ui primary fluid button">Register</button>
