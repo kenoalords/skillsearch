@@ -1293,6 +1293,10 @@ span.big{
 	#searchform{
 		.field{
 			margin-bottom: 5px;
+			padding: 0;
+			button.ui.button {
+				width: 100%;
+			}
 		}
 	}
 
@@ -1329,6 +1333,7 @@ span.big{
 		padding: 0;
 		height: auto;
 		margin-bottom: 2em;
+		padding-top: 10em;
 		.user-background{
 			position: relative;
 		}
@@ -1405,6 +1410,25 @@ span.big{
 
 	#comments > .media{
 		padding: .5em;
+	}
+
+	#peoples-list{
+		.dividing {
+			border-bottom: 1px solid #eee;
+			.extra.mobile-only{
+				font-size: .75em;
+				font-weight: 800;
+			}
+			.column{
+				padding: 10px;
+			}
+			h3{
+				font-size: 1.1em;
+			}
+			.meta{
+				font-size: .875em;
+			}
+		}
 	}
 }
 

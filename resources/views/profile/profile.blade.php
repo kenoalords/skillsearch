@@ -10,11 +10,11 @@
 <div id="profile-back" style="background: url({{ $profile['background'] }}); background-size: cover">
     <div class="ui container white">
         <div class="ui padded grid">
-            <div class="sixteen wide mobile four wide tablet two wide computer column">
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" data-src="{{ $profile['avatar'] }}" class="ui fluid image b-lazy">
+            <div class="four wide mobile four wide tablet two wide computer column">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" data-src="{{ $profile['avatar'] }}" class="ui fluid circular image b-lazy">
                 <meta itemprop="image" content="{{ $profile['avatar'] }}">
             </div>
-            <div class="sixteen wide mobile twelve wide tablet fourteen wide computer middle aligned column">
+            <div class="twelve wide mobile twelve wide tablet fourteen wide computer middle aligned column">
                 <h1 class="ui header small-header">
                     <span itemprop="name">{{ $profile['fullname'] }}</span> {!! identity_check($profile['verified']) !!} 
                     <div class="sub header"><i class="icon marker"></i><span itemprop="homeLocation">{{ $profile['location'] }}</span></div>

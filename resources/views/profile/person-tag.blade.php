@@ -1,4 +1,4 @@
-<div class="ui container grid">
+<div class="ui container grid dividing">
     <div class="sixteen wide tablet six wide computer column">
         <div class="ui unstackable items">
             <div class="item">
@@ -18,21 +18,25 @@
                     </div>
                     <div class="description large-screen-only">
                         <p>{{ str_limit($profile['bio'], 75) }}</p>
-                        
                     </div>
                     @if(count($profile['skills']) > 0)
-                        <div class="extra">
+                        <div class="extra large-screen-only">
                             <!-- <h5>Skills</h5> -->
                             @foreach ($profile['skills'] as $skill)
                                 <a href="/search/?term={{ $skill['skill'] }}" class="ui mini teal basic label">{{ $skill['skill'] }}</a>
                             @endforeach
                         </div>
+                        <div class="extra mobile-only">
+                            {{ formatSkills($profile['skills']) }}
+                        </div>
                     @endif
-                    <div class="ui divider"></div>
-                    <a href="/{{$profile['username']}}/contact-request" class="ui tiny icon label"><i class="icon mail"></i>Request Contact</a>
-                    @if($profile['has_instagram'] === true)
-                        <a href="/{{$profile['username']}}/instagram" class="ui tiny teal icon label"><i class="icon instagram"></i><span class="bold">Instagram</span> <span class="thin">Feed</span></a>
-                    @endif
+                    <div class="large-screen-only">
+                        <div class="ui divider"></div>
+                        <a href="/{{$profile['username']}}/contact-request" class="ui tiny icon label"><i class="icon mail"></i>Request Contact</a>
+                        @if($profile['has_instagram'] === true)
+                            <a href="/{{$profile['username']}}/instagram" class="ui tiny teal icon label"><i class="icon instagram"></i><span class="bold">Instagram</span> <span class="thin">Feed</span></a>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
