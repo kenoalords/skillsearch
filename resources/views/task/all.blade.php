@@ -21,7 +21,7 @@
     
     <div class="white-boxed">
         <div class="ui container grid">
-            <div class="twelve wide computer column">
+            <div class="column">
                 @if ( count($tasks) > 0 )
                     <div class="ui divided very relaxed list">
                     @each('task.partials.task', $tasks, 'task')

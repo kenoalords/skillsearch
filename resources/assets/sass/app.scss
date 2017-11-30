@@ -1160,9 +1160,28 @@ span.big{
 }
 
 .grey-link{
-	color: #444;
+	display: block;
+	margin-bottom: .2em;
+	opacity: 1;
+	color: #222;
+	transition: all .3s ease-in-out;
 	&:hover{
-		color: #111;
+		opacity: 1;
+	}
+}
+
+.task .ui.header{
+	margin-bottom: .5em !important;
+}
+
+a.grey{
+	color: #999 !important;
+	a{
+		opacity: .7;
+		transition: all .3s ease-in-out;
+		&:hover{
+			opacity: 1;
+		}
 	}
 }
 

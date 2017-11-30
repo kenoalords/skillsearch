@@ -84696,9 +84696,11 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('ul', {
-    staticClass: "list-inline"
-  }, [(_vm.isResponseActive === null || !_vm.isAccepting) ? _c('li', [_c('a', {
+  return _c('div', [_c('div', {
+    staticClass: "ui horizontal list"
+  }, [(_vm.isResponseActive === null || !_vm.isAccepting) ? _c('div', {
+    staticClass: "item"
+  }, [_c('a', {
     staticClass: "btn btn-default btn-xs",
     attrs: {
       "href": "#"
@@ -84711,7 +84713,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('i', {
     staticClass: "fa fa-comments"
-  }), _vm._v(" Reply")])]) : _vm._e(), _vm._v(" "), (_vm.isResponseActive != null) ? _c('li', [_c('a', {
+  }), _vm._v(" Reply")])]) : _vm._e(), _vm._v(" "), (_vm.isResponseActive != null) ? _c('div', {
+    staticClass: "item"
+  }, [_c('a', {
     staticClass: "text-muted btn btn-default btn-xs",
     attrs: {
       "href": "#"
@@ -84724,7 +84728,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('i', {
     staticClass: "fa fa-close"
-  }), _vm._v(" Close")])]) : _vm._e(), _vm._v(" "), (_vm.isOwner) ? _c('li', [(!_vm.isAccepting) ? _c('a', {
+  }), _vm._v(" Close")])]) : _vm._e(), _vm._v(" "), (_vm.isOwner) ? _c('div', {
+    staticClass: "item"
+  }, [(!_vm.isAccepting) ? _c('a', {
     staticClass: "btn btn-default btn-xs",
     attrs: {
       "href": "#"
@@ -84738,9 +84744,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('i', {
     staticClass: "fa fa-check-circle"
   }), _vm._v(" Accept")]) : _vm._e()]) : _vm._e()]), _vm._v(" "), (_vm.isAccepting) ? _c('div', {
-    staticClass: "acceptance-wrapper"
-  }, [_c('hr'), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
+    staticClass: "ui form"
+  }, [_c('div', {
+    staticClass: "field"
   }, [_c('h4', {
     staticClass: "text-success bold"
   }, [_vm._v("Accept " + _vm._s(_vm.currentApplication.profile.fullname) + "'s Application")]), _vm._v(" "), _c('label', {
@@ -84772,9 +84778,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   })]), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
+    staticClass: "field"
   }, [_c('button', {
-    staticClass: "btn btn-primary",
+    staticClass: "ui green button",
     attrs: {
       "disabled": _vm.hasAcceptanceMessage
     },
@@ -84787,7 +84793,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('i', {
     staticClass: "fa fa-check-circle"
   }), _vm._v(" Accept")]), _vm._v(" "), _c('button', {
-    staticClass: "btn btn-default",
+    staticClass: "ui button",
     on: {
       "click": function($event) {
         $event.preventDefault();
@@ -84799,12 +84805,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }), _vm._v(" Cancel")])])]) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "responses"
   }, [(_vm.currentApplication.responses.length > 0) ? _c('div', {
-    staticClass: "thread"
+    staticClass: "ui comments thread"
   }, _vm._l((_vm.currentApplication.responses), function(response) {
     return _c('div', {
-      staticClass: "media"
+      staticClass: "comment"
     }, [_c('div', {
-      staticClass: "media-left"
+      staticClass: "avatar"
     }, [_c('img', {
       staticClass: "media-object img-circle",
       attrs: {
@@ -84814,25 +84820,27 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "height": "32"
       }
     })]), _vm._v(" "), _c('div', {
-      staticClass: "media-body",
+      staticClass: "content",
       class: {
         'is-owner': _vm.currentApplication.user_id === response.user_id
       }
-    }, [_c('h5', {
-      staticClass: "media-heading"
-    }, [_vm._v(_vm._s(response.profile.fullname) + " "), _c('small', {
-      staticClass: "pull-right"
-    }, [_c('em', [_vm._v(_vm._s(response.date))])])]), _vm._v(" "), _c('p', {
+    }, [_c('span', {
+      staticClass: "author"
+    }, [_vm._v(_vm._s(response.profile.fullname))]), _vm._v(" "), _c('div', {
+      staticClass: "metadata"
+    }, [_vm._v(_vm._s(response.date))]), _vm._v(" "), _c('p', {
+      staticClass: "text",
       domProps: {
         "innerHTML": _vm._s(response.response)
       }
     })])])
   })) : _vm._e(), _vm._v(" "), (_vm.isResponseActive === _vm.currentApplication.id) ? _c('form', {
+    staticClass: "ui form",
     attrs: {
       "action": "#"
     }
   }, [_c('div', {
-    staticClass: "form-group"
+    staticClass: "field"
   }, [_c('textarea', {
     directives: [{
       name: "model",
@@ -84856,9 +84864,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   })]), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
+    staticClass: "field"
   }, [_c('button', {
-    staticClass: "btn btn-primary btn-sm",
+    staticClass: "ui primary mini button",
     attrs: {
       "disabled": _vm.isSending
     },
@@ -84869,7 +84877,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }, [_vm._v("Submit")]), _vm._v(" "), (_vm.isResponseActive != null) ? _c('span', [_c('a', {
-    staticClass: "text-muted btn btn-default btn-xs",
+    staticClass: "ui mini button",
     attrs: {
       "href": "#"
     },
