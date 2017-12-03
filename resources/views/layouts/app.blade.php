@@ -90,10 +90,10 @@
                 <a class="item large-screen-only" href="{{ route('people') }}">People</a>
                 <a class="item large-screen-only" href="{{ route('tasks') }}">Jobs</a>
                 
-                <div class="right menu large-screen-only">
+                <div class="right menu">
                     @if(Auth::user())
-                    <a class="item" href="/home"><i class="icon user"></i>{{ ucwords(Auth::user()->name) }}</a>
-                    <a class="item" href="{{ route('logout') }}"
+                    <a class="item large-screen-only" href="/home"><i class="icon user"></i>{{ ucwords(Auth::user()->name) }}</a>
+                    <a class="item large-screen-only" href="{{ route('logout') }}"
                         onclick="event.preventDefault();
                                  document.getElementById('logout-form').submit();">
                         <i class="icon power"></i>Logout
@@ -101,13 +101,13 @@
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                         {{ csrf_field() }}
                     </form>
-                    <div class="item">
-                        <a href="/profile/portfolio/add" class="ui green button"><i class="icon plus"></i>Upload work</a>
-                    </div>
                     @else
-                        <a href="/login" class="item">Login</a>
-                        <a href="/register" class="item">Register</a>
+                        <a href="/login" class="item large-screen-only">Login</a>
+                        <a href="/register" class="item large-screen-only">Register</a>
                     @endif 
+                    <div class="item">
+                        <a href="/profile/portfolio/add" class="ui green mini button"><i class="icon plus"></i>Upload work</a>
+                    </div>
                 </div>
             </nav>
             

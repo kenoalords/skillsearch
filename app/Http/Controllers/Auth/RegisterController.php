@@ -61,7 +61,6 @@ class RegisterController extends Controller
             'password'      => 'required|min:6|confirmed',
             'first_name'    => 'required|min:3|max:32',
             'last_name'     => 'required|min:3|max:32',
-            'referral_code' => 'nullable|exists:referral_codes,code',
         ]);
     }
 
@@ -86,16 +85,7 @@ class RegisterController extends Controller
             'is_public'     => true,
         ]);
 
-        if($data['referral_code']){
-            $ref = ReferralCode::where('code', $data['referral_code'])->first();
-            $ref_user = $ref->user_id;
-            $user->referral()->create([
-                'referrer_id'   => $ref_user,
-            ]);
-            $ref_data = User::where('id', $ref_user)->first();
-            $fullname = ucwords($data['first_name'] . ' ' . $data['last_name']);
-            Mail::to($ref_data)->send(new ReferralNotification($ref_data, $fullname, $data['name']));
-        }
+        
 
         // Generate user verify token and store in database
         $verify_key = Crypt::encryptString($data['email']);
