@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="ui centered grid">
+        <div class="slick-js">
             <portfolio-item v-for="portfolio in portfolios" :data="portfolio" :key="portfolio.uid"></portfolio-item>
         </div>  
         <div class="ui center aligned column" style="margin: 2em 0">
@@ -10,6 +10,7 @@
 </template>
 
 <script>
+    
     export default {
 
         data() {

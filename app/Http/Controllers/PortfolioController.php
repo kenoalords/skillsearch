@@ -15,6 +15,7 @@ use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use App\Transformers\PortfolioTransformer;
 use App\Transformers\SkillsTransformer;
+use App\Transformers\SimpleUserTransformers;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use App\Jobs\DeleteFileFromS3Storage;
 use App\Jobs\UploadFileToS3;
@@ -346,13 +347,23 @@ class PortfolioController extends Controller
     public function homepagePortfolio(Request $request, Portfolio $portfolio)
     {
         $records = $portfolio->isPublic()->hasThumbnail();
-        $portfolios = fractal()->collection($records->latestFirst()->take(2)->get())
+        $portfolios = fractal()->collection($records->latestFirst()->isFeatured()->take(10)->get())
                         ->transformWith(new PortfolioTransformer)
                         ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                         ->toArray();
 
+        $collection = User::has('portfolio')->withCount(['portfolio' => function($query){
+                                $query->where('is_public', true);
+                            }])->inRandomOrder()->take(10)->get();
+        // dd($collection);
+        $profiles = fractal()->collection($collection)
+                            ->transformWith(new SimpleUserTransformers)
+                            ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                            ->toArray();
+
         return view('welcome')->with([
             'portfolios'    => $portfolios,
+            'profiles'      => $profiles,
         ]);
     }
 
@@ -400,5 +411,18 @@ class PortfolioController extends Controller
             return;
         }
         
+    }
+
+    public function makeFeaturedPortfolio(Request $request, Portfolio $portfolio)
+    {
+        // dd($portfolio);
+        if ( Auth::user()->is_admin === false ){
+            return response()->json(false, 401);
+        }
+
+        $portfolio->is_featured = true;
+        $portfolio->save();
+
+        return response()->json(true, 200);
     }
 }

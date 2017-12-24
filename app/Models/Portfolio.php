@@ -61,6 +61,11 @@ class Portfolio extends Model
       return $query->where('is_public', true);
     }
 
+    public function scopeIsFeatured($query)
+    {
+      return $query->where('is_featured', true);
+    }
+
     public function likes()
     {
       return $this->morphMany('App\Models\Like', 'likeable');

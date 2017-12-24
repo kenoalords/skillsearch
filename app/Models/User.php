@@ -67,6 +67,11 @@ class User extends Authenticatable
         return $this->hasMany(Subscriber::class);
     }
 
+    public function gigs()
+    {
+        return $this->hasMany(Gig::class);
+    }
+
     // Set up relationship 
     // user to user phone contact
     public function profile()

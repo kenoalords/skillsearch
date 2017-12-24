@@ -42,6 +42,7 @@
             'url'           => config('app.url'),
             'userLoggedIn'  => (Auth::user()) ? true : false,
             'user_id'       => (Auth::user()) ? Auth::user()->id : 0,
+            'is_admin'      => (Auth::user() && Auth::user()->is_admin) ? Auth::user()->id : 0,
         ]) !!};
 
         window.skillsearch = {!! 
@@ -89,6 +90,9 @@
                 </div>
                 <a class="item large-screen-only" href="{{ route('people') }}">People</a>
                 <a class="item large-screen-only" href="{{ route('tasks') }}">Jobs</a>
+                @if(Auth::user() && Auth::user()->is_admin == 1)
+                    <a href="{{ route('gigs') }}" class="item">Gigs</a>        
+                @endif
                 
                 <div class="right menu">
                     @if(Auth::user())
@@ -98,6 +102,7 @@
                                  document.getElementById('logout-form').submit();">
                         <i class="icon power"></i>Logout
                     </a>
+                    
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                         {{ csrf_field() }}
                     </form>
@@ -108,6 +113,11 @@
                     <div class="item">
                         <a href="/profile/portfolio/add" class="ui green mini button"><i class="icon plus"></i>Upload work</a>
                     </div>
+                    @if(Auth::user() && Auth::user()->is_admin == 1)
+                        <div class="item">
+                            <a href="/cart" class="ui circular icon button"><i class="icon cart"></i></a>
+                        </div>
+                    @endif
                 </div>
             </nav>
             

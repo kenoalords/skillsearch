@@ -49,6 +49,8 @@ Vue.component('blog-subscribe', require('./components/BlogSubscribe.vue'));
 Vue.component('phone-number', require('./components/PhoneNumber.vue'));
 Vue.component('portfolio-list', require('./components/Portfolios.vue'));
 Vue.component('portfolio-item', require('./components/PortfolioItem.vue'));
+Vue.component('gig-form', require('./components/GigForm.vue'));
+Vue.component('featured', require('./components/Featured.vue'));
 
 const app = new Vue({
     el: '#app',
@@ -67,11 +69,42 @@ const app = new Vue({
     }
 });
 
+$('.slick-js').slick({
+	infinite: true,
+	slidesToShow: 4,
+	slidesToScroll: 1,
+	autoplay: true,
+	autoplaySpeed: 3000,
+	responsive: [{
+
+		breakpoint: 1024,
+			settings: {
+			slidesToShow: 4,
+			infinite: true
+			}
+
+		}, {
+
+		breakpoint: 769,
+		settings: {
+			slidesToShow: 3,
+		}
+
+		}, {
+
+		breakpoint: 481,
+		settings: {
+			slidesToShow: 1,
+		}
+	}], 
+});
 
 
 var bLazy = new Blazy({
 	offset: 0
 });
+
+// $('.with-popup').popup();
 // var waypoint = new Waypoint();
 
 $('body').on('click', '#google-invite', function(e){

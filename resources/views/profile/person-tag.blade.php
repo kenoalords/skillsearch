@@ -26,9 +26,7 @@
                                 <a href="/search/?term={{ $skill['skill'] }}" class="ui mini teal basic label">{{ $skill['skill'] }}</a>
                             @endforeach
                         </div>
-                        <div class="extra mobile-only">
-                            {{ formatSkills($profile['skills']) }}
-                        </div>
+                        
                     @endif
                     <div class="large-screen-only">
                         <div class="ui divider"></div>

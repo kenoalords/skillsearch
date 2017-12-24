@@ -14,7 +14,7 @@
 Route::get('/', 'PortfolioController@homepagePortfolio')->name('home');
 Route::get('/load-portfolio/{page?}/{limit?}', 'PortfolioController@homepagePortfolioAjax');
 
-Route::get('/search', 'SearchController@searchProfiles');
+Route::get('/search', 'SearchController@searchPortfolios');
 Route::get('/search/jobs', 'SearchController@searchJobs')->name('job_search');
 
 Route::get('/about', 'PagesController@about');
@@ -24,6 +24,20 @@ Route::get('/contact', 'PagesController@contact');
 Route::get('/how-it-works', 'PagesController@works');
 Route::get('/privacy', 'PagesController@privacy');
 Route::get('/points', 'PagesController@points')->name('points');
+
+// Gigs Route
+// Route::get('/gigs', 'GigsController@gigs')->name('gigs');
+// Route::get('/gig/{gig}/{slug?}', 'GigsController@viewGig')->name('gig');
+
+// Cart Routes
+Route::get('/cart', 'CartController@cart')->name('cart');
+Route::get('/cart/checkout', 'CartController@checkout')->name('checkout');
+Route::get('/cart/{gig}/add', 'CartController@addToCart')->name('add_to_cart');
+Route::get('/cart/{gig}/delete', 'CartController@deleteFromCart')->name('delete_from_cart');
+
+// Payment Routes
+Route::post('/pay', 'PaymentController@redirectToGateway')->name('pay');
+Route::get('/payment/callback', 'PaymentController@handleGatewayCallback');
 
 Auth::routes();
 
@@ -105,6 +119,7 @@ Route::group(['middleware'=>'auth'], function(){
 		Route::get('/portfolio', 'PortfolioController@index')->name('portfolio_index');
 		Route::get('/portfolio/add', 'PortfolioController@add');
 		Route::post('/portfolio/add', 'PortfolioController@savePortfolio');
+		Route::post('/portfolio/{portfolio}/make-featured', 'PortfolioController@makeFeaturedPortfolio');
 		Route::post('/portfolio/thumbnail', 'PortfolioController@savePortfolioThumbnail');
 		Route::post('/portfolio/add-thumbnail', 'PortfolioController@addPortfolioThumbnail');
 
@@ -171,6 +186,10 @@ Route::group(['middleware'=>'auth'], function(){
 		Route::post('/blog/add', 'BlogController@submitBlogPost');
 		Route::get('/blog/{blog}/edit', 'BlogController@editBlogPost');
 		Route::post('/blog/add/image', 'BlogController@submitBlogPostImage');
+
+		// GIGS
+		// Route::get('/gig/add', 'GigsController@add');
+		// Route::post('/gig/add', 'GigsController@submit');
 	});
 	
 	// Subscribe Registered User To Blog

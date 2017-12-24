@@ -18,7 +18,10 @@ mix.js('node_modules/video.js/dist/video.min.js', 'public/js')
 		'node_modules/semantic-ui-css/semantic.min.css',
 		'node_modules/toastr/build/toastr.css',
 		'node_modules/video.js/dist/video.css',
-		'node_modules/izitoast/dist/css/iziToast.css'
+		'node_modules/cropperjs/dist/cropper.css',
+		'node_modules/izitoast/dist/css/iziToast.css',
+		'node_modules/slick-carousel/slick/slick.css',
+		'node_modules/slick-carousel/slick/slick-theme.css'
 		], 'public/css/all.css')
 	.js('resources/assets/js/app.js', 'public/js')
 	.sass('resources/assets/sass/app.scss', 'public/css')

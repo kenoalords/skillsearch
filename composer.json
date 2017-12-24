@@ -18,10 +18,12 @@
         "metricloop/laravel-transformer-maker": "^1.0",
         "nahid/talk": "^2.1",
         "oriceon/oauth-5-laravel": "dev-master",
+        "predis/predis": "^1.1",
         "pusher/pusher-php-server": "~2.6",
         "spatie/laravel-fractal": "^3.5",
         "spatie/laravel-sitemap": "^2.2",
-        "torann/geoip": "^1.0"
+        "torann/geoip": "^1.0",
+        "unicodeveloper/laravel-paystack": "1.0.*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

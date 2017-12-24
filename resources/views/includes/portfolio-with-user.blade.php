@@ -5,6 +5,7 @@
                 <img src="{{ $portfolio['user_profile']['avatar'] }}" alt="{{ $portfolio['user_profile']['fullname'] }}" class="ui avatar image">
                  <span itemprop="author">{{ $portfolio['user_profile']['first_name'] }}</span> {!! identity_check($portfolio['verified']) !!}
             </a>
+
         </div>
         <meta itemprop="description" content="{{ str_limit($portfolio['description'], 160) }}">
         <div class="ui fluid image">
@@ -18,6 +19,9 @@
                 <a href="{{route('delete_portfolio', ['portfolio'=>$portfolio['uid']])}}" class=""><i class="icon delete"></i></a>
             </div>
             @endif
+            @if($portfolio['is_featured'])
+                <div class="featured-tag"><i class="icon star"></i></div>
+            @endif
         </div>
         <div class="content">
             <div class="small bold">
@@ -28,15 +32,17 @@
                 </a>
 
                 <span class="right floated meta large-screen-only portfolio-meta">
-                    <span class="bold"><a href="{{ $portfolio['link']['url'] }}"><i class="fa fa-thumbs-up"></i> {{$portfolio['likes_count']}}</a></span>
+                    <span class="bold"><i class="fa fa-thumbs-up"></i> {{$portfolio['likes_count']}}</span>
 
-                    <span class="bold" style="margin-left: 1em"><a href="{{ $portfolio['link']['url'] }}#comments"><i class="fa fa-comment"></i> <span itemprop="commentCount">{{$portfolio['comment_count']}}</span></a></span>
+                    <span class="bold" style="margin-left: 1em"><i class="fa fa-comment"></i> <span itemprop="commentCount">{{$portfolio['comment_count']}}</span></span>
+                    <featured uid="{{ $portfolio['uid'] }}"></featured>
                 </span>
 
                 <span class="meta mobile-only tablet-only portfolio-meta">
-                    <span class="bold"><a href="{{ $portfolio['link']['url'] }}"><i class="fa fa-thumbs-up"></i> {{$portfolio['likes_count']}}</a></span>
+                    <span class="bold"><i class="fa fa-thumbs-up"></i> {{$portfolio['likes_count']}}</span>
                     
                     <span class="bold" style="margin-left: 1em"><a href="{{ $portfolio['link']['url'] }}#comments"><i class="fa fa-comment"></i> <span itemprop="commentCount">{{$portfolio['comment_count']}}</span></a></span>
+                    <featured uid="{{ $portfolio['uid'] }}"></featured>
                 </span>
             </div>
             

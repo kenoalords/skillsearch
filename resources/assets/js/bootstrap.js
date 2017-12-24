@@ -43,6 +43,7 @@ window.axios.defaults.headers.common = {
  import Pusher from 'pusher-js';
 
 import Echo from "laravel-echo";
+import slick from "slick-carousel";
 
 window.Echo = new Echo({
     broadcaster: 'pusher',

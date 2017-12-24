@@ -10,8 +10,8 @@
 <div class="ui row padded">
         <div class="ui centered grid" style="margin: 2em 0 1em">
             <h1 class="ui header">
-                Search People
-                <div class="sub header">Find the right people for your job.</div>
+                Search Great Talents
+                <div class="sub header">Find the right people for your job in Nigeria.</div>
             </h1>   
     		<!-- <p>Find the right people for the Job.</p> -->
         </div>

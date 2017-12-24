@@ -8,12 +8,14 @@
 
 <div class="">
 	
-	@if(count($profiles) > 0)
+	@if(count($portfolios) > 0)
 	<div class="ui centered container grid">
 		<div class="column">
-			<h1 class="ui medium header">{{Request::get('term')}} - {{count($profiles)}} match found</h1>
+			<h1 class="ui medium header">{{Request::get('term')}} - {{count($portfolios)}} match found</h1>
 			<div class="ui divider"></div>
-			@each('profile.person-tag', $profiles, 'profile')
+			<div class="ui grid">
+				@each('includes.portfolio-with-user', $portfolios, 'portfolio')
+			</div>
 		</div>
 	</div>
 	@else

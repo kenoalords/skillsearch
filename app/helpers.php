@@ -14,7 +14,7 @@ function formatSkills($skills){
 	$count = count($skills);
 	if($count > 1){
 		$diff = $count - 1;
-		return $skills[0]['skill'] . ' + ' . $diff . ' more';
+		return '<p style="font-size: .75em"><a href="/search/?term='.urlencode($skills[0]['skill']).'">'.$skills[0]['skill'] . '</a> + <span class="bold">' . $diff . ' more</span></p>';
 	}
 	return $skills[0]['skill'];
 }

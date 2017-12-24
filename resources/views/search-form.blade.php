@@ -8,7 +8,7 @@
 				<input type="text" name="location" id="geolocation" class="form-control" placeholder="e.g Ikeja, Lagos" value="{{Request::get('location')}}">
 			</div>
 			<div class="sixteen wide mobile field">
-				<button type="submit" class="ui button green icon labeled"><i class="icon search"></i> Search</button>
+				<button type="submit" class="ui button green"><i class="icon search"></i> Search</button>
 			</div>
 		</div>
 	</div>

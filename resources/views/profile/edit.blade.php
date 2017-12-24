@@ -55,20 +55,16 @@
             <div class="ui two fields">
                 <div class="field{{ $errors->has('gender') ? ' error' : '' }}">
                     <h4 class="ui header">Gender</h4>
-                    <div class="ui selection dropdown" id="gender">
-                        <div class="default text">Select Gender</div>
-                        <i class="dropdown icon"></i>
-                        <input type="hidden" name="gender">
-                        <div class="menu" data-default="{{$profile->gender}}">
-                            <div class="item" data-value="male">Male</div>
-                            <div class="item" data-value="female">Female</div>
-                        </div>
-                        @if ($errors->has('gender'))
-                            <span class="ui pointing red basic label">
-                                <strong>{{ $errors->first('gender') }}</strong>
-                            </span>
-                        @endif
-                    </div>
+                    <select name="gender" class="ui dropdown">
+                        <option value="0">Select</option>
+                        <option value="male" {{($profile->gender && $profile->gender == 'male') ? 'selected' : ''}}>Male</option>
+                        <option value="female" {{($profile->gender && $profile->gender == 'female') ? 'selected' : ''}}>Female</option>
+                    </select>
+                    @if ($errors->has('gender'))
+                        <span class="ui pointing red basic label">
+                            <strong>{{ $errors->first('gender') }}</strong>
+                        </span>
+                    @endif
                 </div>
                 
                 <div class="field {{ $errors->has('user_location') ? ' error' : '' }}">

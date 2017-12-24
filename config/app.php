@@ -180,6 +180,7 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
         MetricLoop\TransformerMaker\TransformerMakerServiceProvider::class,
         \Torann\GeoIP\GeoIPServiceProvider::class,
+        Unicodeveloper\Paystack\PaystackServiceProvider::class,
         
         /*
          * Application Service Providers...
@@ -247,6 +248,7 @@ return [
         'OAuth'     => Artdarek\OAuth\Facade\OAuth::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'GeoIP' => \Torann\GeoIP\Facades\GeoIP::class,
+        'Paystack' => Unicodeveloper\Paystack\Facades\Paystack::class,
     ],
 
 ];

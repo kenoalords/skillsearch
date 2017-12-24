@@ -1,6 +1,6 @@
 <template>
-    <div class="eight wide mobile five wide tablet four wide computer column" >
-        <div class="ui fluid card" itemscope itemtype="http://schema.org/CreativeWork">
+    <div>
+        <div class="ui card" itemscope itemtype="http://schema.org/CreativeWork">
             <div class="content tablet-only">
                 <a :href="portfolio.user" style="font-size: .875em; font-weight: 700" itemprop="url">
                     <img :src="portfolio.user_profile.avatar" :alt="portfolio.user_profile.fullname" class="ui avatar image">
@@ -27,18 +27,17 @@
                         <span class="bold"><a :href="portfolio.link.url"><i class="fa fa-thumbs-up"></i> {{portfolio.likes_count}}</a></span>
 
                         <span class="bold" style="margin-left: 1em"><a :href="portfolio.link.url + '#comment'"><i class="fa fa-comment"></i> <span itemprop="commentCount">{{portfolio.comment_count}}</span></a></span>
+                        <featured :uid="portfolio.uid" :key="portfolio.uid" :stared="portfolio.is_featured"></featured>
                     </span>
 
                     <span class="meta mobile-only tablet-only portfolio-meta">
                         <span class="bold"><a :href="portfolio.link.url"><i class="fa fa-thumbs-up"></i> {{portfolio.likes_count}}</a></span>
                         
                         <span class="bold" style="margin-left: 1em"><a :href="portfolio.link.url"><i class="fa fa-comment"></i> <span itemprop="commentCount">{{portfolio.comment_count}}</span></a></span>
+                        <featured :uid="portfolio.uid" :key="portfolio.uid" :stared="portfolio.is_featured"></featured>
                     </span>
                 </div>
-                
             </div>
-            
-            
         </div>
     </div>
 </template>
