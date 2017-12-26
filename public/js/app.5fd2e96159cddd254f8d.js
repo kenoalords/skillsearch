@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -4184,6 +4184,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
 //
 //
 //
@@ -10053,7 +10054,7 @@ function forEachObject(object, iterator, context) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var topLevel = typeof global !== 'undefined' ? global :
     typeof window !== 'undefined' ? window : {}
-var minDoc = __webpack_require__(4);
+var minDoc = __webpack_require__(0);
 
 if (typeof document !== 'undefined') {
     module.exports = document;
@@ -90449,17 +90450,18 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('div', {
-    staticClass: "slick-js"
+  return _c('div', {}, [_c('div', {
+    staticClass: "ui container grid"
   }, _vm._l((_vm.portfolios), function(portfolio) {
     return _c('portfolio-item', {
       key: portfolio.uid,
+      staticClass: "four wide computer column",
       attrs: {
         "data": portfolio
       }
     })
   })), _vm._v(" "), _c('div', {
-    staticClass: "ui center aligned column",
+    staticClass: "ui centered container grid",
     staticStyle: {
       "margin": "2em 0"
     }
@@ -90704,7 +90706,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "itemprop": "thumbnailUrl",
       "content": _vm.portfolio.thumbnail
     }
-  })])]), _vm._v(" "), _c('div', {
+  })]), _vm._v(" "), (_vm.portfolio.is_featured) ? _c('div', {
+    staticClass: "featured-tag"
+  }, [_c('i', {
+    staticClass: "icon star"
+  })]) : _vm._e()]), _vm._v(" "), _c('div', {
     staticClass: "content"
   }, [_c('div', {
     staticClass: "small bold"
@@ -103496,18 +103502,18 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 3:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ 0:
+/***/ (function(module, exports) {
 
-module.exports = __webpack_require__("./resources/assets/js/app.js");
-
+/* (ignored) */
 
 /***/ }),
 
 /***/ 4:
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-/* (ignored) */
+module.exports = __webpack_require__("./resources/assets/js/app.js");
+
 
 /***/ })
 

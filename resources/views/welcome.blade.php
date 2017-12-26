@@ -23,7 +23,6 @@
         <h1 class="ui centered header">Featured work</h1>
         <div class="ui grid slick-js" id="portfolio-data" style="padding: 2em 0">
             @each('includes.portfolio-with-user', $portfolios, 'portfolio')
-            <!-- <portfolio-list></portfolio-list> -->
         </div>
         @if( !Auth::user() )
             <div class="ui centered grid" style="margin-top: 2em">
@@ -64,8 +63,8 @@
                 With over 10,000 works showcased on {{config('app.name')}}, finding the right person to join your team or projects has never been easier.
             </p>
             <p>
-                <a href="#" class="ui basic rounded green button" style="letter-spacing: 1px; font-size: 12px">FIND PEOPLE</a>
-                <a href="#" class="ui rounded green button" style="letter-spacing: 1px; font-size: 12px">POST A JOB</a>
+                <a href="/people" class="ui basic rounded green button" style="letter-spacing: 1px; font-size: 12px">FIND PEOPLE</a>
+                <a href="{{ route('create_task') }}" class="ui rounded green button" style="letter-spacing: 1px; font-size: 12px">POST A JOB</a>
             </p>
         </div>
         <div class="sixteen wide computer column">
@@ -75,7 +74,7 @@
             </div>
             @if( !Auth::user() )
                 <div class="ui centered grid" style="margin-top: 3em">
-                    <a href="#" class="ui green button">Sign up now <i class="icon arrow right"></i></a>
+                    <a href="/register" class="ui green button">Sign up now <i class="icon arrow right"></i></a>
                 </div>
             @endif
         </div>

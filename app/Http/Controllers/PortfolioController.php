@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use Mail;
 use App\Models\User;
 use App\Models\Portfolio;
 use App\Models\File;
@@ -20,6 +21,9 @@ use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use App\Jobs\DeleteFileFromS3Storage;
 use App\Jobs\UploadFileToS3;
 use App\Jobs\FileDeleteJob;
+
+// Mails
+use App\Mail\FeaturedPortfolioNotification;
 
 
 class PortfolioController extends Controller
@@ -369,7 +373,7 @@ class PortfolioController extends Controller
 
     public function homepagePortfolioAjax(Request $request, Portfolio $portfolio)
     {
-        $records = $portfolio->isPublic()->hasThumbnail();
+        $records = $portfolio->isPublic()->hasThumbnail()->orderBy('is_featured', 'desc')->orderBy('updated_at', 'desc');
         $skip = (int)($request->page) * (int)$request->limit;
         $portfolios = fractal()->collection($records->latestFirst()->skip($skip)->take($request->limit)->get())
                         ->transformWith(new PortfolioTransformer)
@@ -383,12 +387,7 @@ class PortfolioController extends Controller
 
     public function workPage(Portfolio $portfolio, Skills $skills)
     {
-        $portfolios = fractal()->collection($portfolio->isPublic()->hasThumbnail()->latestFirst()->take(20)->get())
-                        ->transformWith(new PortfolioTransformer)
-                        ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
-                        ->toArray();
-        $skills = $skills->orderAlphabetically()->get();
-        return view('portfolio.index')->with(['portfolios' => $portfolios, 'skills' => $skills ]);
+        return view('portfolio.index');
     }
 
     public function workSearchPage(Request $request, Skills $skills)
@@ -415,13 +414,25 @@ class PortfolioController extends Controller
 
     public function makeFeaturedPortfolio(Request $request, Portfolio $portfolio)
     {
-        // dd($portfolio);
         if ( Auth::user()->is_admin === false ){
             return response()->json(false, 401);
         }
 
         $portfolio->is_featured = true;
         $portfolio->save();
+
+        $work = fractal()->item($portfolio)
+                        ->transformWith(new PortfolioTransformer)
+                        ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                        ->toArray();
+
+        $email = $portfolio->user->email;
+        $title = $work['title'];
+        $username = $work['user_profile']['username'];
+        $thumbnail = $work['thumbnail'];
+        $url = $work['link']['href'];
+        $fname = $work['user_profile']['first_name'];
+        Mail::to($email)->send(new FeaturedPortfolioNotification($title, $username, $thumbnail, $url, $fname));
 
         return response()->json(true, 200);
     }

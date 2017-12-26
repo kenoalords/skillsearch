@@ -18,7 +18,7 @@ Route::get('/search', 'SearchController@searchPortfolios');
 Route::get('/search/jobs', 'SearchController@searchJobs')->name('job_search');
 
 Route::get('/about', 'PagesController@about');
-Route::get('/work', 'PortfolioController@workPage')->name('work');
+Route::get('/showcase', 'PortfolioController@workPage')->name('showcase');
 Route::get('/work/search', 'PortfolioController@workSearchPage')->name('work_search');
 Route::get('/contact', 'PagesController@contact');
 Route::get('/how-it-works', 'PagesController@works');
@@ -36,8 +36,8 @@ Route::get('/cart/{gig}/add', 'CartController@addToCart')->name('add_to_cart');
 Route::get('/cart/{gig}/delete', 'CartController@deleteFromCart')->name('delete_from_cart');
 
 // Payment Routes
-Route::post('/pay', 'PaymentController@redirectToGateway')->name('pay');
-Route::get('/payment/callback', 'PaymentController@handleGatewayCallback');
+// Route::post('/pay', 'PaymentController@redirectToGateway')->name('pay');
+// Route::get('/payment/callback', 'PaymentController@handleGatewayCallback');
 
 Auth::routes();
 

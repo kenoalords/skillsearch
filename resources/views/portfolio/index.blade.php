@@ -10,19 +10,19 @@
 
 <div>
     <div class="ui centered container grid">
-        <div class="" style="margin: 4em 0 2em">
-            <h1 class="ui header" style="margin-bottom: 1em">Search Portfolio
-                <div class="sub header">Discover, Share and Hire The Best Hands in Nigeria</div>
+        <div class="" style="margin: 4em 0 0em">
+            <h1 class="ui header">Portfolio Showcase
+                <!-- <div class="sub header">Discover, Share and Hire The Best Hands in Nigeria</div> -->
             </h1>
-            @include('search-form')
+            {{-- @include('search-form') --}}
         </div>
     </div>
     <div class="padded">
         <div class="ui divider"></div>
     </div>
     <div>
-        <div class="ui centered container grid">
-            @each('includes.portfolio-with-user', $portfolios, 'portfolio')
+        <div class="ui container grid">
+            <portfolio-list></portfolio-list>
         </div>
     </div>
 </div>

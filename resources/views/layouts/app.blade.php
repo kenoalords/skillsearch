@@ -62,6 +62,7 @@
                     <a class="item" href="/home"><i class="icon user"></i>{{ ucwords(Auth::user()->name) }}</a>
                 @endif
                 <a class="item" href="{{ route('people') }}">People</a>
+                <a class="item" href="{{ route('showcase') }}">Showcase</a>
                 <a class="item" href="{{ route('tasks') }}">Jobs</a>
                 @if(!Auth::user())
                 <a href="/login" class="item">Login</a>
@@ -89,10 +90,8 @@
                     </a>
                 </div>
                 <a class="item large-screen-only" href="{{ route('people') }}">People</a>
+                <a class="item large-screen-only" href="{{ route('showcase') }}">Showcase</a>
                 <a class="item large-screen-only" href="{{ route('tasks') }}">Jobs</a>
-                @if(Auth::user() && Auth::user()->is_admin == 1)
-                    <a href="{{ route('gigs') }}" class="item">Gigs</a>        
-                @endif
                 
                 <div class="right menu">
                     @if(Auth::user())
@@ -113,11 +112,6 @@
                     <div class="item">
                         <a href="/profile/portfolio/add" class="ui green mini button"><i class="icon plus"></i>Upload work</a>
                     </div>
-                    @if(Auth::user() && Auth::user()->is_admin == 1)
-                        <div class="item">
-                            <a href="/cart" class="ui circular icon button"><i class="icon cart"></i></a>
-                        </div>
-                    @endif
                 </div>
             </nav>
             

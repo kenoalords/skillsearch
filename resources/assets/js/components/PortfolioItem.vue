@@ -13,6 +13,7 @@
                     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" :data-src="portfolio.thumbnail" :alt="portfolio.title" class="b-lazy">
                     <meta itemprop="thumbnailUrl" :content="portfolio.thumbnail">
                 </a>
+                <div class="featured-tag" v-if="portfolio.is_featured"><i class="icon star"></i></div>
             </div>
             <div class="content">
                 <div class="small bold">

@@ -9,7 +9,10 @@
 
 <div id="" style="margin-top: 3.4em;">
     <div class="ui">
-        <div class="ui padded grid row" id="sidebar" itemscope itemtype="http://schema.org/CreativeWork">
+        <div class="ui padded grid row" id="sidebar" itemscope itemtype="http://schema.org/CreativeWork" style="position: relative;">
+            @if($portfolio['is_featured'])
+            <div class="featured-tag big fixed"><i class="icon star"></i></div>
+            @endif
             <div class="sixteen wide mobile only column" style="background: #f9f9f9; box-shadow: 0 1px 6px rgba(2,2,2,.1); border-bottom: 1px solid #ddd;">
                 <div style="margin: 1em 0;" itemprop="author" itemscope itemtype="http://schema.org/Person">
                     <img src="{{$portfolio['user_profile']['avatar']}}" alt="{{$portfolio['user_profile']['fullname']}}" class="ui avatar image"> <a href="/{{$portfolio['user']}}" class="bold"><span itemprop="name">{{$portfolio['user_profile']['fullname']}}</span></a>

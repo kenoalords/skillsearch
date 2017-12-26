@@ -26,7 +26,7 @@ function skill_links($skills){
         $string = '';
         foreach ($skills as $skill) {
             # code...
-            array_push($markup, '<a href="/work/search/?term='.urlencode(trim($skill)).'" class="ui mini basic circular label skill-link" title="'.$skill.'">'.$skill.'</a>');
+            array_push($markup, '<a href="/work/search/?term='.urlencode(trim($skill)).'" class="ui  basic circular label skill-link" title="'.$skill.'">'.$skill.'</a>');
         }
         if(!empty($markup)){
             $string = implode(' ', $markup);
