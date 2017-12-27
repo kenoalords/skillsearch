@@ -4343,6 +4343,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -87273,7 +87274,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }), _vm._v(" " + _vm._s(skill.skill) + "\n                    ")])])
-  })) : _vm._e()]), _vm._v(" "), _c('div', {
+  })) : _vm._e(), _vm._v(" "), _vm._m(1)]), _vm._v(" "), _c('div', {
     staticClass: "field white-boxed"
   }, [_c('button', {
     staticClass: "ui green button",
@@ -87301,6 +87302,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("\n                Upload portfolio files\n                "), _c('div', {
     staticClass: "sub header"
   }, [_vm._v("You can upload multiple files formats like Images(PNG, JPG, GIF), Audio(MP3) & Videos(MP4)")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_c('small', [_vm._v("Please select at least on skill")])])
 }]}
 module.exports.render._withStripped = true
 if (false) {
@@ -90451,11 +90454,11 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {}, [_c('div', {
-    staticClass: "ui container grid"
+    staticClass: "ui container centered grid"
   }, _vm._l((_vm.portfolios), function(portfolio) {
     return _c('portfolio-item', {
       key: portfolio.uid,
-      staticClass: "four wide computer column",
+      staticClass: "eight wide mobile five wide tablet four wide computer column work-card",
       attrs: {
         "data": portfolio
       }

@@ -358,7 +358,14 @@ class PortfolioController extends Controller
 
         $collection = User::has('portfolio')->withCount(['portfolio' => function($query){
                                 $query->where('is_public', true);
-                            }])->inRandomOrder()->take(10)->get();
+                            }])
+                            ->join('profiles', function($join){
+                                $join->on('profiles.user_id', '=', 'users.id')
+                                    ->whereNotNull('avatar')
+                                    ->whereNotNull('location')
+                                    ->where('is_public', true);
+                            })
+                            ->inRandomOrder()->take(10)->get();
         // dd($collection);
         $profiles = fractal()->collection($collection)
                             ->transformWith(new SimpleUserTransformers)

@@ -73,6 +73,7 @@
                         </label>
                     </div>
                 </div>
+                <div><small>Please select at least on skill</small></div>
             </div>
             
             <div class="field white-boxed">

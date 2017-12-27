@@ -9,7 +9,7 @@
 <div id="hero">
     <div class="ui container">
         <div class="ui centered grid">
-            <h1 class="ui header">
+            <h1 class="ui header" style="margin-bottom: 1em">
                 Discover great talents
                 <div class="sub header">Find the right people for your jobs in Nigeria</div>
             </h1>

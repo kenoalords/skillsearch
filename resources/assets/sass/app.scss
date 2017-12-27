@@ -1574,6 +1574,10 @@ a.grey{
 		}
 	}
 
+	.work-card{
+		padding: .25em !important;
+	}
+
 	#searchform{
 		.field{
 			margin-bottom: 5px;
@@ -1720,6 +1724,10 @@ a.grey{
 {
 	.tablet-only{
 		display: inline-block !important;
+	}
+
+	.work-card{
+		padding: .5em !important;
 	}
 
 	.large-screen-only{

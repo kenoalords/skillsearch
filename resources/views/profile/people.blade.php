@@ -8,7 +8,7 @@
 @section('content')
  
 <div class="ui row padded">
-        <div class="ui centered grid" style="margin: 2em 0 1em">
+        <div class="ui centered grid" style="margin: 2em 0 2em">
             <h1 class="ui header">
                 Search Great Talents
                 <div class="sub header">Find the right people for your job in Nigeria.</div>

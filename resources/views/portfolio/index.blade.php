@@ -10,18 +10,14 @@
 
 <div>
     <div class="ui centered container grid">
-        <div class="" style="margin: 4em 0 0em">
-            <h1 class="ui header">Portfolio Showcase
-                <!-- <div class="sub header">Discover, Share and Hire The Best Hands in Nigeria</div> -->
-            </h1>
-            {{-- @include('search-form') --}}
+        <div class="" style="margin: 3em 0 3em">
+            <h1 class="ui header" style="margin-bottom: 1em">Recent Works!</h1>
+             @include('search-form')
         </div>
     </div>
-    <div class="padded">
-        <div class="ui divider"></div>
-    </div>
+    <!-- <div class="ui divider" style="padding: .5em 0"></div> -->
     <div>
-        <div class="ui container grid">
+        <div>
             <portfolio-list></portfolio-list>
         </div>
     </div>

@@ -1,7 +1,7 @@
 <template>
     <div class="">
-        <div class="ui container grid">
-            <portfolio-item v-for="portfolio in portfolios" :data="portfolio" :key="portfolio.uid" class="four wide computer column"></portfolio-item>
+        <div class="ui container centered grid">
+            <portfolio-item v-for="portfolio in portfolios" :data="portfolio" :key="portfolio.uid" class="eight wide mobile five wide tablet four wide computer column work-card"></portfolio-item>
         </div>  
         <div class="ui centered container grid" style="margin: 2em 0">
             <a href="#" @click.prevent="load" id="auto-loader" class="ui button" :class="{'loading' : isLoading}" v-if="!finished">Load more</a>

@@ -13,7 +13,7 @@ We hope more people find your work and increase your chances of getting hired.
 Continue to share samples of your amazing work.
 
 @component('mail::button', ['url' => $share])
-Share another work
+Share more work!
 @endcomponent
 
 ##{{ config('app.name') }} Team
