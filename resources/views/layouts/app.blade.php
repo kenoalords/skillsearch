@@ -12,7 +12,7 @@
     <meta name="description" content="@yield('metadescription')">
 
 
-    <title>@yield('title') - {{ config('app.name', 'Ubanji') }} | {{ config('app.description') }}</title>
+    <title>@yield('title') - {{ config('app.name', 'Ubanji') }}</title>
     @yield('seometa')
 
     <meta name="twitter:card" content="@yield('metadescription')">

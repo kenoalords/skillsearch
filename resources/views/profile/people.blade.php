@@ -7,26 +7,31 @@
 
 @section('content')
  
-<div class="ui row padded">
-        <div class="ui centered grid" style="margin: 2em 0 2em">
-            <h1 class="ui header">
-                Search Great Talents
-                <div class="sub header">Find the right people for your job in Nigeria.</div>
-            </h1>   
-    		<!-- <p>Find the right people for the Job.</p> -->
-        </div>
-        @include('search-form')
-        <div class="padded">
-            <div class="ui divider"></div>
-        </div>
+<div class="ui row">
+        <section id="people-banner">
+            <div class="ui centered grid">
+                <h1 class="ui header" style="margin-bottom: 2em">
+                    Search Great Talents
+                    <div class="sub header">Find the right people for your job in Nigeria.</div>
+                </h1>  
+                @include('search-form') 
+            </div>           
+        </section>
+
         @if ( count($profiles) )
-            <div class="" id="peoples-list">
+            <div class="padded" id="peoples-list">
                 @each('profile.person-tag', $profiles, 'profile')
             </div>
-            <div class="ui center aligned grid" style="margin-top: 2em;">
+            <div class="ui center aligned grid" style="margin-bottom: 2em;">
                 <a href="#" data-page="1" id="get-more-users" class="ui button">Load more</a>
             </div>
         @endif
+
+        <div class="padded" style="background-color: #f8f8f8; bor">
+            <h2 class="ui centered header">Top Categories</h2>
+            @include('includes.popular-categories');
+        </div>
+
 </div>
 @include('includes.signup-teaser')
 

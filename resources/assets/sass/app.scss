@@ -943,10 +943,16 @@ img.uploaded{
 	cursor: default;
 }
 
+#people-banner{
+	background: url('../images/people-banner.jpg') no-repeat top left;
+	background-size: cover;
+	padding: 10em 0;
+}
+
 .ui.card, .ui.cards>.card{
 	border: 1px solid #ddd;
 	box-shadow: 0 0 6px rgba(0,0,0,.1);
-	border-radius: 0;
+	border-radius: 3px;
 	transform: scale(1) translateY(0);
 	transition: all .3s cubic-bezier(0.175, 0.885, 0.450, 1.370);
 	// &:hover{
