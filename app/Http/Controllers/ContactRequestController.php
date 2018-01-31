@@ -20,8 +20,12 @@ class ContactRequestController extends Controller
     					->transformWith(new SimpleUserTransformers)
     					->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
     					->toArray();
+        $fig1 = mt_rand(1, 10);
+        $fig2 = mt_rand(1, 10);
     	return view('contact-request.index')->with([
     				'profile'	=> $user,
+                    'fig1'      => $fig1,
+                    'fig2'      => $fig2,
     			]);
     }
 

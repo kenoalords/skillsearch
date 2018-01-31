@@ -19,7 +19,7 @@
         <div class="content">
             <div class="small bold">
                 <!-- <div class="right floated meta">14h</div> -->
-                <a href="{{ $portfolio['user'] }}">
+                <a href="/{{ $portfolio['user'] }}">
                     <img src="{{ $portfolio['user_profile']['avatar'] }}" alt="{{ $portfolio['user_profile']['fullname'] }}" class="ui avatar image">
                     {!! identity_check($portfolio['verified']) !!}
                 </a>

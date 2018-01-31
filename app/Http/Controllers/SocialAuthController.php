@@ -32,7 +32,7 @@ class SocialAuthController extends Controller
 
     		// auth()->login($account->user);
     		Auth::loginUsingId($account->user_id, true);
-    		return redirect()->to('/home');
+    		return redirect()->to('/dashboard');
 
 
     	} else {
@@ -55,13 +55,14 @@ class SocialAuthController extends Controller
                 ]);
             } else {
                 // Setup a new account for them on the site
-                $username = str_replace( '-', '', str_slug( $name ) );
+                $username = preg_replace('/(\s+)/', '_', $name);
+                $username = str_replace( '-', '_', str_slug( $username ) );
                 if(User::where('name', $username)->get()){
-                    $username = uniqid(true);
+                    $username = $username. mt_rand(100, 1000);
                 }
                 // insert a new user record
                 $user = User::create([
-                            'name'      => strtolower($username),
+                            'name'      => strtolower(str_replace(' ', '_', $username)),
                             'email'     => $email,
                             'password'  => bcrypt(uniqid(true)),
                         ]);
@@ -72,7 +73,7 @@ class SocialAuthController extends Controller
                     ]);
                     Mail::to($user)->queue(new UserRegistrationNotification($name));
                     Auth::login($user, true);
-                    return redirect()->to('/home/start')->with(['name' => $username, 'fullname' => $name ]);
+                    return redirect()->to('/dashboard/start')->with(['name' => $username, 'fullname' => $name ]);
                 }
             }
     	}

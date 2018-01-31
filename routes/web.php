@@ -26,8 +26,8 @@ Route::get('/privacy', 'PagesController@privacy');
 Route::get('/points', 'PagesController@points')->name('points');
 
 // Gigs Route
-// Route::get('/gigs', 'GigsController@gigs')->name('gigs');
-// Route::get('/gig/{gig}/{slug?}', 'GigsController@viewGig')->name('gig');
+Route::get('/gigs', 'GigsController@gigs')->name('gigs');
+Route::get('/gig/{gig}/{slug?}', 'GigsController@viewGig')->name('gig');
 
 // Cart Routes
 Route::get('/cart', 'CartController@cart')->name('cart');
@@ -36,8 +36,8 @@ Route::get('/cart/{gig}/add', 'CartController@addToCart')->name('add_to_cart');
 Route::get('/cart/{gig}/delete', 'CartController@deleteFromCart')->name('delete_from_cart');
 
 // Payment Routes
-// Route::post('/pay', 'PaymentController@redirectToGateway')->name('pay');
-// Route::get('/payment/callback', 'PaymentController@handleGatewayCallback');
+Route::post('/pay', 'PaymentController@redirectToGateway')->name('pay');
+Route::get('/payment/callback', 'PaymentController@handleGatewayCallback');
 
 Auth::routes();
 
@@ -60,6 +60,8 @@ Route::get('/invite/success', 'InviteContactController@thankYou');
 
 Route::get('/jobs/submit', 'TaskController@submitJobTeaser');
 
+Route::get('/logout', 'HomeController@logout');
+
 Route::group(['middleware'=>'auth'], function(){
 
 	Route::get('/invite/delete', 'InviteContactController@deleteInvites')->name('delete_invites')->middleware('is_admin');
@@ -68,7 +70,7 @@ Route::group(['middleware'=>'auth'], function(){
 	Route::post('/comment/{comment}/like', 'CommentController@likeComment');
 	Route::delete('/comment/{comment}/delete', 'CommentController@deleteComment');
 
-	Route::group(['prefix'=>'home'], function(){
+	Route::group(['prefix'=>'dashboard'], function(){
 		Route::get('/', 'HomeController@index')->middleware('user_profile_setup');
 		Route::get('/start', 'UserProfileController@setupUserProfile')->name('start');
 		Route::post('/start', 'UserProfileController@saveSocialUserProfile');
@@ -92,105 +94,137 @@ Route::group(['middleware'=>'auth'], function(){
 		Route::post('/linkedin_upload/delete', 'LinkedinContactController@delete')->name('delete_linkedin_contacts');
 		Route::get('/contact-requests', 'ContactRequestController@requests')->name('user_contact_requests');
 		Route::post('/contact-requests/{contact_request}/approve', 'ContactRequestController@approveRequest');
+
+		// Upload background image
+		Route::post('/upload', 'HomeController@uploadBackgroundImage');
+
+		// Send email broadcast to members
+		Route::get('/email-broadcast', 'HomeController@membersEmailBroadcast');
+		Route::post('/email-broadcast', 'HomeController@submitEmailBroadcast');
+
+		/*
+		*	Portfolio links
+		*/
+
+		Route::group(['prefix'=>'portfolio'], function(){
+			Route::get('/', 'PortfolioController@index')->name('portfolio_index');
+			Route::get('/add', 'PortfolioController@add')->name('portfolio_add');
+			Route::get('/likes', 'PortfolioController@myLikedPortfolios')->name('portfolio_likes');
+			Route::post('/add', 'PortfolioController@savePortfolio')->name('portfolio_add');
+			Route::post('/{portfolio}/make-featured', 'PortfolioController@makeFeaturedPortfolio');
+			Route::post('/thumbnail', 'PortfolioController@savePortfolioThumbnail');
+			Route::post('/add-thumbnail', 'PortfolioController@addPortfolioThumbnail');
+
+			Route::post('/file-upload', 'PortfolioController@fileUpload');
+			Route::delete('/file-upload/{portfolio}/{file}/delete', 'PortfolioController@deleteFileUpload');
+
+			Route::get('/instagram', 'InstagramPortfolioController@index')->name('instagram_index');
+			Route::get('/instagram/get', 'InstagramPortfolioController@get');
+			Route::get('/instagram/delete', 'InstagramPortfolioController@delete');
+			Route::get('/instagram/callback', 'InstagramPortfolioController@redirect');
+			Route::get('/{portfolio}/edit', 'PortfolioController@edit')->name('edit_portfolio');
+			Route::put('/{portfolio}/update', 'PortfolioController@update')->name('update_portfolio');
+			Route::get('/{portfolio}/delete', 'PortfolioController@delete')->name('delete_portfolio');
+			Route::get('/{portfolio}/delete/ok', 'PortfolioController@deletePortfolio');
+			Route::delete('/files/{file}', 'FileController@deleteFile');
+		});
+
+		Route::group(['prefix'=>'jobs'], function(){
+			// Tasks Routes
+			Route::get('/', 'TaskController@index')->name('user_jobs');
+			Route::get('/applications', 'TaskController@applications')->name('user_applications');
+			Route::get('/add', 'TaskController@add')->name('add_task');
+			Route::get('/saved', 'TaskController@savedJobs')->name('saved_task');
+			Route::get('/{task}/edit', 'TaskController@edit')->name('edit_task');
+			Route::get('/{task}/delete', 'TaskController@delete')->name('delete_task');
+			Route::get('/{task}/delete/ok', 'TaskController@deleteOk')->name('delete_task_ok');
+			Route::put('/{task}/update', 'TaskController@update')->name('update_task');
+			Route::put('/{task}/reject', 'TaskController@rejectJob')->name('reject_task');
+			Route::put('/{task}/approve', 'TaskController@approveJob')->name('approve_task');
+			Route::post('/{task}/flag', 'TaskController@flagJob')->name('flag_task');
+			Route::get('/{task}/flag/check', 'TaskController@flagJobCheck')->name('flag_task_check');
+			Route::post('/{task}/save', 'TaskController@saveJob')->name('save_task');
+			Route::get('/{task}/save/check', 'TaskController@saveCheckJob')->name('save_check_task');
+			Route::get('/{task}/interests', 'TaskController@interests')->name('task_interest');
+			Route::post('/add', 'TaskController@createTask')->name('create_task');
+			Route::post('/application/response', 'TaskController@submitApplicationResponse');
+			Route::post('/application/accept', 'TaskController@acceptApplication');
+		});
+
+		/*
+		*	Profile links
+		*/
+
+		Route::group(['prefix'=>'profile'], function(){
+
+			Route::get('/edit', 'UserProfileController@edit')->name('edit_profile');
+			Route::put('/edit', 'UserProfileController@store');
+			Route::post('/upload-image', 'UserProfileController@uploadImage');
+
+			Route::get('/phone', 'UserProfileController@phoneIndex')->name('phone');
+
+			Route::get('/phone/add', 'UserProfileController@phoneAdd')->name('add_phone');
+			Route::post('/phone/add', 'UserProfileController@phoneAddNew');
+
+			Route::get('/phone/{phone}/edit', 'UserProfileController@phoneEdit')->name('edit_phone');
+			Route::post('/phone/{phone}/edit', 'UserProfileController@phoneEditSave')->name('edit_phone');
+
+			Route::get('/phone/{phone}/delete', 'UserProfileController@phoneDelete')->name('delete_phone');
+			Route::post('/phone/{phone}/delete', 'UserProfileController@phoneDeleteSubmit')->name('delete_phone');
+			
+			
+			
+
+			// Message Routes
+			Route::get('/message', 'MessageController@index')->name('message');
+
+			
+
+			// Service Requests Routes
+			Route::get('/requests', 'ServiceRequestController@getServiceRequests')->name('requests');
+			Route::get('/response/{request_id}', 'ServiceRequestController@getServiceRequestResponses');
+			Route::post('/response/{request_id}', 'ServiceRequestController@postServiceRequestResponses');
+
+			// Reviews
+			Route::get('/reviews', 'UserProfileController@reviews')->name('reviews');
+
+			// Identity Verification
+			Route::get('/identity-verify', 'VerifyIdentityController@verify')->name('verify_identity');
+			Route::post('/identity-verify', 'VerifyIdentityController@upload');
+
+			// Profile Privacy Control
+			Route::get('/set/{option}', 'UserProfileController@setAccountPrivacy');
+			Route::get('/get-privacy', 'UserProfileController@getAccountPrivacy');
+
+			// Delete Account
+			Route::get('/delete', 'UserProfileController@deleteAccount');
+			Route::get('/delete/proceed', 'UserProfileController@deleteAccountConfirm');
+
+			// BLOG ROUTES
+			Route::get('/blog', 'BlogController@userBlog');
+			Route::get('/blog/add', 'BlogController@addBlogPost');
+			Route::post('/blog/add', 'BlogController@submitBlogPost');
+			Route::get('/blog/{blog}/edit', 'BlogController@editBlogPost');
+			Route::post('/blog/add/image', 'BlogController@submitBlogPostImage');
+
+			
+		});
+
+		/*
+		*	Gigs Routes
+		*/
+
+		Route::group(['prefix'=>'gigs'], function(){
+			// GIGS
+			Route::get('/', 'GigsController@index')->name('user_gigs');
+			Route::get('/add', 'GigsController@add')->name('add_gig');
+			Route::post('/add', 'GigsController@submit')->name('add_gig');
+		});
 	});
 	
-	Route::post('/home/upload', 'HomeController@uploadBackgroundImage');
+	
 
-	Route::get('/home/email-broadcast', 'HomeController@membersEmailBroadcast');
-	Route::post('/home/email-broadcast', 'HomeController@submitEmailBroadcast');
-
-	Route::group(['prefix'=>'profile'], function(){
-
-		Route::get('/edit', 'UserProfileController@edit')->name('edit_profile');
-		Route::put('/edit', 'UserProfileController@store');
-		Route::post('/upload-image', 'UserProfileController@uploadImage');
-
-		Route::get('/phone', 'UserProfileController@phoneIndex')->name('phone');
-
-		Route::get('/phone/add', 'UserProfileController@phoneAdd')->name('add_phone');
-		Route::post('/phone/add', 'UserProfileController@phoneAddNew');
-
-		Route::get('/phone/{phone}/edit', 'UserProfileController@phoneEdit')->name('edit_phone');
-		Route::post('/phone/{phone}/edit', 'UserProfileController@phoneEditSave')->name('edit_phone');
-
-		Route::get('/phone/{phone}/delete', 'UserProfileController@phoneDelete')->name('delete_phone');
-		Route::post('/phone/{phone}/delete', 'UserProfileController@phoneDeleteSubmit')->name('delete_phone');
-		
-		Route::get('/portfolio', 'PortfolioController@index')->name('portfolio_index');
-		Route::get('/portfolio/add', 'PortfolioController@add');
-		Route::post('/portfolio/add', 'PortfolioController@savePortfolio');
-		Route::post('/portfolio/{portfolio}/make-featured', 'PortfolioController@makeFeaturedPortfolio');
-		Route::post('/portfolio/thumbnail', 'PortfolioController@savePortfolioThumbnail');
-		Route::post('/portfolio/add-thumbnail', 'PortfolioController@addPortfolioThumbnail');
-
-		Route::post('/portfolio/file-upload', 'PortfolioController@fileUpload');
-		Route::delete('/portfolio/file-upload/{portfolio}/{file}/delete', 'PortfolioController@deleteFileUpload');
-
-		Route::get('/portfolio/instagram', 'InstagramPortfolioController@index')->name('instagram_index');
-		Route::get('/portfolio/instagram/get', 'InstagramPortfolioController@get');
-		Route::get('/portfolio/instagram/delete', 'InstagramPortfolioController@delete');
-		Route::get('/portfolio/instagram/callback', 'InstagramPortfolioController@redirect');
-		Route::get('/portfolio/{portfolio}/edit', 'PortfolioController@edit')->name('edit_portfolio');
-		Route::put('/portfolio/{portfolio}/update', 'PortfolioController@update')->name('update_portfolio');
-		Route::get('/portfolio/{portfolio}/delete', 'PortfolioController@delete')->name('delete_portfolio');
-		Route::get('/portfolio/{portfolio}/delete/ok', 'PortfolioController@deletePortfolio');
-		Route::delete('/files/{file}', 'FileController@deleteFile');
-		
-
-		// Message Routes
-		Route::get('/message', 'MessageController@index')->name('message');
-
-		// Tasks Routes
-		Route::get('/jobs', 'TaskController@index')->name('user_jobs');
-		Route::get('/jobs/applications', 'TaskController@applications')->name('user_applications');
-		Route::get('/jobs/add', 'TaskController@add')->name('add_task');
-		Route::get('/jobs/saved', 'TaskController@savedJobs')->name('saved_task');
-		Route::get('/jobs/{task}/edit', 'TaskController@edit')->name('edit_task');
-		Route::get('/jobs/{task}/delete', 'TaskController@delete')->name('delete_task');
-		Route::get('/jobs/{task}/delete/ok', 'TaskController@deleteOk')->name('delete_task_ok');
-		Route::put('/jobs/{task}/update', 'TaskController@update')->name('update_task');
-		Route::put('/jobs/{task}/reject', 'TaskController@rejectJob')->name('reject_task');
-		Route::put('/jobs/{task}/approve', 'TaskController@approveJob')->name('approve_task');
-		Route::post('/jobs/{task}/flag', 'TaskController@flagJob')->name('flag_task');
-		Route::get('/jobs/{task}/flag/check', 'TaskController@flagJobCheck')->name('flag_task_check');
-		Route::post('/jobs/{task}/save', 'TaskController@saveJob')->name('save_task');
-		Route::get('/jobs/{task}/save/check', 'TaskController@saveCheckJob')->name('save_check_task');
-		Route::get('/jobs/{task}/interests', 'TaskController@interests')->name('task_interest');
-		Route::post('/jobs/add', 'TaskController@createTask')->name('create_task');
-		Route::post('/jobs/application/response', 'TaskController@submitApplicationResponse');
-		Route::post('/jobs/application/accept', 'TaskController@acceptApplication');
-
-		// Service Requests Routes
-		Route::get('/requests', 'ServiceRequestController@getServiceRequests')->name('requests');
-		Route::get('/response/{request_id}', 'ServiceRequestController@getServiceRequestResponses');
-		Route::post('/response/{request_id}', 'ServiceRequestController@postServiceRequestResponses');
-
-		// Reviews
-		Route::get('/reviews', 'UserProfileController@reviews')->name('reviews');
-
-		// Identity Verification
-		Route::get('/identity-verify', 'VerifyIdentityController@verify')->name('verify_identity');
-		Route::post('/identity-verify', 'VerifyIdentityController@upload');
-
-		// Profile Privacy Control
-		Route::get('/set/{option}', 'UserProfileController@setAccountPrivacy');
-		Route::get('/get-privacy', 'UserProfileController@getAccountPrivacy');
-
-		// Delete Account
-		Route::get('/delete', 'UserProfileController@deleteAccount');
-		Route::get('/delete/proceed', 'UserProfileController@deleteAccountConfirm');
-
-		// BLOG ROUTES
-		Route::get('/blog', 'BlogController@userBlog');
-		Route::get('/blog/add', 'BlogController@addBlogPost');
-		Route::post('/blog/add', 'BlogController@submitBlogPost');
-		Route::get('/blog/{blog}/edit', 'BlogController@editBlogPost');
-		Route::post('/blog/add/image', 'BlogController@submitBlogPostImage');
-
-		// GIGS
-		// Route::get('/gig/add', 'GigsController@add');
-		// Route::post('/gig/add', 'GigsController@submit');
-	});
+	
 	
 	// Subscribe Registered User To Blog
 	Route::post('/blog/subscribe/{blog}/user', 'BlogController@subscribeRegisteredUser');

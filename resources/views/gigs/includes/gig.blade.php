@@ -1,35 +1,42 @@
-<div class="five wide column">
-	<div class="ui fluid gig card">
-		<div class="image">
-			<a href="{{ route('gig', [ 'gig'=>$gig['uid'], 'slug'=>$gig['slug'] ]) }}">
-				<img src="{{ $gig['image'] }}" alt="I will {{ $gig['title'] }}" class="ui fluid image">
-			</a>
-		</div>
-		<div class="content">
-			<div class="user" style="margin-bottom: 10px;">
-				<a href="{{ $gig['user']['username'] }}">
-					<img src="{{ $gig['user']['avatar'] }}" alt="{{ $gig['user']['fullname'] }}" class="ui avatar image"> <small class="semi-bold">{{ $gig['user']['fullname'] }}</small>
-				</a>
-			</div>
-			<div class="header">
+<div class="column is-3">
+	<div class="card portfolio">
+		<div class="card-image">
+			<figure class="image">
 				<a href="{{ route('gig', [ 'gig'=>$gig['uid'], 'slug'=>$gig['slug'] ]) }}">
+					<img src="{{ $gig['image'] }}" alt="I will {{ $gig['title'] }}" >
+				</a>
+			</figure>
+		</div>
+		<div class="card-content">
+			<a href="{{ $gig['user']['username'] }}" class="author">
+				<img src="{{ $gig['user']['avatar'] }}" alt="{{ $gig['user']['fullname'] }}" class="image is-24x24 is-rounded is-inline"> <span style="position: relative; top: -5px">{{ $gig['user']['fullname'] }}</span>
+			</a>
+			<h3 class="title is-5">
+				<a href="{{ route('gig', [ 'gig'=>$gig['uid'], 'slug'=>$gig['slug'] ]) }}" class="has-text-dark">
 					I will {{ $gig['title'] }}
 				</a>
+			</h3>
+			<div class="level is-mobile">
+			<div class="level-left">
+				<div class="level-item">
+					<div>
+						<h4 class="is-size-4 has-text-success">
+							<span class="naira">{{ number_format( $gig['sale_price'] ) }}</span>
+						</h4>
+						@if($gig['regular_price'])
+							<h4 class="subtitle is-7">
+								<del class="naira">{{ number_format( $gig['regular_price'] ) }}</del>
+							</h4>
+						@endif
+					</div>
+				</div>
 			</div>
-		</div>
-		<div class="extra content">
-
-			<div class="right floated">
-				<a href="{{ route('gig', [ 'gig'=>$gig['uid'], 'slug'=>$gig['slug'] ]) }}" class="ui icon circular mini green button" data-tooltip="Buy this gig"><i class="icon cart"></i></a>
+			<div class="level-right">
+				<div class="level-item">
+					<a href="{{ route('gig', [ 'gig'=>$gig['uid'], 'slug'=>$gig['slug'] ]) }}" class="button is-primary is-circle" data-tooltip="Buy this gig"><span class="icon"><i class="fa fa-shopping-basket"></i></span></a>
+				</div>
 			</div>
-			<h4 class="ui green header" style="margin-top:0px">
-				<span class="naira">{{ number_format( $gig['sale_price'] ) }}</span>
-				@if($gig['regular_price'])
-					<small class="sub header currency naira">
-						<del>{{ number_format( $gig['regular_price'] ) }}</del>
-					</small>
-				@endif
-			</h4>
+			</div>
 		</div>
 	</div>
 </div>

@@ -14,7 +14,7 @@ function formatSkills($skills){
 	$count = count($skills);
 	if($count > 1){
 		$diff = $count - 1;
-		return '<p style="font-size: .75em"><a href="/search/?term='.urlencode($skills[0]['skill']).'">'.$skills[0]['skill'] . '</a> + <span class="bold">' . $diff . ' more</span></p>';
+		return '<p style="font-size: .875em"><a href="/search/?term='.urlencode($skills[0]['skill']).'">'.$skills[0]['skill'] . '</a> + <span class="bold">' . $diff . ' more</span></p>';
 	}
 	return $skills[0]['skill'];
 }
@@ -26,7 +26,7 @@ function skill_links($skills){
         $string = '';
         foreach ($skills as $skill) {
             # code...
-            array_push($markup, '<a href="/work/search/?term='.urlencode(trim($skill)).'" class="ui  basic circular label skill-link" title="'.$skill.'">'.$skill.'</a>');
+            array_push($markup, '<a href="/work/search/?term='.urlencode(trim($skill)).'" class="tag is-primary is-small" title="'.$skill.'">'.$skill.'</a>');
         }
         if(!empty($markup)){
             $string = implode(' ', $markup);

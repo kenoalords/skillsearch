@@ -37,7 +37,7 @@ class UserProfileController extends Controller
         $profile = Auth::user()->profile()->get();
         // dd($profile);
         if($profile->count() > 0){
-            return redirect('/home');
+            return redirect('/dashboard');
         }
         $name = Auth::user()->name;
         return view('profile.start')->with('name', $name);
@@ -63,10 +63,17 @@ class UserProfileController extends Controller
             'last_name'     => $request->last_name,
             'gender'        => $request->gender,
             'bio'           => $request->bio,
-            'account_type'  => $request->account_type,
             'location'      => $request->location,
             'is_public'     => true,
+            'verified_email'=> 1,
         ]);
+
+        if($request->phone){
+            $request->user()->phone()->create([
+                'type'  => 'mobile',
+                'number'=> $request->phone
+            ]);
+        }
 
         $inviteCheck = ContactInvite::where('email', $request->user()->email)->first();
         if($inviteCheck){
@@ -78,11 +85,7 @@ class UserProfileController extends Controller
             $inviteCheck->delete();
         }
 
-        if($request->account_type == 1){
-            return redirect('/home/start/skills');
-        } else {
-            return redirect('/home');
-        }
+        return redirect('/dashboard/start/skills');
     }
 
     public function setupUserSkills(Request $request)

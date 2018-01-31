@@ -137,7 +137,7 @@ class HomeController extends Controller
         
         $profile = Auth::user()->profile;
         if($profile->verified_email === 1)
-            return redirect('/home');
+            return redirect('/dashboard');
         else
             return view('verify')->with(['profile' => $profile]);
     }
@@ -152,7 +152,7 @@ class HomeController extends Controller
         $key = VerifyUser::where('user_id', $user->id)->first();
         // dd($key->verify_key);
         if(!$key){
-            return redirect('/home');
+            return redirect('/dashboard');
         }
         Mail::to($user)->send(new ResendVerificationMail($user->name, $key->verify_key));
         return redirect()->route('verify')->with('status', 'A new verification email is on its way!');
@@ -167,7 +167,7 @@ class HomeController extends Controller
             $verify_profile->verified_email = 1;
             $verify_profile->save();
             $user->delete();
-            return redirect('/home')->with('status', 'Your account is now verified');
+            return redirect('/dashboard')->with('status', 'Your account is now verified');
         }
     }
 
@@ -200,7 +200,6 @@ class HomeController extends Controller
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'gender'    => $request->gender,
-            'account_type'=> $request->account_type
         ]);
 
         return redirect()->route('personal_info');
@@ -255,8 +254,8 @@ class HomeController extends Controller
         $profile->background = $image;
         $profile->save();
         dispatch(new UserImageJob($image));
-
-        return response()->json($image, 200);
+        $url = $profile->getUserBackground();
+        return response()->json($url, 200);
     }
 
     public function membersEmailBroadcast(Request $request)
@@ -279,10 +278,15 @@ class HomeController extends Controller
                 Mail::to($user->email)->send(new EmailBroadcast($user, $subject, $body, $url, $button_text, $image_link));
             }
             $request->session()->put('status', 'Bon voyage!! Email broadcast sent');
-            return redirect('/home');
+            return redirect('/dashboard');
         }
     }
 
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        return redirect('/');
+    }
 }
 
 

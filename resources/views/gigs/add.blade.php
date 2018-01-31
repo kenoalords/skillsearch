@@ -1,6 +1,6 @@
-@extends('layouts.admin')
+@extends('layouts.dashboard')
 
-@section('title', 'Add Service')
+@section('title', 'Sell a gig')
 
 @section('content')
     <div>

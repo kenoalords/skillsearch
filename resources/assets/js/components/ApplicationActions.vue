@@ -1,45 +1,66 @@
 <template>
-    <div>
-        <div class="ui horizontal list">
-            <div v-if="isResponseActive === null || !isAccepting" class="item"><a href="#" v-on:click.prevent="showMessageForm(currentApplication)" class="btn btn-default btn-xs"><i class="fa fa-comments"></i> Reply</a></div>
-            <div v-if="isResponseActive != null" class="item"><a href="#" v-on:click.prevent="closeReply()" class="text-muted btn btn-default btn-xs"><i class="fa fa-close"></i> Close</a></div>
-            <div v-if="isOwner" class="item"><a href="#" v-on:click.prevent="acceptApplication(currentApplication)" class="btn btn-default btn-xs" v-if="!isAccepting"><i class="fa fa-check-circle"></i> Accept</a></div>
+    <span>
+    <div class="level is-mobile">
+        <div class="level-left">
+            <a v-if="isResponseActive === null || !isAccepting" href="#" v-on:click.prevent="showMessageForm(currentApplication)" class="level-item button is-primary is-small">
+                <span class="icon"><i class="fa fa-comments"></i></span> 
+                <span>Reply</span>
+            </a>
+            <a v-if="isResponseActive != null" href="#" v-on:click.prevent="closeReply()" class="level-item button is-small is-primary">
+                <span class="icon"><i class="fa fa-close"></i></span> <span>Close</span>
+            </a>
+            <div class="level-item" v-if="isOwner">
+                <span v-if="!isAccepting" class="level-item button is-small is-primary"><a href="#" v-on:click.prevent="acceptApplication(currentApplication)" >
+                    <span class="icon"><i class="fa fa-check-circle"></i></span> 
+                    <span>Accept</span>
+                </a></span>
+            </div>
         </div>
-        <div class="ui form" v-if="isAccepting">
+    </div>
+    <div>
+        <div class="card is-raised" v-if="isAccepting">
             <div class="field">
-                <h4 class="text-success bold">Accept {{currentApplication.profile.fullname}}'s Application</h4>
-                <label for="">Please provide some contact information to get the ball rolling</label>
-                <textarea v-model="message" class="form-control" rows="2" placeholder="e.g Your Phone Number or Email address" v-on:keyup="checkAcceptanceMessage()"></textarea>
+                <h4 class="title is-5">Accept {{currentApplication.profile.fullname}}'s Application</h4>
+                <label class="label">Please provide some contact information to get the ball rolling</label>
+                <textarea v-model="message" class="textarea" rows="2" placeholder="e.g Your Phone Number or Email address" v-on:keyup="checkAcceptanceMessage()"></textarea>
             </div>
             <div class="field">
-                <button class="ui green button" v-on:click.prevent="submitAcceptance(currentApplication)" :disabled="hasAcceptanceMessage"><i class="fa fa-check-circle"></i> Accept</button>
-                <button class="ui button" v-on:click.prevent="cancelAcceptance()"><i class="fa fa-close"></i> Cancel</button>
+                <button class="button is-primary is-small" v-on:click.prevent="submitAcceptance(currentApplication)" :disabled="hasAcceptanceMessage"><i class="fa fa-check-circle"></i> Accept</button>
+                <button class="button is-small" v-on:click.prevent="cancelAcceptance()"><i class="fa fa-close"></i> Cancel</button>
             </div>
         </div>
         <div class="responses">
-            <div v-if="currentApplication.responses.length > 0" class="ui comments thread">
-                <div class="comment" v-for="response in currentApplication.responses">
-                    <div class="avatar">
-                        <img :src="response.profile.avatar" :alt="response.profile.fullname" class="media-object img-circle" width="32" height="32">
+            <div v-if="currentApplication.responses.length > 0">
+                <a href="#" @click.prevent="showResponses">
+                    <span class="icon"><i class="fa" :class="{'fa-minus' : showResponsesFlag, 'fa-plus' : !showResponsesFlag}"></i></span> <span>{{ (showResponsesFlag) ? 'Hide' : 'Show' }} conversation</span>
+                </a>
+            </div>
+            <div v-if="currentApplication.responses.length > 0" v-show="showResponsesFlag">
+                <div class="media" v-for="response in currentApplication.responses">
+                    <div class="media-left">
+                        <img :src="response.profile.avatar" :alt="response.profile.fullname" class="image is-48x48 is-rounded">
                     </div>
-                    <div class="content" :class="{ 'is-owner' :  currentApplication.user_id === response.user_id}">
-                        <span class="author">{{response.profile.fullname}}</span>
-                        <div class="metadata">{{response.date}}</div>
-                        <p v-html="response.response" class="text"></p>
+                    <div class="media-content" :class="{ 'is-owner' :  currentApplication.user_id === response.user_id}">
+                        <div class="content">
+                            <span class="has-text-weight-bold">{{response.profile.fullname}}</span> <small>{{response.date}}</small>
+                            <br>
+                            <p v-html="response.response" class="text"></p>
+                        </div>
                     </div>
                 </div>
             </div>
             <form action="#" v-if="isResponseActive === currentApplication.id" class="ui form">
                 <div class="field">
-                    <textarea v-model="response.message" id="" class="form-control" rows="2" placeholder="Your reply here..."></textarea>
+                    <textarea v-model="response.message" id="" class="textarea" rows="2" placeholder="Your reply here..."></textarea>
                 </div>
                 <div class="field">
-                    <button class="ui primary mini button" v-on:click.prevent="submitResponse(currentApplication)" :disabled="isSending">Submit</button>
-                    <span v-if="isResponseActive != null"><a href="#" v-on:click.prevent="closeReply()" class="ui mini button"><i class="fa fa-close"></i> Close</a></span>
+                    <button class="button is-primary is-small" v-on:click.prevent="submitResponse(currentApplication)" :disabled="isSending">Submit</button>
+                    <span v-if="isResponseActive != null"><a href="#" v-on:click.prevent="closeReply()" class="button is-small"><i class="fa fa-close"></i> Close</a></span>
                 </div>
             </form>
         </div>
     </div>
+    </span>
 </template>
 
 <script>
@@ -50,12 +71,13 @@
                 isResponseActive: null,
                 currentApplication: JSON.parse(this.application),
                 isSending: false,
-                url: window.Laravel.url + '/profile/jobs/application/response',
-                acceptUrl: window.Laravel.url + '/profile/jobs/application/accept',
+                url: window.Laravel.url + '/dashboard/jobs/application/response',
+                acceptUrl: window.Laravel.url + '/dashboard/jobs/application/accept',
                 isOwner: false,
                 isAccepting: false,
                 hasAcceptanceMessage: true,
                 message: null,
+                showResponsesFlag: false,
             }
         },
 
@@ -91,7 +113,9 @@
 
                 });
             },
-
+            showResponses(){
+                return ( this.showResponsesFlag == false ) ? this.showResponsesFlag = true : this.showResponsesFlag = false;
+            },
             acceptApplication(currentApplication){
                 this.isAccepting = true;
             },

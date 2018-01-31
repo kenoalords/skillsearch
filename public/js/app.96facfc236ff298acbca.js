@@ -1655,6 +1655,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -1663,12 +1684,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             isResponseActive: null,
             currentApplication: JSON.parse(this.application),
             isSending: false,
-            url: window.Laravel.url + '/profile/jobs/application/response',
-            acceptUrl: window.Laravel.url + '/profile/jobs/application/accept',
+            url: window.Laravel.url + '/dashboard/jobs/application/response',
+            acceptUrl: window.Laravel.url + '/dashboard/jobs/application/accept',
             isOwner: false,
             isAccepting: false,
             hasAcceptanceMessage: true,
-            message: null
+            message: null,
+            showResponsesFlag: false
         };
     },
 
@@ -1700,6 +1722,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.isResponseActive = null;
                 currentApplication.responses.push(response.data);
             }).catch(function (error) {});
+        },
+        showResponses: function showResponses() {
+            return this.showResponsesFlag == false ? this.showResponsesFlag = true : this.showResponsesFlag = false;
         },
         acceptApplication: function acceptApplication(currentApplication) {
             this.isAccepting = true;
@@ -2297,17 +2322,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2327,22 +2341,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         approveRequest: function approveRequest(request) {
-            var _this = this;
-            this.isPosting = true;
-            var btn = $('#btn-' + request.id);
-            btn.addClass('loading');
-            axios.post('/home/contact-requests/' + request.id + '/approve').then(function (response) {
-                // console.log(toastr);
-                btn.removeClass('loading');
-                iziToast.success({ title: 'Contact request approved!' });
-                if (response.data == 1) {
-                    var index = _this.pendingRequests.indexOf(request);
-                    _this.pendingRequests.splice(index, 1);
-                    _this.approvedRequests.unshift(request);
-                    _this.isPosting = false;
-                    $('#req-count').html(_this.pendingRequests.length);
-                }
-            });
+            if (confirm('Are you sure you want to aprove this contact request')) {
+                var _this = this;
+                this.isPosting = true;
+                var btn = $('#btn-' + request.id);
+                btn.addClass('loading');
+                axios.post('/dashboard/contact-requests/' + request.id + '/approve').then(function (response) {
+                    btn.removeClass('loading');
+                    iziToast.success({ title: 'Contact request approved!' });
+                    if (response.data == 1) {
+                        var index = _this.pendingRequests.indexOf(request);
+                        _this.pendingRequests.splice(index, 1);
+                        _this.approvedRequests.unshift(request);
+                        _this.isPosting = false;
+                        $('#req-count').html(_this.pendingRequests.length);
+                    }
+                });
+            }
         }
     },
 
@@ -2408,13 +2423,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
             taskId: this.jobId,
-            url: window.Laravel.url + '/profile/jobs/' + this.jobId + '/flag',
-            urlCheck: window.Laravel.url + '/profile/jobs/' + this.jobId + '/flag/check',
+            url: window.Laravel.url + '/dashboard/jobs/' + this.jobId + '/flag',
+            urlCheck: window.Laravel.url + '/dashboard/jobs/' + this.jobId + '/flag/check',
             isLoggedIn: window.Laravel.userLoggedIn,
             isFlagged: false
         };
@@ -2467,12 +2485,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -2736,6 +2748,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2752,7 +2769,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             hasError: false,
             errorMessage: null,
             thumbnail: null,
-            thumbnailPreview: null
+            thumbnailPreview: null,
+            isCropped: false,
+            isCropper: null,
+            hasImageUploaded: false,
+            isSubmitting: false
         };
     },
 
@@ -2839,42 +2860,49 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         zoomable: false,
                         guides: true
                     });
-                    $(modal).modal({
-                        closable: false,
-                        onDeny: function onDeny() {
-                            $this.hasImage = false;
-                            $this.isLoading = false;
-                        },
-                        onApprove: function onApprove() {
-                            var newImage = cropper.getCroppedCanvas({
-                                imageSmoothingEnabled: false,
-                                imageSmoothingQuality: 'high'
-                            }).toBlob(function (blob) {
-                                var img = document.createElement('img');
-                                var url = URL.createObjectURL(blob);
-                                img.onload = function (e) {
-                                    // URL.revokeObjectURL(url)
-                                };
-                                img.classList.add('ui');
-                                img.classList.add('fluid');
-                                img.classList.add('image');
-                                img.src = url;
-                                $this.isLoading = false;
-                                $this.thumbnail = blob;
-                                $this.thumbnailPreview = url;
-                                document.getElementById('preview-final-image').appendChild(img);
-                            }, 'image/jpeg', 0.75);
-                            // console.log(newImage);
-                        }
-                    }).modal('show');
+                    $this.isCropper = cropper;
+                    // console.log($this.isCropper);
                 };
                 image.src = evt.target.result;
             };
             reader.readAsDataURL(file);
         },
+
+
+        closeOverlay: function closeOverlay() {
+            this.hasImage = false;
+            this.isLoading = false;
+        },
+
+        cropImage: function cropImage() {
+            // console.log(this.isCropper);
+            var $this = this;
+            this.isCropper.getCroppedCanvas({
+                imageSmoothingEnabled: false,
+                imageSmoothingQuality: 'high'
+            }).toBlob(function (blob) {
+                var img = document.createElement('img');
+                var url = URL.createObjectURL(blob);
+                img.onload = function (e) {
+                    // URL.revokeObjectURL(url)
+                };
+                img.classList.add('image');
+                img.classList.add('is-responsive');
+                img.src = url;
+                $this.isLoading = false;
+                $this.hasImage = false;
+                $this.hasImageUploaded = true;
+                $this.thumbnail = blob;
+                $this.thumbnailPreview = url;
+                document.getElementById('preview-final-image').appendChild(img);
+            }, 'image/jpeg', 0.75);
+        },
+
         submitService: function submitService(status) {
             var form = new FormData();
             var gig = this.gig;
+            var $this = this;
+            $this.isSubmitting = true;
             form.append('file', new Blob([this.thumbnail], { type: 'image/jpeg' }));
             form.append('title', gig.title);
             form.append('category', gig.category);
@@ -2889,12 +2917,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             axios({
                 method: 'post',
                 data: form,
-                url: '/profile/gig/add',
+                url: '/dashboard/gigs/add',
                 headers: {
                     'Content-Type': false
                 }
             }).then(function (response) {
-                console.log(response);
+                $this.isSubmitting = false;
+                iziToast.success({ title: 'Gig submitted successfully!' });
+                window.location.href = window.Laravel.url + '/dashboard/gigs';
             });
         }
     },
@@ -3000,6 +3030,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -3013,7 +3048,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             error: false,
             isOverlay: false,
             currentlyViewing: null,
-            player: null
+            player: null,
+            loadingGif: window.Laravel.url + '/images/loading.gif'
         };
     },
 
@@ -3122,8 +3158,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             isRejected: false,
             message: null,
             job: JSON.parse(this.task),
-            rejectUrl: window.Laravel.url + '/profile/jobs/' + JSON.parse(this.task).id + '/reject',
-            approveUrl: window.Laravel.url + '/profile/jobs/' + JSON.parse(this.task).id + '/approve',
+            rejectUrl: window.Laravel.url + '/dashboard/jobs/' + JSON.parse(this.task).id + '/reject',
+            approveUrl: window.Laravel.url + '/dashboard/jobs/' + JSON.parse(this.task).id + '/approve',
             isSending: false
         };
     },
@@ -3630,6 +3666,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 // import Echo from "laravel-echo";
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3645,7 +3703,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             reply: null,
             isLiking: false,
             userImage: this.avatar,
-            newComment: false
+            newComment: false,
+            isLoading: true,
+            loadingGif: window.Laravel.url + '/images/loading.gif'
         };
     },
 
@@ -3657,6 +3717,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         getComments: function getComments() {
             var _this = this;
             axios.get('/portfolio/' + this.uid + '/comments').then(function (response) {
+                _this.isLoading = false;
                 _this.comments = response.data.data;
             });
         },
@@ -4228,7 +4289,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -4247,7 +4307,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         var bLazy = new Blazy({
             offset: 200
         });
-        // console.log('Component mounted.')
+        // console.log(this.data)
     }
 });
 
@@ -4258,6 +4318,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -4356,7 +4431,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             skills: this.userSkills ? JSON.parse(this.userSkills) : false,
             checkedSkills: this.portfolio && JSON.parse(this.portfolio).skills ? JSON.parse(this.portfolio).skills.split(",") : [],
             action: null,
-            isPosting: false
+            isPosting: false,
+            isPublishing: false
         };
     },
 
@@ -4391,7 +4467,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             axios({
                 method: "POST",
                 data: formData,
-                url: '/profile/portfolio/add-thumbnail',
+                url: '/dashboard/portfolio/add-thumbnail',
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -4445,7 +4521,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             axios({
                 method: "POST",
                 data: formData,
-                url: '/profile/portfolio/file-upload',
+                url: '/dashboard/portfolio/file-upload',
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -4465,7 +4541,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
             _this.isPosting = true;
             if (window.confirm("Do you really want to delete this file?")) {
-                axios.delete('/profile/portfolio/file-upload/' + uid + '/' + file.id + '/delete').then(function (response) {
+                axios.delete('/dashboard/portfolio/file-upload/' + uid + '/' + file.id + '/delete').then(function (response) {
                     _this.isPosting = false;
                     iziToast.success({
                         title: 'File deleted!'
@@ -4484,7 +4560,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             formData.append('uid', _this.p.uid);
             formData.append('action', action);
             _this.isPosting = true;
-            axios.post('/profile/portfolio/add', formData).then(function (response) {
+            axios.post('/dashboard/portfolio/add', formData).then(function (response) {
                 _this.isPosting = false;
                 if (_this.action === 'save') {
                     iziToast.success({
@@ -4497,7 +4573,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         message: 'You rock!'
                     });
                 }
-                window.location.href = window.Laravel.url + '/profile/portfolio';
+                window.location.href = window.Laravel.url + '/dashboard/portfolio';
             }).catch(function (error) {
                 _this.isPosting = false;
                 // console.log(error);
@@ -4517,6 +4593,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
 //
 //
 //
@@ -5102,13 +5180,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
             id: this.jobId,
-            url: window.Laravel.url + '/profile/jobs/' + this.jobId + '/save',
-            checkUrl: window.Laravel.url + '/profile/jobs/' + this.jobId + '/save/check',
+            url: window.Laravel.url + '/dashboard/jobs/' + this.jobId + '/save',
+            checkUrl: window.Laravel.url + '/dashboard/jobs/' + this.jobId + '/save/check',
             isLoggedIn: window.Laravel.userLoggedIn,
             isSaved: false,
             userId: window.Laravel.user_id
@@ -5257,20 +5338,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {},
     data: function data() {
         return {
             skills: this.getSkills(),
-            selectedSkills: this.getUserSkills()
+            selectedSkills: this.getUserSkills(),
+            isLoading: true
         };
     },
 
@@ -5280,6 +5355,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
             axios.get('/skills/all').then(function (response) {
                 _this.skills = response.data;
+                _this.isLoading = false;
             });
         },
         getUserSkills: function getUserSkills() {
@@ -5300,7 +5376,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 'id': skill.id,
                 'skill': skill.skill
             }).then(function (response) {
-                console.log(response);
+                // console.log(response);
             });
         },
         removeSkill: function removeSkill(skill, event) {
@@ -5309,7 +5385,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.skills.push(skill);
 
             axios.delete('/skills/delete/' + skill.skill).then(function (response) {
-                console.log(response);
+                // console.log(response);
             });
         }
     }
@@ -5325,17 +5401,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_bootstrap_datepicker_dist_js_bootstrap_datepicker_min_js__ = __webpack_require__("./node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_bootstrap_datepicker_dist_js_bootstrap_datepicker_min_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_bootstrap_datepicker_dist_js_bootstrap_datepicker_min_js__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -5469,7 +5534,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
             if (_this.isComplete === true) {
                 $('body').addClass('loading');
-                axios.post(_this.baseUrl + '/profile/jobs/add', _this.task).then(function (response) {
+                axios.post(_this.baseUrl + '/dashboard/jobs/add', _this.task).then(function (response) {
                     $('body').removeClass('loading');
                     _this.isComplete = false;
                     if (_this.task.id) {
@@ -5477,7 +5542,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     } else {
                         alert('Your job was posted successfully');
                     }
-                    window.location.href = '/profile/jobs';
+                    window.location.href = '/dashboard/jobs';
                 });
             }
         },
@@ -5557,6 +5622,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -5566,7 +5633,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             job: JSON.parse(this.task),
             isComplete: false,
             application: {},
-            baseUrl: window.Laravel.url
+            baseUrl: window.Laravel.url,
+            isSubmitting: false
         };
     },
 
@@ -5576,6 +5644,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         submitApplication: function submitApplication() {
             var _this = this;
+            _this.isSubmitting = true;
             if (_this.isComplete === true) {
                 $('body').addClass('loading');
                 axios.post(_this.job.href + '/apply', _this.application).then(function (response) {
@@ -5583,8 +5652,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     _this.isComplete = false;
                     _this.application = {};
                     alert('Your application was submitted successfully');
+                    _this.isSubmitting = false;
                     window.location.href = _this.job.href;
                     // console.log(response);
+                }).catch(function (err) {
+                    _this.isSubmitting = false;
                 });
             }
         },
@@ -5609,7 +5681,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
 //
 //
 //
@@ -5667,7 +5738,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             axios({
                 method: 'post',
-                url: '/profile/upload-image',
+                url: '/dashboard/profile/upload-image',
                 headers: { 'Content-Type': 'multipart/form-data' },
                 data: data,
                 onUploadProgress: function onUploadProgress(e) {
@@ -5680,6 +5751,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.isUploading = false;
                 _this.progress = 0;
                 _this.imageSrc = response.data.filename;
+                $('.is-user-profile').attr('src', response.data.filename);
             });
         }
 
@@ -5704,18 +5776,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            status: ''
+            status: false
         };
     },
 
 
     methods: {
         uploadBackgroundImage: function uploadBackgroundImage() {
+            var $this = this;
+            $this.status = true;
             var file = document.getElementById('backgroundImage').files[0],
                 form = new FormData();
             form.append('file', file);
-            axios.post('/home/upload', form).then(function (response) {
-                window.location.reload();
+            axios.post('/dashboard/upload', form).then(function (response) {
+                // window.location.reload();
+                var url = response.data;
+                $('#profile-image-wrapper').css({
+                    'background-image': 'url(' + url + ')'
+                });
+                $this.status = false;
             });
         }
     },
@@ -86181,9 +86260,9 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return (_vm.isLoaded) ? _c('span', [(!_vm.is_self) ? _c('span', [_c('a', {
-    staticClass: "ui mini icon labeled button",
+    staticClass: "button is-small has-text-weight-bold",
     class: {
-      'basic': _vm.can_follow, 'blue': !_vm.can_follow
+      'is-light': _vm.can_follow, 'is-primary': !_vm.can_follow
     },
     attrs: {
       "href": "#"
@@ -86194,10 +86273,18 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.handle($event)
       }
     }
+  }, [_vm._m(0), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.can_follow ? 'Follow' : 'Following') + " ")]), _vm._v(" "), (!_vm.can_follow) ? _c('span', {
+    staticClass: "icon"
   }, [_c('i', {
-    staticClass: "icon user"
-  }), _vm._v("\n            " + _vm._s(_vm.can_follow ? 'Follow' : 'Following') + "\n        ")])]) : _vm._e()]) : _vm._e()
-},staticRenderFns: []}
+    staticClass: "fa fa-check"
+  })]) : _vm._e()])]) : _vm._e()]) : _vm._e()
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "fa fa-user"
+  })])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -86213,16 +86300,17 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', [_c('div', {
-    staticStyle: {
-      "margin": "1em 0"
-    }
-  }, [(!_vm.isUploading) ? _c('label', {
+    staticClass: "profile-image"
+  }, [_c('label', {
     staticClass: "text-center",
+    class: {
+      'is-uploading-avatar': _vm.isUploading
+    },
     attrs: {
       "id": "user-avatar-upload"
     }
   }, [_c('img', {
-    staticClass: "ui circular fluid image",
+    staticClass: "image is-128x128 is-rounded",
     attrs: {
       "src": _vm.imageSrc
     }
@@ -86237,7 +86325,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "change": _vm.uploadProfileImage
     }
-  })]) : _vm._e(), _vm._v(" "), (_vm.isUploading && !_vm.uploadingComplete) ? _c('div', {
+  })]), _vm._v(" "), (_vm.isUploading && !_vm.uploadingComplete) ? _c('div', {
     staticClass: "progress"
   }, [_c('div', {
     staticClass: "progress-bar",
@@ -86247,14 +86335,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "role": "progressbar"
     }
-  })]) : _vm._e(), _vm._v(" "), _vm._m(0)])])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "ui small header"
-  }, [_vm._v("\n            Change profile image\n            "), _c('span', {
-    staticClass: "sub header"
-  }, [_vm._v("Click image above to change profile picture")])])
-}]}
+  })]) : _vm._e(), _vm._v(" "), _c('h4', {
+    staticClass: "title is-5 has-text-white"
+  }, [_vm._v("\n            Profile image\n        ")])])])
+},staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -86270,26 +86354,26 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', [(_vm.user) ? _c('div', {
-    staticClass: "white-boxed",
+    staticClass: "box is-raised is-radiusless",
     staticStyle: {
       "padding": "1em"
     }
   }, [_c('div', {
-    staticClass: "ui unstackable items"
+    staticClass: "media"
   }, [_c('div', {
-    staticClass: "item"
+    staticClass: "media-left"
   }, [_c('div', {
-    staticClass: "ui mini image"
+    staticClass: "image is-64x64"
   }, [_c('img', {
-    staticClass: "avatar",
+    staticClass: "image is-rounded",
     attrs: {
       "src": _vm.userImage,
       "alt": "Avatar"
     }
-  })]), _vm._v(" "), _c('div', {
-    staticClass: "content"
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "media-content"
   }, [_c('div', {
-    staticClass: "ui form"
+    staticClass: "content"
   }, [_c('div', {
     staticClass: "field"
   }, [_c('textarea', {
@@ -86299,7 +86383,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       value: (_vm.comment),
       expression: "comment"
     }],
-    staticClass: "form-control",
+    staticClass: "textarea",
     attrs: {
       "rows": "2",
       "placeholder": "Leave your comment here..."
@@ -86314,9 +86398,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   })]), _vm._v(" "), _c('button', {
-    staticClass: "ui primary button",
+    staticClass: "button is-primary",
     class: {
-      'loading': _vm.isSubmitting
+      'is-loading': _vm.isSubmitting
     },
     attrs: {
       "disabled": _vm.isSubmitting
@@ -86327,55 +86411,63 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.submitComment()
       }
     }
-  }, [_vm._v("Comment")])])])])])]) : _vm._e(), _vm._v(" "), (_vm.comments) ? _c('div', {
+  }, [_vm._v("Comment")])])])])]) : _vm._e(), _vm._v(" "), (_vm.comments) ? _c('div', {
     attrs: {
       "id": "comments"
     }
-  }, [_c('h4', {
-    staticClass: "ui medium header"
-  }, [_vm._v(_vm._s(_vm.comments.length) + " " + _vm._s(_vm.comments.length > 1 ? 'Comments' : 'Comment'))]), _vm._v(" "), _c('div', {
-    staticClass: "ui comments"
+  }, [(_vm.isLoading) ? _c('h4', {
+    staticClass: "title is-5 loading-icon"
+  }, [_c('img', {
+    attrs: {
+      "src": _vm.loadingGif
+    }
+  }), _vm._v(" Loading comments...")]) : _vm._e(), _vm._v(" "), (!_vm.isLoading) ? _c('h4', {
+    staticClass: "title is-5"
+  }, [_vm._v(_vm._s(_vm.comments.length) + " " + _vm._s(_vm.comments.length > 1 ? 'Comments' : 'Comment'))]) : _vm._e(), _vm._v(" "), _c('div', {
+    staticClass: "comments"
   }, _vm._l((_vm.comments), function(comment) {
     return _c('div', {
-      staticClass: "comment",
+      staticClass: "media box is-raised is-radiusless",
       class: {
         'new': _vm.newComment
       }
     }, [_c('div', {
-      staticClass: "avatar"
+      staticClass: "media-left"
     }, [_c('a', {
+      staticClass: "image is-48x48",
       attrs: {
         "href": '/' + comment.profile.data.username
       }
     }, [_c('img', {
+      staticClass: "image is-rounded",
       attrs: {
         "src": comment.profile.data.avatar,
         "alt": comment.profile.data.first_name
       }
     })])]), _vm._v(" "), _c('div', {
+      staticClass: "media-content"
+    }, [_c('div', {
       staticClass: "content"
-    }, [_c('a', {
-      staticClass: "author",
+    }, [_c('p', [_c('a', {
+      staticClass: "has-text-weight-bold has-text-grey-dark",
+      class: {
+        'verified': comment.profile.data.verified
+      },
       attrs: {
         "href": '/' + comment.profile.data.username
       }
-    }, [_vm._v(_vm._s(comment.profile.data.first_name) + " " + _vm._s(comment.profile.data.last_name) + " "), _c('span', {
+    }, [_vm._v(_vm._s(comment.profile.data.first_name) + " " + _vm._s(comment.profile.data.last_name))]), _vm._v(" "), _c('small', {
       domProps: {
-        "innerHTML": _vm._s(_vm.isVerifiedUser(comment.profile.data.verified))
+        "innerHTML": _vm._s(comment.date)
       }
-    })]), _vm._v(" "), _c('div', {
-      staticClass: "metadata"
+    }), _vm._v(" "), _c('br'), _vm._v("\n                            " + _vm._s(comment.comment) + "\n                        ")])]), _vm._v(" "), _c('div', {
+      staticClass: "level is-mobile"
     }, [_c('div', {
-      staticClass: "date"
-    }, [_vm._v(_vm._s(comment.date))])]), _vm._v(" "), _c('p', {
-      staticClass: "text",
-      domProps: {
-        "innerHTML": _vm._s(comment.comment)
-      }
-    }), _vm._v(" "), _c('div', {
-      staticClass: "actions"
+      staticClass: "level-left"
+    }, [_c('div', {
+      staticClass: "level-item"
     }, [_c('a', {
-      staticClass: "bold",
+      staticClass: "has-text-danger has-text-weight-bold is-size-7",
       class: {
         active: _vm.isLiking
       },
@@ -86394,8 +86486,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       attrs: {
         "id": 'comment-' + comment.id
       }
-    }, [_vm._v(_vm._s(comment.likes))])]), _vm._v(" "), (_vm.user) ? _c('a', {
-      staticClass: "bold",
+    }, [_vm._v(_vm._s(comment.likes))])])]), _vm._v(" "), _c('div', {
+      staticClass: "level-item"
+    }, [(_vm.user) ? _c('a', {
+      staticClass: "has-text-weight-bold is-size-7 has-text-info",
       attrs: {
         "href": "#"
       },
@@ -86407,8 +86501,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_c('i', {
       staticClass: "fa fa-reply"
-    }), _vm._v(" Reply")]) : _vm._e(), _vm._v(" "), (_vm.user && comment.user_id === _vm.user_id) ? _c('a', {
-      staticClass: "bold ",
+    }), _vm._v(" Reply")]) : _vm._e()]), _vm._v(" "), _c('div', {
+      staticClass: "level-item"
+    }, [(_vm.user && comment.user_id === _vm.user_id) ? _c('a', {
+      staticClass: "has-text-grey-light has-text-weight-bold is-size-7 ",
       attrs: {
         "href": "#"
       },
@@ -86420,22 +86516,22 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_c('i', {
       staticClass: "fa fa-close"
-    }), _vm._v(" Delete")]) : _vm._e()]), _vm._v(" "), (_vm.isReplyActive === comment.id) ? _c('div', {
-      staticClass: "ui unstackable items"
+    }), _vm._v(" Delete")]) : _vm._e()])])]), _vm._v(" "), (_vm.isReplyActive === comment.id) ? _c('div', {
+      staticClass: "media"
     }, [_c('div', {
-      staticClass: "item"
+      staticClass: "media-left"
     }, [_c('div', {
-      staticClass: "ui mini image"
+      staticClass: "image is-48x48"
     }, [_c('img', {
-      staticClass: "avatar",
+      staticClass: "image is-rounded",
       attrs: {
         "src": _vm.userImage,
         "alt": "Avatar"
       }
-    })]), _vm._v(" "), _c('div', {
-      staticClass: "content"
+    })])]), _vm._v(" "), _c('div', {
+      staticClass: "media-content"
     }, [_c('div', {
-      staticClass: "ui form"
+      staticClass: "content"
     }, [_c('div', {
       staticClass: "field"
     }, [_c('textarea', {
@@ -86445,7 +86541,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         value: (_vm.reply),
         expression: "reply"
       }],
-      staticClass: "form-control",
+      staticClass: "textarea",
       attrs: {
         "rows": "1",
         "placeholder": "Reply..."
@@ -86459,10 +86555,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.reply = $event.target.value
         }
       }
-    })]), _vm._v(" "), _c('div', {}, [_c('button', {
-      staticClass: "ui primary mini button",
+    })]), _vm._v(" "), _c('div', {
+      staticClass: "field"
+    }, [_c('button', {
+      staticClass: "button is-primary is-small",
+      class: {
+        'is-loading': _vm.isReplySubmitting
+      },
       attrs: {
-        "disabled": _vm.isReplySubmitting
+        "disabled": _vm.isReplySubmitting || _vm.reply == null
       },
       on: {
         "click": function($event) {
@@ -86471,7 +86572,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }, [_vm._v("Reply")]), _vm._v(" "), _c('small', [_c('a', {
-      staticClass: "ui mini icon button",
+      staticClass: "button is-white is-small",
       attrs: {
         "href": "#"
       },
@@ -86482,52 +86583,51 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }, [_c('i', {
-      staticClass: "icon close"
-    })])])])])])])]) : _vm._e(), _vm._v(" "), (comment.replies.data) ? _c('div', {
-      staticClass: "ui comments"
-    }, [(comment.replies.data.length > 0) ? _c('div', [_c('h4', {
-      staticClass: "bold",
+      staticClass: "fa fa-close"
+    })])])])])])]) : _vm._e(), _vm._v(" "), (comment.replies.data) ? _c('div', [(comment.replies.data.length > 0) ? _c('div', [_c('h4', {
+      staticClass: "title is-7",
       staticStyle: {
-        "font-size": "1em"
+        "margin-bottom": "10px"
       }
     }, [_vm._v(_vm._s(comment.replies.data.length) + " " + _vm._s(comment.replies.data.length > 1 ? 'Replies' : 'Reply'))])]) : _vm._e(), _vm._v(" "), _vm._l((comment.replies.data), function(reply) {
       return _c('div', {
-        staticClass: "comment"
+        staticClass: "media"
       }, [_c('div', {
-        staticClass: "avatar"
+        staticClass: "media-left"
       }, [_c('a', {
+        staticClass: "image is-48x48",
         attrs: {
           "href": '/' + reply.profile.data.username
         }
       }, [_c('img', {
+        staticClass: "image is-rounded",
         attrs: {
           "src": reply.profile.data.avatar,
           "alt": reply.profile.data.first_name
         }
       })])]), _vm._v(" "), _c('div', {
+        staticClass: "media-content"
+      }, [_c('div', {
         staticClass: "content"
-      }, [_c('a', {
-        staticClass: "author",
+      }, [_c('p', [_c('a', {
+        staticClass: "has-text-weight-bold has-text-grey-dark",
+        class: {
+          'verified': reply.profile.data.verified
+        },
         attrs: {
           "href": '/' + reply.profile.data.username
         }
-      }, [_vm._v(_vm._s(reply.profile.data.first_name) + " " + _vm._s(reply.profile.data.last_name) + " "), _c('span', {
-        domProps: {
-          "innerHTML": _vm._s(_vm.isVerifiedUser(reply.profile.data.verified))
-        }
-      })]), _vm._v(" "), _c('div', {
-        staticClass: "metadata"
-      }, [_c('div', {
-        staticClass: "date"
-      }, [_vm._v(_vm._s(reply.date))])]), _vm._v(" "), _c('p', {
+      }, [_vm._v(_vm._s(reply.profile.data.first_name))]), _vm._v(" "), _c('small', [_vm._v(_vm._s(reply.date))]), _vm._v(" "), _c('br'), _vm._v(" "), _c('span', {
         staticClass: "text",
         domProps: {
           "innerHTML": _vm._s(reply.comment)
         }
-      }), _vm._v(" "), _c('div', {
-        staticClass: "actions"
+      })]), _vm._v(" "), _c('div', {
+        staticClass: "level is-mobile"
+      }, [_c('div', {
+        staticClass: "level-left"
       }, [_c('a', {
-        staticClass: "bold",
+        staticClass: "level-item has-text-danger is-size-7 has-text-weight-bold",
         class: {
           active: _vm.isLiking
         },
@@ -86540,10 +86640,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
             _vm.submitCommentLike(reply)
           }
         }
-      }, [_c('i', {
-        staticClass: "fa fa-heart"
-      }), _vm._v(" " + _vm._s(reply.likes))]), _vm._v(" "), (_vm.user && reply.user_id === _vm.user_id) ? _c('a', {
-        staticClass: "bold ",
+      }, [_vm._m(0, true), _vm._v(" "), _c('span', [_vm._v(_vm._s(reply.likes))])]), _vm._v(" "), (_vm.user && reply.user_id === _vm.user_id) ? _c('a', {
+        staticClass: "level-item has-text-grey is-size-7 has-text-weight-bold ",
         attrs: {
           "href": "#"
         },
@@ -86553,12 +86651,22 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
             _vm.deleteReply(reply, comment.id)
           }
         }
-      }, [_c('i', {
-        staticClass: "fa fa-close"
-      }), _vm._v(" Delete")]) : _vm._e()])])])
+      }, [_vm._m(1, true), _vm._v(" "), _c('span', [_vm._v("Delete")])]) : _vm._e()])])])])])
     })], 2) : _vm._e()])])
   }))]) : _vm._e()])
-},staticRenderFns: []}
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "fa fa-heart"
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "fa fa-close"
+  })])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -87047,7 +87155,6 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', [_c('form', {
-    staticClass: "ui form",
     class: {
       'loading': _vm.isPosting
     },
@@ -87070,6 +87177,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       value: (_vm.p.title),
       expression: "p.title"
     }],
+    staticClass: "input",
     attrs: {
       "type": "text",
       "id": "title"
@@ -87096,6 +87204,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       value: (_vm.p.description),
       expression: "p.description"
     }],
+    staticClass: "textarea",
     attrs: {
       "rows": "3",
       "id": "description",
@@ -87111,14 +87220,21 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   })])]), _vm._v(" "), _c('div', {
-    staticClass: "field white-boxed"
-  }, [_c('h3', {
-    staticClass: "ui header"
-  }, [_vm._v("Upload thumbnail")]), _vm._v(" "), _c('label', {
-    staticClass: "thumbnail-image",
-    attrs: {
-      "for": "thumbnail"
+    staticClass: "field",
+    staticStyle: {
+      "margin-top": "1em"
     }
+  }, [_c('h3', {
+    staticClass: "title is-6"
+  }, [_vm._v("Upload thumbnail")]), _vm._v(" "), _c('figure', [(_vm.p.thumbnail) ? _c('img', {
+    staticClass: "image portfolio-thumbnail",
+    attrs: {
+      "src": _vm.p.thumbnail
+    }
+  }) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "file"
+  }, [_c('label', {
+    staticClass: "file-label thumbnail-image"
   }, [_c('input', {
     staticStyle: {
       "display": "none"
@@ -87133,14 +87249,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.uploadThumbnail()
       }
     }
-  }), _vm._v(" "), (_vm.p.thumbnail) ? _c('img', {
-    staticClass: "ui fluid image",
-    attrs: {
-      "src": _vm.p.thumbnail
+  }), _vm._v(" "), _vm._m(0)])])]), _vm._v(" "), _c('div', {
+    staticClass: "field",
+    staticStyle: {
+      "margin-top": "1em"
     }
-  }) : _vm._e()])]), _vm._v(" "), _c('div', {
-    staticClass: "field white-boxed"
-  }, [_vm._m(0), _vm._v(" "), (_vm.p.files && _vm.p.files.length > 0) ? _c('div', {
+  }, [_c('h3', {
+    staticClass: "title is-6"
+  }, [_vm._v("\n                Upload portfolio files\n            ")]), _vm._v(" "), _c('p', [_vm._v("You can upload multiple files formats like Images(PNG, JPG, GIF), Audio(MP3) & Videos(MP4)")]), _vm._v(" "), (_vm.p.files && _vm.p.files.length > 0) ? _c('div', {
     staticStyle: {
       "margin": "2em 0"
     }
@@ -87190,7 +87306,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "margin-top": "1em"
       }
     }, [_c('button', {
-      staticClass: "ui mini red icon labeled button",
+      staticClass: "button is-danger",
       on: {
         "click": function($event) {
           $event.preventDefault();
@@ -87198,20 +87314,16 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }, [_c('i', {
-      staticClass: "icon delete"
-    }), _vm._v("Delete")])])])])
+      staticClass: "fa fa-delete"
+    }), _vm._v(" Delete")])])])])
   }))])])]) : _vm._e(), _vm._v(" "), _c('label', {
-    staticClass: "ui green icon labeled button",
-    staticStyle: {
-      "display": "inline-block",
-      "color": "#fff"
-    },
+    staticClass: "button is-primary",
     attrs: {
       "for": "files-upload"
     }
   }, [_c('i', {
-    staticClass: "icon upload"
-  }), _vm._v("Choose files\n                "), _c('input', {
+    staticClass: "fa fa-upload"
+  }), _vm._v("  Choose files\n                "), _c('input', {
     staticStyle: {
       "display": "none"
     },
@@ -87226,11 +87338,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   })]), _vm._v(" "), (_vm.errors.length > 0) ? _c('div', [_c('h4', {
-    staticClass: "ui red header"
+    staticClass: "title is-6"
   }, [_vm._v(_vm._s(_vm.errors.length) + " " + _vm._s((_vm.errors.length == 1) ? ' file' : ' files') + " failed!")])]) : _vm._e()]), _vm._v(" "), _c('div', {
-    staticClass: "field white-boxed"
+    staticClass: "field",
+    staticStyle: {
+      "margin-top": "1em"
+    }
   }, [_c('h4', {
-    staticClass: "ui header"
+    staticClass: "title is-6"
   }, [_vm._v("\n                What category does this portfolio belong to?\n            ")]), _vm._v(" "), (_vm.skills) ? _c('div', {
     staticClass: "ui relaxed horizontal list"
   }, _vm._l((_vm.skills), function(skill) {
@@ -87277,7 +87392,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   })) : _vm._e(), _vm._v(" "), _vm._m(1)]), _vm._v(" "), _c('div', {
     staticClass: "field white-boxed"
   }, [_c('button', {
-    staticClass: "ui green button",
+    staticClass: "button is-link",
+    class: {
+      'is-loading': _vm.isPublishing
+    },
     attrs: {
       "disabled": (_vm.p.thumbnail && _vm.p.files.length > 0) ? false : true
     },
@@ -87288,7 +87406,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }, [_vm._v("Publish work")]), _vm._v(" "), _c('button', {
-    staticClass: "ui button",
+    staticClass: "button is-light",
     on: {
       "click": function($event) {
         $event.preventDefault();
@@ -87297,11 +87415,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_vm._v("Save & continue later")])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('h3', {
-    staticClass: "ui header"
-  }, [_vm._v("\n                Upload portfolio files\n                "), _c('div', {
-    staticClass: "sub header"
-  }, [_vm._v("You can upload multiple files formats like Images(PNG, JPG, GIF), Audio(MP3) & Videos(MP4)")])])
+  return _c('span', {
+    staticClass: "file-cta"
+  }, [_c('span', {
+    staticClass: "file-icon"
+  }, [_c('i', {
+    staticClass: "fa fa-upload"
+  })]), _vm._v(" "), _c('span', {
+    staticClass: "file-label"
+  }, [_vm._v("\n                            Choose thumbnail\n                        ")])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', [_c('small', [_vm._v("Please select at least on skill")])])
 }]}
@@ -87320,7 +87442,7 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('span', [_c('a', {
-    staticClass: "btn btn-default-danger-outline btn-xs",
+    staticClass: "button is-small",
     attrs: {
       "href": ""
     },
@@ -87330,12 +87452,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.flagJob()
       }
     }
-  }, [_c('span', {
-    staticClass: "text-warning"
+  }, [_vm._m(0), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.isFlagged ? 'Flagged' : 'Flag as spam'))])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "icon"
   }, [_c('i', {
     staticClass: "fa fa-warning"
-  }), _vm._v(" " + _vm._s(_vm.isFlagged ? 'Flagged' : 'Flag as spam'))])])])
-},staticRenderFns: []}
+  })])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -87350,22 +87474,30 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('div', {
-    staticClass: "white-boxed",
-    staticStyle: {
-      "margin-bottom": "2em"
-    }
-  }, [_c('h2', {
-    staticClass: "ui grey medium header"
-  }, [_vm._v(_vm._s(_vm.pendingRequests.length) + " Pending Requests")]), _vm._v(" "), (_vm.pendingRequests) ? _c('div', {
+  return _c('div', [_c('div', [_c('h2', {
+    staticClass: "title is-6 has-text-danger"
+  }, [_vm._v(_vm._s(_vm.pendingRequests.length) + " Pending Requests")]), _vm._v(" "), (_vm.pendingRequests.length == 0) ? _c('p', {
+    staticClass: "subtitle is-6"
+  }, [_vm._v("You have no pending requests")]) : _vm._e(), _vm._v(" "), (_vm.pendingRequests) ? _c('div', {
     staticClass: "ui divided very relaxed list"
   }, _vm._l((_vm.pendingRequests), function(pending) {
     return _c('div', {
-      staticClass: "item"
+      staticClass: "level is-raised is-mobile",
+      staticStyle: {
+        "padding": "10px"
+      }
     }, [_c('div', {
-      staticClass: "right floated"
+      staticClass: "level-left"
+    }, [_c('div', {
+      staticClass: "level-item has-text-weight-bold"
+    }, [_vm._m(0, true), _vm._v(" "), _c('span', [_vm._v(_vm._s(pending.fullname))])]), _vm._v(" "), _c('div', {
+      staticClass: "level-item"
+    }, [_vm._m(1, true), _vm._v(" "), _c('span', [_vm._v(_vm._s(pending.location))])]), _vm._v(" "), (pending.phone) ? _c('div', {
+      staticClass: "level-item"
+    }, [_vm._m(2, true), _vm._v(" "), _c('span', [_vm._v(_vm._s(pending.phone))])]) : _vm._e()]), _vm._v(" "), _c('div', {
+      staticClass: "level-right"
     }, [_c('a', {
-      staticClass: "ui mini  button",
+      staticClass: "button is-small is-primary",
       attrs: {
         "id": 'btn-' + pending.id
       },
@@ -87375,67 +87507,75 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.approveRequest(pending)
         }
       }
-    }, [_vm._v("Approve")])]), _vm._v(" "), _c('i', {
-      staticClass: "large address card middle aligned icon"
-    }), _vm._v(" "), _c('div', {
-      staticClass: "content"
-    }, [_c('div', {
-      staticClass: "header"
-    }, [_vm._v(_vm._s(pending.fullname))]), _vm._v(" "), _c('div', {
-      staticClass: "description"
-    }, [_c('div', {
-      staticClass: "ui horizontal list"
-    }, [_c('div', {
-      staticClass: "item"
-    }, [_c('i', {
-      staticClass: "icon marker"
-    }), _vm._v(_vm._s(pending.location) + "\n                            ")]), _vm._v(" "), (pending.phone) ? _c('div', {
-      staticClass: "item"
-    }, [_c('i', {
-      staticClass: "icon phone"
-    }), _vm._v(_vm._s(pending.phone) + "\n                            ")]) : _vm._e(), _vm._v(" "), _c('div', {
-      staticClass: "item"
-    }, [_c('i', {
-      staticClass: "icon calendar"
-    }), _vm._v(_vm._s(pending.created_at) + "\n                            ")])])])])])
-  })) : _vm._e(), _vm._v(" "), (_vm.pendingRequests.length == 0) ? _c('div', {
-    staticClass: "ui small header"
-  }, [_vm._v("You have no pending requests")]) : _vm._e()]), _vm._v(" "), _c('div', {
-    staticClass: "white-boxed"
+    }, [_vm._m(3, true)])])])
+  })) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "white-boxed",
+    staticStyle: {
+      "margin-top": "3em"
+    }
   }, [_c('h2', {
-    staticClass: "ui grey medium header"
-  }, [_vm._v(_vm._s(_vm.approvedRequests.length) + " Approved Requests")]), _vm._v(" "), (_vm.approvedRequests) ? _c('div', {
-    staticClass: "ui divided very relaxed list"
-  }, _vm._l((_vm.approvedRequests), function(approved) {
+    staticClass: "title is-6 has-text-danger"
+  }, [_vm._v(_vm._s(_vm.approvedRequests.length) + " Approved Requests")]), _vm._v(" "), (_vm.approvedRequests.length == 0) ? _c('p', {
+    staticClass: "subtitle is-6"
+  }, [_vm._v("You have no approved requests")]) : _vm._e(), _vm._v(" "), (_vm.approvedRequests) ? _c('div', _vm._l((_vm.approvedRequests), function(approved) {
     return _c('div', {
-      staticClass: "item"
-    }, [_c('i', {
-      staticClass: "large address card middle aligned icon"
-    }), _vm._v(" "), _c('div', {
-      staticClass: "content"
+      staticClass: "level is-raised",
+      staticStyle: {
+        "padding": "10px"
+      }
     }, [_c('div', {
-      staticClass: "header"
-    }, [_vm._v(_vm._s(approved.fullname))]), _vm._v(" "), _c('div', {
-      staticClass: "description"
+      staticClass: "level-left"
     }, [_c('div', {
-      staticClass: "ui horizontal list"
-    }, [_c('div', {
-      staticClass: "item"
-    }, [_c('i', {
-      staticClass: "icon marker"
-    }), _vm._v(_vm._s(approved.location) + "\n                            ")]), _vm._v(" "), (approved.phone) ? _c('div', {
-      staticClass: "item"
-    }, [_c('i', {
-      staticClass: "icon phone"
-    }), _vm._v(_vm._s(approved.phone) + "\n                            ")]) : _vm._e(), _vm._v(" "), _c('div', {
-      staticClass: "item"
-    }, [_c('i', {
-      staticClass: "icon calendar"
-    }), _vm._v(_vm._s(approved.created_at) + "\n                            ")])])])])])
-  })) : _vm._e(), _vm._v(" "), (_vm.approvedRequests.length == 0) ? _c('div', {
-    staticClass: "ui small header"
-  }, [_vm._v("You have no approved requests")]) : _vm._e()])])
-},staticRenderFns: []}
+      staticClass: "level-item has-text-weight-bold"
+    }, [_vm._m(4, true), _vm._v(" "), _c('span', [_vm._v(_vm._s(approved.fullname))])]), _vm._v(" "), _c('div', {
+      staticClass: "level-item"
+    }, [_vm._m(5, true), _vm._v(" "), _c('span', [_vm._v(_vm._s(approved.location))])]), _vm._v(" "), (approved.phone) ? _c('div', {
+      staticClass: "level-item"
+    }, [_vm._m(6, true), _vm._v(" "), _c('span', [_vm._v(_vm._s(approved.phone))])]) : _vm._e()])])
+  })) : _vm._e()])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "fa fa-user"
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "fa fa-map-marker"
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "fa fa-phone"
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "fa fa-check-circle"
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "fa fa-user"
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "fa fa-map-marker"
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "fa fa-phone"
+  })])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -87450,7 +87590,9 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('span', [(_vm.isAdmin) ? _c('a', {
+  return (_vm.isAdmin) ? _c('span', {
+    staticClass: "level-item"
+  }, [_c('a', {
     attrs: {
       "href": "#"
     },
@@ -87460,12 +87602,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.makeFeatured($event)
       }
     }
+  }, [_c('span', {
+    staticClass: "icon"
   }, [_c('i', {
-    staticClass: "icon star",
+    staticClass: "fa fa-star",
     class: {
-      'orange': _vm.isFeatured
+      'has-text-grey': _vm.isFeatured, 'has-text-success': !_vm.isFeatured
     }
-  })]) : _vm._e()])
+  })])])]) : _vm._e()
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -87490,8 +87634,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "id": _vm.pid
     }
   }, [_c('a', {
+    staticClass: "like-button",
     class: {
-      'purple': _vm.hasLiked, 'ui circular extra huge green icon button': _vm.size
+      'liked': _vm.hasLiked
     },
     on: {
       "click": function($event) {
@@ -87500,11 +87645,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }, [(_vm.size) ? _c('i', {
-    staticClass: "icon thumbs up"
+    staticClass: "fa fa-thumbs-up"
   }) : _c('i', {
     staticClass: "fa fa-thumbs-up"
   })]), _vm._v(" "), _c('span', {
-    staticClass: "like-count"
+    staticClass: "has-text-weight-bold"
   }, [_vm._v(_vm._s(_vm.count))])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
@@ -88154,12 +88299,12 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('div', {
-    staticClass: "ui horizontal list"
-  }, [(_vm.isResponseActive === null || !_vm.isAccepting) ? _c('div', {
-    staticClass: "item"
-  }, [_c('a', {
-    staticClass: "btn btn-default btn-xs",
+  return _c('span', [_c('div', {
+    staticClass: "level is-mobile"
+  }, [_c('div', {
+    staticClass: "level-left"
+  }, [(_vm.isResponseActive === null || !_vm.isAccepting) ? _c('a', {
+    staticClass: "level-item button is-primary is-small",
     attrs: {
       "href": "#"
     },
@@ -88169,12 +88314,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.showMessageForm(_vm.currentApplication)
       }
     }
-  }, [_c('i', {
-    staticClass: "fa fa-comments"
-  }), _vm._v(" Reply")])]) : _vm._e(), _vm._v(" "), (_vm.isResponseActive != null) ? _c('div', {
-    staticClass: "item"
-  }, [_c('a', {
-    staticClass: "text-muted btn btn-default btn-xs",
+  }, [_vm._m(0), _vm._v(" "), _c('span', [_vm._v("Reply")])]) : _vm._e(), _vm._v(" "), (_vm.isResponseActive != null) ? _c('a', {
+    staticClass: "level-item button is-small is-primary",
     attrs: {
       "href": "#"
     },
@@ -88184,12 +88325,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.closeReply()
       }
     }
-  }, [_c('i', {
-    staticClass: "fa fa-close"
-  }), _vm._v(" Close")])]) : _vm._e(), _vm._v(" "), (_vm.isOwner) ? _c('div', {
-    staticClass: "item"
-  }, [(!_vm.isAccepting) ? _c('a', {
-    staticClass: "btn btn-default btn-xs",
+  }, [_vm._m(1), _vm._v(" "), _c('span', [_vm._v("Close")])]) : _vm._e(), _vm._v(" "), (_vm.isOwner) ? _c('div', {
+    staticClass: "level-item"
+  }, [(!_vm.isAccepting) ? _c('span', {
+    staticClass: "level-item button is-small is-primary"
+  }, [_c('a', {
     attrs: {
       "href": "#"
     },
@@ -88199,18 +88339,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.acceptApplication(_vm.currentApplication)
       }
     }
-  }, [_c('i', {
-    staticClass: "fa fa-check-circle"
-  }), _vm._v(" Accept")]) : _vm._e()]) : _vm._e()]), _vm._v(" "), (_vm.isAccepting) ? _c('div', {
-    staticClass: "ui form"
+  }, [_vm._m(2), _vm._v(" "), _c('span', [_vm._v("Accept")])])]) : _vm._e()]) : _vm._e()])]), _vm._v(" "), _c('div', [(_vm.isAccepting) ? _c('div', {
+    staticClass: "card is-raised"
   }, [_c('div', {
     staticClass: "field"
   }, [_c('h4', {
-    staticClass: "text-success bold"
+    staticClass: "title is-5"
   }, [_vm._v("Accept " + _vm._s(_vm.currentApplication.profile.fullname) + "'s Application")]), _vm._v(" "), _c('label', {
-    attrs: {
-      "for": ""
-    }
+    staticClass: "label"
   }, [_vm._v("Please provide some contact information to get the ball rolling")]), _vm._v(" "), _c('textarea', {
     directives: [{
       name: "model",
@@ -88218,7 +88354,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       value: (_vm.message),
       expression: "message"
     }],
-    staticClass: "form-control",
+    staticClass: "textarea",
     attrs: {
       "rows": "2",
       "placeholder": "e.g Your Phone Number or Email address"
@@ -88238,7 +88374,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   })]), _vm._v(" "), _c('div', {
     staticClass: "field"
   }, [_c('button', {
-    staticClass: "ui green button",
+    staticClass: "button is-primary is-small",
     attrs: {
       "disabled": _vm.hasAcceptanceMessage
     },
@@ -88251,7 +88387,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('i', {
     staticClass: "fa fa-check-circle"
   }), _vm._v(" Accept")]), _vm._v(" "), _c('button', {
-    staticClass: "ui button",
+    staticClass: "button is-small",
     on: {
       "click": function($event) {
         $event.preventDefault();
@@ -88262,36 +88398,56 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "fa fa-close"
   }), _vm._v(" Cancel")])])]) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "responses"
-  }, [(_vm.currentApplication.responses.length > 0) ? _c('div', {
-    staticClass: "ui comments thread"
+  }, [(_vm.currentApplication.responses.length > 0) ? _c('div', [_c('a', {
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.showResponses($event)
+      }
+    }
+  }, [_c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "fa",
+    class: {
+      'fa-minus': _vm.showResponsesFlag, 'fa-plus': !_vm.showResponsesFlag
+    }
+  })]), _vm._v(" "), _c('span', [_vm._v(_vm._s((_vm.showResponsesFlag) ? 'Hide' : 'Show') + " conversation")])])]) : _vm._e(), _vm._v(" "), (_vm.currentApplication.responses.length > 0) ? _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.showResponsesFlag),
+      expression: "showResponsesFlag"
+    }]
   }, _vm._l((_vm.currentApplication.responses), function(response) {
     return _c('div', {
-      staticClass: "comment"
+      staticClass: "media"
     }, [_c('div', {
-      staticClass: "avatar"
+      staticClass: "media-left"
     }, [_c('img', {
-      staticClass: "media-object img-circle",
+      staticClass: "image is-48x48 is-rounded",
       attrs: {
         "src": response.profile.avatar,
-        "alt": response.profile.fullname,
-        "width": "32",
-        "height": "32"
+        "alt": response.profile.fullname
       }
     })]), _vm._v(" "), _c('div', {
-      staticClass: "content",
+      staticClass: "media-content",
       class: {
         'is-owner': _vm.currentApplication.user_id === response.user_id
       }
+    }, [_c('div', {
+      staticClass: "content"
     }, [_c('span', {
-      staticClass: "author"
-    }, [_vm._v(_vm._s(response.profile.fullname))]), _vm._v(" "), _c('div', {
-      staticClass: "metadata"
-    }, [_vm._v(_vm._s(response.date))]), _vm._v(" "), _c('p', {
+      staticClass: "has-text-weight-bold"
+    }, [_vm._v(_vm._s(response.profile.fullname))]), _vm._v(" "), _c('small', [_vm._v(_vm._s(response.date))]), _vm._v(" "), _c('br'), _vm._v(" "), _c('p', {
       staticClass: "text",
       domProps: {
         "innerHTML": _vm._s(response.response)
       }
-    })])])
+    })])])])
   })) : _vm._e(), _vm._v(" "), (_vm.isResponseActive === _vm.currentApplication.id) ? _c('form', {
     staticClass: "ui form",
     attrs: {
@@ -88306,7 +88462,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       value: (_vm.response.message),
       expression: "response.message"
     }],
-    staticClass: "form-control",
+    staticClass: "textarea",
     attrs: {
       "id": "",
       "rows": "2",
@@ -88324,7 +88480,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   })]), _vm._v(" "), _c('div', {
     staticClass: "field"
   }, [_c('button', {
-    staticClass: "ui primary mini button",
+    staticClass: "button is-primary is-small",
     attrs: {
       "disabled": _vm.isSending
     },
@@ -88335,7 +88491,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }, [_vm._v("Submit")]), _vm._v(" "), (_vm.isResponseActive != null) ? _c('span', [_c('a', {
-    staticClass: "ui mini button",
+    staticClass: "button is-small",
     attrs: {
       "href": "#"
     },
@@ -88347,8 +88503,26 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('i', {
     staticClass: "fa fa-close"
-  }), _vm._v(" Close")])]) : _vm._e()])]) : _vm._e()])])
-},staticRenderFns: []}
+  }), _vm._v(" Close")])]) : _vm._e()])]) : _vm._e()])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "fa fa-comments"
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "fa fa-close"
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "fa fa-check-circle"
+  })])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -88364,17 +88538,18 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "ui two column grid"
+    staticClass: "skills",
+    class: {
+      'is-loading': _vm.isLoading
+    }
   }, [_c('div', {
-    staticClass: "left aligned column"
-  }, [_c('div', {
-    staticClass: "ui small header"
+    staticClass: "title is-6"
   }, [_vm._v("Select your skills")]), _vm._v(" "), _c('div', {
     attrs: {
       "id": "skills-list"
     }
   }, [(_vm.skills) ? _c('div', {
-    staticClass: "ui relaxed divided selection list",
+    staticClass: "skills-list-wrapper",
     attrs: {
       "id": "skills"
     }
@@ -88387,36 +88562,34 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.addSkill(skill)
         }
       }
-    }, [_c('i', {
-      staticClass: "icon arrow right"
-    }), _vm._v(" "), _c('div', {
+    }, [_c('div', {
       staticClass: "content"
-    }, [_vm._v("\n                        " + _vm._s(skill.skill) + "\n                    ")])])
-  })) : _vm._e()])]), _vm._v(" "), _c('div', {
-    staticClass: "left aligned column"
-  }, [_c('div', {
-    staticClass: "ui small header"
-  }, [_vm._v("Selected skills")]), _vm._v(" "), (_vm.getUserSkills) ? _c('div', {
-    staticClass: "ui relaxed divided selection list",
+    }, [_c('span', [_vm._v(_vm._s(skill.skill))]), _vm._v(" "), _vm._m(0, true)])])
+  })) : _vm._e()]), _vm._v(" "), _c('div', {}, [(_vm.getUserSkills) ? _c('div', {
+    staticClass: "selected-skills-wrapper",
     attrs: {
       "id": "selectedSkills"
     }
   }, _vm._l((_vm.selectedSkills), function(skill) {
     return _c('a', {
-      staticClass: "item",
+      staticClass: "tag is-link",
       on: {
         "click": function($event) {
           $event.preventDefault();
           _vm.removeSkill(skill)
         }
       }
-    }, [_c('i', {
-      staticClass: "icon close"
-    }), _vm._v(" "), _c('div', {
-      staticClass: "content"
-    }, [_vm._v("\n                    " + _vm._s(skill.skill) + "\n                ")])])
+    }, [_vm._v("\n                " + _vm._s(skill.skill) + "   "), _c('button', {
+      staticClass: "delete is-small"
+    })])
   })) : _vm._e(), _vm._v(" "), (_vm.selectedSkills == null) ? _c('div', [_c('p', [_vm._v("You have not selected any skills")])]) : _vm._e()])])
-},staticRenderFns: []}
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "fa fa-arrow-right"
+  })])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -88432,9 +88605,9 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', [(!_vm.task.id) ? _c('h1', {
-    staticClass: "ui header"
+    staticClass: "title is-2"
   }, [_vm._v("Post a Job")]) : _vm._e(), _vm._v(" "), (_vm.task.id) ? _c('h1', {
-    staticClass: "ui header"
+    staticClass: "title is-2"
   }, [_vm._v("Edit Job")]) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "ui divider"
   }), _vm._v(" "), _c('div', [_c('form', {
@@ -88446,12 +88619,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "field"
   }, [_c('label', {
+    staticClass: "label",
     attrs: {
       "for": ""
     }
   }, [_vm._v("What category of service do you require")]), _vm._v(" "), _c('div', {
-    staticClass: "ui selection dropdown"
-  }, [_c('input', {
+    staticClass: "select"
+  }, [_c('select', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -88459,34 +88633,35 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       expression: "task.category"
     }],
     attrs: {
-      "type": "hidden",
       "name": "category"
     },
-    domProps: {
-      "value": (_vm.task.category)
-    },
     on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.$set(_vm.task, "category", $event.target.value)
-      }
+      "change": [function($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+          return o.selected
+        }).map(function(o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val
+        });
+        _vm.$set(_vm.task, "category", $event.target.multiple ? $$selectedVal : $$selectedVal[0])
+      }, function($event) {
+        _vm.checkFormInput()
+      }]
     }
-  }), _vm._v(" "), _c('i', {
-    staticClass: "dropdown icon"
-  }), _vm._v(" "), _c('div', {
-    staticClass: "default text"
-  }, [_vm._v("Choose a category")]), _vm._v(" "), _c('div', {
-    staticClass: "menu"
-  }, _vm._l((_vm.categories), function(category) {
-    return _c('div', {
-      staticClass: "item",
-      attrs: {
-        "data-value": category.skill
+  }, [_c('option', {
+    attrs: {
+      "value": "0"
+    }
+  }, [_vm._v("Select a category")]), _vm._v(" "), _vm._l((_vm.categories), function(category) {
+    return _c('option', {
+      domProps: {
+        "value": category.skill
       }
     }, [_vm._v(_vm._s(category.skill))])
-  }))])]), _vm._v(" "), _c('div', {
+  })], 2)])]), _vm._v(" "), _c('div', {
     staticClass: "field"
   }, [_c('label', {
+    staticClass: "label",
     attrs: {
       "for": "title"
     }
@@ -88497,7 +88672,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       value: (_vm.task.title),
       expression: "task.title"
     }],
-    staticClass: "form-control",
+    staticClass: "input",
     attrs: {
       "type": "text",
       "name": "title",
@@ -88519,6 +88694,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   })]), _vm._v(" "), _c('div', {
     staticClass: "field"
   }, [_c('label', {
+    staticClass: "label",
     attrs: {
       "for": "description"
     }
@@ -88529,7 +88705,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       value: (_vm.task.description),
       expression: "task.description"
     }],
-    staticClass: "form-control",
+    staticClass: "textarea",
     attrs: {
       "rows": "7",
       "name": "description",
@@ -88550,6 +88726,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   })]), _vm._v(" "), _c('div', {
     staticClass: "field"
   }, [_c('label', {
+    staticClass: "label",
     attrs: {
       "for": "location",
       "id": "location"
@@ -88563,7 +88740,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       value: (_vm.task.location),
       expression: "task.location"
     }],
-    staticClass: "form-control",
+    staticClass: "input",
     attrs: {
       "type": "text",
       "name": "location",
@@ -88582,25 +88759,26 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   })])]), _vm._v(" "), _c('div', {
-    staticClass: "two fields"
+    staticClass: "field is-grouped"
   }, [_c('div', {
-    staticClass: "field"
+    staticClass: "control"
   }, [_c('label', {
+    staticClass: "label",
     attrs: {
       "for": "budget"
     }
   }, [_vm._v("What is your budget")]), _vm._v(" "), _c('div', {
-    staticClass: "ui labeled input"
-  }, [_c('div', {
-    staticClass: "ui label"
-  }, [_vm._v("₦")]), _vm._v(" "), _c('input', {
+    staticClass: "field has-addons has-addons-right"
+  }, [_vm._m(1), _vm._v(" "), _c('p', {
+    staticClass: "control"
+  }, [_c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
       value: (_vm.task.budget),
       expression: "task.budget"
     }],
-    staticClass: "form-control",
+    staticClass: "input",
     attrs: {
       "type": "number",
       "name": "budget",
@@ -88619,72 +88797,71 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.$set(_vm.task, "budget", $event.target.value)
       }
     }
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "field"
+  })])])]), _vm._v(" "), _c('div', {
+    staticClass: "control"
   }, [_c('label', {
+    staticClass: "label",
     attrs: {
       "for": ""
     }
   }, [_vm._v("Budget type")]), _vm._v(" "), _c('div', {
-    staticClass: "ui selection dropdown"
-  }, [_c('input', {
+    staticClass: "select"
+  }, [_c('select', {
     directives: [{
       name: "model",
       rawName: "v-model",
       value: (_vm.task.budget_type),
       expression: "task.budget_type"
     }],
+    staticClass: "input",
     attrs: {
-      "type": "hidden",
       "name": "budget_type"
     },
-    domProps: {
-      "value": (_vm.task.budget_type)
-    },
     on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.$set(_vm.task, "budget_type", $event.target.value)
+      "focus": function($event) {
+        _vm.checkFormInput()
+      },
+      "change": function($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+          return o.selected
+        }).map(function(o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val
+        });
+        _vm.$set(_vm.task, "budget_type", $event.target.multiple ? $$selectedVal : $$selectedVal[0])
       }
     }
-  }), _vm._v(" "), _c('i', {
-    staticClass: "dropdown icon"
-  }), _vm._v(" "), _c('div', {
-    staticClass: "default text"
-  }, [_vm._v("Budget type")]), _vm._v(" "), _c('div', {
-    staticClass: "menu"
-  }, [_c('div', {
-    staticClass: "item",
+  }, [_c('option', {
     attrs: {
-      "data-value": _vm.fixed
+      "value": "0"
     }
-  }, [_vm._v("Fixed")]), _vm._v(" "), _c('div', {
-    staticClass: "item",
+  }, [_vm._v("Select")]), _vm._v(" "), _c('option', {
     attrs: {
-      "data-value": _vm.negotiable
+      "value": "fixed"
+    }
+  }, [_vm._v("Fixed")]), _vm._v(" "), _c('option', {
+    attrs: {
+      "value": "negotiable"
     }
   }, [_vm._v("Negotiable")])])])])]), _vm._v(" "), _c('div', {
-    staticClass: "two fields"
+    staticClass: "field is-grouped"
   }, [_c('div', {
-    staticClass: "field"
+    staticClass: "control"
   }, [_c('label', {
+    staticClass: "label",
     attrs: {
       "for": "expiry_date"
     }
-  }, [_vm._v("When does this job offer close?")]), _vm._v(" "), _c('div', {
-    staticClass: "ui icon input"
-  }, [_c('i', {
-    staticClass: "icon calendar"
-  }), _vm._v(" "), _c('input', {
+  }, [_vm._v("When does this job offer close?")]), _vm._v(" "), _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
       value: (_vm.task.expires),
       expression: "task.expires"
     }],
-    staticClass: "form-control",
+    staticClass: "input date",
     attrs: {
-      "type": "text",
+      "type": "date",
       "id": "expiry_date",
       "placeholder": "mm/dd/yyyy"
     },
@@ -88700,24 +88877,22 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.$set(_vm.task, "expires", $event.target.value)
       }
     }
-  })]), _vm._v(" "), _c('small', {
+  }), _vm._v(" "), _c('small', {
     domProps: {
       "innerHTML": _vm._s(_vm.selectedDate)
     }
   })]), _vm._v(" "), _c('div', {
-    staticClass: "field"
-  }, [_c('label', [_vm._v("How many applications do you need?")]), _vm._v(" "), _c('div', {
-    staticClass: "ui icon input"
-  }, [_c('i', {
-    staticClass: "icon users"
-  }), _vm._v(" "), _c('input', {
+    staticClass: "control"
+  }, [_c('label', {
+    staticClass: "label"
+  }, [_vm._v("How many applications do you need?")]), _vm._v(" "), _c('div', {}, [_c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
       value: (_vm.task.application_limit),
       expression: "task.application_limit"
     }],
-    staticClass: "form-control",
+    staticClass: "input",
     attrs: {
       "type": "number",
       "id": "application_limit",
@@ -88738,8 +88913,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   })])])]), _vm._v(" "), _c('div', {
     staticClass: "field"
   }, [_c('div', {
-    staticClass: "ui checkbox"
-  }, [_c('input', {
+    staticClass: "checkbox"
+  }, [_c('label', [_c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -88771,11 +88946,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }
-  }), _vm._v(" "), _c('label', [_vm._v("Make this job public")])])]), _vm._v(" "), _c('div', {
+  }), _vm._v(" Make this job public\n                    ")])])]), _vm._v(" "), _c('div', {
     staticClass: "field"
   }, [_c('div', {
-    staticClass: "ui checkbox"
-  }, [_c('input', {
+    staticClass: "checkbox"
+  }, [_c('label', [_c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -88806,10 +88981,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }
-  }), _vm._v(" "), _vm._m(1)])]), _vm._v(" "), _c('div', {
+  }), _vm._v(" Please agree to our "), _c('a', {
+    attrs: {
+      "href": "/terms-and-condition#jobs",
+      "target": "_blank"
+    }
+  }, [_vm._v("Terms and Conditions")])])])]), _vm._v(" "), _c('div', {
     staticClass: "field"
   }, [_c('button', {
-    staticClass: "ui primary button",
+    staticClass: "button is-link",
     attrs: {
       "type": "submit",
       "disabled": !_vm.isComplete
@@ -88828,12 +89008,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "glyphicon glyphicon-map-marker"
   })])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('label', [_vm._v("Please agree to our "), _c('a', {
-    attrs: {
-      "href": "/terms-and-condition#jobs",
-      "target": "_blank"
-    }
-  }, [_vm._v("Terms and Conditions")])])
+  return _c('p', {
+    staticClass: "control"
+  }, [_c('span', {
+    staticClass: "button is-static"
+  }, [_vm._v("₦")])])
 }]}
 module.exports.render._withStripped = true
 if (false) {
@@ -89371,14 +89550,15 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', [_c('h2', {
-    staticClass: "ui small grey header"
-  }, [_vm._v("Submit Application")]), _vm._v(" "), _c('div', [_c('div', {
-    staticClass: "ui large header"
+    staticClass: "title is-6"
+  }, [_vm._v("Submit Application")]), _vm._v(" "), _c('div', [_c('h3', {
+    staticClass: "title is-2"
   }, [_vm._v(_vm._s(_vm.job.title))]), _vm._v(" "), _c('div', {
-    staticClass: "ui horizontal list"
+    staticClass: "level is-mobile"
   }, [_c('div', {
-    staticClass: "item"
+    staticClass: "level-left"
   }, [_c('a', {
+    staticClass: "level-item",
     attrs: {
       "href": _vm.job.href
     }
@@ -89390,22 +89570,18 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "width": "24",
       "height": "24"
     }
-  }), _vm._v("\n                    " + _vm._s(_vm.job.profile.fullname) + "\n                ")])]), _vm._v(" "), _c('div', {
-    staticClass: "item"
+  }), _vm._v("\n                    " + _vm._s(_vm.job.profile.fullname) + "\n                ")]), _vm._v(" "), _c('div', {
+    staticClass: "level-item"
   }, [_c('i', {
     staticClass: "fa fa-calendar"
-  }), _vm._v(" " + _vm._s(_vm.job.date) + "\n            ")]), _vm._v(" "), _c('div', {
-    staticClass: "item"
-  }, [_c('span', {
-    staticClass: "bold"
-  }, [_c('i', {
-    staticClass: "fa fa-user"
-  }), _vm._v(" " + _vm._s(_vm.job.applications.length) + " " + _vm._s(_vm.job.applications.length > 1 ? 'Interests' : 'Interest'))])])]), _vm._v(" "), _c('p', [_vm._v(_vm._s(_vm.job.excerpt))]), _vm._v(" "), _c('p', [_c('a', {
-    staticClass: "bold",
+  }), _vm._v(" " + _vm._s(_vm.job.date) + "\n                ")]), _vm._v(" "), _c('div', {
+    staticClass: "level-item"
+  }, [_vm._m(0), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.job.applications.length) + " " + _vm._s(_vm.job.applications.length > 1 ? 'Interests' : 'Interest'))])])])]), _vm._v(" "), _c('p', [_vm._v(_vm._s(_vm.job.excerpt))]), _vm._v(" "), _c('p', [_c('a', {
+    staticClass: "button is-small is-primary",
     attrs: {
       "href": _vm.job.href
     }
-  }, [_c('small', [_vm._v("View Job")])])]), _vm._v(" "), _c('div', {
+  }, [_c('span', [_vm._v("View Job")]), _vm._v(" "), _vm._m(1)])]), _vm._v(" "), _c('div', {
     staticClass: "ui divider"
   }), _vm._v(" "), _c('form', {
     staticClass: "ui form",
@@ -89416,6 +89592,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "field"
   }, [_c('label', {
+    staticClass: "label",
     attrs: {
       "for": "application"
     }
@@ -89426,10 +89603,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       value: (_vm.application.application),
       expression: "application.application"
     }],
-    staticClass: "form-control",
+    staticClass: "textarea",
     attrs: {
       "id": "application",
-      "rows": "7",
+      "rows": "5",
       "placeholder": "Be as detailed as possible to increase your chances"
     },
     domProps: {
@@ -89447,23 +89624,22 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   })]), _vm._v(" "), _c('div', {
     staticClass: "field"
   }, [_c('h4', {
-    staticClass: "ui red header"
+    staticClass: "title is-5"
   }, [_vm._v("Clients budget is "), _c('strong', [_vm._v("N" + _vm._s(_vm.job.human_budget))])]), _vm._v(" "), _c('label', {
+    staticClass: "label",
     attrs: {
       "for": "budget"
     }
   }, [_vm._v("Your Proposed Budget")]), _vm._v(" "), _c('div', {
-    staticClass: "ui labeled input"
-  }, [_c('div', {
-    staticClass: "ui label"
-  }, [_vm._v("N")]), _vm._v(" "), _c('input', {
+    staticClass: "control"
+  }, [_c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
       value: (_vm.application.budget),
       expression: "application.budget"
     }],
-    staticClass: "form-control",
+    staticClass: "input",
     attrs: {
       "type": "number",
       "placeholder": "e.g 50000"
@@ -89480,7 +89656,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   })])]), _vm._v(" "), _c('div', {
     staticClass: "clearfix"
   }, [_c('button', {
-    staticClass: "ui primary button",
+    staticClass: "button is-primary",
+    class: {
+      'is-loading': _vm.isSubmitting
+    },
     attrs: {
       "type": "submit",
       "disabled": !_vm.isComplete
@@ -89492,7 +89671,19 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }, [_vm._v(" Submit your application")])])])])])
-},staticRenderFns: []}
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "fa fa-user"
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "fa fa-long-arrow-right"
+  })])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -89528,23 +89719,22 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "padded"
   }, [_c('h4', {
-    staticClass: "thin"
+    staticClass: "title is-5 loading-icon"
   }, [_c('img', {
     attrs: {
-      "src": _vm.loader,
-      "width": "24",
-      "height": "24"
+      "src": _vm.loadingGif
     }
   }), _vm._v(" Loading Instagram Feed")])])]) : _vm._e(), _vm._v(" "), (_vm.error) ? _c('div', {
     staticClass: "text-center"
   }, [_vm._m(0), _vm._v(" "), _c('p', [_vm._v("Sorry we could not load this instagram feed, please try again later.")])]) : _vm._e(), _vm._v(" "), (_vm.feeds) ? _c('div', {
-    staticClass: "ui four column computer grid"
+    staticClass: "columns is-multiline"
   }, _vm._l((_vm.feeds), function(feed) {
     return _c('div', {
-      staticClass: "column"
+      staticClass: "column is-one-third-desktop is-one-quarter-widescreen is-half-tablet"
     }, [_c('div', {
-      staticClass: "ui fluid card"
+      staticClass: "card portfolio"
     }, [_c('div', {
+      staticClass: "card-image",
       class: feed.type
     }, [_c('a', {
       staticClass: "image",
@@ -89569,12 +89759,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "alt": feed.user.full_name
       }
     })])]), _vm._v(" "), _c('div', {
-      staticClass: "extra contentt"
-    }, [_c('span', [_c('i', {
+      staticClass: "card-content",
+      staticStyle: {
+        "padding": "5px 10px"
+      }
+    }, [_c('div', {
+      staticClass: "level is-mobile"
+    }, [_c('div', {
+      staticClass: "level-left"
+    }, [_c('span', {
+      staticClass: "level-item has-text-weight-bold"
+    }, [_c('i', {
       staticClass: "fa fa-heart"
-    }), _vm._v(" " + _vm._s(feed.likes.count))]), _vm._v(" "), _c('span', [_c('i', {
-      staticClass: "fa fa-comments"
-    }), _vm._v(" " + _vm._s(feed.comments.count))])])])])
+    }), _vm._v("  " + _vm._s(feed.likes.count))]), _vm._v(" "), _c('span', {
+      staticClass: "level-item has-text-weight-bold"
+    }, [_c('i', {
+      staticClass: "fa fa-comment"
+    }), _vm._v("  " + _vm._s(feed.comments.count))])])])])])])
   })) : _vm._e(), _vm._v(" "), (_vm.isOverlay) ? _c('div', {
     attrs: {
       "id": "instagram-overlay"
@@ -89720,11 +89921,21 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('label', {
-    staticClass: "btn btn-default"
+    staticClass: "button is-white is-small",
+    attrs: {
+      "id": "change-user-background"
+    }
+  }, [_c('span', {
+    staticClass: "icon"
   }, [_c('i', {
-    staticClass: "glyphicon glyphicon-camera"
-  }), _vm._v(" Change Background Image\n    "), _c('input', {
-    staticClass: "hidden",
+    staticClass: "fa fa-camera",
+    class: {
+      'fa-camera': !_vm.status, 'fa-circle-o-notch fa-spin': _vm.status
+    }
+  })]), _vm._v(" "), _c('span', [_vm._v("Change Background Image")]), _vm._v(" "), _c('input', {
+    staticStyle: {
+      "display": "none"
+    },
     attrs: {
       "type": "file",
       "id": "backgroundImage"
@@ -89853,31 +90064,30 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "sixteen wide mobile sixteen wide tablet ten wide computer column"
   }, [_c('h1', {
-    staticClass: "ui header"
+    staticClass: "title is-3"
   }, [_vm._v("Sell a new service")]), _vm._v(" "), _c('div', {
-    staticClass: "ui fluid steps"
+    staticClass: "level is-mobile steps"
   }, [_c('div', {
-    staticClass: "step",
+    staticClass: "level-item",
     class: {
       'active': _vm.step === 1
     }
   }, [_vm._m(0)]), _vm._v(" "), _c('div', {
-    staticClass: "step",
+    staticClass: "level-item",
     class: {
       'active': _vm.step === 2
     }
   }, [_vm._m(1)]), _vm._v(" "), _c('div', {
-    staticClass: "step",
+    staticClass: "level-item",
     class: {
       'active': _vm.step === 3
     }
   }, [_vm._m(2)]), _vm._v(" "), _c('div', {
-    staticClass: "step",
+    staticClass: "level-item",
     class: {
       'active': _vm.step === 4
     }
   }, [_vm._m(3)])]), _vm._v(" "), _c('form', {
-    staticClass: "ui form",
     class: {
       'loading': _vm.isLoading
     },
@@ -89889,24 +90099,28 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": "scale"
     }
   }, [(_vm.step === 1) ? _c('div', {
-    staticClass: "step white-boxed",
+    staticClass: "card is-raised",
     attrs: {
       "id": "step1"
     }
   }, [_c('div', {
+    staticClass: "card-content"
+  }, [_c('div', {
     staticClass: "field"
   }, [_c('label', {
-    attrs: {
-      "for": ""
-    }
-  }, [_vm._v("Choose a category")]), _vm._v(" "), _c('select', {
+    staticClass: "label"
+  }, [_vm._v("Select a skill")]), _vm._v(" "), _c('div', {
+    staticClass: "select is-block"
+  }, [_c('select', {
     directives: [{
       name: "model",
       rawName: "v-model",
       value: (_vm.gig.category),
       expression: "gig.category"
     }],
-    staticClass: "ui search dropdown",
+    staticStyle: {
+      "width": "100%"
+    },
     on: {
       "change": [function($event) {
         var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
@@ -89920,29 +90134,24 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.checkInputValues($event)
       }]
     }
-  }, [_c('option', {
-    staticClass: "default text",
-    attrs: {
-      "value": ""
-    }
-  }, [_vm._v("Category")]), _vm._v(" "), _vm._l((_vm.categories), function(category) {
+  }, _vm._l((_vm.categories), function(category) {
     return _c('option', {
       domProps: {
         "value": category.skill,
         "textContent": _vm._s(category.skill)
       }
     })
-  })], 2)]), _vm._v(" "), _c('div', {
-    staticClass: "field",
+  }))])]), _vm._v(" "), _c('div', {
+    staticClass: "field has-addons",
     attrs: {
       "id": "service-title"
     }
-  }, [_c('label', {
-    attrs: {
-      "for": ""
-    }
-  }, [_vm._v("Title")]), _vm._v(" "), _c('div', {
-    staticClass: "ui huge input"
+  }, [_c('p', {
+    staticClass: "control"
+  }, [_c('a', {
+    staticClass: "button is-static has-text-weight-bold is-large"
+  }, [_vm._v("I will ")])]), _vm._v(" "), _c('div', {
+    staticClass: "control is-expanded"
   }, [_c('input', {
     directives: [{
       name: "model",
@@ -89953,6 +90162,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "trim": true
       }
     }],
+    staticClass: "input is-large",
     attrs: {
       "type": "text",
       "placeholder": "do your makeup for free"
@@ -89987,15 +90197,18 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         $event.preventDefault();
       }
     }
+  }, [_c('span', {
+    staticClass: "icon"
   }, [_c('i', {
-    staticClass: "icon plus"
-  }), _vm._v("Add a description (optional)\n                            ")])]) : _vm._e(), _vm._v(" "), (_vm.hasDescription) ? _c('textarea', {
+    staticClass: "fa fa-plus"
+  })]), _vm._v(" "), _c('span', [_vm._v("Add a description (optional)")])])]) : _vm._e(), _vm._v(" "), (_vm.hasDescription) ? _c('textarea', {
     directives: [{
       name: "model",
       rawName: "v-model",
       value: (_vm.gig.description),
       expression: "gig.description"
     }],
+    staticClass: "textarea",
     attrs: {
       "rows": "3",
       "placeholder": "Description (Optional)"
@@ -90010,10 +90223,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }) : _vm._e()]), _vm._v(" "), _c('div', {
-    staticClass: "two fields"
+    staticClass: "field is-grouped"
   }, [_c('div', {
-    staticClass: "field"
+    staticClass: "control"
   }, [_c('label', {
+    staticClass: "label",
     attrs: {
       "for": "regular_price"
     }
@@ -90027,6 +90241,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "number": true
       }
     }],
+    staticClass: "input",
     attrs: {
       "id": "regular_price",
       "type": "number",
@@ -90048,8 +90263,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }), _vm._v(" "), _c('small', [_vm._v("How much do you normally charge?")])]), _vm._v(" "), _c('div', {
-    staticClass: "field"
+    staticClass: "control"
   }, [_c('label', {
+    staticClass: "label",
     attrs: {
       "for": "sale_price"
     }
@@ -90063,6 +90279,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "number": true
       }
     }],
+    staticClass: "input",
     attrs: {
       "id": "sale_price",
       "type": "number",
@@ -90094,7 +90311,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "innerHTML": _vm._s(_vm.pecentage)
     }
   }) : _vm._e(), _vm._v(" "), _c('button', {
-    staticClass: "ui button green right floated",
+    staticClass: "button is-primary",
     attrs: {
       "disabled": !_vm.stepOneComplete
     },
@@ -90104,24 +90321,26 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.goto(2)
       }
     }
-  }, [_vm._v("\n                                Upload image "), _c('i', {
-    staticClass: "icon arrow right"
-  })])])])]) : _vm._e()]), _vm._v(" "), _c('transition', {
+  }, [_c('span', [_vm._v("Upload image")]), _vm._v(" "), _c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "fa fa-arrow-right"
+  })])])])])])]) : _vm._e()]), _vm._v(" "), _c('transition', {
     attrs: {
       "name": "scale"
     }
   }, [(_vm.step === 2) ? _c('div', {
-    staticClass: "step white-boxed",
+    staticClass: "card is-raised",
     attrs: {
       "id": "step2"
     }
+  }, [_c('div', {
+    staticClass: "card-content"
   }, [_c('h3', {
-    staticClass: "ui centered header"
-  }, [_vm._v("\n                        Upload service banner\n                        "), _c('div', {
-    staticClass: "sub header"
-  }, [_c('i', {
-    staticClass: "icon info"
-  }), _vm._v("A well designed image can increase your sales by up to 28%")])]), _vm._v(" "), _c('div', {
+    staticClass: "title is-4"
+  }, [_vm._v("Upload service banner")]), _vm._v(" "), _c('h4', {
+    staticClass: "subtitle is-6"
+  }, [_vm._v("A well designed image can increase your sales by up to 28%")]), _vm._v(" "), _c('div', {
     staticClass: "field",
     attrs: {
       "id": "thumbnail-wrapper"
@@ -90132,10 +90351,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       rawName: "v-show",
       value: (!_vm.hasImage),
       expression: "!hasImage"
-    }]
+    }],
+    staticClass: "button is-primary"
   }, [_c('input', {
     staticStyle: {
-      "display": "hidden"
+      "display": "none"
     },
     attrs: {
       "type": "file",
@@ -90147,55 +90367,86 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.handleFileUpload($event)
       }
     }
-  })]), _vm._v(" "), _c('div', {
+  }), _vm._v(" "), _c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "fa fa-upload"
+  })]), _vm._v(" "), _c('span', {
+    staticClass: "title is-6 has-text-white"
+  }, [_vm._v("Upload sales banner")])]), _vm._v(" "), _c('div', {
     attrs: {
       "id": "preview-final-image"
     }
   }), _vm._v(" "), (_vm.hasImage) ? _c('div', {
-    staticClass: "ui modal",
+    staticClass: "modal",
+    class: {
+      'is-active': _vm.hasImage
+    },
     attrs: {
       "id": "image-preview-modal"
     }
   }, [_c('div', {
-    staticClass: "header"
-  }, [_vm._v("Resize and crop image")]), _vm._v(" "), _c('div', {
-    staticClass: "scrolling content"
+    staticClass: "modal-background"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "modal-content"
   }, [_c('div', {
     attrs: {
       "id": "preview"
     }
-  })]), _vm._v(" "), _c('div', {
-    staticClass: "actions"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "card is-raised",
+    staticStyle: {
+      "padding": "10px"
+    }
   }, [_c('a', {
-    staticClass: "ui deny button",
-    attrs: {
-      "href": "#"
+    staticClass: "button is-white",
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.closeOverlay($event)
+      }
     }
   }, [_vm._v("Cancel")]), _vm._v(" "), _c('a', {
-    staticClass: "ui approve green button",
-    attrs: {
-      "href": "#"
+    staticClass: "button is-primary",
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.cropImage()
+      }
     }
-  }, [_vm._v("Crop & save")])])]) : _vm._e()]), _vm._v(" "), _c('div', {
-    staticClass: "field"
-  }, [_c('div', {}, [_c('a', {
-    staticClass: "bold",
-    staticStyle: {
-      "display": "inline-block",
-      "margin-top": "0.5em"
+  }, [_vm._v("Crop & save")])])]), _vm._v(" "), _c('button', {
+    staticClass: "modal-close is-large",
+    attrs: {
+      "aria-label": "close"
     },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.closeOverlay($event)
+      }
+    }
+  })]) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "field"
+  }, [_c('hr', {
+    staticStyle: {
+      "opacity": ".5"
+    }
+  }), _vm._v(" "), _c('div', [_c('a', {
+    staticClass: "button is-grey",
     on: {
       "click": function($event) {
         $event.preventDefault();
         _vm.goto(1)
       }
     }
+  }, [_c('span', {
+    staticClass: "icon"
   }, [_c('i', {
-    staticClass: "icon arrow left"
-  }), _vm._v(" Back")]), _vm._v(" "), _c('button', {
-    staticClass: "ui green button right floated",
+    staticClass: "fa fa-arrow-left"
+  })]), _vm._v(" "), _c('span', [_vm._v("Back")])]), _vm._v(" "), _c('button', {
+    staticClass: "button is-primary",
     attrs: {
-      "disabled": !_vm.hasImage
+      "disabled": !_vm.hasImageUploaded
     },
     on: {
       "click": function($event) {
@@ -90203,31 +90454,36 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.goto(3)
       }
     }
-  }, [_vm._v("\n                                Next "), _c('i', {
-    staticClass: "icon arrow right"
-  })])])])]) : _vm._e()]), _vm._v(" "), _c('transition', {
+  }, [_c('span', [_vm._v("Next")]), _vm._v(" "), _c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "fa fa-arrow-right"
+  })])])])])])]) : _vm._e()]), _vm._v(" "), _c('transition', {
     attrs: {
       "name": "scale"
     }
   }, [(_vm.step === 3) ? _c('div', {
-    staticClass: "step white-boxed",
+    staticClass: "card is-raised",
     attrs: {
       "id": "step3"
     }
   }, [_c('div', {
+    staticClass: "card-content"
+  }, [_c('div', {
     staticClass: "field"
   }, [_c('h3', {
-    staticClass: "ui header"
-  }, [_vm._v("\n                            Additional Information\n                            "), _c('div', {
-    staticClass: "sub header"
-  }, [_vm._v("You can provide additional information about this service")])])]), _vm._v(" "), _c('div', {
+    staticClass: "title is-4"
+  }, [_vm._v("\n                                Additional Information\n                            ")]), _vm._v(" "), _c('div', {
+    staticClass: "subtitle is-6"
+  }, [_vm._v("You can provide additional information about this service")])]), _vm._v(" "), _c('div', {
     staticClass: "field"
   }, [_c('label', {
+    staticClass: "label",
     attrs: {
       "for": "delivery_time"
     }
-  }, [_vm._v("How long will it take you to deliver this service?")]), _vm._v(" "), _c('div', {
-    staticClass: "ui right labeled input"
+  }, [_vm._v("How long will it take you to deliver this service? (in days)")]), _vm._v(" "), _c('div', {
+    staticClass: "control"
   }, [_c('input', {
     directives: [{
       name: "model",
@@ -90238,6 +90494,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "number": true
       }
     }],
+    staticClass: "input",
+    staticStyle: {
+      "max-width": "300px"
+    },
     attrs: {
       "type": "number",
       "id": "delivery_time"
@@ -90254,22 +90514,22 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.$forceUpdate()
       }
     }
-  }), _vm._v(" "), _c('div', {
-    staticClass: "ui label"
-  }, [_vm._v("Days")])])]), _vm._v(" "), _c('div', {
+  })])]), _vm._v(" "), _c('div', {
     staticClass: "field"
   }, [_c('label', {
+    staticClass: "label",
     attrs: {
       "for": "location"
     }
-  }, [_vm._v("Can people outside you primary location buy this service?")]), _vm._v(" "), _c('select', {
+  }, [_vm._v("Can people outside you primary location buy this service?")]), _vm._v(" "), _c('div', {
+    staticClass: "select"
+  }, [_c('select', {
     directives: [{
       name: "model",
       rawName: "v-model",
       value: (_vm.gig.is_local),
       expression: "gig.is_local"
     }],
-    staticClass: "ui dropdown",
     attrs: {
       "id": "location"
     },
@@ -90296,82 +90556,81 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "value": "0"
     }
-  }, [_vm._v("No")])])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("No")])])])]), _vm._v(" "), _c('div', {
     staticClass: "field"
   }, [_c('button', {
-    staticClass: "ui button green right floated",
+    staticClass: "button is-primary",
     on: {
       "click": function($event) {
         $event.preventDefault();
         _vm.goto(4)
       }
     }
-  }, [_vm._v("\n                            Review service "), _c('i', {
-    staticClass: "icon arrow right"
-  })])])]) : _vm._e()]), _vm._v(" "), _c('transition', {
+  }, [_c('span', [_vm._v("Review service")]), _vm._v(" "), _c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "fa fa-arrow-right"
+  })])])])])]) : _vm._e()]), _vm._v(" "), _c('transition', {
     attrs: {
       "name": "scale"
     }
   }, [(_vm.step === 4) ? _c('div', {
-    staticClass: "step white-boxed",
+    staticClass: "card is-raised",
     attrs: {
       "id": "step4"
     }
-  }, [(_vm.pecentage) ? _c('div', {
-    staticClass: "ui huge orange ribbon label",
-    attrs: {
-      "id": "discount-ribbon"
-    },
-    domProps: {
-      "innerHTML": _vm._s(_vm.pecentage)
-    }
-  }) : _vm._e(), _vm._v(" "), _c('h3', {
-    staticClass: "ui header"
+  }, [_c('div', {
+    staticClass: "card-content"
+  }, [_c('h3', {
+    staticClass: "title is-4"
   }, [_vm._v("Review your service")]), _vm._v(" "), _c('div', {
-    staticClass: "ui items"
+    staticClass: "columns"
   }, [_c('div', {
-    staticClass: "item"
-  }, [_c('div', {
+    staticClass: "column is-5"
+  }, [_c('figure', {
     staticClass: "image"
   }, [_c('img', {
     attrs: {
       "src": _vm.thumbnailPreview
     }
-  })]), _vm._v(" "), _c('div', {
-    staticClass: "middle aligned content"
-  }, [_c('div', {
-    staticClass: "ui big header",
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "column is-7"
+  }, [_c('h1', {
+    staticClass: "title is-3",
     domProps: {
       "innerHTML": _vm._s('I will ' + _vm.gig.title)
     }
   }), _vm._v(" "), _c('div', {
-    staticClass: "meta",
+    staticClass: "tag is-info",
     domProps: {
       "innerHTML": _vm._s(_vm.gig.category)
     }
-  }), _vm._v(" "), (_vm.gig.description) ? _c('div', {
+  }), _vm._v(" "), (_vm.gig.description) ? _c('p', {
     staticClass: "description",
     domProps: {
       "innerHTML": _vm._s(_vm.gig.description)
     }
   }) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "extra"
-  }, [_c('div', {
-    staticClass: "left floated"
-  }, [_c('h3', {
-    staticClass: "ui red header",
+  }, [_c('div', [_c('h3', {
+    staticClass: "title is-3 has-text-danger",
     domProps: {
       "innerHTML": _vm._s(_vm.gig.sale_price.toLocaleString('en-UK', {
         style: 'currency',
         currency: 'NGN'
       }))
     }
-  })])])])])]), _vm._v(" "), _c('div', {
-    staticClass: "ui divider"
+  })])])])]), _vm._v(" "), _c('hr', {
+    staticStyle: {
+      "opacity": ".5"
+    }
   }), _vm._v(" "), _c('div', {
     staticClass: "ui row"
   }, [_c('button', {
-    staticClass: "ui green button right floated",
+    staticClass: "button is-primary",
+    class: {
+      'is-loading': _vm.isSubmitting
+    },
     on: {
       "click": function($event) {
         $event.preventDefault();
@@ -90379,14 +90638,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }, [_vm._v("Publish service")]), _vm._v(" "), _c('button', {
-    staticClass: "ui button",
+    staticClass: "button is-white",
     on: {
       "click": function($event) {
         $event.preventDefault();
         _vm.submitService(0)
       }
     }
-  }, [_vm._v("Save")])])]) : _vm._e()]), _vm._v(" "), _c('div', {
+  }, [_vm._v("Save")])])])]) : _vm._e()]), _vm._v(" "), _c('div', {
     staticClass: "ui mini modal",
     attrs: {
       "id": "error-message"
@@ -90399,28 +90658,28 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }), _vm._v(" "), _vm._m(5)])], 1)])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "content"
-  }, [_c('div', {
-    staticClass: "title"
-  }, [_vm._v("Service details")])])
+    staticClass: "title is-6"
+  }, [_c('i', {
+    staticClass: "fa fa-file-text"
+  })])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "content"
-  }, [_c('div', {
-    staticClass: "title"
-  }, [_vm._v("Image upload")])])
+    staticClass: "title is-6"
+  }, [_c('i', {
+    staticClass: "fa fa-image"
+  })])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "content"
-  }, [_c('div', {
-    staticClass: "title"
-  }, [_vm._v("Additional info")])])
+    staticClass: "title is-6"
+  }, [_c('i', {
+    staticClass: "fa fa-info-circle"
+  })])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "content"
-  }, [_c('div', {
-    staticClass: "title"
-  }, [_vm._v("Review")])])
+    staticClass: "title is-6"
+  }, [_c('i', {
+    staticClass: "fa fa-shopping-bag"
+  })])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "header"
@@ -90454,7 +90713,7 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {}, [_c('div', {
-    staticClass: "ui container centered grid"
+    staticClass: "columns is-multiline"
   }, _vm._l((_vm.portfolios), function(portfolio) {
     return _c('portfolio-item', {
       key: portfolio.uid,
@@ -90464,14 +90723,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     })
   })), _vm._v(" "), _c('div', {
-    staticClass: "ui centered container grid",
-    staticStyle: {
-      "margin": "2em 0"
-    }
+    staticClass: "hero"
+  }, [_c('div', {
+    staticClass: "hero-body has-text-centered"
   }, [(!_vm.finished) ? _c('a', {
-    staticClass: "ui button",
+    staticClass: "button is-info is-small has-text-weight-bold",
     class: {
-      'loading': _vm.isLoading
+      'is-loading': _vm.isLoading
     },
     attrs: {
       "href": "#",
@@ -90483,8 +90741,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.load($event)
       }
     }
-  }, [_vm._v("Load more")]) : _vm._e()])])
-},staticRenderFns: []}
+  }, [_vm._m(0), _vm._v(" "), _c('span', [_vm._v("Load more")])]) : _vm._e()])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "fa fa-th"
+  })])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -90650,44 +90914,16 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('div', {
-    staticClass: "ui card",
+  return _c('div', {
+    staticClass: "column is-one-third-desktop is-one-quarter-widescreen is-half-tablet"
+  }, [_c('div', {
+    staticClass: "card portfolio",
     attrs: {
       "itemscope": "",
       "itemtype": "http://schema.org/CreativeWork"
     }
   }, [_c('div', {
-    staticClass: "content tablet-only"
-  }, [_c('a', {
-    staticStyle: {
-      "font-size": ".875em",
-      "font-weight": "700"
-    },
-    attrs: {
-      "href": _vm.portfolio.user,
-      "itemprop": "url"
-    }
-  }, [_c('img', {
-    staticClass: "ui avatar image",
-    attrs: {
-      "src": _vm.portfolio.user_profile.avatar,
-      "alt": _vm.portfolio.user_profile.fullname
-    }
-  }), _vm._v(" "), _c('span', {
-    attrs: {
-      "itemprop": "author"
-    },
-    domProps: {
-      "textContent": _vm._s(_vm.portfolio.user_profile.fullname)
-    }
-  }), _vm._v(" "), (_vm.portfolio.user_profile.verified) ? _c('img', {
-    staticClass: "verified",
-    attrs: {
-      "src": _vm.verified,
-      "alt": "Verified profile"
-    }
-  }) : _vm._e()])]), _vm._v(" "), _c('div', {
-    staticClass: "ui fluid image"
+    staticClass: "card-image"
   }, [_c('a', {
     staticStyle: {
       "line-height": "0",
@@ -90697,7 +90933,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "href": _vm.portfolio.link.url,
       "itemprop": "url"
     }
-  }, [_c('img', {
+  }, [_c('figure', [_c('img', {
     staticClass: "b-lazy",
     attrs: {
       "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=",
@@ -90709,103 +90945,79 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "itemprop": "thumbnailUrl",
       "content": _vm.portfolio.thumbnail
     }
-  })]), _vm._v(" "), (_vm.portfolio.is_featured) ? _c('div', {
-    staticClass: "featured-tag"
-  }, [_c('i', {
-    staticClass: "icon star"
-  })]) : _vm._e()]), _vm._v(" "), _c('div', {
-    staticClass: "content"
+  })])])]), _vm._v(" "), _c('div', {
+    staticClass: "card-content",
+    staticStyle: {
+      "padding": "5px"
+    }
   }, [_c('div', {
-    staticClass: "small bold"
+    staticClass: "level is-mobile"
+  }, [_c('div', {
+    staticClass: "level-left"
   }, [_c('a', {
-    staticClass: "large-screen-only",
+    staticClass: "level-item",
+    class: {
+      'verified': _vm.portfolio.verified
+    },
     attrs: {
       "href": _vm.portfolio.user,
       "itemprop": "url"
     }
   }, [_c('img', {
-    staticClass: "ui avatar image",
+    staticClass: "image is-24x24 is-rounded is-inline",
     attrs: {
       "src": _vm.portfolio.user_profile.avatar,
       "alt": _vm.portfolio.user_profile.fullname
     }
-  }), _vm._v(" "), _c('span', {
+  }), _vm._v("  \n                         "), _c('span', {
+    staticClass: "has-text-weight-bold author",
     attrs: {
       "itemprop": "author"
     },
     domProps: {
       "textContent": _vm._s(_vm.portfolio.user_profile.first_name)
     }
-  }), _vm._v(" "), (_vm.portfolio.user_profile.verified) ? _c('img', {
-    staticClass: "verified",
-    attrs: {
-      "src": _vm.verified,
-      "alt": "Verified profile"
-    }
-  }) : _vm._e()]), _vm._v(" "), _c('span', {
-    staticClass: "right floated meta large-screen-only portfolio-meta"
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "level-right"
   }, [_c('span', {
-    staticClass: "bold"
-  }, [_c('a', {
+    staticClass: "level-item"
+  }, [_c('span', [_c('a', {
+    staticClass: "is-grey",
     attrs: {
       "href": _vm.portfolio.link.url
     }
-  }, [_c('i', {
-    staticClass: "fa fa-thumbs-up"
-  }), _vm._v(" " + _vm._s(_vm.portfolio.likes_count))])]), _vm._v(" "), _c('span', {
-    staticClass: "bold",
-    staticStyle: {
-      "margin-left": "1em"
-    }
+  }, [_vm._m(0), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.portfolio.likes_count))])])])]), _vm._v(" "), _c('span', {
+    staticClass: "level-item"
   }, [_c('a', {
+    staticClass: "is-grey",
     attrs: {
       "href": _vm.portfolio.link.url + '#comment'
     }
-  }, [_c('i', {
-    staticClass: "fa fa-comment"
-  }), _vm._v(" "), _c('span', {
+  }, [_vm._m(1), _vm._v(" "), _c('span', {
     attrs: {
       "itemprop": "commentCount"
     }
   }, [_vm._v(_vm._s(_vm.portfolio.comment_count))])])]), _vm._v(" "), _c('featured', {
     key: _vm.portfolio.uid,
-    attrs: {
-      "uid": _vm.portfolio.uid,
-      "stared": _vm.portfolio.is_featured
-    }
-  })], 1), _vm._v(" "), _c('span', {
-    staticClass: "meta mobile-only tablet-only portfolio-meta"
-  }, [_c('span', {
-    staticClass: "bold"
-  }, [_c('a', {
-    attrs: {
-      "href": _vm.portfolio.link.url
-    }
-  }, [_c('i', {
-    staticClass: "fa fa-thumbs-up"
-  }), _vm._v(" " + _vm._s(_vm.portfolio.likes_count))])]), _vm._v(" "), _c('span', {
-    staticClass: "bold",
-    staticStyle: {
-      "margin-left": "1em"
-    }
-  }, [_c('a', {
-    attrs: {
-      "href": _vm.portfolio.link.url
-    }
-  }, [_c('i', {
-    staticClass: "fa fa-comment"
-  }), _vm._v(" "), _c('span', {
-    attrs: {
-      "itemprop": "commentCount"
-    }
-  }, [_vm._v(_vm._s(_vm.portfolio.comment_count))])])]), _vm._v(" "), _c('featured', {
-    key: _vm.portfolio.uid,
+    staticClass: "level-item",
     attrs: {
       "uid": _vm.portfolio.uid,
       "stared": _vm.portfolio.is_featured
     }
   })], 1)])])])])
-},staticRenderFns: []}
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "fa fa-thumbs-up"
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "fa fa-comment"
+  })])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -90821,9 +91033,9 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('span', [_c('a', {
-    staticClass: "btn btn-sm",
+    staticClass: "button is-small ",
     class: {
-      'btn-default-success-outline': _vm.isSaved, 'btn-default': !_vm.isSaved
+      'is-link': _vm.isSaved
     },
     attrs: {
       "href": "#"
@@ -90834,10 +91046,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.saveJob()
       }
     }
+  }, [_vm._m(0), _vm._v(" "), _c('span', [_vm._v(_vm._s(_vm.isSaved === false ? 'Save Job' : 'Saved'))])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "icon"
   }, [_c('i', {
     staticClass: "fa fa-star"
-  }), _vm._v(" " + _vm._s(_vm.isSaved === false ? 'Save Job' : 'Saved!'))])])
-},staticRenderFns: []}
+  })])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -101972,17 +102188,17 @@ $('.slick-js').slick({
 	autoplaySpeed: 3000,
 	responsive: [{
 
-		breakpoint: 1024,
+		breakpoint: 1240,
 		settings: {
-			slidesToShow: 4,
+			slidesToShow: 3,
 			infinite: true
 		}
 
 	}, {
 
-		breakpoint: 769,
+		breakpoint: 960,
 		settings: {
-			slidesToShow: 3
+			slidesToShow: 2
 		}
 
 	}, {
@@ -102012,6 +102228,16 @@ $('body').on('click', '#delete-instagram', function (e) {
 }).on('click', '#close-instagram-notification', function (e) {
 	e.preventDefault();
 	$('#instagram-notification').slideUp('fast');
+}).on('click', '#admin-menu-trigger', function (e) {
+	e.preventDefault();
+	$(window).scrollTop(0);
+	$(this).toggleClass('is-active');
+	$('#sidebar').toggleClass('is-hidden-touch');
+}).on('click', '#app-menu-tigger', function (e) {
+	e.preventDefault();
+	$(window).scrollTop(0);
+	$(this).toggleClass('is-active');
+	$('.navbar-menu').toggleClass('is-active');
 });
 
 $('.ui.sticky').sticky({

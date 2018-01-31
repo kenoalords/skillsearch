@@ -28,7 +28,8 @@ class ContactRequestValidation extends FormRequest
             'fullname'  => 'required|min:3',
             'email'     => 'required|email',
             'location'  => 'required|min:3',
-            'phone'     => 'nullable'
+            'phone'     => 'nullable',
+            'result'    => 'required|integer|size:'.($this->get('fig1') + $this->get('fig2')),
         ];
     }
 
@@ -38,7 +39,9 @@ class ContactRequestValidation extends FormRequest
             'fullname.required'     => 'Kindly provide your fullname',
             'email.required'        => 'Kindly provide your email address',
             'email.email'           => 'Kindly provide a valid email address',
-            'location.required' => 'Kindly provide your current location (City, State)'
+            'location.required' => 'Kindly provide your current location (City, State)',
+            'result.required'       => 'Please provide an answer to prove you are human',
+            'result.size'           => 'That is an incorrect value',
         ];
     }
 }

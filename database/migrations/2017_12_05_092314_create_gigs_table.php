@@ -31,6 +31,7 @@ class CreateGigsTable extends Migration
             $table->boolean('is_local')->default(false);
             $table->string('uid');
             $table->string('slug');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

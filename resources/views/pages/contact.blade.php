@@ -1,27 +1,19 @@
-@extends('layouts.app')
+@extends('layouts.page')
 
 @section('thumbnail', asset('public/logo-b.png'))
 @section('type', 'article')
 @section('metadescription', 'We want to hear from you, contact '. config('app.name') .' on Twitter @ubanjicreatives')
 @section('title', 'Contact')
 @section('content')
-	
-	<div id="points-header" class="page ui centered grid">
-		<h1 class="ui large header">Contact Us</h1>
-	</div>
-	<div id="page" class="ui centered grid container">
-		<div class="fourteen wide mobile eight wide tablet six wide computer column">
-			<div class="padded text-center">
-				<h3 class="ui header">
-					Questions, Comments or Recommendations?
-					<p class="sub header">We want to hear from you. Send us a mail <a href="mailto:info@ubanji.com">info[@]ubanji.com</a></p>
-				</h3>
-				
-				<p><a href="https://twitter.com/ubanjicreatives" class="ui twitter button" target="_blank">
-					<i class="fa fa-twitter"></i> Tweet <strong>@ubanjicreatives</strong>
-				</a></p>
-			</div>
-		</div>
-	</div>
+
+<h1 class="title">Contact Us</h1>
+<h3 class="title is-4">
+	Questions, Comments or Recommendations?
+</h3>
+<p>We want to hear from you. Send us a mail <a href="mailto:info@ubanji.com">info[@]ubanji.com</a></p>
+
+<p><a href="https://twitter.com/ubanjicreatives" class="button is-info" target="_blank">
+	<span class="icon"><i class="fa fa-twitter"></i></span> <span>Tweet <strong>@ubanjicreatives</strong></span>
+</a></p>
 
 @endsection

@@ -1,8 +1,8 @@
-<form action="{{ route('job_search') }}" class="ui form" id="searchform">
-    <div>
-        <div class="ui fields">
-            <div class="field">
-                <select name="skill" class="ui search dropdown">
+<form action="{{ route('job_search') }}" method="GET" style="width: 100%">
+    <div class="field is-grouped">
+        <div class="control is-expanded">
+            <div class="select is-block">
+                <select name="skill" style="width: 100%">
                     <option value="">Choose Category</option>
                     @if($skills->count())
                         @foreach($skills as $skill)
@@ -11,12 +11,12 @@
                     @endif
                 </select>
             </div>
-            <div class="field">
-                <input type="text" class="form-control" placeholder="Location e.g Lekki, Lagos" name="location" value="{{Request::get('location')}}">
-            </div>
-            <div class="field">
-                <button class="ui primary button" type="submit"><i class="fa fa-search"></i> Search</button>
-            </div>
+        </div>
+        <div class="control is-expanded">
+            <input type="text" class="input" placeholder="Location e.g Lekki, Lagos" name="location" value="{{Request::get('location')}}">
+        </div>
+        <div class="control">
+            <button class="button is-dark" type="submit"><span class="icon"><i class="fa fa-search"></i></span></button>
         </div>
     </div>
 </form>

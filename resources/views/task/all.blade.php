@@ -9,29 +9,32 @@
 
 
 <div>
-    <div class="ui centered grid" style="margin: 6em 0 3em">
-        <div class="">
-            <h1 class="ui header">
-                Search Jobs
-                <div class="sub header">Find quick jobs matching your skills</div>
-            </h1>
-            @include('search.partials.job-search-form', ['skills'=>$skills])
+    <div class="hero is-dark">
+        <div class="hero-body">
+            <div class="columns is-centered">
+                <div class="column is-6 has-text-centered">
+                    <h1 class="title is-3">Search Jobs</h1>
+                    <h4 class="subtitle is-6">Find quick jobs matching your skills</h4>
+                    @include('search.partials.job-search-form', ['skills'=>$skills])  
+                </div>
+            </div>
         </div>
     </div>
     
-    <div class="white-boxed">
-        <div class="ui container grid">
-            <div class="column">
-                @if ( count($tasks) > 0 )
-                    <div class="ui divided very relaxed list">
-                    @each('task.partials.task', $tasks, 'task')
-                    </div>
-                @else
-                    <div class="text-center" style="padding: 3em">
-                        <h2 class="text-warning"><i class="fa fa-warning"></i></h2>
-                        <h4 class="text-warning">No jobs have been submitted yet, please check back later</h4>
-                    </div>
-                @endif
+    <div class="hero is-medium">
+        <div class="hero-body">
+            <div class="columns is-centered">
+                <div class="column is-8">
+                    @if ( count($tasks) > 0 )
+                        <div class="">
+                            @each('task.partials.task', $tasks, 'task')
+                        </div>
+                    @else
+                        <div>
+                            <h4 class="title is-4 has-text-danger">No jobs have been submitted yet, please check back later</h4>
+                        </div>
+                    @endif
+                </div>
             </div>
         </div>
     </div>

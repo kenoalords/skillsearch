@@ -56,91 +56,72 @@
 </head>
 <body>
     <div id="app">
-        <div id="mobile-menu-admin" class="ui sidebar mobile only column">
-            <div class="ui vertical menu">
-                @if(Auth::user())
-                    <a class="item" href="/home"><i class="icon user"></i>{{ ucwords(Auth::user()->name) }}</a>
-                @endif
-                <a class="item" href="{{ route('people') }}">People</a>
-                <a class="item" href="{{ route('showcase') }}">Showcase</a>
-                <a class="item" href="{{ route('tasks') }}">Jobs</a>
-                @if(!Auth::user())
-                <a href="/login" class="item">Login</a>
-                <div class="item">
-                    <a href="/register" class="ui green circular button">Sign Up</a>
-                </div>
-                @else
-                    <a class="item" href="{{ route('logout') }}"
-                        onclick="event.preventDefault();
-                                 document.getElementById('logout-form').submit();">
-                        <i class="icon power"></i>Logout
-                    </a>
-                @endif
-            </div> 
-        </div>
-        <div class="pusher">
-            <nav class="ui top fixed borderless menu" id="primary-nav">
-                <div class="item">
-                    <div>
-                        <a href="#" id="mobile-admin-trigger"><i class="icon large sidebar"></i></a>
-                    </div>
+        
+        <div>
+            <nav class="navbar is-fixed-top is-transparent is-dark" id="primary-nav" role="navigation">
+                <div class="navbar-brand">
                     <!-- Branding Image -->
-                    <a href="{{ url('/') }}">
-                        <img src="{{ asset('public/ubanji-logo.png') }}" alt="{{config('app.name')}} Logo" class="img-responsive" id="logo" style="width: 80px; height: auto;">
+                    <a href="{{ url('/') }}" class="navbar-item">
+                        <img src="{{ asset('public/ubanji-logo-w.png') }}" alt="{{config('app.name')}} Logo">
                     </a>
+                    <button class="navbar-burger" id="app-menu-tigger">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
                 </div>
-                <a class="item large-screen-only" href="{{ route('people') }}">People</a>
-                <a class="item large-screen-only" href="{{ route('showcase') }}">Showcase</a>
-                <a class="item large-screen-only" href="{{ route('tasks') }}">Jobs</a>
-                
-                <div class="right menu">
-                    @if(Auth::user())
-                    <a class="item large-screen-only" href="/home"><i class="icon user"></i>{{ ucwords(Auth::user()->name) }}</a>
-                    <a class="item large-screen-only" href="{{ route('logout') }}"
-                        onclick="event.preventDefault();
-                                 document.getElementById('logout-form').submit();">
-                        <i class="icon power"></i>Logout
-                    </a>
-                    
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                        {{ csrf_field() }}
-                    </form>
-                    @else
-                        <a href="/login" class="item large-screen-only">Login</a>
-                        <a href="/register" class="item large-screen-only">Register</a>
-                    @endif 
-                    <div class="item">
-                        <a href="/profile/portfolio/add" class="ui green mini button"><i class="icon plus"></i>Upload work</a>
+                <div class="navbar-menu">
+                    <div class="navbar-start">
+                        <a class="navbar-item" href="{{ route('people') }}">People</a>
+                        <a class="navbar-item" href="{{ route('showcase') }}">Showcase</a>
+                        <a class="navbar-item" href="{{ route('tasks') }}">Jobs</a>
+                    </div>
+                    <div class="navbar-end">
+                        @if(Auth::user())
+                            @include('includes.user-badge')
+                        @else
+                            <a href="/login" class="navbar-item">Login</a>
+                            <a href="/register" class="navbar-item">Register</a>
+                        @endif 
+                        <div class="navbar-item">
+                            <a href="/dashboard/portfolio/add" class="button is-danger">
+                                <span class="icon"><i class="fa fa-plus"></i></span> <span>Upload work</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </nav>
-            
+        </div>  
             @yield('content')
         
 
-            <footer id="site-footer">
-                <div class="ui two column grid container" id="sub-footer">
-                    <div class="column" id="links">
-                        <div class="ui horizontal list">
-                            <div class="item"><a href="/about">About</a></div>
-                            <div class="item"><a href="/how-it-works">How It Works</a></div>
-                            <div class="item"><a href="/points">Points</a></div>
-                            <div class="item"><a href="/contact">Contact Us</a></div>
+        <footer class="footer is-dark">
+            <div class="hero">
+                <div class="hero-body">
+                    <div class="columns is-centered">
+                        <div class="column is-10">
+                            <div class="level is-mobile">
+                                <div class="level-left" id="footer-links">
+                                    <div class="level-item"><a href="/about">About</a></div>
+                                    <div class="level-item"><a href="/how-it-works">How It Works</a></div>
+                                    <div class="level-item"><a href="/points">Points</a></div>
+                                    <div class="level-item"><a href="/contact">Contact Us</a></div>
+                                </div>
+                                <div class="level-right">
+                                    <div class="level-item">
+                                        <a href="https://www.facebook.com/ubanjicreatives/" target="_blank" class="button is-small is-link"><i class="fa fa-facebook"></i></a>
+                                    </div>
+                                    <div class="level-item">
+                                        <a href="https://instagram.com/ubanjicreatives" class="button is-small is-info"><i class="fa fa-instagram"></i></a>
+                                    </div>
+                                </div>
+                             </div>
                         </div>
                     </div>
-                    <div class="right aligned column">
-                        <div class="ui horizontal list">
-                            <div class="item">
-                                <a href="https://www.facebook.com/ubanjicreatives/" target="_blank" class="ui icon facebook circular mini button"><i class="icon facebook"></i></a>
-                            </div>
-                            <div class="item">
-                                <a href="https://instagram.com/ubanjicreatives" class="ui icon instagram circular mini button"><i class="icon instagram"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                 </div>
-            </footer>  
-        </div>
+                </div>
+            </div>
+            
+        </footer>  
     </div>  
     
     

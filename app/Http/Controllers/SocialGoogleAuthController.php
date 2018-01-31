@@ -31,7 +31,7 @@ class SocialGoogleAuthController extends Controller
     	if($account){
 
     		Auth::loginUsingId($account->user_id, true);
-    		return redirect()->to('/home');
+    		return redirect()->to('/dashboard');
 
 
     	} else {
@@ -54,9 +54,10 @@ class SocialGoogleAuthController extends Controller
                 ]);
             } else {
 
-        		$username = str_replace( '-', '', str_slug( $name ) );
+        		$username = preg_replace('/(\s+)/', '_', $name);
+                $username =  str_replace( '-', '_', str_slug( $username ) );
         		if(User::where('name', $username)->get()->count()){
-        			$username = uniqid(true);
+        			$username = $username. mt_rand(100, 1000);
         		}
         		// insert a new user record
         		$user = User::create([
@@ -71,7 +72,7 @@ class SocialGoogleAuthController extends Controller
         			]);
                     Mail::to($user)->queue(new UserRegistrationNotification($name));
         			Auth::login($user, true);
-        			return redirect()->to('/home/start')->with(['name' => $username, 'fullname' => $name ]);
+        			return redirect()->to('/dashboard/start')->with(['name' => $username, 'fullname' => $name ]);
         		}
             }
 

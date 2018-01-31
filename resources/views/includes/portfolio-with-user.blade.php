@@ -1,53 +1,40 @@
-<div class="eight wide mobile five wide tablet four wide computer column" >
-    <div class="ui fluid card" itemscope itemtype="http://schema.org/CreativeWork">
-        <div class="content tablet-only">
-            <a href="{{ $portfolio['user'] }}" style="font-size: .875em; font-weight: 700" itemprop="url">
-                <img src="{{ $portfolio['user_profile']['avatar'] }}" alt="{{ $portfolio['user_profile']['fullname'] }}" class="ui avatar image">
-                 <span itemprop="author">{{ $portfolio['user_profile']['first_name'] }}</span> {!! identity_check($portfolio['verified']) !!}
-            </a>
-
-        </div>
+@if($portfolio)
+<div class="column is-one-third-desktop is-one-quarter-widescreen is-half-tablet">
+    <div class="card portfolio" itemscope itemtype="http://schema.org/CreativeWork">
         <meta itemprop="description" content="{{ str_limit($portfolio['description'], 160) }}">
-        <div class="ui fluid image">
-            <a href="{{ $portfolio['link']['url'] }}" style="line-height: 0; display: block;" itemprop="url">
-                <img src="{{ $portfolio['thumbnail'] }}" data-src="" alt="{{$portfolio['title']}}" class="">
-                <meta itemprop="thumbnailUrl" content="{{ $portfolio['thumbnail'] }}">
-            </a>
-            @if(Auth::user() && ( $portfolio['user_id'] === Auth::user()->id ) )
-            <div class="action-links">
-                <a href="{{route('edit_portfolio', ['portfolio'=>$portfolio['uid']])}}" class=""><i class="icon write"></i></a>
-                <a href="{{route('delete_portfolio', ['portfolio'=>$portfolio['uid']])}}" class=""><i class="icon delete"></i></a>
-            </div>
-            @endif
+        <div class="card-image">
+            <figure class="image is-1x1">
+                <a href="{{ $portfolio['link']['url'] }}" itemprop="url">
+                    <img src="{{ $portfolio['thumbnail'] }}" data-src="" alt="{{$portfolio['title']}}" class="">
+                    <meta itemprop="thumbnailUrl" content="{{ $portfolio['thumbnail'] }}">
+                </a>
+            </figure>
             @if($portfolio['is_featured'])
-                <div class="featured-tag"><i class="icon star"></i></div>
+                <!-- <div class="featured-tag"><i class="icon star"></i></div> -->
             @endif
         </div>
-        <div class="content">
-            <div class="small bold">
+        <div class="card-content" style="padding: 5px;">
+            <div class="level is-mobile">
                 <!-- <div class="right floated meta">14h</div> -->
-                <a href="{{ $portfolio['user'] }}" class="large-screen-only" itemprop="url">
-                    <img src="{{ $portfolio['user_profile']['avatar'] }}" alt="{{ $portfolio['user_profile']['fullname'] }}" class="ui avatar image">
-                     <span itemprop="author">{{ $portfolio['user_profile']['first_name'] }}</span> {!! identity_check($portfolio['verified']) !!}
-                </a>
+                <div class="level-left">
+                    <a href="/{{ $portfolio['user'] }}" itemprop="url" class="has-text-weight-bold">
+                        <img src="{{ $portfolio['user_profile']['avatar'] }}" alt="{{ $portfolio['user_profile']['fullname'] }}" class="image is-24x24 is-rounded is-inline">
+                         <span itemprop="author" class="is-hidden-mobile {{ ($portfolio['verified']) ? 'verified' : '' }} author" >{{ $portfolio['user_profile']['first_name'] }}</span>
+                    </a>
+                </div>
 
-                <span class="right floated meta large-screen-only portfolio-meta">
-                    <span class="bold"><i class="fa fa-thumbs-up"></i> {{$portfolio['likes_count']}}</span>
-
-                    <span class="bold" style="margin-left: 1em"><i class="fa fa-comment"></i> <span itemprop="commentCount">{{$portfolio['comment_count']}}</span></span>
+                <div class="level-right has-text-right">
+                    <span class="level-item">
+                        <span class="icon"><i class="fa fa-thumbs-up"></i></span> <span>{{$portfolio['likes_count']}}</span>
+                    </span>
+                    <span class="level-item">
+                        <span class="icon"><i class="fa fa-comment"></i></span> <span>{{$portfolio['comment_count']}}</span>
+                    </span>
                     <featured uid="{{ $portfolio['uid'] }}"></featured>
-                </span>
-
-                <span class="meta mobile-only tablet-only portfolio-meta">
-                    <span class="bold"><i class="fa fa-thumbs-up"></i> {{$portfolio['likes_count']}}</span>
-                    
-                    <span class="bold" style="margin-left: 1em"><a href="{{ $portfolio['link']['url'] }}#comments"><i class="fa fa-comment"></i> <span itemprop="commentCount">{{$portfolio['comment_count']}}</span></a></span>
-                    <featured uid="{{ $portfolio['uid'] }}"></featured>
-                </span>
+                </div>
             </div>
             
         </div>
-        
-        
     </div>
 </div>
+@endif

@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Portfolio;
 use App\Models\File;
 use App\Models\Skills;
+use App\Models\Like;
 use App\Services\PointService;
 use Illuminate\Http\Request;
 use App\Events\PortfolioImageUploadEvent;
@@ -25,10 +26,12 @@ use App\Jobs\FileDeleteJob;
 // Mails
 use App\Mail\FeaturedPortfolioNotification;
 
+use App\Traits\Orderable;
+
 
 class PortfolioController extends Controller
 {
-    //
+    use Orderable;
     // private $storage = Storage::disk('s3images');
     public function index(Request $request)
     {
@@ -417,5 +420,29 @@ class PortfolioController extends Controller
         Mail::to($email)->send(new FeaturedPortfolioNotification($title, $username, $thumbnail, $url, $fname));
 
         return response()->json(true, 200);
+    }
+
+    public function myLikedPortfolios(Request $request, Like $like, Portfolio $portfolio)
+    {
+        $likes = $like->where(['user_id'=>$request->user()->id, 'likeable_type' => 'App\Models\Portfolio'])->latestFirst()->get();
+        $portfolios = [];
+        // dd($likes);
+        if($likes->count()){
+            $portfolios = $likes->map(function($el, $index) use ($portfolio){
+                        // dd($el->likeable_id);
+                        $portfolio = $portfolio->find($el->likeable_id);
+                        // var_dump($portfolio);
+                        if($portfolio){
+                            $p = fractal()->item($portfolio)
+                                            ->transformWith(new PortfolioTransformer)
+                                            ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                                            ->toArray();
+                            return $p;
+                        } else {
+                            return null;
+                        }
+                    });
+        }
+        return view('portfolio.likes')->with('portfolios', $portfolios);
     }
 }

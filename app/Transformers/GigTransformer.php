@@ -34,7 +34,8 @@ class GigTransformer extends TransformerAbstract
 
 	public function includeUser(Gig $gig)
 	{
-		$user = User::where('id', $gig->user_id)->first();
+		$user = User::find($gig->user_id);
+		// dd($gig->user_id);
 		return $this->item($user, new SimpleUserTransformers);
 	}
 }

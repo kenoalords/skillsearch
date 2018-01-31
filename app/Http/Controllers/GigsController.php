@@ -15,13 +15,23 @@ use League\Fractal\Resource\Collection;
 class GigsController extends Controller
 {
 	use Orderable;
-    	
-    	public function add(Request $request)
+
+    public function index(Request $request)
     {
-    		$skills = $request->user()->skills()->get();
-    		return view('gigs.add')->with([
-    							'skills' => $skills,
-    						]);
+        $gigs = $request->user()->gigs()->latestFirst()->get();
+        $gigs = fractal()->collection($gigs)
+                            ->transformWith(new GigTransformer())
+                            ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                              ->toArray();
+        return view('gigs.index')->with('gigs', $gigs);
+    }
+    	
+    public function add(Request $request)
+    {
+		$skills = $request->user()->skills()->get();
+		return view('gigs.add')->with([
+							'skills' => $skills,
+						]);
     }
 
     public function submit(GigRequestValidation $request)
@@ -51,11 +61,12 @@ class GigsController extends Controller
     public function gigs(Request $request, Gig $gigs)
     {
     		$gigs = $gigs->latestFirst()->get();
+            // dd($gigs);
     		$gigs = fractal()->collection($gigs)
     						->transformWith(new GigTransformer())
     						->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                               ->toArray();
-          // dd($gigs);
+            
     		return view('gigs.gigs')->with(['gigs'=>$gigs]);
     }
 

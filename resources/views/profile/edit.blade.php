@@ -1,97 +1,100 @@
-@extends('layouts.admin')
+@extends('layouts.dashboard')
 
 @section('title', 'Edit Profile')
 
 @section('content')
-    @if(Request::session()->has('status'))
-        <div class="ui icon success message">
-            <i class="icon check circle"></i>
-            <div class="content">
-                {{Request::session()->pull('status')}}
+    <h1 class="title is-2">Edit Profile</h1>
+
+    <div id="profile-image-wrapper" style="background: url({{ $profile->getUserBackground()  }}) no-repeat center; background-size: cover; margin-bottom: 3em;">
+        <div class="hero is-medium">
+            <div class="hero-body">
+                <upload-image img-src="{{ $profile->getAvatar() }}"></upload-image>
             </div>
+        </div>
+        <user-background></user-background>
+    </div>
+
+
+    @if(Request::session()->has('status'))
+        <div class="notification is-success">
+            {{Request::session()->pull('status')}}
         </div>
     @endif
 
     <div class="ui row">
-        <div class="ui centered grid">
-            <upload-image img-src="{{ $profile->getAvatar() }}"></upload-image>
-        </div>
-        <h1 class="ui header">Edit Profile</h1>
-        <div class="ui divider"></div>
-        <form action="/profile/edit" method="post" class="ui form" id="profile-edit-form">
+        
+        <form action="/dashboard/profile/edit" method="post" id="profile-edit-form">
             {{ csrf_field() }}
             {{ method_field('PUT') }}
             
-            <div class="two fields">
-                <div class="field">
-                    <label for="firstname">First name</label>
-                    <input type="text" name="first_name" id="firstname" value="{{ $profile->first_name ? $profile->first_name : old('first_name') }}">
+            <div class="field is-grouped">
+                <div class="control">
+                    <label for="firstname" class="label">First name</label>
+                    <input type="text" name="first_name" id="firstname" value="{{ $profile->first_name ? $profile->first_name : old('first_name') }}" class="input {{ ($errors->has('first_name')) ? 'is-danger' : '' }}">
                     @if ($errors->has('first_name'))
-                        <span class="ui pointing red basic label">
+                        <span class="help is-danger">
                             {{ $errors->first('first_name') }}
                         </span>
                     @endif
                 </div>
-                <div class="field">
-                    <label for="lastname">Last name</label>
-                    <input type="text" name="last_name" id="lastname" value="{{ $profile->last_name ? $profile->last_name : old('last_name') }}">
+                <div class="control">
+                    <label for="lastname" class="label">Last name</label>
+                    <input type="text" name="last_name" id="lastname" value="{{ $profile->last_name ? $profile->last_name : old('last_name') }}" class="input {{ ($errors->has('last_name')) ? 'is-danger' : '' }}">
                     @if ($errors->has('last_name'))
-                        <span class="ui pointing red basic label">
+                        <span class="help is-danger">
                             {{ $errors->first('last_name') }}
                         </span>
                     @endif
                 </div>
             </div>
             
-            <div class="field{{ $errors->has('bio') ? ' error' : '' }}">
-                <h4 class="ui header">Tell us a little about yourself</h4>
-                <textarea name="bio" rows="5" autofocus>{{ $profile->bio ? $profile->bio : old('bio') }}</textarea>
+            <div class="field">
+                <label class="label" for="bio">Tell us a little about yourself</label>
+                <textarea name="bio" id="bio" rows="2" autofocus class="textarea {{ $errors->has('bio') ? ' is-danger' : '' }}">{{ $profile->bio ? $profile->bio : old('bio') }}</textarea>
                 @if ($errors->has('bio'))
-                    <span class="ui pointing red basic label">
+                    <span class="help is-danger">
                         <strong>{{ $errors->first('bio') }}</strong>
                     </span>
                 @endif
             </div>
-            <div class="ui two fields">
-                <div class="field{{ $errors->has('gender') ? ' error' : '' }}">
-                    <h4 class="ui header">Gender</h4>
-                    <select name="gender" class="ui dropdown">
-                        <option value="0">Select</option>
-                        <option value="male" {{($profile->gender && $profile->gender == 'male') ? 'selected' : ''}}>Male</option>
-                        <option value="female" {{($profile->gender && $profile->gender == 'female') ? 'selected' : ''}}>Female</option>
-                    </select>
+            <div class="field is-grouped">
+
+                <div class="control">
+                    <label for="gender" class="label">Gender</label>
+                    <div class="select">
+                        <select name="gender" class="{{ $errors->has('gender') ? ' is-danger' : '' }}">
+                            <option value="0">Select</option>
+                            <option value="male" {{($profile->gender && $profile->gender == 'male') ? 'selected' : ''}}>Male</option>
+                            <option value="female" {{($profile->gender && $profile->gender == 'female') ? 'selected' : ''}}>Female</option>
+                        </select>
+                    </div>
                     @if ($errors->has('gender'))
-                        <span class="ui pointing red basic label">
+                        <span class="help is-danger">
                             <strong>{{ $errors->first('gender') }}</strong>
                         </span>
                     @endif
                 </div>
                 
-                <div class="field {{ $errors->has('user_location') ? ' error' : '' }}">
-                    <h4 class="ui header">Enter your location <span class="ui grey">(City, State)</span></h4>
-                    <div class="ui action input">
-                        <input type="text" name="user_location" id="geolocation" value="{{ (old('user_location')) ? old('user_location') :$profile->location}}">
-                        <!-- <button id="get-location" class="ui red labeled icon button">
-                            <i class="marker icon"></i>
-                            Get Location
-                        </button> -->
-                    </div>
+                <div class="control">
+                    <label class="label">Enter your location <small>(City, State)</small></label>
+                    <input type="text" name="user_location" id="geolocation" value="{{ (old('user_location')) ? old('user_location') :$profile->location}}" class="input {{ $errors->has('user_location') ? ' is-danger' : '' }}">
                     @if ($errors->has('user_location'))
-                        <span class="ui pointing red basic label">
-                            <strong>{{ $errors->first('user_location') }}</strong>
+                        <span class="help is-danger">
+                            {{ $errors->first('user_location') }}
                         </span>
                     @endif
                 </div>
             </div>
 
-            @if ( $profile->account_type == 1 )
-                <div class="field">
+            <div class="hero">
+                <div class="hero-body card is-raised">
                     <skills></skills>
-                </div>
-            @endif
-
-            <button type="submit" class="ui primary large button">Save Profile</button>
-
+                </div>              
+            </div>
+            
+            <div style="margin-top: 2em;">
+                <button type="submit" class="button is-primary">Save Profile</button>
+            </div>
         </form>
     </div>
 @endsection

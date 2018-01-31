@@ -1,167 +1,172 @@
 <template>
     <div class="ui centered grid">
         <div class="sixteen wide mobile sixteen wide tablet ten wide computer column">
-            <h1 class="ui header">Sell a new service</h1>
-            <div class="ui fluid steps">
-                <div class="step" :class="{'active' : step === 1}">
-                    <div class="content">
-                        <div class="title">Service details</div>
-                    </div>
+            <h1 class="title is-3">Sell a new service</h1>
+            <div class="level is-mobile steps">
+                <div class="level-item" :class="{'active' : step === 1}">
+                    <div class="title is-6"><i class="fa fa-file-text"></i></div>
                 </div>
-                <div class="step" :class="{'active' : step === 2}">
-                    <div class="content">
-                        <div class="title">Image upload</div>
-                    </div>
+                <div class="level-item" :class="{'active' : step === 2}">
+                    <div class="title is-6"><i class="fa fa-image"></i></div>
                 </div>
-                <div class="step" :class="{'active' : step === 3}">
-                    <div class="content">
-                        <div class="title">Additional info</div>
-                    </div>
+                <div class="level-item" :class="{'active' : step === 3}">
+                    <div class="title is-6"><i class="fa fa-info-circle"></i></div>
                 </div>
-                <div class="step" :class="{'active' : step === 4}">
-                    <div class="content">
-                        <div class="title">Review</div>
-                    </div>
+                <div class="level-item" :class="{'active' : step === 4}">
+                    <div class="title is-6"><i class="fa fa-shopping-bag"></i></div>
                 </div>
             </div>
             
-            <form class="ui form" id="gigform" :class="{'loading' : isLoading}">
+            <form id="gigform" :class="{'loading' : isLoading}">
                 <transition name="scale">
-                    <div id="step1" class="step white-boxed" v-if="step === 1">
-                        <div class="field">
-                            <label for="">Choose a category</label>
-                            <select v-model="gig.category" class="ui search dropdown" @change="checkInputValues($event)">
-                                <option value="" class="default text">Category</option>
-                                <option :value="category.skill" v-text="category.skill" v-for="category in categories"></option>
-                            </select>
-                        </div>
-                        <div class="field" id="service-title">
-                            <label for="">Title</label>
-                            <div class="ui huge input">
-                                <input type="text" placeholder="do your makeup for free" v-model.trim="gig.title" @keyup="checkInputValues">
+                    <div id="step1" class="card is-raised" v-if="step === 1">
+                        <div class="card-content">
+                            <div class="field">
+                                <label class="label">Select a skill</label>
+                                <div class="select is-block">
+                                    <select v-model="gig.category" style="width: 100%" @change="checkInputValues($event)">
+                                        <option :value="category.skill" v-text="category.skill" v-for="category in categories"></option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="field">
-                            <label for="" @click="hasDescription = true" v-if="!hasDescription">
-                                <a @click.prevent="">
-                                    <i class="icon plus"></i>Add a description (optional)
-                                </a>
-                            </label>
-                            <textarea rows="3" placeholder="Description (Optional)" v-model="gig.description" v-if="hasDescription"></textarea>
-                        </div>
+                            <div class="field has-addons" id="service-title">
+                                <p class="control">
+                                    <a class="button is-static has-text-weight-bold is-large">I will </a>
+                                </p>
+                                <div class="control is-expanded">
+                                    <input type="text" placeholder="do your makeup for free" v-model.trim="gig.title" @keyup="checkInputValues" class="input is-large">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label for="" @click="hasDescription = true" v-if="!hasDescription">
+                                    <a @click.prevent="">
+                                        <span class="icon"><i class="fa fa-plus"></i></span> <span>Add a description (optional)</span>
+                                    </a>
+                                </label>
+                                <textarea rows="3" class="textarea" placeholder="Description (Optional)" v-model="gig.description" v-if="hasDescription"></textarea>
+                            </div>
 
-                        <div class="two fields">
-                            <div class="field">
-                                <label for="regular_price">Regular price</label>
-                                <input id="regular_price" type="number" placeholder="Regular price (optional)" v-model.number="gig.regular_price" @keyup="checkInputValues($event)">
-                                <small>How much do you normally charge?</small>
+                            <div class="field is-grouped">
+                                <div class="control">
+                                    <label for="regular_price" class="label">Regular price</label>
+                                    <input id="regular_price" type="number" placeholder="Regular price (optional)" v-model.number="gig.regular_price" @keyup="checkInputValues($event)" class="input">
+                                    <small>How much do you normally charge?</small>
+                                </div>
+                                <div class="control">
+                                    <label for="sale_price" class="label">Your sale price</label>
+                                    <input id="sale_price" type="number" placeholder="Sale price" v-model.number="gig.sale_price" @keyup="checkInputValues($event)" class="input">
+                                    <small>How much are you selling?</small>
+                                </div>
                             </div>
                             <div class="field">
-                                <label for="sale_price">Your sale price</label>
-                                <input id="sale_price" type="number" placeholder="Sale price" v-model.number="gig.sale_price" @keyup="checkInputValues($event)">
-                                <small>How much are you selling?</small>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <div class="">
-                                <h2 id="discount-ribbon" class="ui orange huge ribbon label" v-html="pecentage" v-if="pecentage"></h2>
-                                <button class="ui button green right floated" v-on:click.prevent="goto(2)" :disabled="!stepOneComplete">
-                                    Upload image <i class="icon arrow right"></i>
-                                </button>
+                                <div class="">
+                                    <h2 id="discount-ribbon" class="ui orange huge ribbon label" v-html="pecentage" v-if="pecentage"></h2>
+                                    <button class="button is-primary" v-on:click.prevent="goto(2)" :disabled="!stepOneComplete">
+                                        <span>Upload image</span> <span class="icon"><i class="fa fa-arrow-right"></i></span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div> <!-- End step 1 -->
                 </transition>
                 
                 <transition name="scale">
-                    <div id="step2" class="step white-boxed" v-if="step === 2">
-                        <h3 class="ui centered header">
-                            Upload service banner
-                            <div class="sub header"><i class="icon info"></i>A well designed image can increase your sales by up to 28%</div>
-                        </h3>
-                        <div class="field" id="thumbnail-wrapper">
-                            <label v-show="!hasImage">
-                                <input type="file" id="thumbnail" style="display:hidden" @change.prevent="handleFileUpload($event)">
-                            </label>
-                            <div id="preview-final-image"></div>
-                            <div class="ui modal" id="image-preview-modal" v-if="hasImage">
-                                <div class="header">Resize and crop image</div>
-                                <div class="scrolling content">
-                                    <div id="preview"></div>
-                                </div>
-                                <div class="actions">
-                                    <a href="#" class="ui deny button">Cancel</a>
-                                    <a href="#" class="ui approve green button">Crop &amp; save</a>
+                    <div id="step2" class="card is-raised" v-if="step === 2">
+                        <div class="card-content">
+                            <h3 class="title is-4">Upload service banner</h3>
+                            <h4 class="subtitle is-6">A well designed image can increase your sales by up to 28%</h4>
+                            <div class="field" id="thumbnail-wrapper">
+                                <label v-show="!hasImage" class="button is-primary">
+                                    <input type="file" id="thumbnail" style="display:none" @change.prevent="handleFileUpload($event)">
+                                    <span class="icon"><i class="fa fa-upload"></i></span>
+                                    <span class="title is-6 has-text-white">Upload sales banner</span>
+                                </label>
+                                <div id="preview-final-image"></div>
+                                <div class="modal" id="image-preview-modal" v-if="hasImage" :class="{'is-active' : hasImage }">
+                                    <div class="modal-background"></div>
+                                    <div class="modal-content">
+                                        <div id="preview"></div>
+                                        <div class="card is-raised" style="padding: 10px">
+                                            <a class="button is-white" @click.prevent="closeOverlay">Cancel</a>
+                                            <a @click.prevent="cropImage()" class="button is-primary">Crop &amp; save</a>
+                                        </div>
+                                    </div>
+                                    <button class="modal-close is-large" aria-label="close" @click.prevent="closeOverlay"></button>
                                 </div>
                             </div>
-                        </div>
-                        <div class="field">
-                            <div class="">
-                                <a @click.prevent="goto(1)" class="bold" style="display: inline-block; margin-top: 0.5em"><i class="icon arrow left"></i> Back</a>
-                                <button class="ui green button right floated" v-on:click.prevent="goto(3)" :disabled="!hasImage">
-                                    Next <i class="icon arrow right"></i>
-                                </button>
+                            <div class="field">
+                                <hr style="opacity: .5">
+                                <div>
+                                    <a @click.prevent="goto(1)" class="button is-grey"><span class="icon"><i class="fa fa-arrow-left"></i></span> <span>Back</span></a>
+                                    <button class="button is-primary" v-on:click.prevent="goto(3)" :disabled="!hasImageUploaded">
+                                        <span>Next</span> <span class="icon"><i class="fa fa-arrow-right"></i></span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div> <!-- End step 2 -->
                 </transition>
 
                 <transition name="scale">
-                    <div id="step3" class="step white-boxed" v-if="step === 3">
-                        <div class="field">
-                            <h3 class="ui header">
-                                Additional Information
-                                <div class="sub header">You can provide additional information about this service</div>
-                            </h3>
-                        </div>
-                        <div class="field">
-                            <label for="delivery_time">How long will it take you to deliver this service?</label>
-                            <div class="ui right labeled input">
-                                <input type="number" v-model.number="gig.delivery_time" id="delivery_time">
-                                <div class="ui label">Days</div>
+                    <div id="step3" class="card is-raised" v-if="step === 3">
+                        <div class="card-content">
+                            <div class="field">
+                                <h3 class="title is-4">
+                                    Additional Information
+                                </h3>
+                                <div class="subtitle is-6">You can provide additional information about this service</div>
                             </div>
-                        </div>
-                        <div class="field">
-                            <label for="location">Can people outside you primary location buy this service?</label>
-                            <select id="location" v-model="gig.is_local" class="ui dropdown">
-                                <option value="">Select</option>
-                                <option value="1">Yes</option>
-                                <option value="0">No</option>
-                            </select>
-                        </div>
-                        <div class="field">
-                            <button class="ui button green right floated" v-on:click.prevent="goto(4)">
-                                Review service <i class="icon arrow right"></i>
-                            </button>
+                            <div class="field">
+                                <label for="delivery_time" class="label">How long will it take you to deliver this service? (in days)</label>
+                                <div class="control">
+                                    <input type="number" v-model.number="gig.delivery_time" id="delivery_time" class="input" style="max-width: 300px">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label for="location" class="label">Can people outside you primary location buy this service?</label>
+                                <div class="select">
+                                    <select id="location" v-model="gig.is_local">
+                                        <option value="">Select</option>
+                                        <option value="1">Yes</option>
+                                        <option value="0">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <button class="button is-primary" v-on:click.prevent="goto(4)">
+                                    <span>Review service</span> <span class="icon"><i class="fa fa-arrow-right"></i></span>
+                                </button>
+                            </div>
                         </div>
                     </div> <!-- End step 3 -->
                 </transition>
                 
                 <transition name="scale">
-                    <div id="step4" class="step white-boxed" v-if="step === 4">
-                        <div id="discount-ribbon" class="ui huge orange ribbon label" v-html="pecentage" v-if="pecentage"></div>
-                        <h3 class="ui header">Review your service</h3>
-                        <div class="ui items">
-                            <div class="item">
-                                <div class="image">
-                                    <img :src="thumbnailPreview">
+                    <div id="step4" class="card is-raised" v-if="step === 4">
+                        <div class="card-content">
+                            <h3 class="title is-4">Review your service</h3>
+                            <div class="columns">
+                                <div class="column is-5">
+                                    <figure class="image">
+                                        <img :src="thumbnailPreview">
+                                    </figure>
                                 </div>
-                                <div class="middle aligned content">
-                                    <div class="ui big header" v-html="'I will ' + gig.title"></div>
-                                    <div class="meta" v-html="gig.category"></div>
-                                    <div class="description" v-html="gig.description" v-if="gig.description"></div>
+                                <div class="column is-7">
+                                    <h1 class="title is-3" v-html="'I will ' + gig.title"></h1>
+                                    <div class="tag is-info" v-html="gig.category"></div>
+                                    <p class="description" v-html="gig.description" v-if="gig.description"></p>
                                     <div class="extra">
-                                        <div class="left floated">
-                                            <h3 class="ui red header" v-html="gig.sale_price.toLocaleString('en-UK', { style: 'currency', currency: 'NGN' })"></h3>
+                                        <div>
+                                            <h3 class="title is-3 has-text-danger" v-html="gig.sale_price.toLocaleString('en-UK', { style: 'currency', currency: 'NGN' })"></h3>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="ui divider"></div>
-                        <div class="ui row">
-                            <button class="ui green button right floated" @click.prevent="submitService(1)">Publish service</button>
-                            <button class="ui button" @click.prevent="submitService(0)">Save</button>
+                            <hr style="opacity: .5">
+                            <div class="ui row">
+                                <button class="button is-primary" @click.prevent="submitService(1)" :class="{'is-loading' : isSubmitting}">Publish service</button>
+                                <button class="button is-white" @click.prevent="submitService(0)">Save</button>
+                            </div>
                         </div>
                     </div>
                 </transition>
@@ -196,6 +201,10 @@
                 errorMessage: null,
                 thumbnail: null,
                 thumbnailPreview: null,
+                isCropped: false,
+                isCropper: null,
+                hasImageUploaded: false,
+                isSubmitting: false,
             }
         },
 
@@ -287,43 +296,48 @@
                             zoomable: false,
                             guides: true,
                         });
-                        $(modal).modal({
-                            closable: false,
-                            onDeny: () => {
-                                $this.hasImage = false;
-                                $this.isLoading = false;
-                            },
-                            onApprove: () => {
-                                const newImage = cropper.getCroppedCanvas({
-                                    imageSmoothingEnabled: false,
-                                    imageSmoothingQuality: 'high',
-                                }).toBlob((blob)=>{
-                                    const img = document.createElement('img');
-                                    const url = URL.createObjectURL(blob);
-                                    img.onload = (e) => {
-                                        // URL.revokeObjectURL(url)
-                                    }
-                                    img.classList.add('ui');
-                                    img.classList.add('fluid');
-                                    img.classList.add('image');
-                                    img.src = url;
-                                    $this.isLoading = false;
-                                    $this.thumbnail = blob;
-                                    $this.thumbnailPreview = url;
-                                    document.getElementById('preview-final-image').appendChild(img);
-                                }, 'image/jpeg', 0.75);
-                                // console.log(newImage);
-                            }
-                        }).modal('show');
-                        
+                        $this.isCropper = cropper;
+                        // console.log($this.isCropper);
                     }
                     image.src = evt.target.result;
                 };
                 reader.readAsDataURL(file);
             },
+
+            closeOverlay: function(){
+                this.hasImage = false;
+                this.isLoading = false;
+            },
+
+            cropImage: function(){
+                // console.log(this.isCropper);
+                const $this = this;
+                this.isCropper.getCroppedCanvas({
+                    imageSmoothingEnabled: false,
+                    imageSmoothingQuality: 'high',
+                }).toBlob((blob)=>{
+                    const img = document.createElement('img');
+                    const url = URL.createObjectURL(blob);
+                    img.onload = (e) => {
+                        // URL.revokeObjectURL(url)
+                    }
+                    img.classList.add('image');
+                    img.classList.add('is-responsive');
+                    img.src = url;
+                    $this.isLoading = false;
+                    $this.hasImage = false;
+                    $this.hasImageUploaded = true;
+                    $this.thumbnail = blob;
+                    $this.thumbnailPreview = url;
+                    document.getElementById('preview-final-image').appendChild(img);
+                }, 'image/jpeg', 0.75);
+            },
+
             submitService(status) {
                 let form = new FormData();
                 const gig = this.gig;
+                const $this = this;
+                $this.isSubmitting = true;
                 form.append('file', new Blob([this.thumbnail], {type: 'image/jpeg'}));
                 form.append('title', gig.title);
                 form.append('category', gig.category);
@@ -338,12 +352,14 @@
                 axios({
                     method: 'post',
                     data: form,
-                    url: '/profile/gig/add',
+                    url: '/dashboard/gigs/add',
                     headers: {
                         'Content-Type' : false,
                     }
                 }).then( (response) => {
-                    console.log(response);
+                    $this.isSubmitting = false;
+                    iziToast.success({ title : 'Gig submitted successfully!'});
+                    window.location.href = window.Laravel.url + '/dashboard/gigs';
                 })
             },
         },

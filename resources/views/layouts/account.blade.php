@@ -52,16 +52,16 @@
     </script>
 </head>
 <body>
-    <div id="app" class="">
-        <div class="ui centered grid">
-            <div class="ui left aligned fourteen wide mobile eight wide tablet four wide computer column">
-                <div class="ui centered padded column" style="text-align: center">
+    <div id="app" class="hero is-white">
+        <div class="hero-body">
+            <div class="columns is-centered">
+                <div class="column is-3-desktop is-4-tablet">
                     <a href="{{ url('/') }}">
-                        <img src="{{ asset('public/ubanji-logo.png') }}" alt="{{config('app.name')}} Logo" class="img-responsive" id="logo" style="width: 130px; height: auto; position: relative; top: 6px;">
+                        <img src="{{ asset('public/ubanji-logo-b.png') }}" alt="{{config('app.name')}} Logo" class="image is-centered" id="logo" style="width: 80px; height: auto; position: relative;">
                     </a>
-                </div>
-                <div class="white-boxed" style="margin-bottom: 4em;">
-                    @yield('content')
+                    <div class="card is-raised">                      
+                        @yield('content')
+                    </div>
                 </div>
             </div>
         </div>       

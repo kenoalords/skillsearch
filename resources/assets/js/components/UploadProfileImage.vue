@@ -1,9 +1,9 @@
 <template>
     <div>
 
-        <div class="" style="margin:1em 0;">
-            <label id="user-avatar-upload" v-if="!isUploading" class="text-center">
-                <img v-bind:src="imageSrc" class="ui circular fluid image">
+        <div class="profile-image">
+            <label id="user-avatar-upload" :class="{ 'is-uploading-avatar' : isUploading }" class="text-center">
+                <img v-bind:src="imageSrc" class="image is-128x128 is-rounded">
                 <input type="file" id="fileupload" v-on:change="uploadProfileImage" style="display: none">
             </label>
         
@@ -11,10 +11,9 @@
                 <div class="progress-bar" role="progressbar" v-bind:style="{ width: progress + '%'}"></div>
             </div>
 
-            <div class="ui small header">
-                Change profile image
-                <span class="sub header">Click image above to change profile picture</span>
-            </div>
+            <h4 class="title is-5 has-text-white">
+                Profile image
+            </h4>
         </div>
     </div>
 </template>
@@ -56,7 +55,7 @@
 
                 axios({
                     method : 'post',
-                    url : '/profile/upload-image',
+                    url : '/dashboard/profile/upload-image',
                     headers : {'Content-Type' : 'multipart/form-data'},
                     data : data,
                     onUploadProgress: function (e){
@@ -70,6 +69,7 @@
                     _this.isUploading = false;
                     _this.progress = 0;
                     _this.imageSrc = response.data.filename;
+                    $('.is-user-profile').attr('src', response.data.filename)
                 })
             },
 

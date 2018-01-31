@@ -44,7 +44,7 @@ class User extends Authenticatable
     // user to user phone contact
     public function phone()
     {
-        return $this->hasMany('App\Models\Phone');
+        return $this->hasMany(Phone::class);
     }
 
     public function instagram()
@@ -178,6 +178,11 @@ class User extends Authenticatable
     public function comments()
     {
         return $this->hasMany(Comment::class, 'commentable');
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class, 'likeable');
     }
 
     public function activity()

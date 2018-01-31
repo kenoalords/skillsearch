@@ -1,10 +1,12 @@
 <template>
     <div class="">
-        <div class="ui container centered grid">
+        <div class="columns is-multiline">
             <portfolio-item v-for="portfolio in portfolios" :data="portfolio" :key="portfolio.uid" class="eight wide mobile five wide tablet four wide computer column work-card"></portfolio-item>
         </div>  
-        <div class="ui centered container grid" style="margin: 2em 0">
-            <a href="#" @click.prevent="load" id="auto-loader" class="ui button" :class="{'loading' : isLoading}" v-if="!finished">Load more</a>
+        <div class="hero">
+            <div class="hero-body has-text-centered">
+                <a href="#" @click.prevent="load" id="auto-loader" class="button is-info is-small has-text-weight-bold" :class="{'is-loading' : isLoading}" v-if="!finished"><span class="icon"><i class="fa fa-th"></i></span> <span>Load more</span></a>
+            </div>
         </div>  
     </div>
 </template>

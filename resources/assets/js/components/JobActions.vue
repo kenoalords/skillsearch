@@ -21,8 +21,8 @@
                 isRejected: false,
                 message: null,
                 job: JSON.parse(this.task),
-                rejectUrl: window.Laravel.url + '/profile/jobs/' + JSON.parse(this.task).id + '/reject',
-                approveUrl: window.Laravel.url + '/profile/jobs/' + JSON.parse(this.task).id + '/approve',
+                rejectUrl: window.Laravel.url + '/dashboard/jobs/' + JSON.parse(this.task).id + '/reject',
+                approveUrl: window.Laravel.url + '/dashboard/jobs/' + JSON.parse(this.task).id + '/approve',
                 isSending: false,
             }
         },

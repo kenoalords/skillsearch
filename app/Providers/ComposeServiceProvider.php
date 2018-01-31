@@ -29,6 +29,11 @@ class ComposeServiceProvider extends ServiceProvider
             ['includes.featured-portfolios'],
             \App\Http\ViewComposers\FeaturedPortfolioComposer::class
         );
+
+        view()->composer(
+            ['includes.user-badge'],
+            \App\Http\ViewComposers\UserImageComposer::class
+        );
     }
 
     /**

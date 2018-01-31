@@ -25,7 +25,7 @@ class InstagramPortfolioController extends Controller
 	{
 		$token = $instagram->getUser($request);
         if($token){
-            return view('portfolio.instagram')->with(['token'=>$token, 'profile'=>$profile]);
+            return view('portfolio.instagram')->with(['token'=>$token]);
         } else {
             return view('portfolio.instagram')->with([
                 'token' => false,

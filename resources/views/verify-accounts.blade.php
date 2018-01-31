@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.dashboard')
 @section('title', 'Verify User Accounts')
 @section('content')
 <div>

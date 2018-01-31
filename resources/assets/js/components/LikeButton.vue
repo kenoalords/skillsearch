@@ -1,10 +1,10 @@
 <template>
     <span>
         <span class="like_btn" :class="{'big' : size, 'liked' : hasLiked}" :id="pid">
-            <a v-on:click.prevent="submitLike" class="" v-bind:class="{ 'purple' : hasLiked, 'ui circular extra huge green icon button' : size }">
-                <i class="icon thumbs up" v-if="size"></i> 
+            <a v-on:click.prevent="submitLike" class="like-button" v-bind:class="{ 'liked' : hasLiked }">
+                <i class="fa fa-thumbs-up" v-if="size"></i> 
                 <i class="fa fa-thumbs-up" v-else="!size"></i>
-            </a> <span class="like-count">{{count}}</span>
+            </a> <span class="has-text-weight-bold">{{count}}</span>
         </span>
     </span>
 </template>

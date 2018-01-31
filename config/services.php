@@ -56,7 +56,7 @@ return [
     'instagram' => [
         'client_id'     => env('INSTAGRAM_CLIENT_ID'),
         'client_secret' => env('INSTAGRAM_CLIENT_SECRET'),
-        'redirect'      => config('app.url').'/profile/portfolio/instagram/callback'
+        'redirect'      => config('app.url').'/dashboard/portfolio/instagram/callback'
     ],
 
     'points' => [

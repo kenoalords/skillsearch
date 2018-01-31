@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.dashboard')
 
 @section('content')
 @if(!$token)
@@ -7,17 +7,17 @@
 		<p>Link your Instagram account and showcase more of your works</p>
 	</div>
 	@if(Request::get('error'))
-		<div class="ui warning message">
+		<div class="notification is-info">
 			<i class="fa fa-warning"></i> ERROR: {{ Request::get('error_description') }}
 		</div>
 	@endif
 	<br>
-	<p><a href="/profile/portfolio/instagram/get" class="ui icon labeled instagram button" id="google-invite"><i class="icon instagram"></i> Link my Instagram account</a></p>
+	<p><a href="/dashboard/portfolio/instagram/get" class="button is-primary" id="google-invite"><i class="fa fa-instagram"></i>&nbsp; Link my Instagram account</a></p>
 @else
-	<h2 class="ui header">Instagram Feed for <a href="https://instagram.com/{{$token->username}}" target="_blank">{{$token->full_name}}</a></h2>
-	<div class="ui divider"></div>
+	<h2 class="title is-3">Instagram Feed for <a href="https://instagram.com/{{$token->username}}" target="_blank">{{$token->full_name}}</a></h2>
+	@include('portfolio.menu')
 	<instagram user="{{ Auth::user()->name }}"></instagram>
 	<br>
-	<a href="/profile/portfolio/instagram/delete" class="ui mini red button" id="delete-instagram">Click here to delete this account</a>
+	<a href="/dashboard/portfolio/instagram/delete" class="button is-danger" id="delete-instagram">Click here to delete this account</a>
 @endif
 @endsection

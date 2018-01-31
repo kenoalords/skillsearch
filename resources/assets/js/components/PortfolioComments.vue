@@ -1,84 +1,106 @@
 <template>
     <div>
-        <div v-if="user" class="white-boxed" style="padding: 1em;">
-            <div class="ui unstackable items">
-                <div class="item">
-                    <div class="ui mini image">
-                        <img :src="userImage" alt="Avatar" class="avatar">
+        <div v-if="user" class="box is-raised is-radiusless" style="padding: 1em;">
+            <div class="media">
+                <div class="media-left">
+                    <div class="image is-64x64">
+                        <img :src="userImage" alt="Avatar" class="image is-rounded">
                     </div>
+                </div>
+                <div class="media-content">
                     <div class="content">
-                        <div class="ui form">
-                            <div class="field">
-                                <textarea v-model="comment" class="form-control" rows="2" placeholder="Leave your comment here..."></textarea>
-                            </div>
-                            <button class="ui primary button" v-on:click.prevent="submitComment()" :disabled="isSubmitting" :class="{'loading': isSubmitting}">Comment</button>  
+                        <div class="field">
+                            <textarea v-model="comment" class="textarea" rows="2" placeholder="Leave your comment here..."></textarea>
                         </div>
+                        <button class="button is-primary" v-on:click.prevent="submitComment()" :disabled="isSubmitting" :class="{'is-loading': isSubmitting}">Comment</button>  
                     </div>
                 </div>
             </div>
         </div>
         <div v-if="comments"  id="comments">
-            <h4 class="ui medium header">{{comments.length}} {{comments.length > 1 ? 'Comments' : 'Comment'}}</h4>
-            <div class="ui comments">
-                <div class="comment" :class="{'new' : newComment}" v-for="comment in comments">
-                    <div class="avatar">
-                        <a :href="'/'+comment.profile.data.username">
-                            <img :src="comment.profile.data.avatar" :alt="comment.profile.data.first_name">
+            <h4 class="title is-5 loading-icon" v-if="isLoading"><img :src="loadingGif"> Loading comments...</h4>
+            <h4 class="title is-5" v-if="!isLoading">{{comments.length}} {{comments.length > 1 ? 'Comments' : 'Comment'}}</h4>
+            <div class="comments">
+                <div class="media box is-raised is-radiusless" :class="{'new' : newComment}" v-for="comment in comments">
+                    <div class="media-left">
+                        <a :href="'/'+comment.profile.data.username" class="image is-48x48">
+                            <img :src="comment.profile.data.avatar" :alt="comment.profile.data.first_name" class="image is-rounded">
                         </a>
                     </div>
-                    <div class="content">
-                        <a v-bind:href="'/'+comment.profile.data.username" class="author">{{comment.profile.data.first_name}} {{comment.profile.data.last_name}} <span v-html="isVerifiedUser(comment.profile.data.verified)"></span></a>
-                        <div class="metadata">
-                            <div class="date">{{ comment.date }}</div>
-                        </div>
-                        <p v-html="comment.comment" class="text"></p>
-                        <div class="actions">
-                            <a href="#" class="bold" v-on:click.prevent="submitCommentLike(comment)" v-bind:class="{ active : isLiking }"><i class="fa fa-heart"></i> <span :id="'comment-'+comment.id">{{ comment.likes }}</span></a>
-                            <a href="#" v-on:click.prevent="toggleReplyField(comment.id)" class="bold" v-if="user"><i class="fa fa-reply"></i> Reply</a>
-                            <a href="#" v-on:click.prevent="deleteComment(comment)" class="bold " v-if="user && comment.user_id === user_id"><i class="fa fa-close"></i> Delete</a>
-                        </div>
-                        <div v-if="isReplyActive === comment.id" class="ui unstackable items">
-                            <div class="item">
-                                <div class="ui mini image">
-                                    <img :src="userImage" alt="Avatar" class="avatar">
+                    <div class="media-content">
+                        <div class="content">
+                            <p>
+                                <a v-bind:href="'/'+comment.profile.data.username" class="has-text-weight-bold has-text-grey-dark" :class="{'verified' : comment.profile.data.verified }">{{comment.profile.data.first_name}} {{comment.profile.data.last_name}}</a> <small v-html="comment.date"></small> <br>
+                                {{ comment.comment  }}
+                            </p>
+                        </div> 
+
+                        <!-- Comment action links -->
+                        <div class="level is-mobile">
+                            <div class="level-left">
+                                <div class="level-item">
+                                    <a href="#" class="has-text-danger has-text-weight-bold is-size-7" v-on:click.prevent="submitCommentLike(comment)" v-bind:class="{ active : isLiking }"><i class="fa fa-heart"></i> <span :id="'comment-'+comment.id">{{ comment.likes }}</span></a>
                                 </div>
+                                <div class="level-item">
+                                    <a href="#" v-on:click.prevent="toggleReplyField(comment.id)" class="has-text-weight-bold is-size-7 has-text-info" v-if="user"><i class="fa fa-reply"></i> Reply</a>
+                                </div>
+                                <div class="level-item">
+                                    <a href="#" v-on:click.prevent="deleteComment(comment)" class="has-text-grey-light has-text-weight-bold is-size-7 " v-if="user && comment.user_id === user_id"><i class="fa fa-close"></i> Delete</a>
+                                </div>
+                            </div>
+                        </div> <!-- Comment action link end -->
+
+
+                        <!-- Comment reply form -->
+                        <div v-if="isReplyActive === comment.id" class="media">
+                            <div class="media-left">
+                                <div class="image is-48x48">
+                                    <img :src="userImage" alt="Avatar" class="image is-rounded">
+                                </div>
+                            </div>
+                            <div class="media-content">
                                 <div class="content">
-                                    <div class="ui form">
-                                        <div class="field">
-                                            <textarea v-model="reply" rows="1" placeholder="Reply..." class="form-control"></textarea>
-                                        </div>
-                                        <div class="">
-                                            <button class="ui primary mini button" v-on:click.prevent="submitReply(comment.id)" :disabled="isReplySubmitting">Reply</button>
-                                            <small><a href="#" class="ui mini icon button" v-on:click.prevent="closeReply()"><i class="icon close"></i></a></small>
-                                        </div>  
+                                    <div class="field">
+                                        <textarea v-model="reply" rows="1" placeholder="Reply..." class="textarea"></textarea>
                                     </div>
+                                    <div class="field">
+                                        <button class="button is-primary is-small" :class="{ 'is-loading' : isReplySubmitting }" v-on:click.prevent="submitReply(comment.id)" :disabled="isReplySubmitting || reply == null">Reply</button>
+                                        <small><a href="#" class="button is-white is-small" v-on:click.prevent="closeReply()"><i class="fa fa-close"></i></a></small>
+                                    </div>  
                                 </div>
                             </div>
-                        </div>
-                        <div v-if="comment.replies.data" class="ui comments">
+                        </div> <!-- Comment form end -->
+                        
+                        <!-- Comment replies -->
+                        <div v-if="comment.replies.data">
                             <div v-if="comment.replies.data.length > 0">
-                                <h4 class="bold" style="font-size: 1em">{{ comment.replies.data.length }} {{ comment.replies.data.length > 1 ? 'Replies' : 'Reply'}}</h4>
+                                <h4 class="title is-7" style="margin-bottom: 10px;">{{ comment.replies.data.length }} {{ comment.replies.data.length > 1 ? 'Replies' : 'Reply'}}</h4>
                             </div>
-                            <div class="comment" v-for="reply in comment.replies.data">
-                                <div class="avatar">
-                                    <a v-bind:href="'/'+reply.profile.data.username">
-                                        <img :src="reply.profile.data.avatar" :alt="reply.profile.data.first_name">
+                            <div class="media" v-for="reply in comment.replies.data">
+                                <div class="media-left">
+                                    <a v-bind:href="'/'+reply.profile.data.username" class="image is-48x48">
+                                        <img :src="reply.profile.data.avatar" :alt="reply.profile.data.first_name" class="image is-rounded">
                                     </a>
                                 </div>
-                                <div class="content">
-                                    <a v-bind:href="'/'+reply.profile.data.username" class="author">{{reply.profile.data.first_name}} {{reply.profile.data.last_name}} <span v-html="isVerifiedUser(reply.profile.data.verified)"></span></a>
-
-                                    <div class="metadata">
-                                        <div class="date">{{ reply.date }}</div>
-                                    </div>
-                                    <p v-html="reply.comment" class="text"></p>
-                                    <div class="actions">
-                                        <a href="#" class="bold" v-on:click.prevent="submitCommentLike(reply)" v-bind:class="{ active : isLiking }"><i class="fa fa-heart"></i> {{ reply.likes }}</a>
-                                        <a href="#" v-on:click.prevent="deleteReply(reply, comment.id)" class="bold " v-if="user && reply.user_id === user_id"><i class="fa fa-close"></i> Delete</a>
+                                <div class="media-content">
+                                    <div class="content">
+                                        <p>
+                                            <a v-bind:href="'/'+reply.profile.data.username" :class="{ 'verified' : reply.profile.data.verified }" class="has-text-weight-bold has-text-grey-dark">{{reply.profile.data.first_name}}</a> <small>{{ reply.date }}</small>
+                                            <br>
+                                            <span v-html="reply.comment" class="text"></span>
+                                        </p>
+                                        
+                                        <div class="level is-mobile">
+                                            <div class="level-left">
+                                                <a href="#" class="level-item has-text-danger is-size-7 has-text-weight-bold" v-on:click.prevent="submitCommentLike(reply)" v-bind:class="{ active : isLiking }"><span class="icon"><i class="fa fa-heart"></i></span> <span>{{ reply.likes }}</span></a>
+                                                <a href="#" v-on:click.prevent="deleteReply(reply, comment.id)" class="level-item has-text-grey is-size-7 has-text-weight-bold " v-if="user && reply.user_id === user_id"><span class="icon"><i class="fa fa-close"></i></span> <span>Delete</span></a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> <!-- Comment replies end -->
+
                     </div>
                 </div>
             </div>
@@ -102,6 +124,8 @@
                 isLiking: false,
                 userImage: this.avatar,
                 newComment: false,
+                isLoading: true,
+                loadingGif: window.Laravel.url + '/images/loading.gif',
             }
         },
         props: {
@@ -112,6 +136,7 @@
             getComments(){
                 var _this = this;
                 axios.get('/portfolio/'+this.uid+'/comments').then((response)=>{
+                    _this.isLoading = false;
                     _this.comments = response.data.data;
                 });
             },

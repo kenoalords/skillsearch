@@ -77,17 +77,17 @@ $('.slick-js').slick({
 	autoplaySpeed: 3000,
 	responsive: [{
 
-		breakpoint: 1024,
+		breakpoint: 1240,
 			settings: {
-			slidesToShow: 4,
+			slidesToShow: 3,
 			infinite: true
 			}
 
 		}, {
 
-		breakpoint: 769,
+		breakpoint: 960,
 		settings: {
-			slidesToShow: 3,
+			slidesToShow: 2,
 		}
 
 		}, {
@@ -120,6 +120,18 @@ $('body').on('click', '#delete-instagram', function(e){
 .on('click', '#close-instagram-notification', function(e){
 	e.preventDefault();
 	$('#instagram-notification').slideUp('fast');
+})
+.on('click', '#admin-menu-trigger', function(e){
+	e.preventDefault();
+	$(window).scrollTop(0);
+	$(this).toggleClass('is-active');
+	$('#sidebar').toggleClass('is-hidden-touch');
+})
+.on('click', '#app-menu-tigger', function(e){
+	e.preventDefault();
+	$(window).scrollTop(0);
+	$(this).toggleClass('is-active');
+	$('.navbar-menu').toggleClass('is-active');
 });
 
 $('.ui.sticky').sticky({

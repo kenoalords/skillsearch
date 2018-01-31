@@ -1,12 +1,12 @@
-@extends('layouts.admin')
+@extends('layouts.dashboard')
 
 @section('title', 'Contact Request')
 
 @section('content')
-<h1 class="ui header" style="margin-bottom: 1em">
+<h1 class="title is-3">
 	Contact Requests
-	<div class="sub header">See who has requested for your contact</div>
 </h1>
+<div class="subtitle is-6">See who has requested for your contact</div>
 <contact-request pending="{{$pending}}" approved="{{$approved}}"></contact-request>
 
 @endsection

@@ -32,6 +32,7 @@ class Profile extends Model
         'account_type',
         'background',
         'identity_verified',
+        'verified_email',
     ];
 
     protected $appends = ['user'];

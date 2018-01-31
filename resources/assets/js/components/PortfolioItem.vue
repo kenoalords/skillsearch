@@ -1,42 +1,41 @@
 <template>
-    <div>
-        <div class="ui card" itemscope itemtype="http://schema.org/CreativeWork">
-            <div class="content tablet-only">
-                <a :href="portfolio.user" style="font-size: .875em; font-weight: 700" itemprop="url">
-                    <img :src="portfolio.user_profile.avatar" :alt="portfolio.user_profile.fullname" class="ui avatar image">
-                     <span itemprop="author" v-text="portfolio.user_profile.fullname"></span>
-                     <img :src="verified" alt="Verified profile" v-if="portfolio.user_profile.verified" class="verified">
-                </a>
-            </div>
-            <div class="ui fluid image">
+    <div class="column is-one-third-desktop is-one-quarter-widescreen is-half-tablet">
+        <div class="card portfolio" itemscope itemtype="http://schema.org/CreativeWork">
+            
+            <div class="card-image">
                 <a :href="portfolio.link.url" style="line-height: 0; display: block;" itemprop="url">
-                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" :data-src="portfolio.thumbnail" :alt="portfolio.title" class="b-lazy">
-                    <meta itemprop="thumbnailUrl" :content="portfolio.thumbnail">
+                    <figure>
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" :data-src="portfolio.thumbnail" :alt="portfolio.title" class="b-lazy">
+                        <meta itemprop="thumbnailUrl" :content="portfolio.thumbnail">
+                    </figure>
                 </a>
-                <div class="featured-tag" v-if="portfolio.is_featured"><i class="icon star"></i></div>
             </div>
-            <div class="content">
-                <div class="small bold">
-                    <!-- <div class="right floated meta">14h</div> -->
-                    <a :href="portfolio.user" class="large-screen-only" itemprop="url">
-                        <img :src="portfolio.user_profile.avatar" :alt="portfolio.user_profile.fullname" class="ui avatar image">
-                         <span itemprop="author" v-text="portfolio.user_profile.first_name"></span>
-                         <img :src="verified" alt="Verified profile" v-if="portfolio.user_profile.verified" class="verified">
-                    </a>
-
-                    <span class="right floated meta large-screen-only portfolio-meta">
-                        <span class="bold"><a :href="portfolio.link.url"><i class="fa fa-thumbs-up"></i> {{portfolio.likes_count}}</a></span>
-
-                        <span class="bold" style="margin-left: 1em"><a :href="portfolio.link.url + '#comment'"><i class="fa fa-comment"></i> <span itemprop="commentCount">{{portfolio.comment_count}}</span></a></span>
-                        <featured :uid="portfolio.uid" :key="portfolio.uid" :stared="portfolio.is_featured"></featured>
-                    </span>
-
-                    <span class="meta mobile-only tablet-only portfolio-meta">
-                        <span class="bold"><a :href="portfolio.link.url"><i class="fa fa-thumbs-up"></i> {{portfolio.likes_count}}</a></span>
-                        
-                        <span class="bold" style="margin-left: 1em"><a :href="portfolio.link.url"><i class="fa fa-comment"></i> <span itemprop="commentCount">{{portfolio.comment_count}}</span></a></span>
-                        <featured :uid="portfolio.uid" :key="portfolio.uid" :stared="portfolio.is_featured"></featured>
-                    </span>
+            <div class="card-content" style="padding: 5px;">
+                <div class="level is-mobile">
+                    <div class="level-left">
+                        <a :href="portfolio.user" class="level-item" itemprop="url"  :class="{'verified': portfolio.verified}">
+                            <img :src="portfolio.user_profile.avatar" :alt="portfolio.user_profile.fullname" class="image is-24x24 is-rounded is-inline"> &nbsp;
+                             <span itemprop="author" v-text="portfolio.user_profile.first_name" class="has-text-weight-bold author"></span>
+                        </a>
+                    </div>
+                    <div class="level-right">
+                        <span class="level-item">
+                            <span>
+                                <a :href="portfolio.link.url" class="is-grey">
+                                    <span class="icon"><i class="fa fa-thumbs-up"></i></span> 
+                                    <span>{{portfolio.likes_count}}</span>
+                                </a>
+                            </span>
+                        </span>
+                        <span class="level-item">
+                            <a :href="portfolio.link.url + '#comment'" class="is-grey">
+                                <span class="icon"><i class="fa fa-comment"></i></span>
+                                <span itemprop="commentCount">{{portfolio.comment_count}}</span>
+                            </a>
+                        </span>
+                        <featured :uid="portfolio.uid" :key="portfolio.uid" :stared="portfolio.is_featured" class="level-item"></featured>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -61,7 +60,7 @@
             var bLazy = new Blazy({
                 offset: 200
             });
-            // console.log('Component mounted.')
+            // console.log(this.data)
         }
     }
 </script>

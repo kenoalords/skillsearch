@@ -1,38 +1,27 @@
-<div class="ui container grid">
-    <div class="sixteen wide column">
-        <div class="ui items">
-            <div class="middle aligned item">
-                <div class="ui tiny image">
-                    <a href="{{ route('view_profile', [ 'user'=>$profile['username'] ]) }}">
-                        <img src="{{ $profile['avatar'] }}" alt="{{ $profile['fullname'] }}" class="ui avatar" width="100" height="100">
-                    </a>
-                </div>
-                <div class="content">
-                    <h5 class="ui header">
-                        <a href="{{ route('view_profile', ['user'=>$profile['username']]) }}">
-                            {{ ucwords(strtolower($profile['fullname'])) }} {!! identity_check($profile['verified']) !!}
-                        </a>
-                    </h5>
-                    <div class="meta">
-                        <i class="icon marker"></i> {{ $profile['location'] }}
-                    </div>
-                    <div class="description">
-                        <p>{{ str_limit($profile['bio'], 75) }}</p>
-                        
-                    </div>
-                    @if(count($profile['skills']) > 0)
-                        <div class="extra">
-                            @foreach ($profile['skills'] as $skill)
-                                <a href="/search/?term={{ $skill['skill'] }}" class="ui mini teal basic label">{{ $skill['skill'] }}</a>
-                            @endforeach
-                        </div>
-                    @endif
-                    
-                </div>
-                <div class="right floated">
-                    <follow username="{{$profile['username']}}"></follow>
-                </div>
+<div class="column is-one-third-desktop is-one-quarter-widescreen is-half-tablet">
+    <div class="card user">
+        <div class="card-content has-text-centered">
+            <div>
+                <a href="{{ route('view_profile', [ 'user'=>$profile['username'] ]) }}">
+                    <img src="{{ $profile['avatar'] }}" alt="{{ $profile['fullname'] }}" class="image is-96x96" width="100" height="100">
+                </a>
             </div>
+            <div class="content">
+                <h4 class="title is-6">
+                    <a href="{{ route('view_profile', ['user'=>$profile['username']]) }}" class="{{ ($profile['verified']) ? 'verified' : '' }}">
+                        {{ ucwords(strtolower($profile['fullname'])) }}
+                    </a>
+                    
+                </h4>
+                @if($profile['location'])
+                    <div class="subtitle is-6 is-spaced">{{ $profile['location'] }}</div>
+                @endif
+                @if(count($profile['skills']) > 0)
+                    {!! formatSkills($profile['skills']) !!}
+                @endif
+            </div>
+            <follow username="{{$profile['username']}}"></follow>
         </div>
+        
     </div>
 </div>

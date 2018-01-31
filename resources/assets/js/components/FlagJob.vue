@@ -1,6 +1,9 @@
 <template>
     <span>
-        <a href="" class="btn btn-default-danger-outline btn-xs" v-on:click.prevent="flagJob()"><span class="text-warning"><i class="fa fa-warning"></i> {{ isFlagged ? 'Flagged' : 'Flag as spam' }}</span></a>
+        <a href="" class="button is-small" v-on:click.prevent="flagJob()">
+            <span class="icon"><i class="fa fa-warning"></i></span>
+            <span>{{ isFlagged ? 'Flagged' : 'Flag as spam' }}</span>
+        </a>
     </span>
 </template>
 
@@ -10,8 +13,8 @@
         data(){
             return {
                 taskId : this.jobId,
-                url : window.Laravel.url + '/profile/jobs/' + this.jobId + '/flag',
-                urlCheck : window.Laravel.url + '/profile/jobs/' + this.jobId + '/flag/check',
+                url : window.Laravel.url + '/dashboard/jobs/' + this.jobId + '/flag',
+                urlCheck : window.Laravel.url + '/dashboard/jobs/' + this.jobId + '/flag/check',
                 isLoggedIn: window.Laravel.userLoggedIn,
                 isFlagged: false,
             }

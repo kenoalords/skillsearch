@@ -1,22 +1,28 @@
-<div class="ui center aligned segment">
-    <div>
-        <a href="{{ route('view_profile', [ 'user'=>$profile['username'] ]) }}">
-            <img src="{{ $profile['avatar'] }}" alt="{{ $profile['fullname'] }}" class="ui centered circular image" width="100" height="100" style="margin: 2em auto; border: 5px solid #eee">
-        </a>
-    </div>
-    <div class="content" style="padding-bottom: 2em">
-        <h4 class="ui centered header">
-            <a href="{{ route('view_profile', ['user'=>$profile['username']]) }}">
-                {{ ucwords(strtolower($profile['fullname'])) }} {!! identity_check($profile['verified']) !!}
-            </a>
-            @if($profile['location'])
-                <div class="sub header"><i class="icon marker" style="margin-right: 0"></i>{{ $profile['location'] }}</div>
-            @endif
-        </h4>
-        
-        @if(count($profile['skills']) > 0)
-            {!! formatSkills($profile['skills']) !!}
-        @endif
-        <p><a href="/{{$profile['username']}}/contact-request" class="ui tiny icon label"><i class="icon mail"></i>Request Contact</a></p>
+<div class="column is-one-third-desktop is-one-quarter-widescreen is-half-tablet">
+    <div class="card user">
+        <div class="card-content has-text-centered ">
+            <div>
+                <a href="{{ route('view_profile', [ 'user'=>$profile['username'] ]) }}">
+                    <img src="{{ $profile['avatar'] }}" alt="{{ $profile['fullname'] }}" class="image is-96x96" width="100" height="100">
+                </a>
+            </div>
+            <div class="content">
+                <h4 class="title is-6">
+                    <a href="{{ route('view_profile', ['user'=>$profile['username']]) }}" class="{{ ($profile['verified']) ? 'verified' : '' }}">
+                        {{ ucwords(strtolower($profile['fullname'])) }}
+                    </a>
+                    
+                </h4>
+                @if($profile['location'])
+                    <div class="subtitle is-6 is-spaced">{{ $profile['location'] }}</div>
+                @endif
+                @if(count($profile['skills']) > 0)
+                    {!! formatSkills($profile['skills']) !!}
+                @endif
+            </div>
+        </div>
+        <div class="card-footer">
+            <a href="/{{$profile['username']}}/contact-request" class="card-footer-item">Request Contact</a>
+        </div>
     </div>
 </div>

@@ -6,19 +6,27 @@
 @section('title', 'Recent Works')
 
 @section('content')
-<!-- @include('search-form') -->
 
 <div>
-    <div class="ui centered container grid">
-        <div class="" style="margin: 3em 0 3em">
-            <h1 class="ui header" style="margin-bottom: 1em">Recent Works!</h1>
-             @include('search-form')
+    <div class="hero is-dark">
+        <div class="hero-body">
+            <div class="columns is-centered">
+                <div class="column is-6">
+                    <h1 class="title is-3 has-text-centered">Recent Works!</h1>
+                    @include('search.people-search-form')
+                </div>
+            </div>
+            
         </div>
     </div>
     <!-- <div class="ui divider" style="padding: .5em 0"></div> -->
-    <div>
-        <div>
-            <portfolio-list></portfolio-list>
+    <div class="hero">
+        <div class="hero-body">
+            <div class="columns is-centered">
+                <div class="column is-10">
+                    <portfolio-list></portfolio-list>
+                </div>
+            </div>
         </div>
     </div>
 </div>

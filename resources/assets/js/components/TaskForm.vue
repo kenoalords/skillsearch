@@ -1,108 +1,97 @@
 <template>
     <div>
-        <h1 class="ui header" v-if="!task.id">Post a Job</h1>
-        <h1 class="ui header" v-if="task.id">Edit Job</h1>
+        <h1 class="title is-2" v-if="!task.id">Post a Job</h1>
+        <h1 class="title is-2" v-if="task.id">Edit Job</h1>
         <div class="ui divider"></div>
         <div>
             <form action="#" method="POST" class="ui form">
 
                 <div class="field">
-                    <label for="">What category of service do you require</label>
-                    <!-- <select name="category" v-model="task.category" class="form-control" v-on:change="checkFormInput()">
-                        <option value="0">Select a category</option>
-                        <option :value="category.skill" v-for="category in categories">{{category.skill}}</option>
-                    </select> -->
-                    <div class="ui selection dropdown">
-                        <input type="hidden" name="category" v-model="task.category">
-                        <i class="dropdown icon"></i>
-                        <div class="default text">Choose a category</div>
-                        <div class="menu">
-                            <div class="item" :data-value="category.skill" v-for="category in categories">{{category.skill}}</div>
-                        </div>
+                    <label for="" class="label">What category of service do you require</label>
+                    <div class="select">
+                        <select name="category" v-model="task.category" v-on:change="checkFormInput()">
+                            <option value="0">Select a category</option>
+                            <option :value="category.skill" v-for="category in categories">{{category.skill}}</option>
+                        </select>
                     </div>
                 </div>
 
                 <div class="field">
-                    <label for="title">What is the job title</label>
-                    <input v-model="task.title" type="text" name="title" class="form-control" placeholder="e.g I need a graphics designer" autofocus v-on:focus="checkFormInput()">
+                    <label for="title" class="label">What is the job title</label>
+                    <input v-model="task.title" type="text" name="title" class="input" placeholder="e.g I need a graphics designer" autofocus v-on:focus="checkFormInput()">
                 </div>
 
                 <div class="field">
-                    <label for="description">Tell us more about this job</label>
-                    <textarea v-model="task.description" rows="7" name="description" class="form-control" placeholder="Describe your project here" v-on:focus="checkFormInput()"></textarea>
+                    <label for="description" class="label">Tell us more about this job</label>
+                    <textarea v-model="task.description" rows="7" name="description" class="textarea" placeholder="Describe your project here" v-on:focus="checkFormInput()"></textarea>
                 </div>
 
                 <div class="field">
-                    <label for="location" id="location">Where is this job located</label>
+                    <label for="location" id="location" class="label">Where is this job located</label>
                     <div class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-map-marker"></i></span>
-                        <input v-model="task.location" type="text" name="location" class="form-control" placeholder="e.g Ikeja, Lagos" v-on:focus="checkFormInput()">
+                        <input v-model="task.location" type="text" name="location" class="input" placeholder="e.g Ikeja, Lagos" v-on:focus="checkFormInput()">
                     </div>
                 </div>
 
                 
-                <div class="two fields">
+                <div class="field is-grouped">
 
-                    <div class="field">
-                        <label for="budget">What is your budget</label>
-                        <div class="ui labeled input">
-                            <div class="ui label">₦</div>
-                            <input v-model="task.budget" type="number" name="budget" id="budget" class="form-control" placeholder="e.g 50000"  v-on:focus="checkFormInput()">
+                    <div class="control">
+                        <label for="budget" class="label">What is your budget</label>
+                        <div class="field has-addons has-addons-right">
+                            <p class="control">
+                                <span class="button is-static">₦</span>
+                            </p>
+                            <p class="control">
+                                <input v-model="task.budget" type="number" name="budget" id="budget" class="input" placeholder="e.g 50000"  v-on:focus="checkFormInput()">
+                            </p>
                         </div>
                     </div>
 
-                    <div class="field">
-                        <label for="">Budget type</label>
-                        <!-- <select name="budget_type" class="form-control" v-model="task.budget_type" v-on:focus="checkFormInput()">
-                            <option value="0">Select</option>
-                            <option value="fixed">Fixed</option>
-                            <option value="negotiable">Negotiable</option>
-                        </select> -->
-                        <div class="ui selection dropdown">
-                            <input type="hidden" name="budget_type" v-model="task.budget_type">
-                            <i class="dropdown icon"></i>
-                            <div class="default text">Budget type</div>
-                            <div class="menu">
-                                <div class="item" :data-value="fixed">Fixed</div>
-                                <div class="item" :data-value="negotiable">Negotiable</div>
-                            </div>
+                    <div class="control">
+                        <label for="" class="label">Budget type</label>
+                        <div class="select">
+                            <select name="budget_type" class="input" v-model="task.budget_type" v-on:focus="checkFormInput()">
+                                <option value="0">Select</option>
+                                <option value="fixed">Fixed</option>
+                                <option value="negotiable">Negotiable</option>
+                            </select>
                         </div>
                     </div>
                 </div>
-                <div class="two fields">
-                    <div class="field">
-                        <label for="expiry_date">When does this job offer close?</label>
-                        <div class="ui icon input">
-                            <i class="icon calendar"></i>
-                            <input v-model="task.expires" type="text" id="expiry_date" class="form-control" placeholder="mm/dd/yyyy"  v-on:focus="checkFormInput()">
-                        </div>
+                <div class="field is-grouped">
+                    <div class="control">
+                        <label for="expiry_date" class="label">When does this job offer close?</label>
+                        <input v-model="task.expires" type="date" id="expiry_date" class="input date" placeholder="mm/dd/yyyy"  v-on:focus="checkFormInput()">
                         <small v-html="selectedDate"></small>
                     </div>
 
-                    <div class="field">
-                        <label>How many applications do you need?</label>
-                        <div class="ui icon input">
-                            <i class="icon users"></i>
-                            <input v-model="task.application_limit" type="number" id="application_limit" class="form-control" placeholder="e.g. 25"   v-on:focus="checkFormInput()">
+                    <div class="control">
+                        <label class="label">How many applications do you need?</label>
+                        <div class="">
+                            <input v-model="task.application_limit" type="number" id="application_limit" class="input" placeholder="e.g. 25"   v-on:focus="checkFormInput()">
                         </div>
                     </div>
 
                 </div>
                 
                 <div class="field">
-                    <div class="ui checkbox">
-                        <input type="checkbox" v-model="task.is_public" value="1">
-                        <label>Make this job public</label>
+                    <div class="checkbox">                        
+                        <label>
+                            <input type="checkbox" v-model="task.is_public" value="1"> Make this job public
+                        </label>
                     </div>
                 </div>
                 <div class="field">
-                    <div class="ui checkbox">
-                        <input type="checkbox" v-model="agree">
-                        <label>Please agree to our <a href="/terms-and-condition#jobs" target="_blank">Terms and Conditions</a></label>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" v-model="agree"> Please agree to our <a href="/terms-and-condition#jobs" target="_blank">Terms and Conditions</a>
+                        </label>
                     </div>
                 </div>
                 <div class="field">
-                    <button type="submit" class="ui primary button" v-on:click.prevent="submitProject()" :disabled="!isComplete">Submit</button>
+                    <button type="submit" class="button is-link" v-on:click.prevent="submitProject()" :disabled="!isComplete">Submit</button>
                 </div>
             </form>
         </div>
@@ -141,7 +130,7 @@
                 }
                 if(_this.isComplete === true){
                     $('body').addClass('loading');
-                    axios.post(_this.baseUrl + '/profile/jobs/add', _this.task).then((response)=>{
+                    axios.post(_this.baseUrl + '/dashboard/jobs/add', _this.task).then((response)=>{
                         $('body').removeClass('loading');
                         _this.isComplete = false;
                         if(_this.task.id){
@@ -149,7 +138,7 @@
                         } else {
                             alert('Your job was posted successfully');
                         }
-                        window.location.href = '/profile/jobs';
+                        window.location.href = '/dashboard/jobs';
                     })
                 }
             },

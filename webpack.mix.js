@@ -15,7 +15,8 @@ mix.js('node_modules/video.js/dist/video.min.js', 'public/js')
 	.js('node_modules/blazy/blazy.min.js', 'public/js')
 	.js('node_modules/semantic-ui-css/semantic.min.js', 'public/js')
 	.combine([
-		'node_modules/semantic-ui-css/semantic.min.css',
+		// 'node_modules/semantic-ui-css/semantic.min.css',
+		'node_modules/bulma/css/bulma.css',
 		'node_modules/toastr/build/toastr.css',
 		'node_modules/video.js/dist/video.css',
 		'node_modules/cropperjs/dist/cropper.css',

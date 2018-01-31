@@ -1,7 +1,7 @@
 <template>
-    <span>
-        <a href="#" class="" v-if="isAdmin" @click.prevent="makeFeatured">
-            <i class="icon star" :class="{ 'orange' : isFeatured }"></i>
+    <span class="level-item" v-if="isAdmin">
+        <a href="#" class=""  @click.prevent="makeFeatured">
+            <span class="icon"><i class="fa fa-star" :class="{ 'has-text-grey' : isFeatured, 'has-text-success' :  !isFeatured}"></i></span>
         </a>
     </span>
 </template>

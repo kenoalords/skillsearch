@@ -1,6 +1,9 @@
 <template>
     <span>
-        <a href="#" class="btn btn-sm" v-on:click.prevent="saveJob()" :class="{ 'btn-default-success-outline' : isSaved, 'btn-default' : !isSaved }"><i class="fa fa-star"></i> {{ isSaved === false ? 'Save Job' : 'Saved!' }}</a>
+        <a href="#" class="button is-small " v-on:click.prevent="saveJob()" :class="{ 'is-link' : isSaved}">
+            <span class="icon"><i class="fa fa-star"></i></span> 
+            <span>{{ isSaved === false ? 'Save Job' : 'Saved' }}</span>
+        </a>
     </span>
 </template>
 
@@ -9,8 +12,8 @@
         data() {
             return{
                 id: this.jobId,
-                url: window.Laravel.url + '/profile/jobs/' + this.jobId + '/save',
-                checkUrl: window.Laravel.url + '/profile/jobs/' + this.jobId + '/save/check',
+                url: window.Laravel.url + '/dashboard/jobs/' + this.jobId + '/save',
+                checkUrl: window.Laravel.url + '/dashboard/jobs/' + this.jobId + '/save/check',
                 isLoggedIn: window.Laravel.userLoggedIn,
                 isSaved: false,
                 userId: window.Laravel.user_id,

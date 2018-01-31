@@ -8,28 +8,44 @@
 @section('content')
  
 <div class="ui row">
-        <section id="people-banner">
-            <div class="ui centered grid">
-                <h1 class="ui header" style="margin-bottom: 2em">
-                    Search Great Talents
-                    <div class="sub header">Find the right people for your job in Nigeria.</div>
-                </h1>  
-                @include('search-form') 
+        <section class="hero is-dark">
+            <div class="hero-body">
+                <div class="columns is-centered">
+                    <div class="column is-6 has-text-centered">
+                        <h1 class="title is-3">
+                            Search Great Talents
+                        </h1>  
+                        <div class="subtitle is-6">Find the right people for your job in Nigeria.</div>
+                        @include('search.people-search-form') 
+                    </div>
+                </div>
+                
             </div>           
         </section>
 
         @if ( count($profiles) )
-            <div class="padded" id="peoples-list">
-                @each('profile.person-tag', $profiles, 'profile')
+            <div class="hero">
+                <div class="hero-body">
+                    <div class="columns is-centered">
+                        <div class="column is-10">
+                            <div class="columns is-multiline">
+                                @each('profile.person', $profiles, 'profile')
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="ui center aligned grid" style="margin-bottom: 2em;">
-                <a href="#" data-page="1" id="get-more-users" class="ui button">Load more</a>
-            </div>
+            
         @endif
 
-        <div class="padded" style="background-color: #f8f8f8; bor">
-            <h2 class="ui centered header">Top Categories</h2>
-            @include('includes.popular-categories');
+        <div class="hero is-primary is-bold">
+            <div class="hero-body">
+                <h1 class="title has-text-centered">
+                    Explore Our Marketplace
+                </h1>
+                <h4 class="subtitle has-text-centered">Find the right people for your next project</h4>
+                @include('includes.popular-categories')
+            </div>  
         </div>
 
 </div>

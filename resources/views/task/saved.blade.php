@@ -1,13 +1,13 @@
-@extends('layouts.admin')
+@extends('layouts.dashboard')
 
 @section('title', 'Applications')
 @section('content')
 
-<h1 class="ui header">
+<h1 class="title is-3">
 	{{ count($tasks) }} Saved {{ str_plural('Job', count($tasks)) }}
-	<div class="sub header">Quickly find updates with your saved jobs</div>
 </h1>
-
+<div class="subtitle is-6">Quickly find updates with your saved jobs</div>
+@include('task.menu')
 @if(count($tasks) > 0)
 	@each('task.partials.task', $tasks, 'task')
 @else

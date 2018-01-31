@@ -1,14 +1,8 @@
 <template>
     <span v-if="isLoaded">
-        <!-- <ul id="f-stats">
-            <li><strong>{{followers}}</strong> Followers</li>
-            <li><strong>{{following}}</strong> Following</li>
-            
-        </ul> -->
         <span v-if="!is_self">
-            <a href="#" v-bind:class="{'basic': can_follow, 'blue' : !can_follow}" class="ui mini icon labeled button" v-on:click.prevent="handle">
-                <i class="icon user"></i>
-                {{ can_follow ? 'Follow' : 'Following' }}
+            <a href="#" v-bind:class="{'is-light': can_follow, 'is-primary' : !can_follow}" class="button is-small has-text-weight-bold" v-on:click.prevent="handle">
+                <span class="icon"><i class="fa fa-user"></i></span> <span>{{ can_follow ? 'Follow' : 'Following' }} </span> <span class="icon" v-if="!can_follow"><i class="fa fa-check"></i></span>
             </a>
         </span>
     </span>

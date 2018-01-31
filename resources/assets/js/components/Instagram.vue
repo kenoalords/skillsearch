@@ -1,8 +1,9 @@
 <template>
     <div>
+
         <div v-if="isFetching" class="text-center">
             <div class="padded">
-                <h4 class="thin"><img :src="loader" width="24" height="24"> Loading Instagram Feed</h4>
+                <h4 class="title is-5 loading-icon"><img :src="loadingGif"> Loading Instagram Feed</h4>
             </div>
         </div>
 
@@ -11,17 +12,21 @@
             <p>Sorry we could not load this instagram feed, please try again later.</p>
         </div>
 
-        <div v-if="feeds" class="ui four column computer grid">
-            <div class="column" v-for="feed in feeds">
-                <div class="ui fluid card">
-                    <div :class="feed.type">
+        <div v-if="feeds" class="columns is-multiline">
+            <div class="column is-one-third-desktop is-one-quarter-widescreen is-half-tablet" v-for="feed in feeds">
+                <div class="card portfolio">
+                    <div :class="feed.type" class="card-image">
                         <a :href="feed.link" target="_blank" :data-image="feed.images.standard_resolution.url" v-on:click.prevent="showImage(feed)" class="image">
                             <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" :data-src="feed.images.standard_resolution.url" width="320" height="320" :alt="feed.user.full_name" class="img-responsive b-lazy instagram-image">
                         </a>                     
                     </div>
-                    <div class="extra contentt">
-                        <span><i class="fa fa-heart"></i> {{feed.likes.count}}</span>
-                        <span><i class="fa fa-comments"></i> {{feed.comments.count}}</span>
+                    <div class="card-content" style="padding: 5px 10px">
+                        <div class="level is-mobile">
+                            <div class="level-left">
+                                <span class="level-item has-text-weight-bold"><i class="fa fa-heart"></i>&nbsp; {{feed.likes.count}}</span>
+                                <span class="level-item has-text-weight-bold"><i class="fa fa-comment"></i>&nbsp; {{feed.comments.count}}</span>  
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div><!-- end of grid -->
@@ -95,6 +100,7 @@
                 isOverlay: false,
                 currentlyViewing : null,
                 player : null,
+                loadingGif: window.Laravel.url + '/images/loading.gif',
             }
         },
         props: {
