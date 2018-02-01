@@ -30,7 +30,7 @@ class InviteContactController extends Controller
 	        $token = $googleService->requestAccessToken($code);
 
 	        // Send a request with it
-	        $result = json_decode($googleService->request('https://www.google.com/m8/feeds/contacts/default/full?alt=json&max-results=10'), true);
+	        $result = json_decode($googleService->request('https://www.google.com/m8/feeds/contacts/default/full?alt=json&max-results=5000'), true);
 
 	        // Going through the array to clear it and create a new clean array with only the email addresses
 	        $emails = []; // initialize the new array
@@ -107,15 +107,17 @@ class InviteContactController extends Controller
     			$invite = explode('|', $email);
     			$check = User::where('email', $invite[1])->first();
     			if(!$check){
+    				if(filter_var($invite[1], FILTER_VALIDATE_EMAIL)){
 					$contactInvite->create([
-		            	'invitee_name'	=> $request->invitee_name,
-		            	'invitee_email'	=> $request->invitee_email,
-		            	'fullname'		=> $invite[0],
-		            	'email'			=> $invite[1],
-		            	'medium'		=> 'gmail'
-		            ]);
-		            Mail::to($invite[1])->send(new ContactInviteMail($request->invitee_name, $invite[0], $invite[1]));
-		        }
+			            	'invitee_name'	=> $request->invitee_name,
+			            	'invitee_email'	=> $request->invitee_email,
+			            	'fullname'		=> $invite[0],
+			            	'email'			=> $invite[1],
+			            	'medium'		=> 'gmail'
+			          ]);
+		            	Mail::to($invite[1])->send(new ContactInviteMail($request->invitee_name, $invite[0], $invite[1]));
+		       	}
+		     }
     		}
 
     		$invitingUser = User::where('email', $request->invitee_email)->first();
