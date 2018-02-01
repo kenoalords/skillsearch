@@ -51,6 +51,7 @@ Vue.component('portfolio-list', require('./components/Portfolios.vue'));
 Vue.component('portfolio-item', require('./components/PortfolioItem.vue'));
 Vue.component('gig-form', require('./components/GigForm.vue'));
 Vue.component('featured', require('./components/Featured.vue'));
+Vue.component('send-reminder', require('./components/SendReminder.vue'));
 
 const app = new Vue({
     el: '#app',

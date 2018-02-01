@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Follower;
 use App\Models\ContactInvite;
 use App\Mail\ContactInviteMail;
+use App\Mail\ContactInviteReminder;
 use App\Services\PointService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -151,4 +152,12 @@ class InviteContactController extends Controller
             return redirect('invite/delete');
         }
     }
+
+	public function sendReminder(Request $request){
+		$contact = ContactInvite::get();
+		$contact->each(function($el, $index){
+			Mail::to($el->email)->send(new ContactInviteReminder($el->invitee_name, $el->email));
+		});
+		return response()->json(true, 200);
+	}
 }

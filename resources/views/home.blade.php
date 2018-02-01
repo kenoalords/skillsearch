@@ -75,5 +75,14 @@
             @each('task.partials.task', $tasks, 'task')
         </div>
     @endif --}}
+
+    @if(Auth::user()->is_admin === 1)
+    <div class="hero is-dark">
+        <div class="hero-body has-text-centered">
+            <h3 class="title is-4">Send contact invite reminder</h3>
+            <send-reminder></send-reminder>
+        </div>
+    </div>
+    @endif
     
 @endsection

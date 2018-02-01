@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -5302,6 +5302,44 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     mounted: function mounted() {}
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/SendReminder.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            isSending: false
+        };
+    },
+
+    methods: {
+        sendReminder: function sendReminder() {
+            var $this = this;
+            if (confirm('Are you sure you want to send the contact invite reminder?')) {
+                $this.isSending = true;
+
+                axios.post('/dashboard/send-reminder').then(function (response) {
+                    $this.isSending = false;
+                });
+            }
+        }
+    },
+    mounted: function mounted() {
+        console.log('Component mounted.');
+    }
 });
 
 /***/ }),
@@ -86956,6 +86994,36 @@ if (false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-1a2c4428\"}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/SendReminder.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', [_c('button', {
+    staticClass: "button is-primary",
+    class: {
+      'is-loading': _vm.isSending
+    },
+    attrs: {
+      "disabled": _vm.isSending
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.sendReminder()
+      }
+    }
+  }, [_vm._v("Send contact reminder")])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-1a2c4428", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-1abb045c\"}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/Requests.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -90717,7 +90785,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, _vm._l((_vm.portfolios), function(portfolio) {
     return _c('portfolio-item', {
       key: portfolio.uid,
-      staticClass: "eight wide mobile five wide tablet four wide computer column work-card",
       attrs: {
         "data": portfolio
       }
@@ -90746,7 +90813,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('span', {
     staticClass: "icon"
   }, [_c('i', {
-    staticClass: "fa fa-th"
+    staticClass: "fa fa-th-large"
   })])
 }]}
 module.exports.render._withStripped = true
@@ -102167,6 +102234,7 @@ Vue.component('portfolio-list', __webpack_require__("./resources/assets/js/compo
 Vue.component('portfolio-item', __webpack_require__("./resources/assets/js/components/PortfolioItem.vue"));
 Vue.component('gig-form', __webpack_require__("./resources/assets/js/components/GigForm.vue"));
 Vue.component('featured', __webpack_require__("./resources/assets/js/components/Featured.vue"));
+Vue.component('send-reminder', __webpack_require__("./resources/assets/js/components/SendReminder.vue"));
 
 var app = new Vue({
 	el: '#app',
@@ -103451,6 +103519,41 @@ module.exports = Component.exports
 
 /***/ }),
 
+/***/ "./resources/assets/js/components/SendReminder.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")(
+  /* script */
+  __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/assets/js/components/SendReminder.vue"),
+  /* template */
+  __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-1a2c4428\"}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/assets/js/components/SendReminder.vue"),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/vagrant/www/hiremonster/resources/assets/js/components/SendReminder.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] SendReminder.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-1a2c4428", Component.options)
+  } else {
+    hotAPI.reload("data-v-1a2c4428", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
 /***/ "./resources/assets/js/components/Skills.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -103738,7 +103841,7 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 4:
+/***/ 3:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__("./resources/assets/js/app.js");

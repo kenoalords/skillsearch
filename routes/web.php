@@ -71,6 +71,9 @@ Route::group(['middleware'=>'auth'], function(){
 	Route::delete('/comment/{comment}/delete', 'CommentController@deleteComment');
 
 	Route::group(['prefix'=>'dashboard'], function(){
+		// send contact reminder
+		Route::post('/send-reminder', 'InviteContactController@sendReminder')->middleware('is_admin');
+
 		Route::get('/', 'HomeController@index')->middleware('user_profile_setup');
 		Route::get('/start', 'UserProfileController@setupUserProfile')->name('start');
 		Route::post('/start', 'UserProfileController@saveSocialUserProfile');

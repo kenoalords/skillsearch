@@ -18,7 +18,7 @@
                     $this.isSending = true;
 
                     axios.post('/dashboard/send-reminder').then( (response) => {
-                        
+                        $this.isSending = false;
                     })
                 }
             },
