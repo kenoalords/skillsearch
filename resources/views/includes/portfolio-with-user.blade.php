@@ -19,7 +19,7 @@
                 <div class="level-left">
                     <a href="/{{ $portfolio['user'] }}" itemprop="url" class="has-text-weight-bold">
                         <img src="{{ $portfolio['user_profile']['avatar'] }}" alt="{{ $portfolio['user_profile']['fullname'] }}" class="image is-24x24 is-rounded is-inline">
-                         <span itemprop="author" class="is-hidden-mobile {{ ($portfolio['verified']) ? 'verified' : '' }} author" >{{ $portfolio['user_profile']['first_name'] }}</span>
+                         <span itemprop="author" class="{{ ($portfolio['verified']) ? 'verified' : '' }} author" >{{ $portfolio['user_profile']['first_name'] }}</span>
                     </a>
                 </div>
 

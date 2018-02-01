@@ -19,7 +19,7 @@
             <ul class="menu-list">
                 <li><a href="/invite">Invite Friends</a></li>
                 <li><a href="/dashboard/profile/edit" class="{{ (Request::path() == 'dashboard/profile/edit') ? 'is-active' : '' }}">Edit Profile</a></li>
-                <li><a href="/profile/delete">Delete Account</a></li>
+                <li><a href="/dashboard/profile/delete">Delete Account</a></li>
                 <li><a href="/logout">Logout</a></li>
             </ul>
             
@@ -27,7 +27,7 @@
                 <p class="menu-label">Administrator</p>
                 <ul class="menu-list">
                     <li><a href="{{ route('verify_user_accounts') }}">Verify User Accounts</a></li>
-                    <li><a href="/home/email-broadcast">Send Email Broadcast</a></li>
+                    <li><a href="/dashboard/email-broadcast">Send Email Broadcast</a></li>
                     <li><a href="{{-- route('approve_tasks') --}}">Approve Jobs</a></li>
                 </ul>
             @endif

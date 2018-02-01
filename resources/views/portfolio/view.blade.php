@@ -217,8 +217,10 @@
         <div class="hero-body">
             <div class="columns is-centered is-multiline">
                 <div class="column is-10">
-                    <h3 class="title is-4" style="margin-left: 12px;">Similar Works</h3>
-                    @each('includes.portfolio-with-user', $similar, 'portfolio')
+                    <h3 class="title is-4">Similar Works</h3>
+                    <div class="columns is-multiline">
+                        @each('includes.portfolio-with-user', $similar, 'portfolio')
+                    </div>
                 </div>
             </div>
         </div>
