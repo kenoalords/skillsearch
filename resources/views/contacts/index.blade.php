@@ -6,13 +6,32 @@
 @section('metadescription', 'Invite your friends from gmail and yahoo to connect with you on ' . config('app.name'))
 
 @section('content')
-<div class="ui container">
-    <div class="ui centered grid">
-        <img src="{{asset('public/invite.jpg')}}" alt="Invite your friends" style="max-width: 100%">
-        <div class="padded">
-            <h3 class="ui header" style="margin-bottom: 2em">Invite your friends from Gmail! It's Fast, Easy and <strong class="ui green text"><i class="icon lock"></i>Safe</strong> to use</h3>
-            <p><a href="/invite/gmail" class="ui icon labeled google plus button" id="google-invite"><i class="icon google plus"></i> Invite Friends From Gmail</a></p>
-        </div>
+<div class="hero is-primary is-medium is-bold">
+    <div class="hero-body">
+    		<div class="columns is-centered">
+    			<div class="column is-8 has-text-centered">
+    				<h1 class="title is-2">Invite your friends from Gmail!</h1>
+    				<h4 class="title is-5">It's Fast, Easy and <span class="icon"><i class="fa fa-lock"></i></span> <span>Safe to use</span></h4>
+				<p>
+					<a href="/invite/gmail" class="button is-success is-raised" id="google-invite">
+						<span class="icon"><i class="fa fa-google-plus"></i></span> 
+						<span>Invite Friends From Gmail</span>
+					</a>
+				</p>
+    			</div>
+    		</div>
     </div>
+</div>
+
+<div class="hero is-white">
+	<div class="hero-body">
+		<div class="columns is-centered">
+			<div class="column is-8">
+				<div class="">
+					@include('includes.top-users', ['title'=>'Join the team'])
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 @endsection

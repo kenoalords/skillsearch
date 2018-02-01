@@ -6,17 +6,20 @@
 @section('metadescription', 'Invite your friends from gmail and yahoo to connect with you on ' . config('app.name'))
 
 @section('content')
-    <div class="text-center" style="background: #e0eaec">
-        <img src="{{asset('public/thankyou.jpg')}}" alt="Invite your friends" style="max-width: 100%">
-    </div>
-    <div class="container padded">
-        <div class="text-center">
-            <h1><i class="fa fa-thumbs-o-up"></i> You Rock!!</h1>
+    <div class="hero is-medium">
+        <div class="hero-body has-text-centered">
+            <h1 class="title is-3">
+                <span class="icon"><i class="fa fa-thumbs-o-up"></i></span> 
+                <span>You Rock!!</span>
+            </h1>
             <p>
                 Thank You <strong>{{ session('name') }}</strong>, an invitation email has been sent out to your friends.  
             </p>
             <p>
-                <a href="{{ config('app.url') }}" class="btn btn-default"><i class="fa fa-arrow-left"></i> Go Home</a>
+                <a href="{{ config('app.url') }}" class="button is-primary is-raised">
+                    <span class="icon"><i class="fa fa-arrow-left"></i></span> 
+                    <span>Go Home</span>
+                </a>
             </p>
         </div>
     </div>

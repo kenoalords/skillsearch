@@ -7,12 +7,12 @@
 
 @section('content')
     
-    <div class="container padded">
-        <div>
+    <div class="hero is-medium">
+        <div class="hero-body has-text-centered">
         	<div class="text-center" style="margin-bottom: 2em">
-        		<h3 class="thin">{{$email}} Successfully Removed!</h3>
+        		<h3 class="title is-4">{{$email}} Successfully Removed!</h3>
 	            <p>You will no longer receive reminder emails to join {{config('app.name')}}</p>
-	            <p><a href="{{config('app.url')}}" class="btn btn-success">Back to {{config('app.name')}}</a></p>
+	            <p><a href="{{config('app.url')}}" class="button is-primary">Back to {{config('app.name')}}</a></p>
             </div>
         </div>
     </div>

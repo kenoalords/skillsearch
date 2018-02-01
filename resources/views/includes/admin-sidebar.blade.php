@@ -28,7 +28,7 @@
                 <ul class="menu-list">
                     <li><a href="{{ route('verify_user_accounts') }}">Verify User Accounts</a></li>
                     <li><a href="/dashboard/email-broadcast">Send Email Broadcast</a></li>
-                    <li><a href="{{-- route('approve_tasks') --}}">Approve Jobs</a></li>
+                    <li><a href="{{ route('delete_invites') }}">Delete Invite Emails</a></li>
                 </ul>
             @endif
         </aside>

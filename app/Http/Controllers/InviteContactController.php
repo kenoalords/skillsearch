@@ -9,6 +9,7 @@ use App\Mail\ContactInviteMail;
 use App\Services\PointService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Transformers\SimpleUserTransformers;
 use OAuth;
 use Mail;
 
@@ -29,7 +30,7 @@ class InviteContactController extends Controller
 	        $token = $googleService->requestAccessToken($code);
 
 	        // Send a request with it
-	        $result = json_decode($googleService->request('https://www.google.com/m8/feeds/contacts/default/full?alt=json&max-results=50'), true);
+	        $result = json_decode($googleService->request('https://www.google.com/m8/feeds/contacts/default/full?alt=json&max-results=10'), true);
 
 	        // Going through the array to clear it and create a new clean array with only the email addresses
 	        $emails = []; // initialize the new array
@@ -54,7 +55,11 @@ class InviteContactController extends Controller
 		                	if(Auth::user()){
 		                		$is_following = Auth::user()->followers()->where('following_id', $friends_check->id)->first();
 		                		if(!$is_following){
-		                			array_push($friends, $friends_check);
+		                			$friend = fractal()->item($friends_check)
+		                							->transformWith(new SimpleUserTransformers())
+		                							->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                                                            ->toArray();
+		                			array_push($friends, $friend);
 		                		}
 		                	}
 		                } else {
