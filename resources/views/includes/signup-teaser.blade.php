@@ -25,7 +25,7 @@
                 <h3 class="title is-3 is-size-4-mobile bold">
                    <img src="{{ asset('images/waving-hand.png') }}" alt="" class="waving-hand"> Hello {{ Auth::user()->profile->first_name }}
                 </h3>
-                <p class="has-link">We need your help to build this community. It only takes 3minutes. Please help us spread the word by sharing on <a href="">Facebook</a>, <a href="">Twitter</a> and <a href="">Linkedin</a> or</p>
+                <p class="has-link">We need your help to build this community. It only takes 3minutes. Please help us spread the word by sharing on <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ Request::url() }}">Facebook</a> and <a target="_blank" href="https://twitter.com/intent/tweet?url={{ Request::url() }}&via=ubanjicreatives&text=Share+your+creative+work+and+find+more+opportunities.+Join+www.ubani.com+today.&hashtags=ubanjicreatives">Twitter</a> or</p>
                 <p>
                     <a href="/invite/gmail" class="button is-google is-raised" id="google-invite">
                         <span class="icon"><i class="fa fa-google"></i></span> 

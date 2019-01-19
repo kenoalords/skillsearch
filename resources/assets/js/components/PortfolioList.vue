@@ -24,7 +24,7 @@
             return {
                 isLoading : false,
                 page: 0,
-                limit: 16,
+                limit: 36,
                 portfolios: [],
                 finished: false,
             };

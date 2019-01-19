@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Mail;
 use App\Models\Enquiry;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Mail\EnquiryNotification;
 
 class EnquiryController extends Controller
 {
@@ -27,6 +29,7 @@ class EnquiryController extends Controller
 					'ip'			=> $request->ip(),
 				]);
 			if ( $post ){
+				Mail::to($user)->queue(new EnquiryNotification($user, $request->fullname, $request->email, $request->message));
 				return response()->json(true, 200);
 			} else {
 				return response()->json(false, 422);

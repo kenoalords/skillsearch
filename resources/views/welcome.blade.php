@@ -2,7 +2,7 @@
 
 @section('thumbnail', asset('public/logo-b.png'))
 @section('type', 'article')
-@section('title', 'Home')
+@section('title', 'Share your creative works')
 @section('metadescription', 'Showcase your skills, find latest jobs and get hired on Nigeria preferred skills promotion platform')
 @section('content')
 
@@ -11,7 +11,7 @@
         <div class="columns is-centered">
             <div class="column is-10 has-text-centered">
                 <h1 class="title is-2 bold has-text-white" style="margin-bottom: 0em">
-                    Upload your creative works
+                    Share your creative works
                 </h1>
                 <p class="has-text-white is-size-5">Find new opportunities</p>
                 <p>

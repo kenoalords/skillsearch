@@ -305,16 +305,21 @@ if ( $('.blog-excerpt').length > 0 ){
 			var id = $(this).data('id');
 			var data = { _method: 'delete' };
 			$('body').addClass('is-loading');
-			axios.delete('/dashboard/blog/' + id + '/delete', data).then( (response) => {
-				if ( response.data === true ){
-					$(el).closest('.blog-excerpt').remove();
-					iziToast.success({ title: 'Blog post deleted successfully.' })
-				} else {
-					iziToast.error({ title: 'Error occured while deleting blog post.' })
-				}
-				$('body').removeClass('is-loading');
-				// console.log(response);
-			} ).catch ( error => $('body').removeClass('is-loading') );
+			var confirm = window.confirm("Are you sure you want to delete this blog post? This action cannot be undone");
+			if ( confirm ){
+				axios.delete('/dashboard/blog/' + id + '/delete', data).then( (response) => {
+					if ( response.data === true ){
+						$(el).closest('.blog-excerpt').remove();
+						iziToast.success({ title: 'Blog post deleted successfully.' })
+					} else {
+						iziToast.error({ title: 'Error occured while deleting blog post.' })
+					}
+					$('body').removeClass('is-loading');
+					// console.log(response);
+				} ).catch ( error => $('body').removeClass('is-loading') );
+			} else {
+				return;
+			}
 		})
 	});
 }
