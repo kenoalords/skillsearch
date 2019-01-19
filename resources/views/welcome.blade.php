@@ -6,72 +6,42 @@
 @section('metadescription', 'Showcase your skills, find latest jobs and get hired on Nigeria preferred skills promotion platform')
 @section('content')
 
-<div class="hero is-medium is-dark">
-    <div class="hero-body">
+<div class="section" style="background: url({{ asset('images/how-banner-2.jpg') }}) no-repeat center; background-size: cover">
+    <div class="container">
         <div class="columns is-centered">
-            <div class="column is-6">
-                <h1 class="title is-2" style="margin-bottom: 1em">
-                    Discover and hire creative people
+            <div class="column is-10 has-text-centered">
+                <h1 class="title is-2 bold has-text-white" style="margin-bottom: 0em">
+                    Upload your creative works
                 </h1>
-                <h4 class="subtitle is-5">Find the right people for your jobs in Nigeria</h4>
-                @include('search.people-search-form') 
+                <p class="has-text-white is-size-5">Find new opportunities</p>
+                <p>
+                    <a href="#" class="button is-primary big-action-button">Get started</a>
+                </p>
             </div>
         </div>
     </div>
 </div>
-
-<div class="hero">
-    <div class="hero-body">
-        @include('includes.featured-portfolios')
-    </div>
+<div class="tabs is-centered is-boxed homepage-tabs">
+    <ul>
+        <li class="is-active"><a href="javascript:;">Featured</a></li>
+        <li><a href="javascript:;">Latest</a></li>
+    </ul>
 </div>
-
-
-<div class="hero is-primary is-bold">
-    <div class="hero-body">
-        <h1 class="title has-text-centered">
-            Explore Our Marketplace
-        </h1>
-        <h4 class="subtitle has-text-centered">Find the right people for your next project</h4>
-        @include('includes.popular-categories')
-    </div>  
+<div id="tabs">
+    <ul>
+        <li><portfolio-list type="featured" :key="1"></portfolio-list></li>
+        <li><portfolio-list type="latest" :key="2"></portfolio-list></li>
+    </ul>
 </div>
-
-<div class="hero">
-    <div class="hero-body">
-        <div class="columns">
-            <div class="column is-8 is-offset-2">
-                <div class="columns">
-                    <div class="column is-4">
-                        <img src="{{ asset('public/job-icon.png') }}" alt="Post a job" class="ui centered image" style="max-width: 200px;">
-                    </div>
-                    <div class="column is-8">
-                        <h2 class="title">Need To Get Work Done Quickly?</h2>
-                        <h4 class="subtitle">Find the right team members within seconds</h4>
-                        <p>
-                            With over 10,000 works showcased on {{config('app.name')}}, finding the right person to join your team or projects has never been easier.
-                        </p>
-                        <p>
-                            <a href="/people" class="button is-primary">Find people</a>
-                            <a href="{{ route('create_task') }}" class="button is-primary">Post a job</a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="columns is-centered">
-                <div class="column is-10">
-                    @include('includes.top-users', ['title' => 'Top Members'])
-                </div>
-            </div>
-        </div>
-        
-    </div>
-</div>
-
+{{-- @include('includes.featured-portfolios') --}}
 
 @include('includes.signup-teaser')
+
+<section class="section is-white">
+    <div class="container">
+        @include('blog.latest_posts')
+    </div>
+</section>
 
 @include('includes.skills')
 

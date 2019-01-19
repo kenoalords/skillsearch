@@ -34,6 +34,12 @@ class ComposeServiceProvider extends ServiceProvider
             ['includes.user-badge'],
             \App\Http\ViewComposers\UserImageComposer::class
         );
+        view()->composer(
+            ['blog.latest_posts'], \App\Http\ViewComposers\LatestBlogComposer::class
+        );
+        view()->composer(
+            ['includes.admin-sidebar', 'enquiry.enquiry'], \App\Http\ViewComposers\EnquiryCountComposer::class
+        );
     }
 
     /**

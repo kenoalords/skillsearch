@@ -57,6 +57,10 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'user_profile_setup' => \App\Http\Middleware\UserProfileSetup::class,
-        'is_admin' => \App\Http\Middleware\IsAdministrator::class
+        'admin' => \App\Http\Middleware\IsAdministrator::class,
+        'profile'   => \App\Http\Middleware\ProfileMiddleware::class,
+        'skills'   => \App\Http\Middleware\SkillsMiddleware::class,
+        'blog'   => \App\Http\Middleware\BlogOwnerMiddleware::class,
+        'portfolio' => \App\Http\Middleware\PortfolioMiddleware::class,
     ];
 }

@@ -39,7 +39,7 @@
 </head>
 <body>
     <div id="mobile-menu-admin" class="ui sidebar mobile only column">
-        @include('includes.sidebar-mobile') 
+        
     </div>
     <div id="app" class="dashboard">
         <nav class="ui top fixed borderless menu" id="primary-nav">

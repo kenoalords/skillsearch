@@ -4,8 +4,9 @@
             <a v-on:click.prevent="submitLike" class="like-button" v-bind:class="{ 'liked' : hasLiked }">
                 <i class="fa fa-thumbs-up" v-if="size"></i> 
                 <i class="fa fa-thumbs-up" v-else="!size"></i>
-            </a> <span class="has-text-weight-bold">{{count}}</span>
+            </a>
         </span>
+        <div class="has-text-weight-bold">{{ count }}</div>
     </span>
 </template>
 
@@ -33,7 +34,7 @@
             formatCount(c){
                 var text = '';
                 if(c === 0){
-                    text = 'No likes yet';
+                    text = 'Be the first to like!';
                 } else if(c === 1){
                     text = ' person likes this';
                 }else if(c > 1){

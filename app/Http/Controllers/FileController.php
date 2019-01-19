@@ -11,7 +11,7 @@ class FileController extends Controller
     //
     public function deleteFile(File $file)
     {
-    	dispatch(new FileDeleteJob($file));
-    	return response()->json(null, 200);
+	    	dispatch(new FileDeleteJob($file));
+	    	return response()->json(null, 200);
     }
 }

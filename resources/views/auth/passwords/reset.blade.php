@@ -46,7 +46,7 @@
             </div>
 
             <div class="field">
-                    <button type="submit" class="button is-block is-primary">
+                    <button type="submit" class="button is-block is-info">
                         Reset Password
                     </button>
                 </div>

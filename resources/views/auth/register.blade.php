@@ -14,9 +14,9 @@
             <div class="field">
                 <h4><a href="{{route('google')}}" class="button is-danger is-block">Continue with Google</a></h4>
             </div>
-            <div class="field">
+            <!-- <div class="field">
                 <h4><a href="{{route('facebook')}}" class="button is-link is-block">Continue with Facebook</a></h4>
-            </div>
+            </div> -->
         </div>
         <h3 class="title is-5 has-text-centered" style="margin-top: 1em">Create Account</h3>
         <form class="ui form" role="form" method="POST" action="{{ route('register') }}">
@@ -87,7 +87,7 @@
             </div> -->
 
             <div class="field">
-                <button type="submit" class="button is-primary is-block">Register</button>
+                <button type="submit" class="button is-info is-block">Register</button>
             </div>
             <div class="field">
                 <p>Have an account? <a href="/login" class="has-text-link">Log in</a></p>

@@ -27,6 +27,7 @@
             'url'           => config('app.url'),
             'userLoggedIn'  => (Auth::user()) ? true : false,
             'user_id'       => (Auth::user()) ? Auth::user()->id : 0,
+            'is_admin'      => (Auth::user() && Auth::user()->is_admin) ? Auth::user()->id : 0,
         ]) !!};
 
         window.skillsearch = {!! 
@@ -39,27 +40,26 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar is-transparent is-dark is-fixed-top">
+        <nav class="navbar is-transparent is-fixed-top" id="primary-nav">
             <div class="navbar-brand">
-                <!-- Branding Image -->
-                <a href="{{ url('/') }}" class="navbar-item">
-                    <img src="{{ asset('public/ubanji-logo-w.png') }}" alt="{{config('app.name')}} Logo">
-                </a>
-                <button class="button navbar-burger" id="admin-menu-trigger">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-            </div>
-            <div class="navbar-menu">
-                <div class="navbar-end">
-                    @include('includes.user-badge')
-                    <div class="navbar-item">
-                        <a href="/profile/portfolio/add" class="button is-danger"><i class="fa fa-plus"></i> &nbsp; Upload work</a>
+                    <!-- Branding Image -->
+                    <a href="{{ url('/') }}" class="navbar-item">
+                        <img src="{{ asset('public/ubanji-logo.png') }}" alt="{{config('app.name')}} Logo">
+                    </a>
+                    <a class="navbar-burger burger" id="admin-menu-trigger">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </a>
+                </div>
+                <div class="navbar-menu">
+                    <div class="navbar-end">
+                        @include('includes.user-badge')
+                        <div class="navbar-item">
+                            <a href="{{ route('new_portfolio') }}" class="button is-info">Upload work</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            
         </nav>
         
         <div class="columns is-marginless">
@@ -68,7 +68,7 @@
                     @include('includes.admin-sidebar')
                 </div>
             </aside>
-            <div class="column is-10-widescreen is-9-desktop is-white is-raised" style="background: #fff; min-height: 95vh">
+            <div class="column is-10-widescreen is-9-desktop is-white" style="background: #fff; min-height: 95vh">
                 <div class="hero">
                     <div class="hero-body">
                         @yield('content')

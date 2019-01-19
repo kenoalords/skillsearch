@@ -21,12 +21,14 @@ class BlogTransformer extends TransformerAbstract
             'title'     => ucwords($blog->title),
             'body'      => htmlspecialchars_decode($blog->body),
             'slug'      => $blog->slug,
+            'image'     => $blog->getImage(),
             'status'    => $blog->status,
             'is_public' => $blog->is_public,
             'category'  => $blog->category,
             'excerpt'   => $blog->excerpt,
             'uid'       => $blog->uid,
             'user_id'   => $blog->user_id,
+            'url'       => route('view_blog', ['user'=>$blog->user->name, 'blog'=> $blog->id, 'slug' => $blog->slug]),
             'allow_comments'    => $blog->allow_comments,
             'views'     => $blog->views()->count(),
             'likes'     => [
@@ -36,14 +38,13 @@ class BlogTransformer extends TransformerAbstract
             'comment_count'  => $blog->comments()->count(),
             'date'      => [
                 'created_human' => $blog->created_at->diffForHumans(),
-                'created_at'    => $blog->created_at,
+                'created_at'    => $blog->created_at->format('M j'),
                 'updated_human' => $blog->updated_at->diffForHumans(),
                 'updated_at'    => $blog->updated_at,
             ],
             'subscriber'=>[
                 'count' => $blog->user->subscriber()->count(),
             ],
-            // 'image'     => $blog->getImage(),
         ];
     }
 

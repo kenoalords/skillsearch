@@ -22,7 +22,7 @@
             </div>
         </div>
         <div class="card-footer">
-            <a href="/{{$profile['username']}}/contact-request" class="card-footer-item">Request Contact</a>
+            <a href="/{{$profile['username']}}" class="card-footer-item">View profile</a>
         </div>
     </div>
 </div>

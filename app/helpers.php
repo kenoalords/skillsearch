@@ -23,13 +23,13 @@ function skill_links($skills){
     if($skills){
         $skills = explode(',', $skills);
         $markup = [];
-        $string = '';
+        $string = '<small>Skills - </small>';
         foreach ($skills as $skill) {
             # code...
             array_push($markup, '<a href="/work/search/?term='.urlencode(trim($skill)).'" class="tag is-primary is-small" title="'.$skill.'">'.$skill.'</a>');
         }
         if(!empty($markup)){
-            $string = implode(' ', $markup);
+            $string .= implode(' ', $markup);
         }
         return $string;
     }   

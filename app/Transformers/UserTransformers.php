@@ -6,6 +6,7 @@ use App\Models\Profile;
 use App\Models\Portfolio;
 use App\Models\User;
 use App\Models\Phone;
+use App\Models\Point;
 use App\Models\SkillsRelations;
 use App\Transformers\PortfolioTransformer;
 use League\Fractal\TransformerAbstract;
@@ -17,24 +18,23 @@ class UserTransformers extends TransformerAbstract
 
 
 	public function transform(User $user){
-
-		$profile = Profile::where('user_id', $user->id)->first();
-		$phone = Phone::where('user_id', $user->id)->first();
-
+		$profile = Profile::where(['user_id'=> $user->id])->first();
+		$point = Point::where(['user_id'=> $user->id])->first();
+		$points = ($point) ? $point->points : 0;
 		return [
-			'username'	=> $user->name,
-			'first_name'=> $profile->first_name,
-			'last_name'	=> $profile->last_name,
-			'avatar'	=> $profile->getAvatar(),
-			'location'	=> $profile->location,
-			'gender'	=> $profile->gender,
-			'bio'		=> $profile->bio,
-			'fullname'	=> $profile->first_name . ' ' . $profile->last_name,
-			'verified'	=> $profile->getVerified(),
-			'has_instagram'	=> ($profile->user->instagram()->first()) ? true : false,
-			'followers'	=> $profile->user->getFollowers($user),
-			'following'	=> $profile->user->getFollowing(),
-			'phone'		=> ($phone) ? true : false,
+			'username'		=> $user->name,
+			'first_name'		=> $profile->first_name,
+			'last_name'		=> $profile->last_name,
+			'avatar'			=> $profile->getAvatar(),
+			'location'		=> $profile->location,
+			'gender'			=> $profile->gender,
+			'bio'			=> $profile->bio,
+			'fullname'		=> $profile->first_name . ' ' . $profile->last_name,
+			'verified'		=> $profile->getVerified(),
+			'verified_email'	=> $profile->verified_email,
+			'followers'		=> $profile->user->getFollowers($user),
+			'following'		=> $profile->user->getFollowing(),
+			'points'			=> $points,
 		];
 	}
 

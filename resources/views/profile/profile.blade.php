@@ -8,8 +8,8 @@
 @section('content')
 <div itemscope itemtype="http://schema.org/Person">
     <div id="profile-back" style="background: url({{ $profile['background'] }}); background-size: cover">
-        <div class="hero">
-            <div class="hero-body has-text-centered">
+        <div class="section">
+            <div class="container has-text-centered">
                 <img src="{{ $profile['avatar'] }}" data-src="" class="image is-96x96 is-rounded is-centered">
                 <meta itemprop="image" content="{{ $profile['avatar'] }}">
                 <!-- title and subtitle -->
@@ -17,89 +17,60 @@
                     <span itemprop="name" class="{{ ($profile['verified']) ? 'verified' : '' }}">{{ $profile['fullname'] }}</span>
                 </h1>
                 <div class="subtitle has-text-white"><span itemprop="homeLocation">{{ $profile['location'] }}</span></div>
-                
+                <div>
+                    @foreach ($profile['skills'] as $skill)
+                        <a href="/search?term={{ urlencode($skill['skill']) }}" class="tag is-primary" itemprop="jobTitle">{{ $skill['skill'] }}</a>
+                    @endforeach
+                </div>
+                <br>
+                <follow username="{{$profile['username']}}"></follow>
 
-                <div class="twelve wide mobile twelve wide tablet fourteen wide computer middle aligned column">
-                    
-                    <follow username="{{$profile['username']}}"></follow>
-                    @if($profile['has_instagram'])
-                        <a href="/{{$profile['username']}}/instagram" class="button is-small is-primary">
-                            <span class="icon"><i class="fa fa-instagram"></i></span>
-                             <span>My Instagram Feed</span>
-                        </a>
-                    @endif
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <div class="container">
+        <h2 class="title is-4 bold">Portfolio</h2>
+        @if(count($profile['portfolios']))
+            <div class="columns is-multiline is-mobile">
+                @each('includes.portfolio-with-user', $profile['portfolios'], 'portfolio')
             </div>
-        </div>
+        @endif
+        @if(count($portfolios) == 0)
+            <h3 class="title is-5 has-text-danger">{{ $profile['first_name'] }} has nothing to show at the moment!</h3>
+        @endif  
+        <hr>
+        <h2 class="title is-4 bold">Blog</h2> 
+        @if( count($blog) > 0 )
+            <div class="columns is-multiline">
+                @each('blog.partials.blog', $blog, 'blog')
+            </div>
+        @else
+            <h3 class="title is-5 has-text-danger">{{ $profile['first_name'] }} has not shared any blog post!</h3>
+        @endif
     </div>
 </div>
+<hr>
+<div class="section">
+    <div class="container">
+        <h2 class="title is-4 bold">About</h2>
+        @if($profile['bio'])
+            <p itemprop="description">{{$profile['bio']}}</p>
+        @else
+            <p>{{ $profile['first_name'] }} has nothing to say about themselves!</p>
+        @endif
 
-<div class="hero">
-    <div class="hero-body">
-        <div class="container">
-            <div class="columns is-centered">
-                <div class="column is-10">
-                    <h2 class="title is-5">Portfolio</h2>
-                    <div class="">
-                        @if(count($profile['portfolios']))
-                            <div class="columns is-multiline">
-                                @each('includes.portfolio-with-user', $profile['portfolios'], 'portfolio')
-                            </div>
-                        @endif
-                        @if(count($portfolios) == 0)
-                            <div class="text-center">
-                                <h3 class="title is-6 has-text-danger">{{ $profile['first_name'] }} has nothing to show at the moment!</h3>
-                            </div>
-                        @endif
-                    </div>                    
-                    
-                </div>
-            </div>       
-        </div>
-    </div>
-</div>
+        @if(Auth::user() && Auth::user()->id !== $profile['user_id'])
+            <a href="{{ route('make_enquiry', ['user' => $profile['username']] )}}" class="button is-info">Make enquiry</a>
+        @endif
 
-<div class="hero">
-    <div class="hero-body">
-        <div class="container">
-            <div class="columns is-centered">
-                <div class="column is-10">
-                    <h2 class="title is-5">Skills</h2>
-                    <p>
-                        @foreach ($profile['skills'] as $skill)
-                            <a href="/search?term={{ urlencode($skill['skill']) }}" class="tag is-primary" itemprop="jobTitle">{{ $skill['skill'] }}</a>
-                        @endforeach
-                    </p>
-                </div>
-            </div>       
-        </div>
-    </div>
-</div>
-
-<div class="hero is-light">
-    <div class="hero-body">
-        <div class="container">
-            <div class="columns is-centered">
-                <div class="column is-10">
-                    <h2 class="title is-5">About</h2>
-                    @if($profile['bio'])
-                        <p itemprop="description">{{$profile['bio']}}</p>
-                    @else
-                        <p>{{ $profile['first_name'] }} has nothing to say about themselves!</p>
-                    @endif
-
-                    @if(Auth::user() && Auth::user()->id !== $profile['user_id'])
-                        <a href="{{ route('contact_request', ['user' => $profile['username']] )}}" class="button is-link">Request Contact</a>
-                    @endif
-
-                    @if(!Auth::user())
-                        <a href="{{ route('contact_request', ['user' => $profile['username']] )}}" class="button is-link">Request Contact</a>
-                    @endif
-                    <div style="margin-top: 3em">
-                        @include('includes.share.profile', ['url'=>Request::url()])
-                    </div>
-                </div>
-            </div>       
-        </div>
+        @if(!Auth::user())
+            <a href="{{ route('make_enquiry', ['user' => $profile['username']] )}}" class="button is-info">Make enquiry</a>
+        @endif
+        <div style="margin-top: 3em">
+            @include('includes.share.profile', ['url'=>Request::url(), 'text'=>$profile['bio']])
+        </div>    
     </div>
 </div>
 

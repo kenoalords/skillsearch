@@ -12,7 +12,7 @@
                         <div class="field">
                             <textarea v-model="comment" class="textarea" rows="2" placeholder="Leave your comment here..."></textarea>
                         </div>
-                        <button class="button is-primary" v-on:click.prevent="submitComment()" :disabled="isSubmitting" :class="{'is-loading': isSubmitting}">Comment</button>  
+                        <button class="button is-info is-small" v-on:click.prevent="submitComment()" :disabled="isSubmitting" :class="{'is-loading': isSubmitting}">Comment</button>  
                     </div>
                 </div>
             </div>
@@ -64,7 +64,7 @@
                                         <textarea v-model="reply" rows="1" placeholder="Reply..." class="textarea"></textarea>
                                     </div>
                                     <div class="field">
-                                        <button class="button is-primary is-small" :class="{ 'is-loading' : isReplySubmitting }" v-on:click.prevent="submitReply(comment.id)" :disabled="isReplySubmitting || reply == null">Reply</button>
+                                        <button class="button is-info is-small" :class="{ 'is-loading' : isReplySubmitting }" v-on:click.prevent="submitReply(comment.id)" :disabled="isReplySubmitting || reply == null">Reply</button>
                                         <small><a href="#" class="button is-white is-small" v-on:click.prevent="closeReply()"><i class="fa fa-close"></i></a></small>
                                     </div>  
                                 </div>

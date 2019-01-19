@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Oops!' )
+@section('title', '404!' )
 
 @section('content')
 
-<div class="ui one column grid">
-    <div class="ui center aligned column" style="margin-top: 4em; margin-bottom: 4em">
-        <h1 class="ui grey huge header" style="font-size: 4em;">Not Found!</h1>
-        <p>Did you get lost? <a href="{{ url()->previous() }}">Click here to go back.</a></p>
-    </div>
+<div class="section is-medium">
+	<div class="container has-text-centered">
+		<h1 class="title is-1">You seem to be lost!</h1>
+		<p>We can't find the resource you are looking for. Maybe you should try a search or <a href="/">Click here to go our homepage.</a></p>
+	</div>
 </div>
 
 

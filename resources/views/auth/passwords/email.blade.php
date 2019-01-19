@@ -11,7 +11,7 @@
 
         <form class="ui form" role="form" method="POST" action="{{ route('password.email') }}">
             {{ csrf_field() }}
-
+            <p>Enter your registered email address to reset your password</p>
             <div class="field">
                 <div class="control has-icons-left">
                     <input type="email" class="input {{ $errors->has('email') ? ' is-danger' : '' }}" name="email" value="{{ old('email') }}" required placeholder="Enter your email address">
@@ -26,7 +26,7 @@
             </div>
 
             <div class="field">
-                <button type="submit" class="button is-block is-primary">
+                <button type="submit" class="button is-block is-info">
                     Reset Password
                 </button>
             </div>

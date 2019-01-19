@@ -1,62 +1,76 @@
 <template>
-    <div class="container-fluid">
+    <div class="container">
         <div id="image-warning" v-if="imageWarning">
             <div class="content">
-                <h2><i class="glyphicon glyphicon-picture"></i></h2>
+                <h2><i class="fa fa-warning-sign"></i></h2>
                 <h3>Please upload an image size of 1240px by 800px</h3>
-                <p><a href="#" v-on:click.prevent="imageWarning = false" class="btn btn-default btn-xs">OK! Got It</a></p>
+                <p><a href="#" v-on:click.prevent="imageWarning = false" class="button is-small is-danger">OK! Got It</a></p>
             </div>
         </div>
-        <form action="/profile/blog/add" method="post" id="blog-form">
-            <div id="image-preview" v-if="isUploadingImage">
-                <div class="toolbar">
-                    <ul class="list-inline">
-                        <li><a v-on:click.prevent="" href="#" id="save-image" class="btn btn-sm btn-primary"><i class="fa fa-save"></i> Save Image</a></li>
-                        <li><a v-on:click.prevent="" href="#" id="delete-image" class="btn btn-sm btn-default"><i class="fa fa-close"></i> Delete Image</a></li>
-                    </ul>
-                </div>
-            </div>
-            <label id="blog-image" v-if="!isUploadingImage">
+        <form action="#" id="blog-form"> 
+            <ul class="errors" v-if="errors.length">
+                <li v-for="error in errors">{{ error }}</li>
+            </ul>         
+            <label id="blog-image">
                 <div class="info">
-                    <h2 class="bold">Upload Image</h2>
-                    <h4 class="thin">Every blog post deserves a <em class="bold">Big, Bold and Beautiful</em> image</h4>
-                    <p><span class="btn btn-xs btn-success">Select Image</span></p>
+                    <i class="fa fa-image"></i>
                 </div>
-                <input type="file" class="hidden" id="imageUpload" accept="image/*" v-on:change.prevent="uploadBlogImage">
+                <input type="file" class="is-hidden" id="imageUpload" accept="image/*" v-on:change.prevent="uploadBlogImage">
             </label>
             
-            <div class="container">
-                <div class="col-md-8 col-md-offset-2 padded">
-                    <div class="form-group">
-                        <input id="title" type="text" placeholder="Title"  name="title" v-model="content.title" required autofocus>
+            <div>
+                <div>
+                    <div class="field">
+                        <input id="title" type="text" class="input" placeholder="Title"  name="title" v-model.trim="content.title" required autofocus>
                     </div>
 
-                    <div class="form-group" id="editable">
-                        <div class="md-editor" id="md-editor"></div>
+                    <div class="field">
+                        <textarea v-model="content.body" rows="5" class="textarea" placeholder="Write something interesting..."></textarea>
                     </div>
 
-                    <div class="form-group">
-                        <label for="excerpt">Excerpt (Summary)</label>
-                        <textarea v-model="content.excerpt" id="excerpt" rows="3" class="form-control"></textarea>
+                    <div class="field">
+                        <label for="excerpt">Provide a brief summary</label>
+                        <textarea v-model="content.excerpt" id="excerpt" rows="2" class="textarea"></textarea>
+                        <p class="help">This will help people understand what your blog post is about</p>
                     </div>
                     
-                    <div class="form-group" style="margin-bottom: 3em">
-                        <label for="">Choose category</label><br>
-                        <select v-model="content.category" v-if="blogCategories" class="selectpicker show-tick">
-                            <option value="0">Select</option>
-                            <option :value="category.category" v-for="category in blogCategories">{{category.category}}</option>
-                        </select>
+                    <div class="field">
+                        <label for="">Choose category</label>
+                        <div class="control">
+                            <div class="select">
+                                <select v-model="content.category" v-if="blogCategories">
+                                    <option value="0">Select</option>
+                                    <option :value="category.category" v-for="category in blogCategories">{{category.category}}</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="form-group" style="margin-bottom: 3em">
-                        <label>
-                            <input v-model="content.allow_comments" type="checkbox" :value="1" class="option-input checkbox"> <span style="display: inline-block; margin-left: 1em">Allow comments</span>
+                    <div class="field">
+                        <label>Tags</label>
+                        <input type="text" v-model="content.tags" class="tags input" placeholder="e.g Fashion, Makeup etc.">
+                        <small class="help">A comma seperated list of tags.</small>
+                    </div>
+
+                    <div class="field">
+                        <label class="checkbox">
+                            <input v-model="content.allow_comments" type="checkbox" class="checkbox" v-bind:value="true">
+                                Allow comments
                         </label>
                     </div>
 
-                    <div class="form-group clearfix">
-                        <button class="btn btn-primary pull-left" type="submit" v-on:click.prevent="publishBlogPost(content)">Publish</button>
-                        <button class="btn btn-default pull-right" v-on:click.prevent="saveBlogPost">Save &amp; continue later</button>
+                    <div class="field">
+                        <div class="level is-mobile">
+                            <div class="level-left">
+                                <div class="level-item">
+                                    <button id="submit-button" class="button is-info" type="submit" v-model="content.status" value="publish" @click.prevent="submitBlogPost">Publish</button>
+                                </div>
+                                <div class="level-item">
+                                    <button class="button is-light" type="submit" v-model="content.status" value="save">Save &amp; continue later</button>
+                                </div>
+                            </div>
+                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -65,91 +79,101 @@
 </template>
 
 <script>
-    import MediumEditor from "medium-editor/dist/js/medium-editor.js";
-    import selectpicker from "bootstrap-select/dist/js/bootstrap-select.min.js";
+    import Quill from "quilljs/dist/quill";
     import Cropper from 'cropperjs';
+
     export default {
         data(){
             return {
-                content: (this.blog) ? JSON.parse(this.blog) : [],
+                content: {},
                 blogCategories: JSON.parse(this.categories),
                 imageWarning: false,
                 isUploadingImage: false,
-                isEditing: !!this.edit,
+                isEditing: false,
+                image: null,
+                errors: [],
+                blogId: null,
+                data: new FormData(),
             }
         },
         props:{
-            blog: null,
+            blog: {},
             categories: null,
-            edit: null,
         },
         methods: {
             uploadBlogImage(){
+                $('body').addClass('is-loading');
                 this.isUploadingImage = true;
                 var form = new FormData(),
                     image = document.getElementById('imageUpload').files[0],
+                    imageContainer = document.getElementById('blog-image'),
                     _this = this,
-                    img = new Image(),
-                    _URL = window.URL || window.webkitURL,
-                    body = document.getElementById('md-editor').innerHTML;
-                _this.content.body = body;
+                    _URL = window.URL || window.webkitURL;
 
-                // img.file = image;
-                // var el = document.getElementById('image-preview');
-                // el.appendChild(img);
-                // file.onload = (function(aImg){
-                //     return function(e){
-                //         aImg.src = e.target.result;
+                if ( image ) {
+                    var file = new FileReader();
+                    file.readAsDataURL(image);
+                    file.onload = function(e){
+                        $('body').removeClass('is-loading');
+                        imageContainer.style.background = 'url(' + file.result + ') no-repeat center';
+                        imageContainer.style.backgroundSize = 'cover';
+                        _this.content.image = image;
+                    }
+
+                    file.onerror = function(e){
+                        $('body').removeClass('is-loading');
+                        iziToast.error({ title: 'Failed!', message: 'A problem occured while uploading the file, please try again.' })
+                    }
+                } else {
+                    $('body').removeClass('is-loading');
+                }
+                
+                // setTimeout(()=>{
+
+                //     img.onload = function(){
+                //         // if(img.width < 1200 || img.height > 800){
+                //         //     _this.imageWarning = true;
+                //         //     return;
+                //         // }
+                //         var image = document.getElementById('blog-thumbnail');
+                //         var cropper = new Cropper(image,{
+                //             aspectRatio: 16/9,
+                //             dragMode: 'move',
+                //             rotatable: false,
+                //             zoomable: false,
+                //             scalable: false,
+                //             cropBoxResizable: false,
+                //         });
+                //         document.getElementById('save-image').addEventListener('click', function(e){
+                //             cropper.getCroppedCanvas({
+                //                 width: 1240,
+                //                 height: 698,
+                //                 imageSmoothingQuality: 'high',
+                //             }).toBlob(function(blob){
+                //                 var form = new FormData();
+                //                 form.append('image', blob);
+                //                 form.append('id', _this.content.id);
+                //                 form.append('title', _this.content.title);
+                //                 form.append('body', _this.content.body);
+                //                 form.append('excerpt', _this.content.excerpt);
+                //                 form.append('allow_comments', _this.content.allow_comments);
+                //                 form.append('category', _this.content.category);
+                //                 axios.post('/profile/blog/add/image', form).then( (response)=> {
+                //                     console.log(response);
+                //                     _this.content = response.data;
+                //                     history.pushState(response.data, null, window.Laravel.url + '/profile/blog/'+response.data.uid+'/edit');
+                //                 })
+                //             }, 'image/jpeg', 0.99);
+                //         })
                 //     };
-                // })(img);
+                //     img.src = _URL.createObjectURL(image);
+                //     img.setAttribute('id', 'blog-thumbnail');
+                //     var el = document.getElementById('image-preview');
+                //     el.appendChild(img);
 
-                // file.readAsDataURL(image);
-                setTimeout(()=>{
+                //     return;
 
-                    img.onload = function(){
-                        // if(img.width < 1200 || img.height > 800){
-                        //     _this.imageWarning = true;
-                        //     return;
-                        // }
-                        var image = document.getElementById('blog-thumbnail');
-                        var cropper = new Cropper(image,{
-                            aspectRatio: 16/9,
-                            dragMode: 'move',
-                            rotatable: false,
-                            zoomable: false,
-                            scalable: false,
-                            cropBoxResizable: false,
-                        });
-                        document.getElementById('save-image').addEventListener('click', function(e){
-                            cropper.getCroppedCanvas({
-                                width: 1240,
-                                height: 698,
-                                imageSmoothingQuality: 'high',
-                            }).toBlob(function(blob){
-                                var form = new FormData();
-                                form.append('image', blob);
-                                form.append('id', _this.content.id);
-                                form.append('title', _this.content.title);
-                                form.append('body', _this.content.body);
-                                form.append('excerpt', _this.content.excerpt);
-                                form.append('allow_comments', _this.content.allow_comments);
-                                form.append('category', _this.content.category);
-                                axios.post('/profile/blog/add/image', form).then( (response)=> {
-                                    console.log(response);
-                                    _this.content = response.data;
-                                    history.pushState(response.data, null, window.Laravel.url + '/profile/blog/'+response.data.uid+'/edit');
-                                })
-                            }, 'image/jpeg', 0.99);
-                        })
-                    };
-                    img.src = _URL.createObjectURL(image);
-                    img.setAttribute('id', 'blog-thumbnail');
-                    var el = document.getElementById('image-preview');
-                    el.appendChild(img);
-
-                    return;
-
-                },100);
+                // },100);
 
                 
 
@@ -164,58 +188,102 @@
                 //     _this.content = response.data;
                 // })
             },
+            submitBlogPost(e){
+                e.preventDefault();
+                $('body').addClass('is-loading');
+                var _this = this;
 
-            publishBlogPost(content){
-                var _this = this,
-                    body = document.getElementById('md-editor').innerHTML,
-                    data = new FormData();
-                content.body = body;
+                // Reset errors array
+                this.errors = [];
 
-                data.append('title', (_this.content.title) ? _this.content.title : 'Draft');
-                data.append('body', (_this.content.body) ? _this.content.body : '' );
-                data.append('id', (_this.content.id) ? _this.content.id : '' );
-                data.append('image', (_this.content.image) ? _this.content.image : '');
-                data.append('category', (_this.content.category) ? _this.content.category : '');
-                data.append('excerpt', (_this.content.excerpt) ? _this.content.excerpt : '');
-                data.append('allow_comments', (_this.content.allow_comments) ? _this.content.allow_comments : false);
+                // Check blog title
+                if ( !this.content.title ){
+                    this.errors.push( 'Title is required' );
+                }
+
+                // Check if blog content is empty
+                if ( !this.content.body ){
+                    this.errors.push( 'Content is required' );
+                }
+
+                // Check blog category
+                if ( !this.content.category ){
+                    this.errors.push( 'Please select a category' )
+                }
+
+                // Check blog excerpt
+                if ( !this.content.excerpt ){
+                    this.errors.push( 'Please provide a summary of your blog post' );
+                }
+
+                if ( this.errors.length > 0 ){
+                    alert('Please check for errors in your form');
+                    window.scrollTo(0, 0);
+                    $('body').removeClass('is-loading');
+                    return false;
+                }
+                var payload = new FormData();
+                payload.append('title', this.content.title);
+                payload.append('body', this.content.body);
+                payload.append('id', (this.content.id) ? this.content.id : '' );
+                payload.append('image', (this.content.image) ? this.content.image : '');
+                payload.append('category', this.content.category);
+                payload.append('excerpt', this.content.excerpt);
+                payload.append('tags', (this.content.tags) ? this.content.tags : '');
+                payload.append('is_public', true);
+                payload.append('status', 'publish');
+                payload.append('allow_comments', (this.content.allow_comments) ? this.content.allow_comments : false);
+
+                if ( this.isEditing === false ){
+                    axios.post('/dashboard/blog/new', payload).then( (response) => {
+                        iziToast.success({ title: 'Success!', message: 'Your blog post was successful.' });
+                        $('body').removeClass('is-loading');
+                        return;
+                    }).catch( (e)=>{
+                        iziToast.error({ title: 'Error', message: 'An error occured while processing your request' });
+                        $('body').removeClass('is-loading');
+                        return;
+                    } );
+                }
+
+                if ( this.isEditing === true ){
+                    payload.append('_method', 'PUT');
+                    axios.post('/dashboard/blog/'+ this.blogId +'/edit', payload).then( (response) => {
+                        iziToast.success({ title: 'Success!', message: 'Your blog post was edited successful.' });
+                        $('body').removeClass('is-loading');
+                        console.log(response.data);
+                        return;
+                    }).catch( (e)=>{
+                        iziToast.error({ title: 'Error', message: 'An error occured while editing your request' });
+                        $('body').removeClass('is-loading');
+                        return;
+                    } );
+                }
                 
-                axios.post('/profile/blog/add', data).then( (response) => {
-                    console.log(response);
-                });
-            },
-
-            saveBlogPost(){
-                var data = {
-                    title : this.title,
-                    body : this.body,
-                    id : this.blogID,
-                    tags : this.tags,
-                };
-                axios.post('/blog/add', data).then( (response) => {
-                    console.log(response);
-                });
             },
         },
         mounted() {
-            var editor = new MediumEditor('.md-editor', {
-                buttonLabels: 'fontawesome',
-                anchor: {
-                    targetCheckbox: true,
-                },
-                toolbar: {
-                    buttons: ['bold', 'italic', 'underline', 'strikethrough', 'h2', 'h3', 'anchor', 'unorderedlist', 'orderedlist', 'quote'],
-                    diffLeft: 25,
-                    diffTop: -25,
-                },
-                placeholder: {
-                    text: 'Write something interesting...',
-                    hideOnClick: true,
+            var toolbarOptions = [
+                [{ header: [1, 2, false] }],
+                ['bold', 'italic', 'underline'],
+                ['image', 'code-block']
+            ];
+
+            if(this.blog !== undefined){
+                var blog = JSON.parse(this.blog);
+                this.content = blog;
+                if ( blog.hasOwnProperty('image') && blog.image !== null ){
+                    $('#blog-image').css({
+                        background: 'url('+ window.Laravel.url +'/'+ blog.image +') no-repeat center',
+                        backgroundSize: 'cover',
+                    });
                 }
-            });
-            $('.selectpicker').selectpicker();
-            console.log(this.isEditing);
-            if(this.content){
-                document.getElementById('md-editor').innerHTML = (this.content.body) ? this.content.body : '';
+
+                if ( blog.hasOwnProperty('id') ){
+                    $('#submit-button').text('Publish edit');
+                    this.isEditing = true;
+                    this.blogId = blog.id;
+                }
             }
         }
     }

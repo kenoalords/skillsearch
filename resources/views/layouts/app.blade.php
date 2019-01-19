@@ -19,7 +19,7 @@
     <meta name="twitter:site" content="@skillsearchng">
     <meta name="twitter:title" content="@yield('title')">
     <meta name="twitter:description" content="@yield('metadescription')">
-    <meta name="twitter:creator" content="@skillsearchng">
+    <meta name="twitter:creator" content="@ubanjicreatives">
     <!-- Twitter Summary card images must be at least 120x120px -->
     <meta name="twitter:image" content="@yield('thumbnail')">
 
@@ -43,6 +43,7 @@
             'userLoggedIn'  => (Auth::user()) ? true : false,
             'user_id'       => (Auth::user()) ? Auth::user()->id : 0,
             'is_admin'      => (Auth::user() && Auth::user()->is_admin) ? Auth::user()->id : 0,
+            'images'        => asset('/public'),
         ]) !!};
 
         window.skillsearch = {!! 
@@ -57,71 +58,11 @@
 <body>
     <div id="app">
         
-        <div>
-            <nav class="navbar is-fixed-top is-transparent is-dark" id="primary-nav" role="navigation">
-                <div class="navbar-brand">
-                    <!-- Branding Image -->
-                    <a href="{{ url('/') }}" class="navbar-item">
-                        <img src="{{ asset('public/ubanji-logo-w.png') }}" alt="{{config('app.name')}} Logo">
-                    </a>
-                    <button class="navbar-burger" id="app-menu-tigger">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </button>
-                </div>
-                <div class="navbar-menu">
-                    <div class="navbar-start">
-                        <a class="navbar-item" href="{{ route('people') }}">People</a>
-                        <a class="navbar-item" href="{{ route('showcase') }}">Showcase</a>
-                        <a class="navbar-item" href="{{ route('tasks') }}">Jobs</a>
-                    </div>
-                    <div class="navbar-end">
-                        @if(Auth::user())
-                            @include('includes.user-badge')
-                        @else
-                            <a href="/login" class="navbar-item">Login</a>
-                            <a href="/register" class="navbar-item">Register</a>
-                        @endif 
-                        <div class="navbar-item">
-                            <a href="/dashboard/portfolio/add" class="button is-danger">
-                                <span class="icon"><i class="fa fa-plus"></i></span> <span>Upload work</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-        </div>  
-            @yield('content')
-        
+        @include('includes.menu') 
 
-        <footer class="footer is-dark">
-            <div class="hero">
-                <div class="hero-body">
-                    <div class="columns is-centered">
-                        <div class="column is-10">
-                            <div class="level is-mobile">
-                                <div class="level-left" id="footer-links">
-                                    <div class="level-item"><a href="/about">About</a></div>
-                                    <div class="level-item"><a href="/how-it-works">How It Works</a></div>
-                                    <div class="level-item"><a href="/points">Points</a></div>
-                                    <div class="level-item"><a href="/contact">Contact Us</a></div>
-                                </div>
-                                <div class="level-right">
-                                    <div class="level-item">
-                                        <a href="https://www.facebook.com/ubanjicreatives/" target="_blank" class="button is-small is-link"><i class="fa fa-facebook"></i></a>
-                                    </div>
-                                    <div class="level-item">
-                                        <a href="https://instagram.com/ubanjicreatives" class="button is-small is-info"><i class="fa fa-instagram"></i></a>
-                                    </div>
-                                </div>
-                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-        </footer>  
+        @yield('content')
+        
+        @include('includes.footer')
     </div>  
     
     

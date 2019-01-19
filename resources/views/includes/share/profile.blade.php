@@ -1,6 +1,6 @@
-<h5 class="bold block-title"><i class="fa fa-share-alt"></i> Share</h5>
-<div class="">
-	<a class="ui circular facebook icon button" href="https://www.facebook.com/sharer/sharer.php?u={{$url}}" target="_blank"><i class="icon facebook"></i></a>
-	<a class="ui circular twitter icon button" href="https://twitter.com/home?status={{$url}}" target="_blank"><i class="icon twitter"></i></a>
-	<a class="ui circular google plus icon button" href="https://plus.google.com/share?url={{$url}}" target="_blank"><i class="icon google plus"></i></a>
+<h5 class="title is-5 bold"><i class="fa fa-share-alt"></i> Share profile</h5>
+<div class="social-shares">
+	<a class="facebook" href="https://www.facebook.com/sharer/sharer.php?u={{$url}}" target="_blank"><i class="fa fa-facebook"></i></a>
+	<a class="twitter" href="https://twitter.com/intent/tweet?url={{$url}}&via=ubanjicreatives&text={{$text}}&hashtags=ubanjicreatives" target="_blank"><i class="fa fa-twitter"></i></a>
+	<a class="google" href="https://plus.google.com/share?url={{$url}}" target="_blank"><i class="fa fa-google-plus"></i></a>
 </div>

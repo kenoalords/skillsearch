@@ -52,11 +52,6 @@ class Profile extends Model
         return VerifyIdentity::where('user_id', $this->user_id)->get()->first();
     }
 
-    // public function getPortfolioAttribute($value)
-    // {
-    //     return Portfolio::where( ['user_id' => $this->user_id, 'is_public' => true] )->get();
-    // }
-
     public function getPortfolioCountAttribute()
     {
         return Portfolio::where( ['user_id' => $this->user_id, 'is_public' => true] )->count();

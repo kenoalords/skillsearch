@@ -78,7 +78,7 @@
             </div> 
         </div>
         <div class="pusher">
-            <nav class="ui top fixed borderless menu" id="primary-nav">
+            <nav class="navbar" id="primary-nav">
                 <div class="item">
                     <div>
                         <a href="#" id="mobile-admin-trigger"><i class="icon large sidebar"></i></a>

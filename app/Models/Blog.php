@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\Orderable;
+use Storage;
 
 class Blog extends Model
 {
@@ -12,10 +13,6 @@ class Blog extends Model
     protected $fillable = [
     	'title', 'excerpt', 'body', 'slug', 'image', 'status', 'is_public', 'uid', 'category', 'allow_comments'
     ];
-
-    public function getRouteKeyName(){
-        return 'uid';
-    }
 
     public function user()
     {
@@ -47,16 +44,20 @@ class Blog extends Model
         return $this->hasMany(Subscriber::class);
     }
 
-    // public function getImage()
-    // {
-    //     if(!$this->image){
-    //         if(Storage::exists($this->image)){
-    //             return asset($this->image);
-    //         }
-    //         return config('skillsearch.s3.images') . '/' . $this->image;
-    //     } else {
-    //         return asset($this->image);
-    //     }
-    // }
+    public function getImage()
+    {
+        if($this->image !== null){
+            if(Storage::exists($this->image)){
+                return asset($this->image);
+            }
+            return config('skillsearch.s3.images') . '/' . $this->image;
+        } else {
+            return asset('public/no-blog-image.jpg');
+        }
+    }
+
+    public function scopeIsPublished($query){
+        return $query->where('status', 'publish');
+    }
 
 }

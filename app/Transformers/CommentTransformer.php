@@ -3,7 +3,7 @@
 namespace App\Transformers;
 
 use App\Models\Comment;
-// use App\Transformers\CommentTransformer;
+use App\Transformers\SimpleUserTransformers;
 use League\Fractal\TransformerAbstract;
 
 class CommentTransformer extends TransformerAbstract
@@ -26,7 +26,7 @@ class CommentTransformer extends TransformerAbstract
 
 	public function includeProfile(Comment $comment)
 	{
-		return $this->item($comment->user->profile()->first(), new ProfileTransformers);
+		return $this->item($comment->user, new SimpleUserTransformers);
 	}
 
 	public function includeReplies(Comment $comment)

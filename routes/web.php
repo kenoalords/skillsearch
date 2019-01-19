@@ -52,29 +52,32 @@ Route::post('/portfolio/{portfolio}/comment/add', 'PortfolioCommentController@ad
 
 Route::post('/portfolio/{portfolio}/views', 'ViewsController@create');
 
-Route::get('/invite', 'InviteContactController@index');
+Route::get('/invite', 'InviteContactController@index')->name('gmail_invite');
 Route::get('/invite/gmail', 'InviteContactController@gmailContactInvite');
 Route::post('/invite/gmail', 'InviteContactController@gmailContactInviteRequest');
 Route::get('/invite/success', 'InviteContactController@thankYou');
 
-
-Route::get('/jobs/submit', 'TaskController@submitJobTeaser');
-
-Route::get('/logout', 'HomeController@logout');
+Route::get('/logout', 'HomeController@logout')->name('logout');
 
 Route::group(['middleware'=>'auth'], function(){
 
-	Route::get('/invite/delete', 'InviteContactController@deleteInvites')->name('delete_invites')->middleware('is_admin');
-	Route::post('/invite/delete', 'InviteContactController@delete')->middleware('is_admin');
+	Route::get('/invite/delete', 'InviteContactController@deleteInvites')->name('delete_invites')->middleware('admin');
+	Route::post('/invite/delete', 'InviteContactController@delete')->middleware('admin');
+	
 
 	Route::post('/comment/{comment}/like', 'CommentController@likeComment');
 	Route::delete('/comment/{comment}/delete', 'CommentController@deleteComment');
 
+	// Admin route groups
+	Route::group(['prefix'=>'admin', 'middleware' => ['admin']], function(){
+		Route::post('/{portfolio}/make-featured', 'PortfolioController@makeFeaturedPortfolio');
+	});
+
 	Route::group(['prefix'=>'dashboard'], function(){
 		// send contact reminder
-		Route::post('/send-reminder', 'InviteContactController@sendReminder')->middleware('is_admin');
+		Route::post('/send-reminder', 'InviteContactController@sendReminder')->middleware('admin');
 
-		Route::get('/', 'HomeController@index')->middleware('user_profile_setup');
+		Route::get('/', 'HomeController@index')->middleware('user_profile_setup')->name('dashboard');
 		Route::get('/start', 'UserProfileController@setupUserProfile')->name('start');
 		Route::post('/start', 'UserProfileController@saveSocialUserProfile');
 
@@ -91,19 +94,16 @@ Route::group(['middleware'=>'auth'], function(){
 		Route::get('/users', 'UserProfileController@getVerifyUserAccounts');
 		Route::post('/users/cancel', 'UserProfileController@cancelUserVerifyRequest');
 		Route::post('/users/ok', 'UserProfileController@approveUserVerifyRequest');
-		Route::get('/jobs', 'TaskController@approveJobs')->name('approve_jobs');
+
 		Route::get('/linkedin_upload', 'LinkedinContactController@index')->name('linkedin_contacts');
 		Route::post('/linkedin_upload/submit', 'LinkedinContactController@upload')->name('submit_linkedin_contacts');
 		Route::post('/linkedin_upload/delete', 'LinkedinContactController@delete')->name('delete_linkedin_contacts');
-		Route::get('/contact-requests', 'ContactRequestController@requests')->name('user_contact_requests');
-		Route::post('/contact-requests/{contact_request}/approve', 'ContactRequestController@approveRequest');
 
 		// Upload background image
 		Route::post('/upload', 'HomeController@uploadBackgroundImage');
 
 		// Send email broadcast to members
-		Route::get('/email-broadcast', 'HomeController@membersEmailBroadcast');
-		Route::post('/email-broadcast', 'HomeController@submitEmailBroadcast');
+		Route::match(['get', 'post'], '/email-broadcast', 'HomeController@emailBroadcast')->name('email_broadcast');
 
 		/*
 		*	Portfolio links
@@ -111,48 +111,26 @@ Route::group(['middleware'=>'auth'], function(){
 
 		Route::group(['prefix'=>'portfolio'], function(){
 			Route::get('/', 'PortfolioController@index')->name('portfolio_index');
-			Route::get('/add', 'PortfolioController@add')->name('portfolio_add');
+			Route::match(['get', 'post'], '/new', 'PortfolioController@add')->name('new_portfolio')->middleware(['profile', 'skills']);
 			Route::get('/likes', 'PortfolioController@myLikedPortfolios')->name('portfolio_likes');
-			Route::post('/add', 'PortfolioController@savePortfolio')->name('portfolio_add');
-			Route::post('/{portfolio}/make-featured', 'PortfolioController@makeFeaturedPortfolio');
-			Route::post('/thumbnail', 'PortfolioController@savePortfolioThumbnail');
-			Route::post('/add-thumbnail', 'PortfolioController@addPortfolioThumbnail');
+			// Route::post('/thumbnail', 'PortfolioController@savePortfolioThumbnail');
+			// Route::post('/add-thumbnail', 'PortfolioController@addPortfolioThumbnail');
 
-			Route::post('/file-upload', 'PortfolioController@fileUpload');
-			Route::delete('/file-upload/{portfolio}/{file}/delete', 'PortfolioController@deleteFileUpload');
+			// Route::post('/file-upload', 'PortfolioController@fileUpload');
+			Route::delete('/{portfolio}/{file}/delete', 'PortfolioController@deleteFileUpload');
 
-			Route::get('/instagram', 'InstagramPortfolioController@index')->name('instagram_index');
-			Route::get('/instagram/get', 'InstagramPortfolioController@get');
-			Route::get('/instagram/delete', 'InstagramPortfolioController@delete');
-			Route::get('/instagram/callback', 'InstagramPortfolioController@redirect');
-			Route::get('/{portfolio}/edit', 'PortfolioController@edit')->name('edit_portfolio');
-			Route::put('/{portfolio}/update', 'PortfolioController@update')->name('update_portfolio');
+			// Route::get('/instagram', 'InstagramPortfolioController@index')->name('instagram_index');
+			// Route::get('/instagram/get', 'InstagramPortfolioController@get');
+			// Route::get('/instagram/delete', 'InstagramPortfolioController@delete');
+			// Route::get('/instagram/callback', 'InstagramPortfolioController@redirect');
+			Route::match(['get', 'put', 'delete'], '/{portfolio}/edit', 'PortfolioController@edit')->name('edit_portfolio');
+			// Route::put('/{portfolio}/update', 'PortfolioController@update')->name('update_portfolio');
 			Route::get('/{portfolio}/delete', 'PortfolioController@delete')->name('delete_portfolio');
 			Route::get('/{portfolio}/delete/ok', 'PortfolioController@deletePortfolio');
-			Route::delete('/files/{file}', 'FileController@deleteFile');
+			Route::delete('/{portfolio}/files/{file}/delete', 'FileController@deleteFile');
 		});
 
-		Route::group(['prefix'=>'jobs'], function(){
-			// Tasks Routes
-			Route::get('/', 'TaskController@index')->name('user_jobs');
-			Route::get('/applications', 'TaskController@applications')->name('user_applications');
-			Route::get('/add', 'TaskController@add')->name('add_task');
-			Route::get('/saved', 'TaskController@savedJobs')->name('saved_task');
-			Route::get('/{task}/edit', 'TaskController@edit')->name('edit_task');
-			Route::get('/{task}/delete', 'TaskController@delete')->name('delete_task');
-			Route::get('/{task}/delete/ok', 'TaskController@deleteOk')->name('delete_task_ok');
-			Route::put('/{task}/update', 'TaskController@update')->name('update_task');
-			Route::put('/{task}/reject', 'TaskController@rejectJob')->name('reject_task');
-			Route::put('/{task}/approve', 'TaskController@approveJob')->name('approve_task');
-			Route::post('/{task}/flag', 'TaskController@flagJob')->name('flag_task');
-			Route::get('/{task}/flag/check', 'TaskController@flagJobCheck')->name('flag_task_check');
-			Route::post('/{task}/save', 'TaskController@saveJob')->name('save_task');
-			Route::get('/{task}/save/check', 'TaskController@saveCheckJob')->name('save_check_task');
-			Route::get('/{task}/interests', 'TaskController@interests')->name('task_interest');
-			Route::post('/add', 'TaskController@createTask')->name('create_task');
-			Route::post('/application/response', 'TaskController@submitApplicationResponse');
-			Route::post('/application/accept', 'TaskController@acceptApplication');
-		});
+		
 
 		/*
 		*	Profile links
@@ -164,54 +142,53 @@ Route::group(['middleware'=>'auth'], function(){
 			Route::put('/edit', 'UserProfileController@store');
 			Route::post('/upload-image', 'UserProfileController@uploadImage');
 
-			Route::get('/phone', 'UserProfileController@phoneIndex')->name('phone');
+			// Route::get('/phone', 'UserProfileController@phoneIndex')->name('phone');
 
-			Route::get('/phone/add', 'UserProfileController@phoneAdd')->name('add_phone');
-			Route::post('/phone/add', 'UserProfileController@phoneAddNew');
+			// Route::get('/phone/add', 'UserProfileController@phoneAdd')->name('add_phone');
+			// Route::post('/phone/add', 'UserProfileController@phoneAddNew');
 
-			Route::get('/phone/{phone}/edit', 'UserProfileController@phoneEdit')->name('edit_phone');
-			Route::post('/phone/{phone}/edit', 'UserProfileController@phoneEditSave')->name('edit_phone');
+			// Route::get('/phone/{phone}/edit', 'UserProfileController@phoneEdit')->name('edit_phone');
+			// Route::post('/phone/{phone}/edit', 'UserProfileController@phoneEditSave')->name('edit_phone');
 
-			Route::get('/phone/{phone}/delete', 'UserProfileController@phoneDelete')->name('delete_phone');
-			Route::post('/phone/{phone}/delete', 'UserProfileController@phoneDeleteSubmit')->name('delete_phone');
-			
-			
-			
-
+			// Route::get('/phone/{phone}/delete', 'UserProfileController@phoneDelete')->name('delete_phone');
+			// Route::post('/phone/{phone}/delete', 'UserProfileController@phoneDeleteSubmit')->name('delete_phone');
 			// Message Routes
-			Route::get('/message', 'MessageController@index')->name('message');
-
-			
-
+			// Route::get('/message', 'MessageController@index')->name('message');
 			// Service Requests Routes
-			Route::get('/requests', 'ServiceRequestController@getServiceRequests')->name('requests');
-			Route::get('/response/{request_id}', 'ServiceRequestController@getServiceRequestResponses');
-			Route::post('/response/{request_id}', 'ServiceRequestController@postServiceRequestResponses');
+			// Route::get('/requests', 'ServiceRequestController@getServiceRequests')->name('requests');
+			// Route::get('/response/{request_id}', 'ServiceRequestController@getServiceRequestResponses');
+			// Route::post('/response/{request_id}', 'ServiceRequestController@postServiceRequestResponses');
 
 			// Reviews
 			Route::get('/reviews', 'UserProfileController@reviews')->name('reviews');
 
 			// Identity Verification
-			Route::get('/identity-verify', 'VerifyIdentityController@verify')->name('verify_identity');
-			Route::post('/identity-verify', 'VerifyIdentityController@upload');
-
-			// Profile Privacy Control
-			Route::get('/set/{option}', 'UserProfileController@setAccountPrivacy');
-			Route::get('/get-privacy', 'UserProfileController@getAccountPrivacy');
+			Route::match(['get', 'post'], '/verify-identity', 'VerifyIdentityController@verify')->name('verify_identity');
+			// Route::post('/verify-identity', 'VerifyIdentityController@upload');
 
 			// Delete Account
 			Route::get('/delete', 'UserProfileController@deleteAccount');
 			Route::get('/delete/proceed', 'UserProfileController@deleteAccountConfirm');
-
-			// BLOG ROUTES
-			Route::get('/blog', 'BlogController@userBlog');
-			Route::get('/blog/add', 'BlogController@addBlogPost');
-			Route::post('/blog/add', 'BlogController@submitBlogPost');
-			Route::get('/blog/{blog}/edit', 'BlogController@editBlogPost');
-			Route::post('/blog/add/image', 'BlogController@submitBlogPostImage');
-
-			
 		});
+
+		// BLOG ROUTES
+		Route::group(['prefix'=>'blog'], function(){
+			Route::get('/', 'BlogController@userBlog')->name('blog');
+			Route::match(['get', 'post'], '/new', 'BlogController@handleBlogForm')->name('add_blog');
+			Route::match(['get', 'put', 'delete'], '/{blog}/edit', 'BlogController@editBlogPost')->middleware('can:update-blog,blog')->name('edit_blog');
+			Route::delete('/{blog}/delete', 'BlogController@deleteBlog')->middleware('can:update-blog,blog')->name('delete_blog');
+			Route::get('/subscribers', 'BlogController@subscribers')->name('subscribers');
+			Route::post('/subscribe/{blog}/subscribe-user', 'BlogController@subscribeRegisteredUser');
+			Route::post('/subscribe/{blog}/check', 'BlogController@checkBlogSubscription');
+			Route::post('/like/{blog}/submit', 'BlogController@submitBlogLike');
+			Route::post('/{blog}/comment', 'BlogController@submitComment');
+			Route::post('/{blog}/comment/reply', 'BlogController@submitCommentReply');
+		});
+
+		Route::group(['prefix'=>'enquiries'], function(){
+			Route::match(['get', 'put'], '/', 'EnquiryController@enquiries')->name('enquiries');
+		});
+		
 
 		/*
 		*	Gigs Routes
@@ -225,16 +202,6 @@ Route::group(['middleware'=>'auth'], function(){
 		});
 	});
 	
-	
-
-	
-	
-	// Subscribe Registered User To Blog
-	Route::post('/blog/subscribe/{blog}/user', 'BlogController@subscribeRegisteredUser');
-	Route::post('/blog/subscribe/{blog}/check', 'BlogController@checkBlogSubscription');
-	Route::get('/blog/like/{blog}/check', 'BlogController@checkBlogLike');
-	Route::post('/blog/like/{blog}/submit', 'BlogController@submitBlogLike');
-
 	// Send Message Routes
 	Route::get('/{user}/message', 'MessageController@message')->name('send_message');
 	Route::post('/{user}/message', 'MessageController@sendMessage');
@@ -254,8 +221,11 @@ Route::group(['middleware'=>'auth'], function(){
 	// Submit Likes Route
 	Route::post('/likes/{portfolio}', 'LikesController@add');
 	Route::delete('/likes/{portfolio}', 'LikesController@remove');
-});
+}); /* End of auth middleware */
 
+Route::get('/blog/like/{blog}/check', 'BlogController@checkBlogLike');
+Route::get('/blog/{blog}/comments/count', 'BlogController@commentCount');
+Route::get('/blog/{user}/{blog}/{slug}', 'BlogController@viewBlogPost')->name('view_blog');
 Route::post('/blog/subscribe/{blog}/visitor', 'BlogController@subscribeVisitor');
 
 // Verify User Email Account Route
@@ -269,11 +239,6 @@ Route::get('/unsubscribe/invite-reminder/', 'UnsubscribeController@unsubscribeCo
 Route::get('/reviews/{user}', 'UserReviewController@reviews');
 Route::get('/portfolio/{user}', 'PortfolioController@getPortfolioItems');
 
-Route::get('/jobs', 'TaskController@allTasks')->name('tasks');
-Route::get('/job/{task}/{slug}', 'TaskController@getTask')->name('task');
-Route::get('/job/{task}/{slug}/apply', 'TaskController@applyForTask')->name('apply')->middleware('auth');
-Route::post('/job/{task}/{slug}/apply', 'TaskController@submitApplicationForTask');
-
 Route::get('/people/{page?}', 'People@index')->name('people');
 
 // Link account routes
@@ -281,22 +246,22 @@ Route::get('/account-merge', 'SocialAccountLinkupController@index')->name('merge
 Route::post('/account-merge', 'SocialAccountLinkupController@mergeAccounts');
 
 // External Links
-Route::get('/external-link', 'ExternalLinkController@index')->name('external_link');
+// Route::get('/external-link', 'ExternalLinkController@index')->name('external_link');
 
 Route::get('/social/{portfolio}/share', 'SocialShareController@portfolio')->name('portfolio_share');
 
 Route::get('/{user}', 'People@profile')->name('view_profile');
 Route::get('/{user}/hire', 'People@hire')->name('hire');
 
-// CONTACT REQUEST
-Route::get('/{user}/contact-request', 'ContactRequestController@index')->name('contact_request');
-Route::post('/{user}/contact-request/submit', 'ContactRequestController@submit')->name('contact_request_post');
-Route::get('/{user}/contact-request/status', 'ContactRequestController@status')->name('contact_request_status');
+// Enquiry form
+Route::match(['get', 'post'], '/{user}/enquiry', 'EnquiryController@form')->name('make_enquiry');
+// Route::get('/{user}/contact-request', 'ContactRequestController@index')->name('contact_request');
+// Route::post('/{user}/contact-request/submit', 'ContactRequestController@submit')->name('contact_request_post');
+// Route::get('/{user}/contact-request/status', 'ContactRequestController@status')->name('contact_request_status');
 
-Route::get('/{user}/instagram', 'People@instagram')->name('instagram');
-Route::get('/{user}/instagram/feed', 'People@instagramFeed')->name('instagram_feed');
+// Route::get('/{user}/instagram', 'People@instagram')->name('instagram');
+// Route::get('/{user}/instagram/feed', 'People@instagramFeed')->name('instagram_feed');
 Route::get('/{user}/portfolio/{portfolio}', 'PortfolioController@view')->name('view_portfolio');
-Route::get('/{user}/blog/{blog}/{slug}', 'BlogController@singleBlog')->name('blog');
 
 Route::get('/autocomplete_cities/{cities}', 'HomeController@getCities');
 Route::get('/skills/all', 'HomeController@getSkills');
@@ -310,7 +275,8 @@ Route::get('/follower/{user}', 'FollowerController@getFollowers');
 // Likes Route
 Route::get('/likes/{portfolio}', 'LikesController@get');
 
-
+// Track social shares
+Route::post('/blog/track-social-shares', 'BlogController@trackSocialShares');
 
 
 

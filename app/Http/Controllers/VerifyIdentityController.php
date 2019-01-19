@@ -11,26 +11,27 @@ class VerifyIdentityController extends Controller
 {
     public function verify(Request $request)
     {
-    	$user = $request->user()->identity()->first();
-        $profile = $request->user()->profile()->first();
-    	return view('profile.identity')->with(['user'=>$user, 'profile'=>$profile]);
-    }
+        // Handle GET request
+        if ( $request->isMethod('get') ){
+        	$user = $request->user()->identity()->first();
+            $profile = $request->user()->profile()->first();
+        	return view('profile.identity')->with(['user'=>$user, 'profile'=>$profile]);
+        }
 
-    public function upload(Request $request)
-    {
-    	$this->validate($request, [
-    		'identity-card' => 'required|image'
-    	]);
+        // Handle POST request
+        $this->validate($request, [
+            'identity-card' => 'required|image'
+        ]);
 
-    	$file = $request->file('identity-card')->store('public');
+        $file = $request->file('identity-card')->store('public');
         Image::make(storage_path() . '/app/' . $file)->resize(640, null, function($constraint){
             $constraint->aspectRatio();
         })->save();
 
-    	$request->user()->identity()->create([
-    		'scan_link' => $file
-    	]);
+        $request->user()->identity()->create([
+            'scan_link' => $file
+        ]);
         dispatch(new UserImageJob($file));
-    	return redirect()->route('verify_identity');
+        return redirect()->route('verify_identity');
     }
 }

@@ -47,11 +47,13 @@ Vue.component('save-job', require('./components/SaveJob.vue'));
 Vue.component('blog-like', require('./components/BlogLike.vue'));
 Vue.component('blog-subscribe', require('./components/BlogSubscribe.vue'));
 Vue.component('phone-number', require('./components/PhoneNumber.vue'));
-Vue.component('portfolio-list', require('./components/Portfolios.vue'));
+Vue.component('portfolio-list', require('./components/PortfolioList.vue'));
 Vue.component('portfolio-item', require('./components/PortfolioItem.vue'));
 Vue.component('gig-form', require('./components/GigForm.vue'));
 Vue.component('featured', require('./components/Featured.vue'));
 Vue.component('send-reminder', require('./components/SendReminder.vue'));
+Vue.component('blog-comment', require('./components/BlogComment.vue'));
+Vue.component('enquiry', require('./components/Enquiry.vue'));
 
 const app = new Vue({
     el: '#app',
@@ -135,22 +137,6 @@ $('body').on('click', '#delete-instagram', function(e){
 	$('.navbar-menu').toggleClass('is-active');
 });
 
-$('.ui.sticky').sticky({
-	context: '#sidebar',
-	offset: 70,
-});
-
-var dropdownDefault;
-if ($('.ui.selection').length > 0){
-	dropdownDefault = $('.ui.selection').find('div.menu')[0].dataset.default;
-}
-// console.log(dropdownDefault);
-
-$('.ui.checkbox').checkbox();
-$('.ui.dropdown').dropdown('set selected', dropdownDefault);
-// $('#gender').dropdown();
-$('.ui.progress').progress();
-
 $('body').on('click', '#get-location', function(e){
 	e.preventDefault();
 	UserLocation.getLocation();
@@ -172,32 +158,7 @@ var UserLocation = {
 	},
 }
 
-import jPlayer from 'jplayer';
-
-$("#jquery_jplayer_1").jPlayer({
-    ready: function () {
-      $(this).jPlayer("setMedia", {
-        // title: $('#jquery_jplayer_1').data('title'),
-        m4a: $('#jquery_jplayer_1').data('src'),
-      });
-    },
-    cssSelectorAncestor: "#jp_container_1",
-    swfPath: "/js",
-    supplied: "m4a",
-    useStateClassSkin: true,
-    autoBlur: false,
-    smoothPlayBar: true,
-    keyEnabled: true,
-    remainingDuration: true,
-    toggleDuration: true
-});
-
-$('#mobile-menu-admin').sidebar({
-    // context: $('#app')
-}).sidebar('attach events', '#mobile-admin-trigger');
-
 var Portfolio = {
-	
 	loadActivities: function(){
 		var btn = document.getElementById('load-more-activity'),
 			id = btn.dataset.page,
@@ -243,12 +204,120 @@ $('body').on('click', '#get-more-users', function(e){
 	UserProfiles.loadDefault();
 });
 
-// var waypoints = $('#how').waypoint({
-//     // element: document.getElementById('how'),
-//     handler: function(direction){
-//         console.log(direction);
-//     }
-// });
+
+try{
+	var waypoints = new Waypoint({
+	     element: document.getElementById('social-share'),
+		handler: function(direction){
+			// console.log(direction);
+			var status = sessionStorage.getItem('modal');
+			var url = window.location.href;
+			var sharedUrl = sessionStorage.getItem('url');
+			if ( direction === 'down' && status == null && sharedUrl !== url ){
+				$('#social-share').find('.modal').addClass('is-active');
+				$('body').on('click', '.close-share-modal', function(e){
+					e.preventDefault();
+					sessionStorage.setItem('modal', 'dismissed');
+					$(this).parents('.modal').removeClass('is-active');
+				}).find('.share-links').on('click', 'a', function(e){
+					
+					var data = {
+						network: $(this).attr('class'),
+						url: url,
+						agent: navigator.userAgent,
+					}
+					axios.post('/blog/track-social-shares', data).then( (response)=>{
+						sessionStorage.setItem('url', url);
+					} ).catch( (e)=>{
+						console.log(e);
+					} );
+					$(this).parents('.modal').removeClass('is-active');
+				});
+				waypoints.disable();
+			}
+		},
+		offset: "100%"
+	});
+} catch(e){
+	// console.log(e);
+}
+
+$('body').on('click', '.dropdown-trigger a', function(e){
+	e.preventDefault();
+	$(this).parents('.dropdown').toggleClass('is-active');
+});
+
+if( $('.user-links').length > 0 ){
+	$('.user-links').on('click', '.delete-portfolio', function(e){
+		e.preventDefault();
+		$('body').addClass('is-loading');
+		var $this = $(this);
+		var uid = $this.data('uid');
+		if ( window.confirm("Are you sure you want to delete this portfolio? This action cannot be undone.") ){
+			axios.delete('/dashboard/portfolio/'+ uid +'/edit').then( response => {
+				if ( response.data === true ){
+					$this.closest('.column').remove();
+					$('body').removeClass('is-loading');
+					iziToast.success({ title: 'Portfolio deleted successfully.' })
+				} else {
+					$('body').removeClass('is-loading');
+					iziToast.error({ title: 'Portfolio deleted failed.' });
+				}
+			} ).catch( e => {
+				$('body').removeClass('is-loading');
+				iziToast.error({ title: 'Something went wrong.' });
+			})
+		} else {
+			$('body').removeClass('is-loading');
+			return;
+		}
+	});
+}
+
+if ( $('.homepage-tabs').length > 0 ){
+	var tablink = $('.homepage-tabs').find('li'),
+		index = 0,
+		tabs = $('#tabs').find('li');
+	tablink.each(function(i, el) {
+		if ( $(el).hasClass('is-active') ){
+			index = i;
+		}
+		$(el).on('click', function(e){
+			tabs.each(function(index, el) {
+				$(el).removeClass('is-active');
+			});
+			tablink.each(function(index, el) {
+				$(el).removeClass('is-active');
+			});
+			$(el).addClass('is-active');
+			tabs.eq(i).addClass('is-active');
+			var bLazy = new Blazy({
+				offset: 0
+			});
+		});
+	});
+	tabs.eq(index).addClass('is-active');
+}
+
+if ( $('.blog-excerpt').length > 0 ){
+	$('.blog-excerpt').find('.delete-blog').each(function(index, el){
+		$(el).on('click', function(e){
+			var id = $(this).data('id');
+			var data = { _method: 'delete' };
+			$('body').addClass('is-loading');
+			axios.delete('/dashboard/blog/' + id + '/delete', data).then( (response) => {
+				if ( response.data === true ){
+					$(el).closest('.blog-excerpt').remove();
+					iziToast.success({ title: 'Blog post deleted successfully.' })
+				} else {
+					iziToast.error({ title: 'Error occured while deleting blog post.' })
+				}
+				$('body').removeClass('is-loading');
+				// console.log(response);
+			} ).catch ( error => $('body').removeClass('is-loading') );
+		})
+	});
+}
 
 
 

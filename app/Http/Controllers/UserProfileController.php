@@ -203,28 +203,6 @@ class UserProfileController extends Controller
         ]);
     }
 
-    // Set Account Privacy
-    public function setAccountPrivacy(Request $request)
-    {
-        $profile = $request->user()->profile()->first();
-        if($request->option === 'private'){
-            $profile->is_public = false;
-            $profile->save();
-            return response()->json(null, 200);
-        } else if($request->option === 'public'){
-            $profile->is_public = true;
-            $profile->save();
-            return response()->json(null, 200);
-        }
-    }
-
-    public function getAccountPrivacy(Request $request)
-    {
-        $status = $request->user()->profile()->first()->is_public;
-        $status = ($status == 0) ? false : true;
-        return response()->json(['status' => $status], 200);
-    }
-
     // Delete user account
     public function deleteAccount(Request $request)
     {

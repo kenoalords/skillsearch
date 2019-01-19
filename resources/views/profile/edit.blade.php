@@ -3,7 +3,8 @@
 @section('title', 'Edit Profile')
 
 @section('content')
-    <h1 class="title is-2">Edit Profile</h1>
+    @include('includes.status')
+    <h1 class="title is-2 bold">Edit Profile</h1>
 
     <div id="profile-image-wrapper" style="background: url({{ $profile->getUserBackground()  }}) no-repeat center; background-size: cover; margin-bottom: 3em;">
         <div class="hero is-medium">
@@ -13,13 +14,6 @@
         </div>
         <user-background></user-background>
     </div>
-
-
-    @if(Request::session()->has('status'))
-        <div class="notification is-success">
-            {{Request::session()->pull('status')}}
-        </div>
-    @endif
 
     <div class="ui row">
         

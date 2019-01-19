@@ -6,23 +6,18 @@
 <div class="">
     @include('includes.status')
     <h1 class="title is-3">Portfolio</h1>
-    <div class="subtitle is-6">Upload &amp; Manage your works</div>
+    <h4 class="subtitle">Share your work with the world.</h4>
     @include('portfolio.menu')
-    @if(count($portfolios) < 3)
-    <div class="notification is-info">
-        <i class="fa fa-warning-circle"></i>&nbsp; You need a minimun of 3 portfolio items to apply for jobs
-    </div>
-    @endif
-    
     @if ($portfolios)
-        <div class="columns is-multiline">
+        <div class="columns is-multiline is-mobile">
             @each('includes.portfolio-with-user', $portfolios, 'portfolio')
-        </div>
-        
-        <p><a href="/dashboard/portfolio/add" class="button is-primary"><i class="fa fa-plus"></i>&nbsp;Upload work</a></p>
+        </div>       
+        <p><a href="{{ route('new_portfolio') }}" class="button is-info">Upload work</a></p>
     @else
-       <a href="/dashboard/portfolio/add" class="button is-primary"><i class="fa fa-plus"></i>&nbsp;Upload work</a>
-
+        <h3 class="title is-4">You have not uploaded any of your work</h3>
+        <a href="{{ route('new_portfolio') }}" class="button is-info">
+            <span>Upload work</span>
+        </a>
     @endif
 
 </div>

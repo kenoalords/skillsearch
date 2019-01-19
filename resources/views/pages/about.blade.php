@@ -5,19 +5,25 @@
 @section('metadescription', config('app.name') . ' is a community of skilled people showcasing their awesome talent and getting hired.')
 @section('title', 'About')
 @section('content')
-	
-<h1 class="title">About</h1>
-<p>
-	{{config('app.name')}} is a community of creative people showcasing their awesome works and getting hired.
-</p>
+<div class="content">
+	<h1 class="title is-3 bold">Ubanji</h1>
+	<h4 class="subtitle is-5 has-text-danger bold">Designed to help you achieve more.</h4>
+	<p>
+		{{config('app.name')}} is an community focused on helping creative and skilled people in Nigeria showcase their works and explore new opportunities.
+	</p>
 
-<p>
-	With the ever increasing demand for creative services in Nigeria, {{config('app.name')}} provides an innovative and interactive online platform to help people showcase their works across various categories and get hired.
-</p>
+	<p>
+		As a creative people focused platform, {{config('app.name')}} provides an innovative and interactive online tools to help you showcase your works across various categories and be found.
+	</p>
 
-<p>
-	{{config('app.name')}} is designed and maintained by <a href="http://clickmedia.com.ng">Clickmedia Solutions</a>
-</p>
+	<p>
+		If you have any suggestions or enquiries, kindly send us an email at hello[at]ubanji[.]com
+	</p>
+
+	<p>
+		{{config('app.name')}} is designed and maintained by <a href="http://clickmedia.com.ng" target="_blank">Clickmedia Solutions</a>
+	</p>
+</div>
 
 @if(!Auth::user())
 	<a href="/register" class="button is-primary">

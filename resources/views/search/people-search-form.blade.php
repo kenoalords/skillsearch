@@ -1,16 +1,16 @@
-<form action="/search" method="get" id="searchform" style="margin-top: 0;">
+<form action="/search" method="get">
 	<div>
-		<div class="field is-grouped">
+		<div class="field has-addons">
 			<div class="control is-expanded">
-				<input type="text" name="term" class="input" placeholder="e.g Website Desginer" value="{{Request::get('term')}}">
+				<input type="text" name="term" class="input" placeholder="e.g Website Desginer in Lagos" value="{{Request::get('term')}}">
 			</div>
-			<div class="control is-expanded">
+			<!-- <div class="control is-expanded">
 				<input type="text" name="location" id="geolocation" class="input" placeholder="e.g Ikeja, Lagos" value="{{Request::get('location')}}">
-			</div>
+			</div> -->
 			<div class="control">
-				<button type="submit" class="button is-dark">
+				<button type="submit" class="button">
 					<span class="icon"><i class="fa fa-search"></i></span>
-					<!-- <span>Go</span> -->
+					<!-- <span>Search</span> -->
 				</button>
 			</div>
 		</div>

@@ -11,6 +11,7 @@ use App\Models\City;
 use App\Models\Skills;
 use App\Models\Activity;
 use App\Models\ContactInvite;
+use App\Models\Subscriber;
 use App\Models\Instagram;
 use App\Models\Portfolio;
 use App\Mail\ResendVerificationMail;
@@ -45,40 +46,23 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, ContactInvite $invite, Portfolio $portfolio, User $user, Task $task)
-    {   
-        
-        $portfolios = $this->getPortfolios(16);
+    public function index(Request $request, ContactInvite $invite, Portfolio $portfolio, User $user, Subscriber $subscriber)
+    {
+        // Get the logged in user
+        $user = fractal()->item($request->user())
+                    ->transformWith(new UserTransformers)
+                    ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                    ->toArray();
 
-        $user_profile = $request->user()->profile()->first();
-        
-        $activities = fractal()->collection($portfolios)
-                                ->transformWith(new PortfolioTransformer)
-                                ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
-                                ->toArray();
-        // dd($activities);
-        $tasks = fractal()->collection($tasks = $task->isPublic()->isApproved()->orderDesc()->take(5)->get())
-                          ->transformWith(new TaskTransformer)
-                          ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
-                          ->toArray();
-        $people = null;
-        if(!$activities){
-            $defaults = [
-                'location'  => '%Lagos',
-            ];
+        // Let's get some stats
+        $portfolio_count = $request->user()->portfolio()->count();
+        $blog_count = $request->user()->blog()->count();
 
-            $collection = $user->where('id', '!=', $request->user()->id)->has('portfolio')->withCount(['portfolio' => function($query){
-                                $query->where('is_public', true);
-                            }])->orderBy('portfolio_count', 'desc')->take(10)->get();
-            $people = fractal()->collection($collection)
-                            ->transformWith(new UserTransformers)
-                            ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
-                            ->toArray();
-        }
-
+        // 1. Check if user has a gmail account
+        // 2. Ask them to invite their contact
         $email = $request->user()->email;
         $inviteStatus = true;
-        $gmailCheck =  preg_match('/(@gmail.com)$/', $email); //$request->user()->email
+        $gmailCheck =  preg_match('/(@gmail.com)$/', $email); 
 
         if($gmailCheck){
             $hasInvited = $invite->where('invitee_email', $email)->get();
@@ -88,20 +72,14 @@ class HomeController extends Controller
                 $inviteStatus = false;
             }
         }
-        $user = fractal()->item($user_profile)
-                            ->transformWith(new ProfileTransformers)
-                            ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
-                            ->toArray();
-
-
-
+        $subscriber_count = $request->user()->subscriber()->count();
         return view('home')->with([
-            'user'      => $user,
-            'activities'=> $activities,
-            'gmail'     => (bool)$gmailCheck,
-            'invite_status' => $inviteStatus,
-            'profiles'  => $people, 
-            'tasks'     => $tasks,
+            'gmail'             => (bool)$gmailCheck,
+            'invite_status'     => $inviteStatus,
+            'user'              => $user,
+            'portfolio_count'   => $portfolio_count,
+            'blog_count'        => $blog_count,
+            'subscriber_count'  => $subscriber_count,
         ]);
     }
 
@@ -258,27 +236,26 @@ class HomeController extends Controller
         return response()->json($url, 200);
     }
 
-    public function membersEmailBroadcast(Request $request)
+    public function emailBroadcast(Request $request, User $users)
     {
         $this->authorize('is_admin', $request->user());
-        return view('admin.email-broadcast');
-    }
+        if ( $request->isMethod('get') )
+            return view('admin.email-broadcast');
 
-    public function submitEmailBroadcast(Request $request, User $users)
-    {
-        $this->authorize('is_admin', $request->user());
-        $users = $users->all();
-        $subject = $request->subject;
-        $body = $request->body;
-        $image_link = $request->image_link;
-        $url = ($request->url) ? $request->url : '';
-        $button_text = ($request->button_text) ? $request->button_text : 'Learn more';
-        if($users){
-            foreach ($users as $key => $user){
-                Mail::to($user->email)->send(new EmailBroadcast($user, $subject, $body, $url, $button_text, $image_link));
+        if ( $request->isMethod('post') ){
+            $users = $users->all();
+            $subject = $request->subject;
+            $body = $request->body;
+            $image_link = $request->image_link;
+            $url = ($request->url) ? $request->url : '';
+            $button_text = ($request->button_text) ? $request->button_text : 'Learn more';
+            if($users){
+                foreach ($users as $key => $user){
+                    Mail::to($user->email)->send(new EmailBroadcast($user, $subject, $body, $url, $button_text, $image_link));
+                }
+                $request->session()->put('status', 'Bon voyage!! Email broadcast sent');
+                return redirect('/dashboard');
             }
-            $request->session()->put('status', 'Bon voyage!! Email broadcast sent');
-            return redirect('/dashboard');
         }
     }
 

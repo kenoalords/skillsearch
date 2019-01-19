@@ -6,12 +6,16 @@ use Image;
 use App\Models\User;
 use App\Models\Category;
 use App\Models\Subscriber;
+use App\Models\SocialShare;
 use App\Models\Blog;
 use Illuminate\Http\Request;
 use App\Jobs\UserImageJob;
 use App\Traits\Orderable;
 use App\Transformers\BlogTransformer;
+use App\Transformers\CommentTransformer;
 use League\Fractal\Resource\Collection;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Gate;
 
 class BlogController extends Controller
 {
@@ -20,124 +24,119 @@ class BlogController extends Controller
     public function userBlog(Request $request)
     {
         $blogs = $request->user()->blog()->latestFirst()->get();
-        $blogs = fractal()->collection($blogs)
-                            ->transformWith(new BlogTransformer)
-                            ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
-                            ->toArray();
-        // dd($blogs);                    
-        return view('blog.user-blog')->with(['blogs'=>$blogs]);
+        $payload = fractal()->collection($blogs)
+                        ->transformWith(new BlogTransformer)
+                        ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                        ->toArray();
+        return view('blog.user-blog')->with(['blogs'=>$payload]);
     }
 
-    public function singleBlog(Request $request, $string, Blog $blog)
-    {
-        $blog = fractal()->item($blog)
-                            ->transformWith(new BlogTransformer)
-                            ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
-                            ->toArray();
-        return view('blog.single')->with(['blog'=>$blog]);
-    }
-    
-    public function addBlogPost(Request $request, Category $categories)
-    {
-        $categories = $categories->orderAsc()->get();
-    	return view('blog.add')->with(['user' => $request->user()->profile, 'categories' => $categories]);
+    public static function uploadBlogImage(Request $request){
+        $file = $request->file('image')->store('public');
+        Image::make(storage_path( '/app/'.$file ))->resize('1024', null, function($const){
+            $const->aspectRatio();
+        })->save();
+        return $file;
     }
 
     public function editBlogPost(Request $request, Blog $blog, Category $categories)
     {
-        $categories = $categories->orderAsc()->get();
-        $blog = fractal()->item($blog)
-                            ->transformWith(new BlogTransformer)
-                            ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
-                            ->toArray();
-        return view('blog.edit')->with(['user' => $request->user()->profile, 'categories' => $categories, 'blog' => $blog]);
+        // Handle GET request
+        if ( $request->isMethod('get') ){
+            $categories = $categories->orderAsc()->get();
+            return view('blog.edit')->with(['user' => $request->user()->profile, 'categories' => $categories, 'blog' => $blog]);
+        }
+
+        // Handle PUT request
+        if ( $request->getMethod('put') ){
+
+            // Check if a new file was uploaded
+            if ( $request->hasFile('image') ){               
+                $image_url = BlogController::uploadBlogImage($request);
+            } else {
+                $image_url = $request->image;
+            }
+
+            $blog->title = $request->title;
+            $blog->body = $request->body;
+            $blog->category = $request->category;
+            $blog->excerpt = $request->excerpt;
+            $blog->slug = str_slug($request->title);
+            $blog->image = $image_url;
+            $blog->save();
+
+            if ( $request->ajax() ){
+                return response()->json(true, 200);
+            }
+        } 
     }
 
-    public function submitBlogPost(Request $request)
+    public function deleteBlog(Request $request, Blog $blog){
+        if ($request->isMethod('delete')){
+            $blog->delete();
+            return response()->json(true, 200);
+        }
+    }
+
+    public function handleBlogForm(Request $request, Category $categories)
     {
-        // dd($request->id);
-    	if($request->id){
-    		$blog = $request->user()->blog()->where('id', $request->id)->update([
-    			'title' => $request->title,
-    			'body'	=> e($request->body),
-    			'slug'	=> str_slug($request->title),
-                'allow_comments'=> (bool)$request->allow_comments,
-                'category'      => $request->category,
-                'excerpt'      => $request->excerpt,
-    		]);
-            $blog = fractal()->item($blog)
-                            ->transformWith(new BlogTransformer)
-                            ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
-                            ->toArray();
-    		return response()->json($blog, 200);
-    	} else {
-    		$title = ($request->title) ? $request->title : 'Draft';
-    		$body = $request->body;
+        // Handle the get request and show the form
+        if ( strtoupper($request->getMethod()) === 'GET' ){
+            $categories = $categories->orderAsc()->get();
+            return view('blog.add')->with(['user' => $request->user()->profile, 'categories' => $categories]);
+        }
+
+        // Handle the post request when a user submits a blog post
+        if ( strtoupper($request->getMethod()) === 'POST' ){
+            $image_url = null;
+
+            if ( $request->hasFile('image') ){               
+                $image_url = BlogController::uploadBlogImage($request);
+            }
+            
+            $title = ($request->title) ? $request->title : 'Draft';
+            $body = $request->body;
             $uid = uniqid(true);
-            // dd($uid);
-    		$blog = $request->user()->blog()->create([
-    			'title'	        => $title,
-    			'body'	        => e($body),
-    			'slug'	        => str_slug($title),
+            $blog = $request->user()->blog()->create([
+                'title'         => $title,
+                'body'          => e($body),
+                'slug'          => str_slug($title),
                 'category'      => $request->category,
                 'excerpt'       => $request->excerpt,
                 'uid'           => $uid,
                 'allow_comments'=> (bool)$request->allow_comments,
-    		]);
+                'image'         => $image_url,
+                'is_public'     => (bool)$request->is_public,
+                'status'        => $request->status,
+            ]);
             $blog = fractal()->item($blog)
                             ->transformWith(new BlogTransformer)
                             ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                             ->toArray();
-    		return response()->json($blog, 200);
-    	}
+            return response()->json($blog, 200);
+        }
+    	
     }
 
-    public function submitBlogPostImage(Request $request)
+    
+
+    public function subscribeRegisteredUser(Request $request, Blog $blog)
     {
-        // dd($request);
-    	$this->validate($request, ['image' => 'image']);
-
-    	$upload = $request->file('image')->store('public');
-    	Image::make(storage_path() . '/app/' . $upload)->fit(1240,698, function($c){
-    		$c->upsize();
-    	})->save();
-
-    	if($request->id !== 'undefined'){
-    		$this->validate($request, ['id'=>'exists:blogs,id']);
-    		$blog = $request->user()->blog()->where('id', $request->id)->first();
-    		if($upload){
-    			$blog->image = $upload;
-    			$blog->save();
-    			dispatch(new UserImageJob($upload));
-    			return response()->json($blog, 200);
-    		}
-    	} else {
-    		$title = ($request->title != 'undefined') ? $request->title : 'Draft';
-    		$body = ($request->body != 'undefined') ? $request->body : 'Nothing yet';
-    		$blog = $request->user()->blog()->create([
-    			'title' => $title,
-    			'slug'	=> str_slug($title),
-    			'body'	=> e($body),
-    			'image' => $upload,
-                'uid'   => uniqid(true),
-    		]);
-    		dispatch(new UserImageJob($upload));
-    		return response()->json($blog, 200);
-    	}
-    }
-
-    public function subscribeRegisteredUser(Request $request, Blog $blog, User $user)
-    {
-        if($request->user()->id !== $blog->user_id){
+        if($request->user()->id === $blog->user_id){
             return response()->json(['status'=>'owner'], 200);
         } else {
-            $user = $user->where('id', $blog->user_id)->first();
-            $check = Subscriber::where(['user_id'=>$user->id, 'subscriber_id'=>$request->user()->id])->first();
+            // $user = $user->where('id', $blog->user_id)->first();
+            $check = Subscriber::where(['user_id'=>$blog->user->id, 'subscriber_id'=>$request->user()->id])->first();
             if(!$check){
-                $subscribe = $user->subscriber()->create([
+                // dd($request);
+                $subscribe = $blog->user->subscriber()->create([
                             'subscriber_id' => $request->user()->id,
-                            'fullname'      => $request->user()->profile->first_name,
+                            'fullname'      => $request->user()->profile->fullname,
                             'email'         => $request->user()->email,
+                            'blog_id'       => $request->blog_id,
+                            'blog_title'    => $request->blog_title,
+                            'blog_url'      => $request->blog_url,
+                            'ip'            => $request->ip(),
                         ]);
                 if($subscribe){
                     $count = $blog->user->subscriber()->count();
@@ -155,11 +154,15 @@ class BlogController extends Controller
     {
         $this->validate($request, [
                 'fullname'  => 'required|string',
-                'email'     => 'required|email'
+                'email'     => 'required|email',
             ]);
         $subscribe = $blog->user->subscriber()->create([
-                'fullname'  => ucwords($request->fullname),
+                'fullname'  => ucwords(strtolower($request->fullname)),
                 'email'     => strtolower($request->email),
+                'ip'        => $request->ip(),
+                'blog_title'=> $request->title,
+                'blog_url'  => $request->blog_url,
+                'blog_id'   => $request->blog_id,
             ]);
         if($subscribe){
             $count = $blog->user->subscriber()->count();
@@ -208,5 +211,81 @@ class BlogController extends Controller
                 return response()->json(['count'=>$count], 200);
             }
         }
+    }
+
+    public function commentCount(Request $request, Blog $blog){
+        $comments = $blog->comments()->where('reply_id', null)->latestFirst()->get();
+        $payload = fractal()->collection($comments)
+                    ->transformWith(new CommentTransformer)
+                    ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                    ->toArray();
+
+        if ( $request->ajax() ){
+            return response()->json([ 'count'=> $comments->count(), 'comments' => $payload ]);
+        }
+    }
+
+    public function submitComment(Request $request, Blog $blog){
+        $comment = $blog->comments()->create([
+            'user_id'   => $request->user()->id,
+            'comment'   => $request->comment,
+        ]);
+        $payload = fractal()->item($comment)
+                    ->transformWith(new CommentTransformer)
+                    ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                    ->toArray();
+        if ( $request->ajax() ){
+            return response()->json($payload, 200);
+        }
+    }
+
+    public function submitCommentReply(Request $request, Blog $blog){
+        $this->validate($request, [
+            'reply'     => 'required|string',
+            'comment_id'=> 'required|numeric'
+        ]);
+        $reply = $blog->comments()->create([
+            'user_id'   => $request->user()->id,
+            'reply_id'  => $request->comment_id,
+            'comment'   => $request->reply,
+        ]);
+        $payload = fractal()->item($reply)
+                        ->transformWith(new CommentTransformer)
+                        ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                        ->toArray();
+        if ( $request->ajax() ){
+            return response()->json($payload, 200);
+        }
+    }
+
+    public function viewBlogPost(Request $request, User $user, Blog $blog){
+        // dd($blog);
+        $blog = fractal()->item($blog)
+                    ->transformWith(new BlogTransformer)
+                    ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                    ->toArray();
+        return view('blog.single')->with(['blog'=>$blog]);
+    }
+
+    public function trackSocialShares(Request $request, SocialShare $share){
+        if ( $request->ajax() ){
+            $log = $share->create([
+                        'network'   => $request->network,
+                        'url'       => $request->url,
+                        'agent'     => $request->agent,
+                        'ip'        => $request->ip(),
+                    ]);
+            if ( $log ){
+                return response()->json(true, 200);
+            }
+
+        } else {
+            return false;
+        }
+    }
+
+    public function subscribers(Request $request){
+        $subscribers = $request->user()->subscriber()->get();
+        return view('blog.subscribers')->with(['subscribers'=>$subscribers]);
     }
 }

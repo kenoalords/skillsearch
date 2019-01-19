@@ -11,7 +11,7 @@ class FeaturedPortfolioComposer{
 	public function compose(View $view)
 	{		
 		$records = Portfolio::isPublic()->hasThumbnail();
-        	$portfolios = fractal()->collection($records->latestFirst()->isFeatured()->take(20)->get())
+        	$portfolios = fractal()->collection($records->isFeatured()->take(20)->get())
                         ->transformWith(new PortfolioTransformer)
                         ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                         ->toArray();

@@ -43,7 +43,7 @@
             </div>
 
             <div class="field">
-                <button type="submit" class="button is-primary is-block">
+                <button type="submit" class="button is-info is-block">
                     Login
                 </button>
             </div>
@@ -52,9 +52,9 @@
             <div class="field">
                 <h4><a href="{{route('google')}}" class="button is-danger is-block">Continue with Google</a></h4>
             </div>
-            <div class="field">
+           <!--  <div class="field">
                 <h4><a href="{{route('facebook')}}" class="button is-link is-block">Continue with Facebook</a></h4>
-            </div>
+            </div> -->
 
             <div class="field">
                 <p>Don't have an account? <a href="/register" class="has-text-link">Sign up</a></p>

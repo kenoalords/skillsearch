@@ -1,5 +1,5 @@
 @if($portfolio)
-<div class="column is-one-third-desktop is-one-quarter-widescreen is-half-tablet">
+<div class="column is-one-quarter-desktop portfolio is-half-mobile is-one-third-tablet">
     <div class="card portfolio" itemscope itemtype="http://schema.org/CreativeWork">
         <meta itemprop="description" content="{{ str_limit($portfolio['description'], 160) }}">
         <div class="card-image">
@@ -9,8 +9,22 @@
                     <meta itemprop="thumbnailUrl" content="{{ $portfolio['thumbnail'] }}">
                 </a>
             </figure>
-            @if($portfolio['is_featured'])
-                <!-- <div class="featured-tag"><i class="icon star"></i></div> -->
+            @if ( (Auth::user() && Auth::user()->id === $portfolio['user_id'] && Request::path() === 'dashboard/portfolio') || (Auth::user() && Auth::user()->is_admin === true) )
+                <div class="user-links">
+                    <div class="dropdown is-right">
+                        <div class="dropdown-trigger">
+                            <a href="#"><i class="fa fa-ellipsis-v"></i></a>
+                        </div>
+                        <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                            <div class="dropdown-content">
+                                <a href="{{ route('edit_portfolio', [ 'portfolio'=> $portfolio['uid'] ]) }}" class="dropdown-item"><span class="icon"><i class="fa fa-pencil"></i></span> <span>Edit</span></a>
+                                <a href="#" class="dropdown-item delete-portfolio"><span class="icon"><i class="fa fa-eye-slash"></i></span> <span>Hide</span></a>
+                                <hr class="dropdown-divider">
+                                <a href="#" class="dropdown-item delete-portfolio" data-uid="{{ $portfolio['uid'] }}"><span class="icon"><i class="fa fa-trash"></i></span> <span>Delete</span></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             @endif
         </div>
         <div class="card-content" style="padding: 5px;">
@@ -19,7 +33,7 @@
                 <div class="level-left">
                     <a href="/{{ $portfolio['user'] }}" itemprop="url" class="has-text-weight-bold">
                         <img src="{{ $portfolio['user_profile']['avatar'] }}" alt="{{ $portfolio['user_profile']['fullname'] }}" class="image is-24x24 is-rounded is-inline">
-                         <span itemprop="author" class="{{ ($portfolio['verified']) ? 'verified' : '' }} author" >{{ $portfolio['user_profile']['first_name'] }}</span>
+                         <span itemprop="author" class="{{ ($portfolio['verified']) ? 'verified' : '' }} author" >{{-- $portfolio['user_profile']['first_name'] --}}</span>
                     </a>
                 </div>
 
@@ -30,7 +44,7 @@
                     <span class="level-item">
                         <span class="icon"><i class="fa fa-comment"></i></span> <span>{{$portfolio['comment_count']}}</span>
                     </span>
-                    <featured uid="{{ $portfolio['uid'] }}"></featured>
+                    <featured uid="{{ $portfolio['uid'] }}" :status="{{ $portfolio['is_featured'] }}"></featured>
                 </div>
             </div>
             

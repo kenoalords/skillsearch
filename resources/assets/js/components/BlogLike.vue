@@ -1,6 +1,6 @@
 <template>
     <span>
-        <a v-on:click.prevent="submitLike()" class="btn btn-thumbs-up" :class="{'btn-default' : !hasLiked, 'btn-success' : hasLiked}" v-if="isReady"><i class="fa fa-thumbs-up" style="top:0"></i> {{likeCount}}</a>
+        <a v-on:click.prevent="submitLike()" class="button" :class="{'is-light' : !hasLiked, 'is-info' : hasLiked}" v-if="isReady"><span class="icon"><i class="fa fa-thumbs-up" style="top:0"></i></span> <span>Like <span style="opacity: 0.7">{{likeCount}}</span></span></a>
     </span>
 </template>
 
@@ -29,8 +29,10 @@
     					this.likeCount++;
     					this.hasLiked = true;
     				}
-    				axios.post('/blog/like/'+this.blogId+'/submit').then((response)=>{
-    					console.log(response);
+                    var _this = this;
+    				axios.post('/dashboard/blog/like/'+this.blogId+'/submit').then((response)=>{
+    					// console.log(response);
+                        _this.likeCount = response.data.count;
     				}).catch((error)=>{
     					alert('Oops! Something went wrong, please try again later');
     				});

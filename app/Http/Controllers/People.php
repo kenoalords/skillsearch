@@ -10,6 +10,7 @@ use App\Transformers\ProfileTransformers;
 use App\Transformers\SearchProfileTransformers;
 use App\Transformers\UserTransformers;
 use App\Transformers\PortfolioTransformer;
+use App\Transformers\BlogTransformer;
 use App\Services\InstagramService;
 use Illuminate\Http\Request;
 use League\Fractal\Resource\Collection;
@@ -66,6 +67,13 @@ class People extends Controller
                             ->transformWith(new PortfolioTransformer)
                             ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                             ->toArray();
+
+        $blogs = $user->blog()->isPublished()->latestFirst()->get();
+        $payload = fractal()->collection($blogs)
+                        ->transformWith(new BlogTransformer)
+                        ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                        ->toArray();
+        
     	// dd($skills);
         $others = User::where('id', '!=', $user->id)->whereHas('skills', function($query) use ($skills){
             $skillset = [];
@@ -97,7 +105,7 @@ class People extends Controller
     	return view('profile.profile')->with([
     		'profile' 	=> $profile,
     		'skills'	=> $skills,
-            // 'instagram' => $instagram,
+            'blog'      => $payload,
             'portfolios'=> $portfolios,
             'name'      => $user->name,
             'others'    => $other_profiles
@@ -140,70 +148,13 @@ class People extends Controller
                 }
             }
         }
-
-        // dd($profile);
-
-        $instagram = $profile->user->instagram()->first();
-
         return view('profile.profile-about')->with([
             'profile' => $profile,
-            'instagram' => $instagram,
             'name'  => $user->name,
             'others' => $other_profiles
         ]);
     }
 
-    public function instagram(Request $request, User $user)
-    {
-        $token = $user->instagram()->first();
-        $profile = $user->profile()->get()->first();
-        $skills = $user->skills()->get();
-        $others = User::where('id', '!=', $user->id)->whereHas('skills', function($query) use ($skills){
-            $skillset = [];
-            foreach($skills as $skill){
-                $skillset[] = $skill->skill;
-            }
-            $query->whereIn('skill', $skillset);
-        })->has('portfolio')->take(10)->get();
-
-        $other_profiles = [];
-        if($others){
-            foreach($others as $user){
-                $other = $user->profile()->isPublic()->get()->first();
-                if($other){
-                    $other_profiles[] = fractal()->item($other)
-                            ->transformWith(new ProfileTransformers)
-                            ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
-                            ->toArray();
-                }
-            }
-        }
-
-        $instagram = $profile->user->instagram()->first();
-        $profile = fractal()->item($profile)
-                            ->transformWith(new ProfileTransformers)
-                            ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
-                            ->toArray();
-        // dd($profile);
-        return view('profile.profile-instagram')->with([
-                    'instaUser'  => $token,
-                    'name'  => $user->name,
-                    'profile' => $profile,
-                    'others' => $other_profiles,
-                    'instagram' => $instagram,
-                ]);
-    }
-
-    public function instagramFeed(Request $request, User $user, InstagramService $instagram)
-    {
-        $token = $user->instagram()->first();
-        $media = $instagram->getUserRecentMedia($token['access_token']);
-        
-        if($media->meta->code === 200){
-            return response()->json($media->data);
-        } else {
-            return response()->json($media);
-        }
-    }
+    
     
 }

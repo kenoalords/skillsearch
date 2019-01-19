@@ -40,26 +40,24 @@ window.axios.defaults.headers.common = {
  * allows your team to easily build robust real-time web applications.
  */
 
- import Pusher from 'pusher-js';
+//  import Pusher from 'pusher-js';
 
-import Echo from "laravel-echo";
+// import Echo from "laravel-echo";
 import slick from "slick-carousel";
+import Waypoint from "waypoints/lib/noframework.waypoints";
 
-window.Echo = new Echo({
-    broadcaster: 'pusher',
-    key: '5dd8d9c511c47f1ba475',
-    cluster: 'eu',
-});
+// window.Echo = new Echo({
+//     broadcaster: 'pusher',
+//     key: '5dd8d9c511c47f1ba475',
+//     cluster: 'eu',
+// });
 
 window.Blazy = require('blazy');
-
-window.sticky = require('semantic-ui-css/semantic.min.js');
-window.toastr = require('toastr');
 window.iziToast = require('izitoast/dist/js/iziToast');
 
 iziToast.settings({
-	position: 'bottomLeft',
-	backgroundColor: '#222222',
+	position: 'topRight',
+	backgroundColor: '#111111',
 	theme: 'dark',
-	progressBarColor: '#eeeeee'
+	// progressBarColor: '#ff8000'
 });

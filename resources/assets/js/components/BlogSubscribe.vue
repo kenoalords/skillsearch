@@ -1,31 +1,34 @@
 <template>
     <span id="subscribe">
-        <a href="#" class="btn btn-thumbs-up" v-on:click.prevent="subscribeUser()" :class="{ 'subscribing' : isSubscribing, 'btn-success' : isSubscribed, 'btn-default' : !isSubscribed }" v-if="isReady"><i class="glyphicon" :class="{ 'glyphicon-bell' : !isSubscribed, 'glyphicon-ok-sign' : isSubscribed }"></i> {{ isSubscribed ? 'Subscribed' : 'Subscribe' }} - {{subCount}}</a>
-        <span class="subscribe-form-wrapper" v-if="isActive && !isUserLoggedIn">
-            <form action="#">
-                <h3 class="bold">Subscribe to {{blogOwner}} Blog Posts</h3>
-                <hr>
-                <div class="form-group">
-                    <input type="text" class="form-control" v-model="fullname" placeholder="Fullname e.g. Tosin Jegede">
-                </div>
-                <div class="form-group">
-                    <input type="email" class="form-control" v-model="email" placeholder="Email e.g. tosin_jegede@gmail.com" v-on:focusout="checkFormFields(email)">
-                </div>
-                <div class="form-group">
-                    <label>Are you human?</label>
-                    <div class="input-group">
-                        <span class="input-group-addon bold" id="captcha">
-                            {{captcha.first}} + {{captcha.second}} = 
-                        </span>
-                        <input type="number" v-model="result" class="form-control" aria-describedby="captcha">
+        <a href="#" class="button" v-on:click.prevent="subscribeUser()" :class="{ 'is-loading' : isSubscribing, 'is-info' : isSubscribed, 'is-ux-action' : !isSubscribed }" v-if="isReady"><span class="icon"><i class="fa fa-bell"></i></span> <span>{{ isSubscribed ? 'Subscribed' : 'Subscribe' }} <span style="opacity: 0.7">{{subCount}}</span></span></a>
+        <div class="subcription modal" :class="{ 'is-active' : isActive }">
+            <div class="modal-background"></div>
+            <div class="modal-content" v-if="isActive && !isUserLoggedIn">
+                <form action="#" class="box">
+                    <h3 class="title is-4">Subscribe to email notification.</h3>
+                    <p>We will send you an email each time {{ blogOwner }} publishes a new post.</p>
+                    <div class="field">
+                        <input type="text" class="input" v-model="fullname" placeholder="Fullname e.g. Tosin Jegede">
                     </div>
-                </div>
-                <div>
-                    <button class="btn btn-success btn-block" type="submit" v-on:click.prevent="submitSubscriber" :disabled="isButtonDisabled">Subscribe</button>
-                </div>
-                <a href="#" v-on:click.prevent="closeForm()" class="close-form"><i class="fa fa-close"></i></a>
-            </form>
-        </span>
+                    <div class="field">
+                        <input type="email" class="input" v-model="email" placeholder="Email e.g. tosin_jegede@gmail.com" v-on:focusout="checkFormFields(email)">
+                    </div>
+                    <label>Are you human?</label>
+                    <div class="field has-addons">
+                        <div class="control">
+                            <span class="button is-static">{{captcha.first}} + {{captcha.second}} = </span>
+                        </div>
+                        <div class="control is-expanded">
+                            <input type="number" v-model="result" class="input" aria-describedby="captcha">
+                        </div>
+                    </div>
+                    <div>
+                        <button class="button is-ux-action is-fullwidth" type="submit" v-on:click.prevent="submitSubscriber" :disabled="isButtonDisabled">Subscribe</button>
+                    </div>
+                </form>
+            </div>
+            <button class="modal-close is-large" aria-label="close" v-on:click.prevent="closeForm()"></button>
+        </div>
     </span>
 </template>
 
@@ -53,32 +56,39 @@
             }
         },
         props: {
-            name: null,
-            uid: null,
-            subscriberCount: null,
-            userId: null,
+            name: String,
+            uid: Number,
+            subscriberCount: Number,
+            userId: Number,
+            blogTitle: String,
         },
         methods: {
             submitSubscriber(){
                 var $this = this,
                     sum = this.captcha.first + this.captcha.second;
-
+                $('body').addClass('is-loading');
                 if( sum !== parseInt(this.result) ){
+                    $('body').removeClass('is-loading');
                     alert('Your answer is incorrect. Are you sure you are human?');
                     return;
                 }
                 if($this.fullname === null || $this.fullname === ""){
+                    $('body').removeClass('is-loading');
                     alert('Please provide your fullname');
                     return;
                 }
                 if(!this.validateEmail($this.email)){
+                    $('body').removeClass('is-loading');
                     alert('Please provide a valid email address');
                     return;
                 }
 
                 var data = {
-                    fullname: this.fullname,
-                    email: this.email,
+                    fullname:   this.fullname,
+                    email:      this.email,
+                    blog_id:    this.uid,
+                    blog_url:   window.location.href,
+                    blog_title: this.blogTitle,
                 };
                 axios.post('/blog/subscribe/'+this.uid+'/visitor', data).then((response)=>{
                     $this.subCount = response.data.count;
@@ -86,25 +96,35 @@
                     $this.closeForm();
                     var storage = window.localStorage;
                     storage.setItem($this.userId, true);
+                    $('body').removeClass('is-loading');
                 }).catch((error)=>{
-
+                    $('body').removeClass('is-loading');
                 });
             },
             subscribeUser(){
                 var _this = this;
                 if(this.isUserLoggedIn === true){
                     this.isSubscribing = true;
-                    axios.post('/blog/subscribe/'+this.uid+'/user').then(function(response){
+                    var data = {
+                        blog_id:    this.uid,
+                        blog_url:   window.location.href,
+                        blog_title: this.blogTitle,
+                    };
+                    axios.post('/dashboard/blog/subscribe/'+this.uid+'/subscribe-user', data).then(function(response){
                         _this.isSubscribing = false;
                         _this.subCount = response.data.count;
+
                         if(response.data.status === 'subscribed'){
                             _this.isSubscribed = true;
                         } else if(response.data.status === 'unsubscribed'){
                             _this.isSubscribed = false;
+                        } else if( response.data.status === 'owner' ){
+                            _this.isSubscribed = false;
+                            iziToast.error({ title: 'You cant subscribe to your own blog' });
                         }
                     }).catch(function(error){
                         _this.isSubscribing = false;
-                        alert('Oops! something went wrong!');
+                        iziToast.error({ title: 'Something went wrong', message: 'please try again later' });
                     })
                 } else {
                     this.isActive = true;
@@ -128,7 +148,7 @@
             checkSubscription(){
                 var _this = this;
                 if(this.isUserLoggedIn === true){
-                    axios.post('/blog/subscribe/'+this.uid+'/check').then((response)=>{
+                    axios.post('/dashboard/blog/subscribe/'+this.uid+'/check').then((response)=>{
                         _this.isSubscribed = response.data;
                         _this.isReady = true;
                     }).catch((error)=>{

@@ -9,7 +9,7 @@
 			</a>
 		</li>
 		<li class="{{ (Request::path() == 'dashboard/portfolio/add') ? 'is-active' : '' }}">
-			<a href="{{ route('portfolio_add') }}">
+			<a href="{{ route('new_portfolio') }}">
 				<span class="icon">
 					<i class="fa fa-plus"></i>
 				</span>
@@ -23,15 +23,6 @@
 					<i class="fa fa-heart"></i>
 				</span>
 				<span>Likes</span>
-			</a>
-		</li>
-
-		<li class="{{ (Request::path() == 'dashboard/portfolio/instagram') ? 'is-active' : '' }}">
-			<a href="{{ route('instagram_index') }}">
-				<span class="icon">
-					<i class="fa fa-instagram"></i>
-				</span>
-				<span>Instagram</span>
 			</a>
 		</li>
 		

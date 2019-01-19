@@ -17,7 +17,6 @@ class ProfileTransformers extends TransformerAbstract
 	public function transform(Profile $profile){
 
 		$username = User::where('id', $profile->user_id)->pluck('name')->first();
-		$instagram = $profile->user->instagram()->first();
 		$user_points = $profile->user->points()->first();
 		$points = ($user_points) ? (int)$user_points->points : 0;
 		$phone = $profile->user->phone()->first();
@@ -34,7 +33,6 @@ class ProfileTransformers extends TransformerAbstract
 			'bio'		=> $profile->bio,
 			'fullname'	=> $profile->first_name . ' ' . $profile->last_name,
 			'verified'	=> $profile->getVerified(),
-			'has_instagram'	=> ($instagram) ? true : false,
 			'followers'	=> $profile->user->getFollowers($profile->user),
 			'following'	=> $profile->user->getFollowing(),
 			'url'		=> route('view_profile', ['user'=>$username]),

@@ -36,9 +36,7 @@ class PortfolioTransformer extends TransformerAbstract
 			'link'		=> [
 					'url'	=> '/' . $portfolio->user->name . '/portfolio/' . $portfolio->uid,
 					'href'	=> config('app.url') . '/' . $portfolio->user->name . '/portfolio/' . $portfolio->uid,
-				],
-			'share_count'=> $portfolio->shares()->count(),
-			
+				],			
 			'views'		=> $portfolio->views()->count(),
 			'has_liked'	=> $portfolio->userHasLiked(),
 		];
