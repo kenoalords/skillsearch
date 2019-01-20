@@ -2142,7 +2142,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         submitBlogPost: function submitBlogPost(e) {
             e.preventDefault();
             $('body').addClass('is-loading');
-            var _this = this;
+            var _this = this,
+                allow_comments = this.content.allow_comments === true ? true : false;
 
             // Reset errors array
             this.errors = [];
@@ -2187,7 +2188,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             payload.append('tags', this.content.tags ? this.content.tags : '');
             payload.append('is_public', true);
             payload.append('status', 'publish');
-            payload.append('allow_comments', this.content.allow_comments ? this.content.allow_comments : false);
+            payload.append('allow_comments', allow_comments);
 
             if (this.isEditing === false) {
                 axios.post('/dashboard/blog/new', payload).then(function (response) {
@@ -2229,7 +2230,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
 
             if (blog.hasOwnProperty('id')) {
-                $('#submit-button').text('Publish edit');
+                $('#submit-button').text('Publish update');
                 this.isEditing = true;
                 this.blogId = blog.id;
             }
@@ -70664,7 +70665,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "id": "excerpt",
       "rows": "2",
-      "maxlength": "160"
+      "maxlength": "150"
     },
     domProps: {
       "value": (_vm.content.excerpt)
@@ -70677,7 +70678,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }), _vm._v(" "), _c('p', {
     staticClass: "help"
-  }, [_vm._v("This will help people understand what your blog post is about")])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("This will help people understand what your blog post is about. Maximum of 150 characters.")])]), _vm._v(" "), _c('div', {
     staticClass: "field"
   }, [_c('label', {
     attrs: {

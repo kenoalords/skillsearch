@@ -66,8 +66,10 @@ class BlogController extends Controller
             $blog->body = $request->body;
             $blog->category = $request->category;
             $blog->excerpt = $request->excerpt;
+            $blog->tags = $request->tags;
             $blog->slug = str_slug($request->title);
             $blog->image = $image_url;
+            $blog->allow_comments = ($request->allow_comments === "true") ? 1 : 0;
             $blog->save();
 
             if ( $request->ajax() ){
@@ -86,15 +88,15 @@ class BlogController extends Controller
     public function handleBlogForm(Request $request, Category $categories)
     {
         // Handle the get request and show the form
-        if ( strtoupper($request->getMethod()) === 'GET' ){
+        if ( $request->isMethod('get') ){
             $categories = $categories->orderAsc()->get();
             return view('blog.add')->with(['user' => $request->user()->profile, 'categories' => $categories]);
         }
 
         // Handle the post request when a user submits a blog post
-        if ( strtoupper($request->getMethod()) === 'POST' ){
+        if ( $request->isMethod('post') ){
+            // dd($request->input());
             $image_url = null;
-
             if ( $request->hasFile('image') ){               
                 $image_url = BlogController::uploadBlogImage($request);
             }
@@ -108,8 +110,9 @@ class BlogController extends Controller
                 'slug'          => str_slug($title),
                 'category'      => $request->category,
                 'excerpt'       => $request->excerpt,
+                'tags'          => $request->tags,
                 'uid'           => $uid,
-                'allow_comments'=> (bool)$request->allow_comments,
+                'allow_comments'=> ($request->allow_comments === "true") ? 1 : 0,
                 'image'         => $image_url,
                 'is_public'     => (bool)$request->is_public,
                 'status'        => $request->status,

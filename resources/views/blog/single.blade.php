@@ -82,7 +82,11 @@
 		</section>
 		<section class="section">
 			<div class="container">
-				<blog-comment v-bind:blogid="{{ $blog['id'] }}"></blog-comment>
+				@if ( $blog['allow_comments'] === 1 )
+					<blog-comment v-bind:blogid="{{ $blog['id'] }}"></blog-comment>
+				@else
+					<div class="notification is-danger">Comments have been disabled.</div>
+				@endif
 			</div>
 		</section>
 	</article>
@@ -93,7 +97,7 @@
 	    		<div class="modal-content">
 	    			<div class="card">
 	    				<div class="card-content has-text-centered">
-	    					<h3 class="title is-2">Hello!</h3>
+	    					<h3 class="title is-2 bold">Hello!</h3>
 	    					<p>Please help us share this post with your friends, it only takes a minute.</p>
 	    					<ul class="share-links">
 	    						<li><a href="https://www.facebook.com/sharer/sharer.php?u={{ $blog['url'] }}" class="facebook" target="_blank">

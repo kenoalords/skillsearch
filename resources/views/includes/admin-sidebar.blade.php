@@ -7,10 +7,10 @@
                 <li><a href="{{ route('blog') }}" class="{{ (Request::path() == 'dashboard/blog') ? 'is-active' : '' }}">Blog</a></li>
             </ul>
             
-            <p class="menu-label">Contact</p>
+            <!-- <p class="menu-label">Contact</p>
             <ul class="menu-list">
                 <li><a href="{{ route('enquiries') }}" class="{{ (Request::path() == 'dashboard/enquiries') ? 'is-active' : '' }}">Enquiries <span class="count">{{ $enquiry_count }}</span></a></li>
-            </ul>
+            </ul> -->
 
             <p class="menu-label">Account</p>
             <ul class="menu-list">

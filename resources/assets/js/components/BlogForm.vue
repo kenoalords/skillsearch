@@ -31,8 +31,8 @@
 
                     <div class="field">
                         <label for="excerpt">Provide a brief summary</label>
-                        <textarea v-model="content.excerpt" id="excerpt" rows="2" class="textarea" maxlength="160"></textarea>
-                        <p class="help">This will help people understand what your blog post is about</p>
+                        <textarea v-model="content.excerpt" id="excerpt" rows="2" class="textarea" maxlength="150"></textarea>
+                        <p class="help">This will help people understand what your blog post is about. Maximum of 150 characters.</p>
                     </div>
                     
                     <div class="field">
@@ -149,7 +149,8 @@
             submitBlogPost(e){
                 e.preventDefault();
                 $('body').addClass('is-loading');
-                var _this = this;
+                var _this = this,
+                    allow_comments = (this.content.allow_comments === true) ? true : false;
 
                 // Reset errors array
                 this.errors = [];
@@ -194,7 +195,7 @@
                 payload.append('tags', (this.content.tags) ? this.content.tags : '');
                 payload.append('is_public', true);
                 payload.append('status', 'publish');
-                payload.append('allow_comments', (this.content.allow_comments) ? this.content.allow_comments : false);
+                payload.append('allow_comments', allow_comments);
 
                 if ( this.isEditing === false ){
                     axios.post('/dashboard/blog/new', payload).then( (response) => {
@@ -237,7 +238,7 @@
                 }
 
                 if ( blog.hasOwnProperty('id') ){
-                    $('#submit-button').text('Publish edit');
+                    $('#submit-button').text('Publish update');
                     this.isEditing = true;
                     this.blogId = blog.id;
                 }
