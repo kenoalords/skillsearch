@@ -260,7 +260,7 @@ class PortfolioController extends Controller
     public function homepagePortfolioAjax(Request $request, Portfolio $portfolio)
     {
         if ( $request->get('type') === "featured" ){
-            $records = $portfolio->where(['is_featured'=>1])->isPublic()->hasThumbnail()->orderBy('updated_at', 'asc');
+            $records = $portfolio->where(['is_featured'=>1])->isPublic()->hasThumbnail()->orderBy('updated_at', 'desc');
         } else if ( $request->get('type') === "latest" ){
             $records = $portfolio->isPublic()->hasThumbnail()->orderBy('created_at', 'desc');
         }
