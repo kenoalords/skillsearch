@@ -25,7 +25,7 @@
                     </div>
 
                     <div class="field">
-                        <vue-editor v-model="content.body" useCustomImageHandler id="editor" @imageAdded="handleImageAdded"></vue-editor>
+                        <vue-editor v-model="content.body" useCustomImageHandler id="editor" @imageAdded="handleImageAdded" placeholder="Write something interesting..."></vue-editor>
                         <!-- <textarea  rows="5" class="textarea" placeholder="Write something interesting..."></textarea> -->
                     </div>
 

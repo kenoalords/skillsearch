@@ -70634,7 +70634,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('vue-editor', {
     attrs: {
       "useCustomImageHandler": "",
-      "id": "editor"
+      "id": "editor",
+      "placeholder": "Write something interesting..."
     },
     on: {
       "imageAdded": _vm.handleImageAdded

@@ -15,7 +15,6 @@ class BlogCategorySeeder extends Seeder
     {
         $categories = collect([
         		'Fashion',
-        		'Beauty',
         		'Lifestyle',
         		'Technology',
         		'Marketing',
@@ -27,9 +26,8 @@ class BlogCategorySeeder extends Seeder
         		'Automobile',
         		'Fitness and Health',
         		'Sports',
-        		'Entertainment',
         		'Humor',
-        		'Photography'
+        		'Business'
         	]);
         $categories->each(function($item, $key){
         	$check = Category::where('category', $item)->get();

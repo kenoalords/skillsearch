@@ -1406,6 +1406,11 @@ iframe{
 	#blog-form #title{
 		font-size: 1.5em;
 	}
+
+	#blog-form #blog-image{
+		max-width: 100%;
+		min-height: 200px;
+	}
 	
 	#primary-nav{
 		.navbar-brand{
