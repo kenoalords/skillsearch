@@ -1358,6 +1358,13 @@ span.spinner{
 	}
 }
 
+.account-page{
+	.column{
+		max-width: 380px;
+		margin: 0 auto;
+	}
+}
+
 iframe{
 	&.ql-video{
 		width: 100%;
