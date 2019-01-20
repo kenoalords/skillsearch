@@ -2710,8 +2710,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             form.append('body', this.email.body);
             form.append('url', this.email.url);
             form.append('text', this.email.text);
-
+            $('body').addClass('is-loading');
             axios.post('/dashboard/email-broadcast', form).then(function (response) {
+                $('body').removeClass('is-loading');
                 if (response.data === true) {
                     iziToast.success({ message: 'Email broadcast queued successfully' });
                     _this.email = {};
@@ -2720,6 +2721,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     iziToast.error({ message: 'There was a problem queueing email broadcast' });
                 }
             }).catch(function (error) {
+                $('body').removeClass('is-loading');
                 iziToast.error({ message: 'Unknown error occured' });
             });
         }
@@ -5644,9 +5646,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var $this = this;
             if (confirm('Are you sure you want to send the contact invite reminder?')) {
                 $this.isSending = true;
-
+                $('body').addClass('is-loading');
                 axios.post('/dashboard/send-reminder').then(function (response) {
+                    $('body').removeClass('is-loading');
                     $this.isSending = false;
+                    iziToast.success({ title: "Contact reminder sent successfully" });
+                }).catch(function (error) {
+                    $('body').removeClass('is-loading');
+                    iziToast.error({ title: 'An error occured. Please check the console' });
+                    console.log(error);
                 });
             }
         }
@@ -70838,7 +70846,7 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('span', [_c('button', {
-    staticClass: "button is-primary",
+    staticClass: "button is-info",
     class: {
       'is-loading': _vm.isSending
     },

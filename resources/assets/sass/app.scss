@@ -7,7 +7,6 @@
 
 // Bootstrap
 @import "vendor/videojs";
-@import "./vendor/quill.snow.css";
 
 $darkColor: #111;
 #app{
@@ -1377,6 +1376,15 @@ iframe{
 	}
 }
 
+@media screen and (min-width: 768px) and (max-width: 1240px){
+	.account-page{
+		.column{
+			max-width: 420px;
+			margin: 0 auto;
+		}
+	}
+}
+
 @media screen and (max-width: 540px){
 	body{
 		line-height: 1.5;
@@ -1386,6 +1394,10 @@ iframe{
 	}
 	.column{
 		padding: 0.35em;
+	}
+
+	#blog-form #title{
+		font-size: 1.5em;
 	}
 	
 	#primary-nav{

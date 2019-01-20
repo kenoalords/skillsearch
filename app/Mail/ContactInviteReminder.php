@@ -32,12 +32,14 @@ class ContactInviteReminder extends Mailable implements ShouldQueue
     public function build()
     {
         return $this->from(env('MAIL_FROM_ADDRESS'), $this->name . ' via ' . config('app.name'))
-                    ->subject($this->name . ' is still waiting for your response on ' . config('app.name'))
+                    ->subject($this->name . ' is waiting for you to join ' . config('app.name'))
                     ->markdown('invites.reminder')
                     ->with([
                         'url'   => config('app.url').'/?utm_source=email&utm_medium=contact_invite&utm_campaign=website_invite&utm_term=Invitation&utm_content=email_invites',
                         'name'  => $this->name,
-                        'unsubscribe'   => config('app.url').'/unsubscribe/invite-reminder/?email='.urlencode($this->email)
+                        'unsubscribe'   => config('app.url').'/unsubscribe/invite-reminder/?email='.urlencode($this->email),
+                        'email' => $this->email,
+                        'subject' => $this->subject,
                     ]);
     }
 }

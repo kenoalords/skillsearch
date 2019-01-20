@@ -53,9 +53,9 @@
 </head>
 <body>
     <div id="app" class="hero is-white">
-        <div class="hero-body">
+        <div class="hero-body account-page">
             <div class="columns is-centered">
-                <div class="column is-3-desktop is-4-tablet">
+                <div class="column ">
                     <a href="{{ url('/') }}">
                         <img src="{{ asset('public/ubanji-logo.png') }}" alt="{{config('app.name')}} Logo" class="image is-centered" id="logo" style="width: 80px; height: auto; position: relative;">
                     </a>
