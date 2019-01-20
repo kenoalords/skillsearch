@@ -1359,6 +1359,13 @@ span.spinner{
 	}
 }
 
+iframe{
+	&.ql-video{
+		width: 100%;
+		min-height: 400px;
+	}
+}
+
 @media screen and (min-width: 1024px){
 	#primary-nav{
 		.navbar-start{

@@ -25,12 +25,13 @@
                     </div>
 
                     <div class="field">
-                        <textarea v-model="content.body" rows="5" class="textarea" placeholder="Write something interesting..."></textarea>
+                        <vue-editor v-model="content.body" useCustomImageHandler id="editor" @imageAdded="handleImageAdded"></vue-editor>
+                        <!-- <textarea  rows="5" class="textarea" placeholder="Write something interesting..."></textarea> -->
                     </div>
 
                     <div class="field">
                         <label for="excerpt">Provide a brief summary</label>
-                        <textarea v-model="content.excerpt" id="excerpt" rows="2" class="textarea"></textarea>
+                        <textarea v-model="content.excerpt" id="excerpt" rows="2" class="textarea" maxlength="160"></textarea>
                         <p class="help">This will help people understand what your blog post is about</p>
                     </div>
                     
@@ -79,9 +80,8 @@
 </template>
 
 <script>
-    import Quill from "quilljs/dist/quill";
     import Cropper from 'cropperjs';
-
+    import { VueEditor } from 'vue2-editor';
     export default {
         data(){
             return {
@@ -96,11 +96,29 @@
                 data: new FormData(),
             }
         },
+        components: {
+            VueEditor
+        },
         props:{
             blog: {},
             categories: null,
         },
         methods: {
+            handleImageAdded(image, Editor, cursorLocation, resetUploader){
+                $('body').addClass('is-loading');
+                var form = new FormData();
+                form.append('image', image);
+                axios.post('/dashboard/blog/image-upload', form).then( (response)=>{
+                    $('body').removeClass('is-loading');
+                    var url = response.data.url;
+                    Editor.insertEmbed(cursorLocation, 'image', url);
+                    resetUploader();
+                    // console.log(response.data);
+                } ).catch ( (error) => {
+                    $('body').removeClass('is-loading');
+                    iziToast.error({ title: 'Sorry we couldn\'t upload your image' });
+                } )
+            },
             uploadBlogImage(){
                 $('body').addClass('is-loading');
                 this.isUploadingImage = true;
@@ -127,66 +145,6 @@
                 } else {
                     $('body').removeClass('is-loading');
                 }
-                
-                // setTimeout(()=>{
-
-                //     img.onload = function(){
-                //         // if(img.width < 1200 || img.height > 800){
-                //         //     _this.imageWarning = true;
-                //         //     return;
-                //         // }
-                //         var image = document.getElementById('blog-thumbnail');
-                //         var cropper = new Cropper(image,{
-                //             aspectRatio: 16/9,
-                //             dragMode: 'move',
-                //             rotatable: false,
-                //             zoomable: false,
-                //             scalable: false,
-                //             cropBoxResizable: false,
-                //         });
-                //         document.getElementById('save-image').addEventListener('click', function(e){
-                //             cropper.getCroppedCanvas({
-                //                 width: 1240,
-                //                 height: 698,
-                //                 imageSmoothingQuality: 'high',
-                //             }).toBlob(function(blob){
-                //                 var form = new FormData();
-                //                 form.append('image', blob);
-                //                 form.append('id', _this.content.id);
-                //                 form.append('title', _this.content.title);
-                //                 form.append('body', _this.content.body);
-                //                 form.append('excerpt', _this.content.excerpt);
-                //                 form.append('allow_comments', _this.content.allow_comments);
-                //                 form.append('category', _this.content.category);
-                //                 axios.post('/profile/blog/add/image', form).then( (response)=> {
-                //                     console.log(response);
-                //                     _this.content = response.data;
-                //                     history.pushState(response.data, null, window.Laravel.url + '/profile/blog/'+response.data.uid+'/edit');
-                //                 })
-                //             }, 'image/jpeg', 0.99);
-                //         })
-                //     };
-                //     img.src = _URL.createObjectURL(image);
-                //     img.setAttribute('id', 'blog-thumbnail');
-                //     var el = document.getElementById('image-preview');
-                //     el.appendChild(img);
-
-                //     return;
-
-                // },100);
-
-                
-
-                // form.append('image', image);
-                // form.append('title', _this.content.title);
-                // form.append('body', _this.content.body);
-                // form.append('category', _this.content.category);
-                // form.append('excerpt', _this.content.excerpt);
-                // form.append('id', _this.content.id);
-
-                // axios.post('/profile/blog/add/image', form).then( (response)=> {
-                //     _this.content = response.data;
-                // })
             },
             submitBlogPost(e){
                 e.preventDefault();
@@ -216,6 +174,10 @@
                     this.errors.push( 'Please provide a summary of your blog post' );
                 }
 
+                if ( this.content.excerpt.length > 150 ){
+                    this.errors.push( 'The summary shouldn\'t be more than 150 characters' );
+                }
+
                 if ( this.errors.length > 0 ){
                     alert('Please check for errors in your form');
                     window.scrollTo(0, 0);
@@ -238,6 +200,7 @@
                     axios.post('/dashboard/blog/new', payload).then( (response) => {
                         iziToast.success({ title: 'Success!', message: 'Your blog post was successful.' });
                         $('body').removeClass('is-loading');
+                        window.location.href = '/dashboard/blog';
                         return;
                     }).catch( (e)=>{
                         iziToast.error({ title: 'Error', message: 'An error occured while processing your request' });
@@ -251,7 +214,7 @@
                     axios.post('/dashboard/blog/'+ this.blogId +'/edit', payload).then( (response) => {
                         iziToast.success({ title: 'Success!', message: 'Your blog post was edited successful.' });
                         $('body').removeClass('is-loading');
-                        console.log(response.data);
+                        window.location.href = '/dashboard/blog';
                         return;
                     }).catch( (e)=>{
                         iziToast.error({ title: 'Error', message: 'An error occured while editing your request' });
@@ -263,12 +226,6 @@
             },
         },
         mounted() {
-            var toolbarOptions = [
-                [{ header: [1, 2, false] }],
-                ['bold', 'italic', 'underline'],
-                ['image', 'code-block']
-            ];
-
             if(this.blog !== undefined){
                 var blog = JSON.parse(this.blog);
                 this.content = blog;

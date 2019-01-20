@@ -28,6 +28,7 @@ use App\Transformers\PortfolioTransformer;
 use App\Transformers\UserTransformers;
 use App\Transformers\SimpleUserTransformers;
 use App\Transformers\TaskTransformer;
+use App\Models\EmailTracker;
 
 class HomeController extends Controller
 {
@@ -246,16 +247,34 @@ class HomeController extends Controller
             $users = $users->all();
             $subject = $request->subject;
             $body = $request->body;
-            $image_link = $request->image_link;
+            // $image_link = $request->image_link;
             $url = ($request->url) ? $request->url : '';
-            $button_text = ($request->button_text) ? $request->button_text : 'Learn more';
+            $text = ($request->text) ? $request->text : 'Learn more';
             if($users){
                 foreach ($users as $key => $user){
-                    Mail::to($user->email)->send(new EmailBroadcast($user, $subject, $body, $url, $button_text, $image_link));
+                    Mail::to($user->email)->send(new EmailBroadcast($user, $subject, $body, $url, $text));
                 }
-                $request->session()->put('status', 'Bon voyage!! Email broadcast sent');
-                return redirect('/dashboard');
+                if ( $request->ajax() ){
+                    return response()->json(true, 200);
+                } else {
+                    $request->session()->put('status', 'Bon voyage!! Email broadcast sent');
+                    return redirect('/dashboard');
+                }
             }
+        }
+    }
+
+    public function trackEmail(Request $request, EmailTracker $tracker){
+        $email = $request->query('email');
+        $subject = $request->query('subject');
+        $ip = $request->ip();
+        $record = $tracker->create([
+            'email'     => $email,
+            'subject'   => $subject,
+            'ip'        => $ip,
+        ]);
+        if ( $record ){
+            return response(readfile( storage_path( '/app/public/email.jpg' ) ))->header('Content-Type', 'image/jpg');
         }
     }
 

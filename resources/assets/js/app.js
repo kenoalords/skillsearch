@@ -38,8 +38,6 @@ Vue.component('application-actions', require('./components/ApplicationActions.vu
 Vue.component('video-player', require('./components/VideoPlayer.vue'));
 Vue.component('blog-form', require('./components/BlogForm.vue'));
 Vue.component('verify-users', require('./components/VerifyUsers.vue'));
-Vue.component('instagram', require('./components/Instagram.vue'));
-Vue.component('task-form', require('./components/TaskForm.vue'));
 Vue.component('task-form-apply', require('./components/TaskFormApply.vue'));
 Vue.component('job-actions', require('./components/JobActions.vue'));
 Vue.component('flag-job', require('./components/FlagJob.vue'));
@@ -54,6 +52,7 @@ Vue.component('featured', require('./components/Featured.vue'));
 Vue.component('send-reminder', require('./components/SendReminder.vue'));
 Vue.component('blog-comment', require('./components/BlogComment.vue'));
 Vue.component('enquiry', require('./components/Enquiry.vue'));
+Vue.component('email-broadcast', require('./components/EmailBroadcast.vue'));
 
 const app = new Vue({
     el: '#app',
@@ -324,6 +323,9 @@ if ( $('.blog-excerpt').length > 0 ){
 	});
 }
 
+// if ( $('#quill-editor').length > 0 ){
+// 	var quill = new Quill('#quill-editor');
+// }
 
 
 

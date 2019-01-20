@@ -16,6 +16,7 @@ use App\Transformers\CommentTransformer;
 use League\Fractal\Resource\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Gate;
+use App\Transformers\EditBlogTransformer;
 
 class BlogController extends Controller
 {
@@ -44,6 +45,10 @@ class BlogController extends Controller
         // Handle GET request
         if ( $request->isMethod('get') ){
             $categories = $categories->orderAsc()->get();
+            $blog = fractal()->item($blog)
+                        ->transformWith(new EditBlogTransformer)
+                        ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                        ->toArray();
             return view('blog.edit')->with(['user' => $request->user()->profile, 'categories' => $categories, 'blog' => $blog]);
         }
 
@@ -99,7 +104,7 @@ class BlogController extends Controller
             $uid = uniqid(true);
             $blog = $request->user()->blog()->create([
                 'title'         => $title,
-                'body'          => e($body),
+                'body'          => $body,
                 'slug'          => str_slug($title),
                 'category'      => $request->category,
                 'excerpt'       => $request->excerpt,
@@ -287,5 +292,17 @@ class BlogController extends Controller
     public function subscribers(Request $request){
         $subscribers = $request->user()->subscriber()->get();
         return view('blog.subscribers')->with(['subscribers'=>$subscribers]);
+    }
+
+    public function imageUpload(Request $request){
+        if ( $request->isMethod('post') ){
+            if ( $request->hasFile('image') ){
+                $file = $request->file('image')->store('public');
+                Image::make(storage_path( '/app/'.$file ))->resize('760', null, function($const){
+                    $const->aspectRatio();
+                })->save();
+                return response()->json([ 'url'=> asset($file) ]);
+            }
+        }
     }
 }

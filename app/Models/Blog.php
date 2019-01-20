@@ -60,4 +60,7 @@ class Blog extends Model
         return $query->where('status', 'publish');
     }
 
+    public function jsonBody(){
+        return json_encode($this->body, JSON_UNESCAPED_UNICODE);
+    }
 }

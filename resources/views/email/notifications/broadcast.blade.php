@@ -1,10 +1,6 @@
 @component('mail::message')
 
-@if($image_link)
-![{{config('app.name')}}]({{$image_link}})
-@endif
-
-{{ $body }}
+{!! $body !!}
 
 @if($url)
 @component('mail::button', ['url' => $url])
@@ -13,5 +9,6 @@
 @endif
 
 Regards<br>
-##{{ config('app.name') }} Team
+##Keno Alordiah
+<img src="{{ config('app.url') }}/email-broadcast?email={{ $email }}&subject={{ $sub }}">
 @endcomponent

@@ -17,6 +17,8 @@ Route::get('/load-portfolio/{page?}/{limit?}', 'PortfolioController@homepagePort
 Route::get('/search', 'SearchController@searchPortfolios');
 Route::get('/search/jobs', 'SearchController@searchJobs')->name('job_search');
 
+Route::get('/email-broadcast', 'HomeController@trackEmail');
+
 Route::get('/about', 'PagesController@about');
 Route::get('/showcase', 'PortfolioController@workPage')->name('showcase');
 Route::get('/work/search', 'PortfolioController@workSearchPage')->name('work_search');
@@ -103,7 +105,7 @@ Route::group(['middleware'=>'auth'], function(){
 		Route::post('/upload', 'HomeController@uploadBackgroundImage');
 
 		// Send email broadcast to members
-		Route::match(['get', 'post'], '/email-broadcast', 'HomeController@emailBroadcast')->name('email_broadcast');
+		Route::match(['get', 'post'], '/email-broadcast', 'HomeController@emailBroadcast')->middleware('admin')->name('email_broadcast');
 
 		/*
 		*	Portfolio links
@@ -183,6 +185,7 @@ Route::group(['middleware'=>'auth'], function(){
 			Route::post('/like/{blog}/submit', 'BlogController@submitBlogLike');
 			Route::post('/{blog}/comment', 'BlogController@submitComment');
 			Route::post('/{blog}/comment/reply', 'BlogController@submitCommentReply');
+			Route::post('/image-upload', 'BlogController@imageUpload');
 		});
 
 		Route::group(['prefix'=>'enquiries'], function(){

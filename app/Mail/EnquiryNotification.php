@@ -40,7 +40,7 @@ class EnquiryNotification extends Mailable implements ShouldQueue
     {
         return $this->subject($this->name . " sent you an enquiry on Ubanji")
                     ->from(config('app.mail_from_address'), 'Ubanji')
-                    ->reply_to($email, $name)
+                    ->reply_to($this->email, $this->name)
                     ->markdown('email.notifications.enquiry');
     }
 }

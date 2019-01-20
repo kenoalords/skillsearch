@@ -38,7 +38,9 @@
 					<img src="{{ asset($blog['image']) }}" alt="{{ $blog['title'] }}">
 				</figure>
 				@endif
-				<p>{!! $blog['body'] !!}</p>
+				<div class="content">
+					{!! $blog['body'] !!}
+				</div>
 				<div class="level is-mobile user-actions">
 					<div class="level-left">
 						<div class="level-item">
