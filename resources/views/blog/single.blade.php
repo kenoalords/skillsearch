@@ -125,4 +125,11 @@
     	</div>
 
 </div>
+@push('script')
+<script>
+  fbq('track', 'ViewContent', {
+    content_type: 'Blog',
+  });
+</script>
+@endpush
 @endsection

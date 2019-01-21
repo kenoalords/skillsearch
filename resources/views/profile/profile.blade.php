@@ -96,5 +96,12 @@
 @include('includes.signup-teaser')
 @include('includes.skills')
 
+@push('script')
+<script>
+  fbq('track', 'ViewContent', {
+    content_type: 'Profile',
+  });
+</script>
+@endpush
 
 @endsection

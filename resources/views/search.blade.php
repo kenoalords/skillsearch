@@ -2,6 +2,7 @@
 @section('title', Request::get('term') )
 @section('content')
 
+
 <div class="section">
 	<div class="container">
 		@if(count($portfolios) > 0)
@@ -21,6 +22,13 @@
 		@endif
 	</div>
 </div>
+@push('script')
+<script>
+	fbq('track', 'Search', {
+		search_string: window.Laravel.search,
+	});
+</script>
+@endpush
 
 @include('includes.signup-teaser')
 

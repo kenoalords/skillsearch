@@ -97,6 +97,7 @@
                     var storage = window.localStorage;
                     storage.setItem($this.userId, true);
                     $('body').removeClass('is-loading');
+                    fbq('track', 'Lead');
                 }).catch((error)=>{
                     $('body').removeClass('is-loading');
                 });

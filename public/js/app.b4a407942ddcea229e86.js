@@ -2412,6 +2412,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 var storage = window.localStorage;
                 storage.setItem($this.userId, true);
                 $('body').removeClass('is-loading');
+                fbq('track', 'Lead');
             }).catch(function (error) {
                 $('body').removeClass('is-loading');
             });

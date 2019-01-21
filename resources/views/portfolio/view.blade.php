@@ -165,4 +165,12 @@
 @include('includes.signup-teaser')
 @include('includes.skills')
 <register-view uid="{{$portfolio['uid']}}"></register-view>
+@push('script')
+<script>
+  fbq('track', 'ViewContent', {
+    content_type: 'Portfolio',
+  });
+</script>
+@endpush
 @endsection
+
