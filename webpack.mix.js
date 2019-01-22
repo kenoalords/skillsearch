@@ -11,9 +11,7 @@ const { mix } = require('laravel-mix');
  |
  */
 
-mix.js('node_modules/video.js/dist/video.min.js', 'public/js')
-	.js('node_modules/blazy/blazy.min.js', 'public/js')
-	.combine([
+mix.combine([
 		'node_modules/bulma/css/bulma.css',
 		'node_modules/video.js/dist/video.css',
 		'node_modules/cropperjs/dist/cropper.css',
@@ -24,7 +22,3 @@ mix.js('node_modules/video.js/dist/video.min.js', 'public/js')
 	.js('resources/assets/js/app.js', 'public/js')
 	.sass('resources/assets/sass/app.scss', 'public/css')
 	.version();
-
-
-
-
