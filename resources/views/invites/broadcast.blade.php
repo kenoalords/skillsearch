@@ -1,5 +1,4 @@
 @component('mail::message')
-
 {!! $body !!}
 
 @if($url)
@@ -8,7 +7,7 @@
 @endcomponent
 @endif
 
-Regards,<br>
-##Keno.
+Regards<br>
+##Ubanji team
 <img src="{{ config('app.url') }}/email-broadcast?email={{ $email }}&subject={{ $sub }}">
 @endcomponent

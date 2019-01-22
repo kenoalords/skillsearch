@@ -2674,6 +2674,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2706,12 +2717,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         submitEmailBroadcast: function submitEmailBroadcast() {
             var form = new FormData(),
-                _this = this;
+                _this = this,
+                invites = _this.email.invitees ? true : false;
 
             form.append('subject', this.email.subject);
             form.append('body', this.email.body);
             form.append('url', this.email.url);
             form.append('text', this.email.text);
+            form.append('invitees', this.email.invitees);
             $('body').addClass('is-loading');
             axios.post('/dashboard/email-broadcast', form).then(function (response) {
                 $('body').removeClass('is-loading');
@@ -70099,7 +70112,43 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.$set(_vm.email, "text", $event.target.value)
       }
     }
-  })]), _vm._v(" "), _vm._m(1)])])
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "field"
+  }, [_c('label', [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.email.invitees),
+      expression: "email.invitees"
+    }],
+    attrs: {
+      "type": "checkbox"
+    },
+    domProps: {
+      "value": true,
+      "checked": Array.isArray(_vm.email.invitees) ? _vm._i(_vm.email.invitees, true) > -1 : (_vm.email.invitees)
+    },
+    on: {
+      "change": function($event) {
+        var $$a = _vm.email.invitees,
+          $$el = $event.target,
+          $$c = $$el.checked ? (true) : (false);
+        if (Array.isArray($$a)) {
+          var $$v = true,
+            $$i = _vm._i($$a, $$v);
+          if ($$el.checked) {
+            $$i < 0 && (_vm.email.invitees = $$a.concat([$$v]))
+          } else {
+            $$i > -1 && (_vm.email.invitees = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+          }
+        } else {
+          _vm.$set(_vm.email, "invitees", $$c)
+        }
+      }
+    }
+  }), _vm._v(" Send to invitees\n            ")]), _vm._v(" "), _c('small', {
+    staticClass: "help"
+  }, [_vm._v("This will send to contact invites as well")])]), _vm._v(" "), _vm._m(1)])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('p', [_c('a', {
     attrs: {

@@ -13,10 +13,21 @@
                 <input type="text" v-model="email.url" class="input" placeholder="e.g http://example.com">
                 <p><a href="https://ga-dev-tools.appspot.com/campaign-url-builder/" target="_blank">Click to use google campaign url builder</a></p>
             </div>
+           
             <div class="field">
                 <label>Button text</label>
                 <input type="text" v-model="email.text" class="input" placeholder="e.g. Learn more">
             </div>
+
+             <div class="field">
+                <label>
+                    <input type="checkbox" v-model="email.invitees" :value="true"> Send to invitees
+                </label>
+                
+                <small class="help">This will send to contact invites as well</small>
+            </div>
+
+
             <div class="field">
                 <button type="submit" class="button is-info">Send email broadcast</button>
             </div>
@@ -54,12 +65,14 @@
 
             submitEmailBroadcast: function(){
                 var form = new FormData(),
-                    _this = this;
+                    _this = this,
+                    invites = (_this.email.invitees) ? true : false;
 
                 form.append('subject', this.email.subject);
                 form.append('body', this.email.body);
                 form.append('url', this.email.url);
                 form.append('text', this.email.text);
+                form.append('invitees', this.email.invitees);
                 $('body').addClass('is-loading');
                 axios.post('/dashboard/email-broadcast', form).then( (response) => {
                     $('body').removeClass('is-loading');

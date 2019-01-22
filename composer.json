@@ -16,6 +16,7 @@
         "league/flysystem-aws-s3-v3": "~1.0",
         "maatwebsite/excel": "~2.1.0",
         "metricloop/laravel-transformer-maker": "^1.0",
+        "mews/purifier": "^2.1",
         "nahid/talk": "^2.1",
         "oriceon/oauth-5-laravel": "dev-master",
         "predis/predis": "^1.1",

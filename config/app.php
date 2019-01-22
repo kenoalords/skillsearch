@@ -181,6 +181,7 @@ return [
         MetricLoop\TransformerMaker\TransformerMakerServiceProvider::class,
         \Torann\GeoIP\GeoIPServiceProvider::class,
         Unicodeveloper\Paystack\PaystackServiceProvider::class,
+        Mews\Purifier\PurifierServiceProvider::class,
         
         /*
          * Application Service Providers...

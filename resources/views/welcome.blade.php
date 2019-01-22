@@ -3,7 +3,7 @@
 @section('thumbnail', asset('public/logo-b.png'))
 @section('type', 'article')
 @section('title', 'Share your creative works')
-@section('metadescription', 'Showcase your skills, find latest jobs and get hired on Nigeria preferred skills promotion platform')
+@section('metadescription', 'Showcase your photography, graphics design, makeup skills and much more on Ubanji to find new opportunities')
 @section('content')
 
 <div class="section" style="background: url({{ asset('images/how-banner-2.jpg') }}) no-repeat center; background-size: cover">

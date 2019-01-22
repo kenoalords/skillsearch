@@ -45,7 +45,7 @@ class EmailBroadcast extends Mailable implements ShouldQueue
                             ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                             ->toArray();
         $email_subject = $this->subject;
-        return $this->subject($profile['first_name'] . ', ' . $this->subject)
+        return $this->subject( $this->subject )
                     ->from(config('app.mail_from_address'), 'Keno from ' . config('app.name'))
                     ->markdown('email.notifications.broadcast')
                     ->with([

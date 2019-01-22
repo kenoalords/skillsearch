@@ -63,7 +63,7 @@ class BlogController extends Controller
             }
 
             $blog->title = $request->title;
-            $blog->body = $request->body;
+            $blog->body = clean(strip_tags($body, '<p><a><ul><ol><img><iframe><strong><pre><blockquote><h1><h2><h3><h4><h5>'));
             $blog->category = $request->category;
             $blog->excerpt = $request->excerpt;
             $blog->tags = $request->tags;
@@ -106,7 +106,7 @@ class BlogController extends Controller
             $uid = uniqid(true);
             $blog = $request->user()->blog()->create([
                 'title'         => $title,
-                'body'          => $body,
+                'body'          => clean( strip_tags($body, '<p><a><ul><ol><img><iframe><strong><pre><blockquote><h1><h2><h3><h4><h5>')),
                 'slug'          => str_slug($title),
                 'category'      => $request->category,
                 'excerpt'       => $request->excerpt,
@@ -268,10 +268,12 @@ class BlogController extends Controller
 
     public function viewBlogPost(Request $request, User $user, Blog $blog){
         // dd($blog);
+        $log_view = $blog->views()->create([ 'ip'=> $request->ip()]);
         $blog = fractal()->item($blog)
                     ->transformWith(new BlogTransformer)
                     ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                     ->toArray();
+
         return view('blog.single')->with(['blog'=>$blog]);
     }
 

@@ -15,6 +15,7 @@ use App\Models\Subscriber;
 use App\Models\Instagram;
 use App\Models\Portfolio;
 use App\Mail\ResendVerificationMail;
+use App\Mail\ContactInviteBroadcast;
 use App\Mail\EmailBroadcast;
 use App\Http\Requests\UserProfileRequest;
 use Illuminate\Http\Request;
@@ -253,6 +254,12 @@ class HomeController extends Controller
             if($users){
                 foreach ($users as $key => $user){
                     Mail::to($user->email)->send(new EmailBroadcast($user, $subject, $body, $url, $text));
+                }
+                if ( $request->invitees == 'true' ){
+                    $invites = ContactInvite::all();
+                    foreach ( $invites as $invite ){
+                        Mail::to($invite->email)->send(new ContactInviteBroadcast($subject, $body, $url, $text, $invite->email));
+                    }
                 }
                 if ( $request->ajax() ){
                     return response()->json(true, 200);

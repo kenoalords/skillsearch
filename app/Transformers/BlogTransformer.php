@@ -19,7 +19,7 @@ class BlogTransformer extends TransformerAbstract
         return [
             'id'        => $blog->id,
             'title'     => ucwords($blog->title),
-            'body'      => htmlspecialchars_decode($blog->body),
+            'body'      => $blog->body,
             'slug'      => $blog->slug,
             'image'     => $blog->getImage(),
             'status'    => $blog->status,

@@ -25,6 +25,7 @@ Route::get('/work/search', 'PortfolioController@workSearchPage')->name('work_sea
 Route::get('/contact', 'PagesController@contact');
 Route::get('/how-it-works', 'PagesController@works');
 Route::get('/privacy', 'PagesController@privacy');
+Route::get('/community', 'PagesController@community');
 Route::get('/points', 'PagesController@points')->name('points');
 
 // Gigs Route

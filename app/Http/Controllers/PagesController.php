@@ -30,4 +30,9 @@ class PagesController extends Controller
     {
         return view('pages.points');
     }
+
+    public function community(Request $request)
+    {
+        return view('pages.invite');
+    }
 }
