@@ -1229,6 +1229,12 @@ span.spinner{
 			white-space: pre-line;
 		}
 	}
+	.content{
+		h1, h2, h3, h4{
+			font-weight: bold;
+			font-family: "Noto Serif", serif;
+		}
+	}
 }
 
 .user-stats{
@@ -1369,6 +1375,16 @@ iframe{
 	&.ql-video{
 		width: 100%;
 		min-height: 400px;
+	}
+}
+
+.ql-editor{
+	p{
+		margin-bottom: 1em !important;
+	}
+	h1, h2, h3, h4{
+		font-family: "Noto Serif", serif;
+		margin-bottom: .5em !important;
 	}
 }
 
