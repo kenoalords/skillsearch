@@ -80,6 +80,7 @@
 				</div>
 			</div>
 		</section>
+		@include('includes.signup-teaser')
 		<section class="section">
 			<div class="container">
 				@if ( $blog['allow_comments'] === 1 )

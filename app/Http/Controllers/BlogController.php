@@ -63,7 +63,7 @@ class BlogController extends Controller
             }
 
             $blog->title = $request->title;
-            $blog->body = clean(strip_tags($body, '<p><a><ul><ol><img><iframe><strong><pre><blockquote><h1><h2><h3><h4><h5>'));
+            $blog->body = clean( $request->body );
             $blog->category = $request->category;
             $blog->excerpt = $request->excerpt;
             $blog->tags = $request->tags;
@@ -106,7 +106,7 @@ class BlogController extends Controller
             $uid = uniqid(true);
             $blog = $request->user()->blog()->create([
                 'title'         => $title,
-                'body'          => clean( strip_tags($body, '<p><a><ul><ol><img><iframe><strong><pre><blockquote><h1><h2><h3><h4><h5>')),
+                'body'          => clean( $body ),
                 'slug'          => str_slug($title),
                 'category'      => $request->category,
                 'excerpt'       => $request->excerpt,
