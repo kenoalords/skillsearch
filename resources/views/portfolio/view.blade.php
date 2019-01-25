@@ -43,6 +43,7 @@
         </div>
     </div>
     <div class="container">
+        Duration {{ $duration }}ms
         @if($portfolio['is_public'] === 0 )
         <div class="notification is-danger">
             This portfolio is currently set to <strong class="icon"><i class="fa fa-lock"></i> Private</strong>

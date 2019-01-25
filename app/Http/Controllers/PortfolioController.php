@@ -23,6 +23,7 @@ use App\Jobs\DeleteFileFromS3Storage;
 use App\Jobs\UploadFileToS3;
 use App\Jobs\FileDeleteJob;
 use App\Http\Requests\PortfolioRequest;
+use Facades\App\Repository\Portfolios;
 
 // Mails
 use App\Mail\FeaturedPortfolioNotification;
@@ -206,10 +207,8 @@ class PortfolioController extends Controller
         if ($portfolio->is_public === 0){
             return redirect('/');
         }
-        $info = fractal()->item($portfolio)
-                        ->transformWith(new PortfolioTransformer)
-                        ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
-                        ->toArray();
+        $start_time = microtime(true);
+        $info = Portfolios::get($portfolio);
         $others = fractal()->collection($user->portfolio()->isPublic()->where('uid', '!=', $portfolio->uid)->get())
                         ->transformWith(new PortfolioTransformer)
                         ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
@@ -221,12 +220,14 @@ class PortfolioController extends Controller
         if(Auth::user()) {
             $avatar = Auth::user()->profile->getAvatar();
         }
+        $duration = (microtime(true) - $start_time) * 1000;
         return view('portfolio.view')->with([
             'portfolio' => $info,
             'files'     => $portfolio->files()->get(),
             'others'    => $others,
             'avatar'    => $avatar,
             'similar'   => $similar,
+            'duration'  => $duration,
         ]);
     }
 
@@ -259,20 +260,22 @@ class PortfolioController extends Controller
 
     public function homepagePortfolioAjax(Request $request, Portfolio $portfolio)
     {
-        if ( $request->get('type') === "featured" ){
-            $records = $portfolio->where(['is_featured'=>1])->isPublic()->hasThumbnail()->orderBy('updated_at', 'desc');
-        } else if ( $request->get('type') === "latest" ){
-            $records = $portfolio->isPublic()->hasThumbnail()->orderBy('created_at', 'desc');
-        }
+        $start_time = microtime(true);
         $skip = (int)($request->page) * (int)$request->limit;
-        $portfolios = fractal()->collection($records->skip($skip)->take($request->limit)->get())
-                        ->transformWith(new PortfolioTransformer)
-                        ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
-                        ->toArray();
-        if($portfolios)
-            return response()->json($portfolios, 200);
-        else
+        $limit = (int)$request->limit;
+
+        if ( $request->get('type') === "featured" ){
+            $portfolios = Portfolios::featured($skip, $limit);
+        } else if ( $request->get('type') === "latest" ){
+            $portfolios = Portfolios::latest($skip, $limit);
+        }
+
+        if($portfolios){
+            $duration = (microtime(true) - $start_time) * 1000;
+            return response()->json(['portfolios'=>$portfolios, 'duration'=>$duration], 200);
+        }else{
             return response()->json(false, 422);
+        }
     }
 
     public function workPage(Portfolio $portfolio, Skills $skills)

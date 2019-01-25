@@ -12,7 +12,7 @@
             <div class="hero-body has-text-centered">
                 <a href="#" @click.prevent="load" id="auto-loader" class="button is-info has-text-weight-bold" v-if="!isLoading"><span>Load more</span></a>
             </div>
-        </div>  
+        </div>
     </div>
 </template>
 
@@ -27,6 +27,7 @@
                 limit: 36,
                 portfolios: [],
                 finished: false,
+                duration: 0,
             };
         },
 
@@ -42,10 +43,10 @@
                 axios.get('/load-portfolio/'+this.page+'/'+this.limit+'/?type='+this.type).then( (response) => {
                     _this.isLoading = false;
                     _this.page++;
-                    response.data.forEach( function(value, key) {
+                    response.data.portfolios.forEach( function(value, key) {
                         _this.portfolios.push(value);
                     });
-                    
+                    _this.duration = response.data.duration;
                 }).catch( (error) => {
                     _this.isLoading = false;
                     // iziToast.error({ title : 'No more results!' })

@@ -17,6 +17,8 @@ use League\Fractal\Resource\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Gate;
 use App\Transformers\EditBlogTransformer;
+use Facades\App\Repository\Blogs;
+use Carbon\Carbon;
 
 class BlogController extends Controller
 {
@@ -72,6 +74,15 @@ class BlogController extends Controller
             $blog->allow_comments = ($request->allow_comments === "true") ? 1 : 0;
             $blog->save();
 
+            $cache_key = Blogs::getCacheKey($blog->uid);
+            if ( cache()->has($cache_key) ){
+                cache()->forget($cache_key);
+            }
+
+            cache()->remember($cache_key, Carbon::now()->addMonths(6), function() use($blog) {
+                return Blogs::transformItem($blog);
+            });
+
             if ( $request->ajax() ){
                 return response()->json(true, 200);
             }
@@ -117,10 +128,14 @@ class BlogController extends Controller
                 'is_public'     => (bool)$request->is_public,
                 'status'        => $request->status,
             ]);
+            $cache_key = Blogs::getCacheKey($blog->uid);
             $blog = fractal()->item($blog)
                             ->transformWith(new BlogTransformer)
                             ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                             ->toArray();
+            cache()->remember($cache_key, Carbon::now()->addMonths(6), function() use($blog){
+                return $blog;
+            });
             return response()->json($blog, 200);
         }
     	
@@ -268,13 +283,11 @@ class BlogController extends Controller
 
     public function viewBlogPost(Request $request, User $user, Blog $blog){
         // dd($blog);
+        $start_time = microtime(true);
         $log_view = $blog->views()->create([ 'ip'=> $request->ip()]);
-        $blog = fractal()->item($blog)
-                    ->transformWith(new BlogTransformer)
-                    ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
-                    ->toArray();
-
-        return view('blog.single')->with(['blog'=>$blog]);
+        $blog = Blogs::get($blog);
+        $duration = floor((microtime(true) - $start_time) * 1000);
+        return view('blog.single')->with(['blog'=>$blog, 'duration'=>$duration]);
     }
 
     public function trackSocialShares(Request $request, SocialShare $share){

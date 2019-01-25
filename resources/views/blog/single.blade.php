@@ -38,6 +38,9 @@
 					<img src="{{ asset($blog['image']) }}" alt="{{ $blog['title'] }}">
 				</figure>
 				@endif
+				@if(Auth::user() && Auth::user()->is_admin === 1)
+					Duration {{ $duration }}ms
+				@endif
 				<div class="content">
 					{!! $blog['body'] !!}
 				</div>
