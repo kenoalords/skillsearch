@@ -227,7 +227,7 @@ class PortfolioController extends Controller
             'others'    => $others,
             'avatar'    => $avatar,
             'similar'   => $similar,
-            'duration'  => $duration,
+            'duration'  => floor($duration),
         ]);
     }
 

@@ -4,11 +4,10 @@
 
 @if($url)
 @component('mail::button', ['url' => $url])
-	{{$button_text}}
+	{{ $button_text }}
 @endcomponent
 @endif
 
 Regards,<br>
-##Keno.
-<img src="{{ config('app.url') }}/email-broadcast?email={{ $email }}&subject={{ $sub }}">
+{{ $sender }}
 @endcomponent

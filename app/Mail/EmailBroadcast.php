@@ -18,19 +18,21 @@ class EmailBroadcast extends Mailable implements ShouldQueue
     public $body;
     public $url;
     public $text;
+    public $sender;
     /**
      * Create a new message instance.
      *
      * @return void
      */
 
-    public function __construct(User $user, $subject, $body, $url, $text)
+    public function __construct(User $user, $subject, $body, $url, $text, $sender)
     {
         $this->user = $user;
         $this->subject = $subject;
         $this->body = $body;
         $this->url = $url;
         $this->text = $text;
+        $this->sender = $sender;
     }
 
     /**
@@ -44,8 +46,8 @@ class EmailBroadcast extends Mailable implements ShouldQueue
                             ->transformWith(new SimpleUserTransformers)
                             ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                             ->toArray();
-        $email_subject = $this->subject;
-        return $this->subject( $this->subject )
+        $email_subject = $this->user->profile->first_name . ', ' . $this->subject;
+        return $this->subject( $email_subject )
                     ->from(config('app.mail_from_address'), 'Keno from ' . config('app.name'))
                     ->markdown('email.notifications.broadcast')
                     ->with([
@@ -54,6 +56,7 @@ class EmailBroadcast extends Mailable implements ShouldQueue
                         'button_text'   => $this->text,
                         'email'         => $this->user->email,
                         'sub'           => $email_subject,
+                        'sender'        => $this->sender,
                     ]);
     }
 }

@@ -32,7 +32,7 @@
                                 <span itemprop="commentCount">{{portfolio.comment_count}}</span>
                             </a>
                         </span>
-                        <featured :uid="portfolio.uid" :key="portfolio.uid" :stared="portfolio.is_featured" class="level-item"></featured>
+                        <featured :uid="portfolio.uid" :key="portfolio.uid" :status="portfolio.is_featured" class="level-item"></featured>
                         </span>
                     </div>
                 </div>

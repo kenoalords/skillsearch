@@ -6,7 +6,7 @@
 @section('metadescription', 'Showcase your photography, graphics design, makeup skills and much more on Ubanji to find new opportunities')
 @section('content')
 
-<div class="section" style="background: url({{ asset('images/how-banner-2.jpg') }}) no-repeat center; background-size: cover">
+<div class="section" style="background: url({{ asset('images/hero-back.jpg') }}) no-repeat center; background-size: cover">
     <div class="container">
         <div class="columns is-centered">
             <div class="column is-10 has-text-centered">
@@ -14,9 +14,15 @@
                     Share your creative works
                 </h1>
                 <p class="has-text-white is-size-5">Find new opportunities</p>
+                @if( Auth::user() )
                 <p>
-                    <a href="#" class="button is-primary big-action-button">Get started</a>
+                    <a href="{{ route('new_portfolio') }}?utm_source=hero&utm_medium=hero_action&utm_campaign=hero_banner_link" class="button is-primary big-action-button">Share your work</a>
                 </p>
+                @else
+                <p>
+                    <a href="{{ route('register') }}?utm_source=hero&utm_medium=hero_action&utm_campaign=hero_banner_link" class="button is-primary big-action-button">Sign up today</a>
+                </p>
+                @endif
             </div>
         </div>
     </div>

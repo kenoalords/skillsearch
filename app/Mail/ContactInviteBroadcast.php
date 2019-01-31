@@ -21,14 +21,16 @@ class ContactInviteBroadcast extends Mailable implements ShouldQueue
     public $url;
     public $text;
     public $email;
+    public $sender;
 
-    public function __construct($subject, $body, $url, $text, $email)
+    public function __construct($subject, $body, $url, $text, $email, $sender)
     {
         $this->subject = $subject;
         $this->body = $body;
         $this->url = $url;
         $this->text = $text;
         $this->email = $email;
+        $this->sender = $sender;
     }
 
     /**
@@ -47,6 +49,7 @@ class ContactInviteBroadcast extends Mailable implements ShouldQueue
                         'button_text'   => $this->text,
                         'email'         => $this->email,
                         'sub'           => $this->subject,
+                        'sender'        => $this->sender,
                     ]);
     }
 }

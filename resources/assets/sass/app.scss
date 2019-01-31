@@ -261,6 +261,8 @@ img.logo{
 		img{
 			border-top-left-radius: 5px;
 			border-top-right-radius: 5px;
+			width: 100%;
+			height: auto;
 		}
 	}
 	.card-content{
@@ -271,19 +273,23 @@ img.logo{
 	}
 	.level-right{
 		transition: all .3s ease-out;
-		opacity: .7;
 		span{
-			font-size: 14px;
+			font-size: 12px;
 			font-weight: bold;
 		}
 	}
 	a{
 		outline: none;
-		color: #333;
+		color: #222;
 	}
 	&:hover{
 		.level-right{
 			opacity: 1;
+		}
+	}
+	span{
+		&.icon{
+			width: 1em;
 		}
 	}
 }
@@ -490,7 +496,7 @@ img.logo{
 	height: 128px;
 	border-radius: 128px;
 	line-height: 118px;
-	background: #ddd;
+	background: #209cee;
 	// border: 5px solid #ff8887;
 	font-size: 3em;
 	color: #fff !important;

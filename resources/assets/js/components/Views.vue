@@ -11,7 +11,11 @@
         },
         methods:{
             logView(){
-                axios.post('/portfolio/' + this.id + '/views');
+                axios.post('/portfolio/' + this.id + '/views').then((response)=>{
+                    console.log('view registered')
+                }).catch( (err) => {
+                    console.log(err);
+                });
             }
         },
         props:{
@@ -21,7 +25,7 @@
         mounted() {
             setTimeout(()=>{
                 this.logView()
-            }, 5000)
+            }, 3000)
         }
     }
 </script>

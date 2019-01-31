@@ -248,17 +248,18 @@ class HomeController extends Controller
             $users = $users->all();
             $subject = $request->subject;
             $body = $request->body;
+            $sender = $request->sender;
             // $image_link = $request->image_link;
             $url = ($request->url) ? $request->url : '';
             $text = ($request->text) ? $request->text : 'Learn more';
             if($users){
                 foreach ($users as $key => $user){
-                    Mail::to($user->email)->send(new EmailBroadcast($user, $subject, $body, $url, $text));
+                    Mail::to($user->email)->send(new EmailBroadcast($user, $subject, $body, $url, $text, $sender));
                 }
                 if ( $request->invitees == 'true' ){
                     $invites = ContactInvite::all();
                     foreach ( $invites as $invite ){
-                        Mail::to($invite->email)->send(new ContactInviteBroadcast($subject, $body, $url, $text, $invite->email));
+                        Mail::to($invite->email)->send(new ContactInviteBroadcast($subject, $body, $url, $text, $invite->email, $sender));
                     }
                 }
                 if ( $request->ajax() ){

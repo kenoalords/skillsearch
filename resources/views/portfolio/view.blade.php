@@ -43,7 +43,9 @@
         </div>
     </div>
     <div class="container">
-        Duration {{ $duration }}ms
+        @if ( Auth::user() && Auth::user()->is_admin === 1 )
+            <small>Duration {{ $duration }}ms</small>
+        @endif
         @if($portfolio['is_public'] === 0 )
         <div class="notification is-danger">
             This portfolio is currently set to <strong class="icon"><i class="fa fa-lock"></i> Private</strong>

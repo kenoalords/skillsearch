@@ -9,6 +9,10 @@
                 <vue-editor v-model="email.body" useCustomImageHandler id="editor" @imageAdded="handleImageAdded"></vue-editor>
             </div>
             <div class="field">
+                <label>Sender Name</label>
+                <input type="text" v-model="email.sender" class="input" placeholder="e.g Ubanji Team or Keno Alordiah">
+            </div>
+            <div class="field">
                 <label>Action link</label>
                 <input type="text" v-model="email.url" class="input" placeholder="e.g http://example.com">
                 <p><a href="https://ga-dev-tools.appspot.com/campaign-url-builder/" target="_blank">Click to use google campaign url builder</a></p>
@@ -66,12 +70,15 @@
             submitEmailBroadcast: function(){
                 var form = new FormData(),
                     _this = this,
-                    invites = (_this.email.invitees) ? true : false;
+                    invites = (_this.email.invitees) ? true : false,
+                    url = (this.email.url) ? this.email.url : '',
+                    sender = (this.email.sender) ? this.email.sender : 'Team Ubanji.';
 
                 form.append('subject', this.email.subject);
                 form.append('body', this.email.body);
-                form.append('url', this.email.url);
+                form.append('url', url);
                 form.append('text', this.email.text);
+                form.append('sender', sender);
                 form.append('invitees', this.email.invitees);
                 $('body').addClass('is-loading');
                 axios.post('/dashboard/email-broadcast', form).then( (response) => {
