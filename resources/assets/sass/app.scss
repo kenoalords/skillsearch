@@ -827,6 +827,9 @@ input[type="checkbox"].is-toggle:checked:after{
 		&:hover{
 			background: #e07000;
 		}
+		&:disabled{
+			background: #ff8000;
+		}
 	}
 	&.is-google{
 		background: #ea4335;
@@ -1034,6 +1037,11 @@ input[type="checkbox"].is-toggle:checked:after{
 				font-style: italic;
 				font-weight: bold;
 			}
+		}
+	}
+	&.bold{
+		.modal-content{
+			max-width: 420px;
 		}
 	}
 }

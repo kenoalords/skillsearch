@@ -78,6 +78,9 @@
 		@endif
 	</div>
 </div>
+<div id="email-subscription-form">
+	<email-subscription></email-subscription>
+</div>
 
 <div class="section is-medium">
 	<div class="container">

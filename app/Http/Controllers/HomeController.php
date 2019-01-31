@@ -12,7 +12,6 @@ use App\Models\Skills;
 use App\Models\Activity;
 use App\Models\ContactInvite;
 use App\Models\Subscriber;
-use App\Models\Instagram;
 use App\Models\Portfolio;
 use App\Mail\ResendVerificationMail;
 use App\Mail\ContactInviteBroadcast;
@@ -291,6 +290,8 @@ class HomeController extends Controller
         Auth::logout();
         return redirect('/');
     }
+
+    
 }
 
 

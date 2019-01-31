@@ -53,6 +53,7 @@ Vue.component('send-reminder', require('./components/SendReminder.vue'));
 Vue.component('blog-comment', require('./components/BlogComment.vue'));
 Vue.component('enquiry', require('./components/Enquiry.vue'));
 Vue.component('email-broadcast', require('./components/EmailBroadcast.vue'));
+Vue.component('email-subscription', require('./components/EmailSubscription.vue'));
 
 const app = new Vue({
     el: '#app',
@@ -322,6 +323,8 @@ if ( $('.blog-excerpt').length > 0 ){
 		})
 	});
 }
+
+
 
 // if ( $('#quill-editor').length > 0 ){
 // 	var quill = new Quill('#quill-editor');

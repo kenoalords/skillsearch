@@ -18,6 +18,7 @@ Route::get('/search', 'SearchController@searchPortfolios');
 Route::get('/search/jobs', 'SearchController@searchJobs')->name('job_search');
 
 Route::get('/email-broadcast', 'HomeController@trackEmail');
+Route::post('/email-subscription', 'EmailSubscriptionController@emailSubscription');
 
 Route::get('/about', 'PagesController@about');
 Route::get('/showcase', 'PortfolioController@workPage')->name('showcase');
