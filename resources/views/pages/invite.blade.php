@@ -8,8 +8,8 @@
 
 <section class="is-medium section" style="background: url({{ asset('images/hero-back.jpg') }}) no-repeat center left; background-size: cover">
 	<div class="container has-text-centered">
-		<h1 class="title bold is-2 is-size-3-mobile has-text-white">Upload your creative work</h1>
-		<h4 class="subtitle is-size-5-mobile has-text-white">Get recognized, earn more and live freely 🤗</h4>
+		<h1 class="title bold is-2 is-size-4-mobile has-text-white">Upload your creative work</h1>
+		<h4 class="subtitle is-size-6-mobile has-text-white">Get recognized, earn more and live freely 🤗</h4>
 		@if(Auth::user())
 			<a href="{{ route('new_portfolio') }}?utm_source=community_hero&utm_medium=hero_action&utm_campaign=hero_banner_link" class="button is-primary big-action-button">Share your work today</a>
 		@else
@@ -22,7 +22,7 @@
 	<div class="container has-text-centered">
 		<div class="columns is-centered">
 			<div class="column is-8">
-				<h2 class="title is-3 bold" style="margin-bottom: 1em;">We are helping creative people like you reach a wider audience and earn more clients</h2>
+				<h2 class="title is-3 is-size-4-mobile bold" style="margin-bottom: 1em;">We are helping creative people like you reach a wider audience and earn more clients</h2>
 				<!-- <hr> -->
 				<iframe width="560" height="315" src="https://www.youtube.com/embed/y3zXpVkNKfc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 				<br><br>
@@ -41,11 +41,11 @@
 
 <div class="section is-medium is-dark bold">
 	<div class="container has-text-centered" style="max-width: 640px;">
-		<h2 class="title is-2 bold">Be expressive 😎</h2>
+		<h2 class="title is-2 bold is-size-4-mobile">Be expressive 😎</h2>
 		<p>
 			Upload your work in any format that works best for you.
 		</p>
-		<div class="level" style="margin: 2em 0;">
+		<div class="level is-mobile" style="margin: 2em 0;">
 			<div class="level-item has-text-centered">
 				<div>
 					<div>
@@ -129,7 +129,7 @@
 	<div class="container">
 		<div class="columns is-centered">			
 			<div class="column is-7 has-text-centered">
-				<h2 class="title is-3 is-size-4-mobile bold">Lots of skills to choose from</h2>
+				<h2 class="title is-3 is-size-5-mobile bold">Lots of skills to choose from</h2>
 				<p>From Makeup Artist to Photographer, Video Editor, Graphics Designer, Fashion Designer, Content Writers etc., You name it, we've got you covered.</p>
 				<a href="{{ route('register') }}" class="button is-primary big-action-button">Sign up today</a>
 			</div>
@@ -145,7 +145,7 @@
 				<figure class="image" style="margin-bottom: 2em;">
 					<img src="{{ asset('images/ubanji-community.jpg') }}" alt="Ubanji Creative">
 				</figure>
-				<h2 class="title is-3 is-size-4-mobile bold">Be Creative . Be Inspired . Be Ubanji</h2>
+				<h2 class="title is-3 is-size-5-mobile bold">Be Creative . Be Inspired . Be Ubanji</h2>
 				<p>Share your work, your stories and your journey. Inspire others and be inspired, this is the value we give as a community.</p>
 				@if(Auth::user())
 					<a href="{{ route('new_portfolio') }}?utm_source=community_hero&utm_medium=hero_action&utm_campaign=hero_banner_link" class="button is-primary big-action-button">Share your work today</a>

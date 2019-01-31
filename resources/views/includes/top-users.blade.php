@@ -1,5 +1,5 @@
 <div>
-	<h3 class="title is-3 bold has-text-centered bold">{{ $title }}</h3>
+	<h3 class="title is-3 is-size-5-mobile bold has-text-centered bold">{{ $title }}</h3>
 	<div class="slick-js">
 		@each('profile.person', $profiles, 'profile')
 	</div>
