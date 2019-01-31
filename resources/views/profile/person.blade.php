@@ -14,15 +14,15 @@
                     
                 </h4>
                 @if($profile['location'])
-                    <div class="subtitle is-6 is-spaced">{{ $profile['location'] }}</div>
+                    <div class="subtitle is-6 is-spaced" style="margin-top: -1.8em;">{{ $profile['location'] }}</div>
                 @endif
                 @if(count($profile['skills']) > 0)
                     {!! formatSkills($profile['skills']) !!}
                 @endif
             </div>
         </div>
-        <div class="card-footer">
+        <!-- <div class="card-footer">
             <a href="/{{$profile['username']}}" class="card-footer-item">View profile</a>
-        </div>
+        </div> -->
     </div>
 </div>

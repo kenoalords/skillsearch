@@ -191,6 +191,7 @@ img.logo{
 .card.user{
 	border-radius: 2px;
 	box-shadow: 0 1px 7px rgba(0, 0, 0, 0.1);
+	padding: 20px 0;
 	img{
 		&.image{
 			border-radius: 50%;
@@ -378,6 +379,20 @@ img.logo{
 .section{
 	&.is-dark{
 		background: $darkColor !important;
+		&.bold{
+			background: #00b09b !important;  /* fallback for old browsers */
+			background: -webkit-linear-gradient(to right, #96c93d, #00b09b) !important;  /* Chrome 10-25, Safari 5.1-6 */
+			background: linear-gradient(to right, #96c93d, #00b09b) !important; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+		}
+		&.subu{
+			background: #283c86 !important;  /* fallback for old browsers */
+			background: -webkit-linear-gradient(to right, #45a247, #283c86) !important;  /* Chrome 10-25, Safari 5.1-6 */
+			background: linear-gradient(to right, #45a247, #283c86) !important; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+			.title, p{
+				// color: #111 !important;
+			}
+		}
 		.portfolio-avatar{
 			margin-bottom: 1em;
 			color: #209cee;
