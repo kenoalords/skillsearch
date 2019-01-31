@@ -124,7 +124,7 @@
         </div>
     </div>
 </div>
-@if(count($others))
+@if($others)
 <div class="section is-white">
     <div class="container">
         <h3 class="title is-5 bold">More From {{$portfolio['user_profile']['fullname']}}</h3>
@@ -150,7 +150,7 @@
     </div>
 </div>
 
-@if(count($similar) > 0)
+@if($similar)
     <div class="hero is-primary">
         <div class="hero-body">
             <div class="columns is-centered is-multiline">
