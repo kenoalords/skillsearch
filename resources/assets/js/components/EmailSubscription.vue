@@ -57,10 +57,10 @@
                     _this.isLoading = false;
                     localStorage.setItem('subscription', true);
                     _this.isSuccessful = true;
+                    fbq('track', 'Lead');
                 }).catch( (error) => {
                     _this.isLoading = false;
                     _this.error = 'There was a problem signing you up, please try again';
-                    console.log(error)
                 });
             }
         },

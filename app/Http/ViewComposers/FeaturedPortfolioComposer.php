@@ -10,8 +10,8 @@ class FeaturedPortfolioComposer{
 
 	public function compose(View $view)
 	{		
-		$records = Portfolio::isPublic()->hasThumbnail();
-        	$portfolios = fractal()->collection($records->isFeatured()->take(20)->get())
+		$records = Portfolio::isPublic()->isFeatured()->hasThumbnail();
+        	$portfolios = fractal()->collection($records->isFeatured()->take(4)->get())
                         ->transformWith(new PortfolioTransformer)
                         ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                         ->toArray();

@@ -290,7 +290,7 @@ img.logo{
 	}
 	span{
 		&.icon{
-			width: 1em;
+			width: 1.2em;
 		}
 	}
 }
@@ -1496,6 +1496,14 @@ iframe{
 			form{
 				margin-bottom: .5em;
 			}
+		}
+	}
+	.portfolio-formats{
+		img{
+			max-width: 36px;
+		}
+		p{
+			font-weight: bold;
 		}
 	}
 }

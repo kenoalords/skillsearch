@@ -18,7 +18,7 @@
 	</div>
 </section>
 
-<section class="section is-medium">
+<section class="section">
 	<div class="container has-text-centered">
 		<div class="columns is-centered">
 			<div class="column is-8">
@@ -31,21 +31,20 @@
 				@else
 					<a href="{{ route('register') }}?utm_source=community_hero&utm_medium=hero_action&utm_campaign=hero_banner_link" class="button is-primary big-action-button">Sign up today</a>
 				@endif
-				<p style="margin-top: 1.5em; font-weight: bold;">
-					<a href="{{ route('home') }}" style="color: #aaa">See what people are sharing</a>
-				</p>
 			</div>
 		</div>
 	</div>
 </section>
 
-<div class="section is-medium is-dark bold">
+@include('includes.featured-portfolios')
+
+<div class="section is-dark bold">
 	<div class="container has-text-centered" style="max-width: 640px;">
 		<h2 class="title is-2 bold is-size-4-mobile">Be expressive 😎</h2>
 		<p>
 			Upload your work in any format that works best for you.
 		</p>
-		<div class="level is-mobile" style="margin: 2em 0;">
+		<div class="level is-mobile portfolio-formats" style="margin: 2em 0;">
 			<div class="level-item has-text-centered">
 				<div>
 					<div>
@@ -57,7 +56,7 @@
 			<div class="level-item has-text-centered">
 				<div>
 					<div>
-						<img src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDU3IDU3IiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1NyA1NzsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSI2NHB4IiBoZWlnaHQ9IjY0cHgiPgo8Zz4KCTxwYXRoIGQ9Ik01NS4zMzIsNi42NDNjLTEuMDItMC40MzgtMi4xNTYtMC4yMzUtMi45NTIsMC41MjNMNDEsMTcuNjY5VjguOTQ0QzQxLDYuMjE4LDM4Ljc4Miw0LDM2LjA1Niw0SDQuOTQ0ICAgQzIuMjE4LDQsMCw2LjIxOCwwLDguOTQ0djIzLjI2NUMwLDM0Ljg1MSwyLjE0OSwzNyw0Ljc5MSwzN2gxNC43NzVsLTYuNzYyLDE0LjU3OWMtMC4yMzIsMC41MDEtMC4wMTUsMS4wOTYsMC40ODYsMS4zMjggICBDMTMuNDI2LDUyLjk3MSwxMy41NjksNTMsMTMuNzEsNTNjMC4zNzcsMCwwLjczOC0wLjIxNSwwLjkwOC0wLjU3OWw2LjUxNC0xNC4wNDRsNi41MTQsMTQuMDQ0QzI3LjgxNSw1Mi43ODUsMjguMTc2LDUzLDI4LjU1Myw1MyAgIGMwLjE0MSwwLDAuMjg0LTAuMDI5LDAuNDItMC4wOTNjMC41MDEtMC4yMzIsMC43MTktMC44MjcsMC40ODYtMS4zMjhMMjIuNjk4LDM3aDEzLjEyOUMzOC42NzksMzcsNDEsMzQuNjc5LDQxLDMxLjgyNnYtOC4wMDIgICBsMTEuMzIsMTAuODE5YzAuNTMxLDAuNTI5LDEuMjEzLDAuODA4LDEuOTE3LDAuODA4YzAuMzUzLDAsMC43MS0wLjA2OSwxLjA1Ny0wLjIxMkM1Ni4zMzEsMzQuODEyLDU3LDMzLjgwOSw1NywzMi42ODN2LTIzLjUgICBDNTcsOC4wNTgsNTYuMzYxLDcuMDg0LDU1LjMzMiw2LjY0M3ogTTM5LDMxLjgyNkMzOSwzMy41NzYsMzcuNTc3LDM1LDM1LjgyNywzNUgyMS4xNjljLTAuMDAyLDAtMC4wMDQsMC0wLjAwNiwwaC0wLjA2MSAgIGMtMC4wMDMsMC0wLjAwNywwLTAuMDEsMEg0Ljc5MUMzLjI1MiwzNSwyLDMzLjc0OCwyLDMyLjIwOVY4Ljk0NEMyLDcuMzIxLDMuMzIxLDYsNC45NDQsNmgzMS4xMTJDMzcuNjc5LDYsMzksNy4zMjEsMzksOC45NDQgICBWMzEuODI2eiBNNTUsMzIuNjgzYzAsMC40NzctMC4zNTcsMC42NjEtMC40NjcsMC43MDZjLTAuMTM2LDAuMDU3LTAuNDg4LDAuMTUyLTAuODAzLTAuMTY1TDQxLjIyMSwyMS4yNyAgIGMtMC4xNDYtMC4xNDctMC4yMjQtMC4zNDQtMC4yMjEtMC41NTNjMC4wMDMtMC4yMDksMC4wODctMC40MDIsMC4yMjgtMC41MzZsMTIuNTItMTEuNTU2YzAuMTY5LTAuMTYxLDAuMzQ2LTAuMjA4LDAuNDk1LTAuMjA4ICAgYzAuMTMsMCwwLjIzOSwwLjAzNywwLjMwMSwwLjA2M0M1NC42NSw4LjUyNiw1NSw4LjcxMyw1NSw5LjE4M1YzMi42ODN6IiBmaWxsPSIjRkZGRkZGIi8+Cgk8cGF0aCBkPSJNMTguMTM3LDE5LjcyM0MxOC42ODMsMTguNzcyLDE5LDE3LjY3MywxOSwxNi41YzAtMy41ODQtMi45MTYtNi41LTYuNS02LjVTNiwxMi45MTYsNiwxNi41UzguOTE2LDIzLDEyLjUsMjMgICBjMS42ODcsMCwzLjIyMS0wLjY1MSw0LjM3Ny0xLjcwOWwxLjQxNiwxLjQxNkMxOC40ODgsMjIuOTAyLDE4Ljc0NCwyMywxOSwyM3MwLjUxMi0wLjA5OCwwLjcwNy0wLjI5MyAgIGMwLjM5MS0wLjM5MSwwLjM5MS0xLjAyMywwLTEuNDE0TDE4LjEzNywxOS43MjN6IE0xMi41LDIxQzEwLjAxOSwyMSw4LDE4Ljk4MSw4LDE2LjVzMi4wMTktNC41LDQuNS00LjVzNC41LDIuMDE5LDQuNSw0LjUgICBjMCwwLjYxNS0wLjEyNSwxLjIwMS0wLjM1LDEuNzM2bC0xLjk0My0xLjk0M2MtMC4zOTEtMC4zOTEtMS4wMjMtMC4zOTEtMS40MTQsMHMtMC4zOTEsMS4wMjMsMCwxLjQxNGwyLjE2MSwyLjE2MSAgIEMxNC42NjEsMjAuNTY0LDEzLjYzNSwyMSwxMi41LDIxeiIgZmlsbD0iI0ZGRkZGRiIvPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+Cjwvc3ZnPgo=" />
+						<img src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDU4IDU4IiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1OCA1ODsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSI2NHB4IiBoZWlnaHQ9IjY0cHgiPgo8Zz4KCTxwYXRoIGQ9Ik0zNi41MzcsMjguMTU2bC0xMS03Yy0wLjMwOC0wLjE5NS0wLjY5OC0wLjIwOC0xLjAxOS0wLjAzM0MyNC4xOTksMjEuMjk5LDI0LDIxLjYzNSwyNCwyMnYxNCAgIGMwLDAuMzY1LDAuMTk5LDAuNzAxLDAuNTE5LDAuODc3QzI0LjY2OSwzNi45NTksMjQuODM0LDM3LDI1LDM3YzAuMTg3LDAsMC4zNzQtMC4wNTMsMC41MzctMC4xNTZsMTEtNyAgIEMzNi44MjUsMjkuNjYsMzcsMjkuMzQyLDM3LDI5UzM2LjgyNSwyOC4zNCwzNi41MzcsMjguMTU2eiBNMjYsMzQuMTc5VjIzLjgyMUwzNC4xMzcsMjlMMjYsMzQuMTc5eiIgZmlsbD0iI0ZGRkZGRiIvPgoJPHBhdGggZD0iTTU3LDZINDdIMTFIMUMwLjQ0OCw2LDAsNi40NDcsMCw3djExdjExdjExdjExYzAsMC41NTMsMC40NDgsMSwxLDFoMTBoMzZoMTBjMC41NTIsMCwxLTAuNDQ3LDEtMVY0MFYyOVYxOFY3ICAgQzU4LDYuNDQ3LDU3LjU1Miw2LDU3LDZ6IE0xMCwyOEgydi05aDhWMjh6IE0yLDMwaDh2OUgyVjMweiBNMTIsNDBWMjlWMThWOGgzNHYxMHYxMXYxMXYxMEgxMlY0MHogTTU2LDI4aC04di05aDhWMjh6IE00OCwzMGg4djkgICBoLThWMzB6IE01Niw4djloLThWOEg1NnogTTIsOGg4djlIMlY4eiBNMiw1MHYtOWg4djlIMnogTTU2LDUwaC04di05aDhWNTB6IiBmaWxsPSIjRkZGRkZGIi8+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPC9zdmc+Cg==" />
 					</div>
 					<p>Video</p>
 				</div>
@@ -82,7 +81,7 @@
 	<email-subscription></email-subscription>
 </div>
 
-<div class="section is-medium">
+<div class="section">
 	<div class="container">
 		@include('includes.top-users', ['title'=>'🏅Connect with other creative people'])
 	</div>
@@ -161,4 +160,13 @@
 </section>
 
 @include('includes.signup-teaser')
+
+@push('script')
+<script>
+  fbq('track', 'ViewContent', {
+    content_type: 'Community Landing Page',
+  });
+</script>
+@endpush
+
 @endsection
