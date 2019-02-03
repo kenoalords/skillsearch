@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Category;
 use App\Models\Subscriber;
 use App\Models\SocialShare;
+use App\Models\Comment;
 use App\Models\Blog;
 use Illuminate\Http\Request;
 use App\Jobs\UserImageJob;
@@ -19,6 +20,12 @@ use Illuminate\Support\Facades\Gate;
 use App\Transformers\EditBlogTransformer;
 use Facades\App\Repository\Blogs;
 use Carbon\Carbon;
+use App\Mail\BlogLikeNotification;
+use App\Mail\BlogSubscriptionNotification;
+use App\Mail\BlogCommentNotification;
+use App\Mail\BlogCommentReplyNotification;
+use App\Mail\BlogCommentLikeNotification;
+use Mail;
 
 class BlogController extends Controller
 {
@@ -133,7 +140,7 @@ class BlogController extends Controller
                             ->transformWith(new BlogTransformer)
                             ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                             ->toArray();
-            cache()->remember($cache_key, Carbon::now()->addMonths(6), function() use($blog){
+            cache()->remember($cache_key, Carbon::now()->addWeek(), function() use($blog){
                 return $blog;
             });
             return response()->json($blog, 200);
@@ -162,6 +169,7 @@ class BlogController extends Controller
                             'ip'            => $request->ip(),
                         ]);
                 if($subscribe){
+                    Mail::to($blog->user)->send(new BlogSubscriptionNotification($blog));
                     $count = $blog->user->subscriber()->count();
                     return response()->json(['status'=>'subscribed', 'count' => $count], 200);
                 }
@@ -189,6 +197,7 @@ class BlogController extends Controller
             ]);
         if($subscribe){
             $count = $blog->user->subscriber()->count();
+            Mail::to($blog->user)->send(new BlogSubscriptionNotification($blog));
             return response()->json(['status'=>'subscribed', 'count' => $count], 200);
         }
     }
@@ -221,8 +230,8 @@ class BlogController extends Controller
     {
         $userID = $request->user()->id;
         $check = $blog->likes()->where('user_id', $userID)->first();
+        $ID = $blog->id;
         if($check){
-            $check->delete();
             $count = $blog->likes()->count();
             return response()->json(['count'=>$count], 200);
         } else {
@@ -231,6 +240,9 @@ class BlogController extends Controller
                 ]);
             if($like){
                 $count = $blog->likes()->count();
+                if ( $request->user()->id !== $blog->user->id ){
+                    Mail::to($blog->user)->send(new BlogLikeNotification($request->user()->profile->first_name, $ID, $count));
+                }
                 return response()->json(['count'=>$count], 200);
             }
         }
@@ -257,6 +269,9 @@ class BlogController extends Controller
                     ->transformWith(new CommentTransformer)
                     ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                     ->toArray();
+        if ( $request->user()->id !== $blog->user->id ){
+            Mail::to($blog->user)->send(new BlogCommentNotification($blog, $request->user(), $comment));
+        }
         if ( $request->ajax() ){
             return response()->json($payload, 200);
         }
@@ -277,6 +292,8 @@ class BlogController extends Controller
                         ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                         ->toArray();
         if ( $request->ajax() ){
+            $comment = Comment::where('id', $request->comment_id)->first();
+            Mail::to($comment->user)->send(new BlogCommentReplyNotification($comment, $request->user(), $reply, $blog));
             return response()->json($payload, 200);
         }
     }
@@ -320,6 +337,31 @@ class BlogController extends Controller
                     $const->aspectRatio();
                 })->save();
                 return response()->json([ 'url'=> asset($file) ]);
+            }
+        }
+    }
+
+    public function countBlogLike(Request $request, Blog $blog)
+    {
+        $count = $blog->likes()->count();
+        return response()->json($count, 200);
+    }
+
+    public function submitCommentLike(Request $request, Blog $blog, Comment $comment)
+    {
+        $check = $comment->likes()->where([ 'user_id' => $request->user()->id ])->first();
+        if ( $check ){
+            return response()->json(['status'=> 'liked'], 200);
+        } else {
+            $insert = $comment->likes()->create([
+                        'user_id' => $request->user()->id,
+                    ]);
+            if ( $insert ){
+                $count = $comment->likes()->count();
+                if ( $comment->user->id !== $request->user()->id ){
+                    Mail::to($comment->user)->send(new BlogCommentLikeNotification($blog, $comment, $request->user()));
+                }
+                return response()->json(['status'=>true, 'count'=>$count], 200);
             }
         }
     }

@@ -82,7 +82,7 @@
         
             <div class="hero is-white">
                 <div class="hero-body has-text-centered">
-                    <h3 class="title is-3 is-size-5-mobile">Appreciate this work!</h3>
+                    <h3 class="title is-4 is-size-5-mobile bold">Appreciate this work!</h3>
                     <like-button id="{{$portfolio['uid']}}" big="true" likes="{{$portfolio['likes_count']}}" liked="{{$portfolio['has_liked']}}"></like-button>
                     <meta itemprop="commentCount" content="{{$portfolio[
                     'comment_count']}}">
@@ -103,7 +103,7 @@
                     
                     <div class="media-content">
                         <div class="content">
-                            <h3 class="title is-5 bold">
+                            <h3 class="title is-5 bold" style="margin-bottom: 5px;">
                                 <a href="/{{$portfolio['user']}}" class="{{ ($portfolio['user_profile']['verified']) ? 'verified' : '' }} has-text-dark" itemprop="url"><span itemprop="name">{{$portfolio['user_profile']['fullname']}}</span></a>
                             </h3>
                             <div class="subtitle is-6"><span itemprop="homeLocation">{{$portfolio['user_profile']['location']}}</span></div>

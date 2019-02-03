@@ -53,22 +53,22 @@
                         <strong><a :href="comment.profile.url">{{ comment.profile.fullname }}</a></strong> <span class="date">{{ comment.date }}</span>
                         <p>{{ comment.comment }}</p>
 
-                        <div class="level is-mobile meta">
+                        <div class="level is-mobile meta" v-if="userLoggedIn">
                             <div class="level-left">
                                 <div class="level-item">
-                                    <a href="#" v-on:click.prevent="likeComment(comment.id)">
-                                        <span class="icon"><i class="fa fa-thumbs-up"></i></span> <span>Like</span>
+                                    <a href="#" v-on:click.prevent="likeComment(comment.id, comment, $event)" class="button is-small is-white" :class="{ 'is-loading' : isLikingComment }">
+                                        <span class="icon"><i class="fa fa-thumbs-up"></i></span> {{ comment.likes }} <span style="margin-left: 5px;">Like</span>
                                     </a>
                                 </div>
                                 <div class="level-item">
-                                    <a href="#" v-on:click.prevent="replyComment(comment.id)">
+                                    <a href="#" v-on:click.prevent="replyComment(comment.id)" class="button is-white is-small">
                                         <span class="icon"><i class="fa fa-reply"></i></span> <span>Reply</span>
                                     </a>
                                 </div>
                                 <div class="level-item">
-                                    <a href="#" v-on:click.prevent="replyComment(comment.id)">
+                                    <!-- <a href="#" v-on:click.prevent="replyComment(comment.id)">
                                         <span class="icon"><i class="fa fa-eye-slash"></i></span> <span>Hide comment</span>
-                                    </a>
+                                    </a> -->
                                 </div>
                             </div>
                         </div>
@@ -118,6 +118,7 @@
                 isReplying: false,
                 replyCommentID: null,
                 isReplyButtonDisabled: true,
+                isLikingComment: false,
             }
         },
         props: {
@@ -136,11 +137,13 @@
                     _this.isDisabled = false;
                     _this.body = null;
                     _this.count += 1;
+                    iziToast.success({ title: 'Comment posted successfully!' });
                     _this.comments.unshift(response.data)
                 } ).catch( (e)=>{
                     _this.isSubmitting = false;
                     _this.isDisabled = false;
                     alert('An error occured while submitting your comment');
+                    iziToast.error({ title: 'An error occured!' });
                     return;
                 } );
             },
@@ -161,8 +164,36 @@
                     console.log('Couldn\'t retrieve blog count', e);
                 });
             },
-            likeComment: function(id){
-
+            likeComment: function(id, comment, event){
+                let _this = this,
+                    target = event.target,
+                    button;
+                // _this.isLikingComment = true;
+                if ( target.tagName.toLowerCase() === 'i' || target.tagName.toLowerCase() === 'span' ){
+                    button = $(target).closest('a');
+                } else {
+                    button = $(target);
+                }
+                button.addClass('is-loading');
+                axios.post('/dashboard/blog/' + this.blogid + '/comment/' + id + '/like').then( (response) => {
+                    
+                    if ( response.data.status === true ){
+                        iziToast.success({ title: 'Comment liked!' });
+                        let index = _this.comments.indexOf(comment);
+                        _this.comments[index].likes = response.data.count;
+                        button.removeClass('is-loading');
+                    }
+                    if ( response.data.status === 'liked' ){
+                        iziToast.info({ title: 'You already like this comment' });
+                        button.removeClass('is-loading');
+                    }
+                    _this.isLikingComment = false;
+                }).catch( (error) => {
+                    console.log(error);
+                    _this.isLikingComment = false;
+                    iziToast.error({ title: 'An error occured.' });
+                    button.removeClass('is-loading');
+                });
             },
             replyComment: function(id){
                 this.isReplying = true;
@@ -186,13 +217,15 @@
                         if(comment.id === _this.replyCommentID){
                             _this.comments[index].replies.push(response.data);
                         }
-                    })
+                    });
+                    iziToast.success({ title: 'Reply posted successfully!' });
                     _this.isReplyButtonDisabled = false;
                     _this.reply = null;
                     _this.replyCommentID = null;
                     _this.isReplying = false;
                 } ).catch( (error) => {
                     alert('An error occured while posting your reply');
+                    iziToast.error({ title: 'An error occured!' });
                     this.isReplyButtonDisabled = false;
                     return;
                 } )

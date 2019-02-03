@@ -117,6 +117,7 @@
 
                         if(response.data.status === 'subscribed'){
                             _this.isSubscribed = true;
+                            iziToast.success({ title: 'You have successfully subscribed!' });
                         } else if(response.data.status === 'unsubscribed'){
                             _this.isSubscribed = false;
                         } else if( response.data.status === 'owner' ){

@@ -187,6 +187,7 @@ Route::group(['middleware'=>'auth'], function(){
 			Route::post('/like/{blog}/submit', 'BlogController@submitBlogLike');
 			Route::post('/{blog}/comment', 'BlogController@submitComment');
 			Route::post('/{blog}/comment/reply', 'BlogController@submitCommentReply');
+			Route::post('/{blog}/comment/{comment}/like', 'BlogController@submitCommentLike');
 			Route::post('/image-upload', 'BlogController@imageUpload');
 		});
 
@@ -229,6 +230,7 @@ Route::group(['middleware'=>'auth'], function(){
 }); /* End of auth middleware */
 
 Route::get('/blog/like/{blog}/check', 'BlogController@checkBlogLike');
+Route::get('/blog/like/{blog}/count', 'BlogController@countBlogLike');
 Route::get('/blog/{blog}/comments/count', 'BlogController@commentCount');
 Route::get('/blog/{user}/{blog}/{slug}', 'BlogController@viewBlogPost')->name('view_blog');
 Route::post('/blog/subscribe/{blog}/visitor', 'BlogController@subscribeVisitor');

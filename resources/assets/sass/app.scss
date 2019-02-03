@@ -1144,7 +1144,9 @@ input[type="checkbox"].is-toggle:checked:after{
 			font-size: 12px;
 			font-weight: bold;
 			a{
-				color: #aaa;
+				color: #6192d8;
+				font-size: 13px !important;
+				font-weight: bold;
 				&:hover{
 					color: #3273dc;
 				}
@@ -1175,6 +1177,9 @@ strong{
 
 .notification{
 	padding: 0.55rem 2.5rem 0.65rem 1.5rem;
+	&.is-danger{
+		background: #f00;
+	}
 }
 
 .image{

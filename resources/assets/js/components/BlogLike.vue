@@ -17,21 +17,18 @@
     	},
     	props: {
     		uid: null,
-    		count: null,
+    		count: Number,
     	},
     	methods: {
     		submitLike(){
     			if(this.isUserLoggedIn === true){
-    				if(this.hasLiked){
-    					this.likeCount--;
-    					this.hasLiked = false;
-    				} else {
+    				if(!this.hasLiked){
     					this.likeCount++;
     					this.hasLiked = true;
     				}
                     var _this = this;
     				axios.post('/dashboard/blog/like/'+this.blogId+'/submit').then((response)=>{
-    					// console.log(response);
+    					iziToast.success({ title: 'You Rock!!' })
                         _this.likeCount = response.data.count;
     				}).catch((error)=>{
     					alert('Oops! Something went wrong, please try again later');
@@ -54,6 +51,12 @@
     	},
         mounted() {
             this.hasUserLiked();
+            var _this = this;
+            axios.get('/blog/like/' + this.uid + '/count').then( (response) => {
+                _this.likeCount = response.data;
+            }).catch( (error) => {
+                console.log(error);
+            });
         }
     }
 </script>

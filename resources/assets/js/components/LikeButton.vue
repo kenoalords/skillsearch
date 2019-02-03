@@ -6,7 +6,7 @@
                 <i class="fa fa-thumbs-up" v-else="!size"></i>
             </a>
         </span>
-        <div class="has-text-weight-bold">{{ count }}</div>
+        <div class="has-text-weight-bold">{{ formatCount(count) }}</div>
     </span>
 </template>
 
@@ -31,14 +31,14 @@
         },
 
         methods: {
-            formatCount(c){
+            formatCount(count){
                 var text = '';
-                if(c === 0){
+                if(count === 0){
                     text = 'Be the first to like!';
-                } else if(c === 1){
-                    text = ' person likes this';
-                }else if(c > 1){
-                    text = ' people like this';
+                } else if(count === 1){
+                    text = count + ' person likes this';
+                }else if(count > 1){
+                    text = count + ' people like this';
                 }
                 return text;
             },
@@ -93,7 +93,7 @@
             }
         },
         mounted() {
-            // this.getLikes();
+            this.getLikes();
         }
     }
 </script>

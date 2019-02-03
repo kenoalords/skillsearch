@@ -5,6 +5,7 @@
 @section('thumbnail', $blog['image'])
 
 @section('content')
+
 <div class="single-blog">
 	<article>
 		<section class="section is-dark is-">
@@ -47,7 +48,7 @@
 				<div class="level is-mobile user-actions">
 					<div class="level-left">
 						<div class="level-item">
-							<blog-like count="{{$blog['likes']['count']}}" uid="{{$blog['id']}}"></blog-like> 
+							<blog-like :count="{{$blog['likes']['count']}}" uid="{{$blog['id']}}"></blog-like> 
 						</div>
 						<div class="level-item">
 							<blog-subscribe name="{{$blog['profile']['fullname']}}" :uid="{{$blog['id']}}" :subscriber-count="{{$blog['subscriber']['count']}}" :user-id="{{$blog['user_id']}}" blog-title="{{ $blog['title'] }}"></blog-subscribe>

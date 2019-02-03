@@ -77,9 +77,13 @@
 </head>
 <body>
     <div id="app">
-        
+        <noscript>
+          <div class="notification is-danger">
+            JavaScript Disabled: This website requires JavaScript to function properly. To enable JavaScript on your browser, <a href="https://enablejavascript.co/">please click here</a>.
+          </div>
+        </noscript>
         @include('includes.menu') 
-
+        
         @yield('content')
         
         @include('includes.footer')
