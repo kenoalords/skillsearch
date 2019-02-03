@@ -1,12 +1,12 @@
 <template>
     <span>
-        <span class="like_btn" :class="{'big' : size, 'liked' : hasLiked}" :id="pid">
+        <span class="like_btn" :class="{ 'liked' : hasLiked }" :id="pid">
             <a v-on:click.prevent="submitLike" class="like-button" v-bind:class="{ 'liked' : hasLiked }">
                 <i class="fa fa-thumbs-up" v-if="size"></i> 
                 <i class="fa fa-thumbs-up" v-else="!size"></i>
             </a>
         </span>
-        <div class="has-text-weight-bold">{{ formatCount(count) }}</div>
+        <span class="has-text-weight-bold">{{ count }}</span>
     </span>
 </template>
 

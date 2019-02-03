@@ -507,13 +507,14 @@ img.logo{
 
 .like-button{
 	display: inline-block;
-	width: 128px;
-	height: 128px;
-	border-radius: 128px;
-	line-height: 118px;
+	width: 64px;
+	height: 64px;
+	border-radius: 64px;
+	line-height: 57px;
+	text-align: center;
 	background: #209cee;
 	// border: 5px solid #ff8887;
-	font-size: 3em;
+	font-size: 2em;
 	color: #fff !important;
 	position: relative;
 	&:before{
@@ -563,6 +564,26 @@ img.logo{
 		margin-right: 10px;
 		position: relative;
 		top: 5px;
+	}
+}
+
+.social-button{
+	display: inline-block;
+	width: 36px;
+	height: 36px;
+	border-radius: 36px;
+	color: #fff !important;
+	text-align: center;
+	line-height: 36px;
+	line-height: 36px;
+	&.facebook{
+		background: #3b5998;
+	}
+	&.twitter{
+		background: #1da1f2;
+	}
+	&.google{
+		background: #dd4b39;
 	}
 }
 

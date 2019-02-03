@@ -7,9 +7,6 @@
 
 @section('content')
 
-@if($portfolio['is_featured'])
-    <!-- <div class="featured-tag big fixed"><i class="icon star"></i></div> -->
-@endif
 <div  itemscope itemtype="http://schema.org/CreativeWork" style="position: relative; background: #fff">
     
     <div class="section is-dark">
@@ -81,9 +78,25 @@
             
         
             <div class="hero is-white">
-                <div class="hero-body has-text-centered">
-                    <h3 class="title is-4 is-size-5-mobile bold">Appreciate this work!</h3>
-                    <like-button id="{{$portfolio['uid']}}" big="true" likes="{{$portfolio['likes_count']}}" liked="{{$portfolio['has_liked']}}"></like-button>
+                <div class="hero-body">
+                    <h3 class="title is-4 is-size-5-mobile bold">Like and share</h3>
+                    <div class="level is-mobile">
+                        <div class="level-left">
+                            <div class="level-item">
+                                <like-button id="{{$portfolio['uid']}}" likes="{{$portfolio['likes_count']}}" liked="{{$portfolio['has_liked']}}"></like-button>
+                            </div>
+                            <div class="level-item" style="margin-left: 20px;">
+                                <a href="https://www.facebook.com/sharer/sharer.php?u={{ $portfolio['link']['href'] }}" class="facebook social-button" target="_blank"><i class="fa fa-facebook"></i></a>
+                            </div>
+                            <div class="level-item">
+                                <a href="https://twitter.com/intent/tweet?url={{ $portfolio['link']['href'] }}&via=ubanjicreatives&text={{ $portfolio['description'] or 'Community of creative and skilled people in Nigeria. Join us today' }}&hashtags=ubanjicreatives" class="twitter social-button" target="_blank"><i class="fa fa-twitter"></i></a>
+                            </div>
+                            <div class="level-item">
+                                <a href="https://plus.google.com/share?url={{ $portfolio['link']['href'] }}" class="google social-button" target="_blank"><i class="fa fa-google-plus"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <meta itemprop="commentCount" content="{{$portfolio[
                     'comment_count']}}">
                 </div>            
@@ -92,7 +105,7 @@
             </div>
         @endif
         <div class="hero">
-            <div class="hero-body" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            <div class="" itemprop="author" itemscope itemtype="http://schema.org/Person">
                 
                 <div class="media">
                     <figure class="media-left">
@@ -153,13 +166,9 @@
 @if($similar)
     <div class="hero is-primary">
         <div class="hero-body">
+            <h3 class="title is-4">Similar Works</h3>
             <div class="columns is-centered is-multiline">
-                <div class="column is-10">
-                    <h3 class="title is-4">Similar Works</h3>
-                    <div class="columns is-multiline is-mobile">
-                        @each('includes.portfolio-with-user', $similar, 'portfolio')
-                    </div>
-                </div>
+                @each('includes.portfolio-with-user', $similar, 'portfolio')
             </div>
         </div>
     </div>
