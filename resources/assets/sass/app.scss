@@ -1086,11 +1086,23 @@ input[type="checkbox"].is-toggle:checked:after{
 			display: none;
 		}
 	}
+	&.is-list{
+		background: #fff;
+		margin-bottom: 25px;
+		.image{
+			min-height: 100px;
+			margin-bottom: 0px;
+		}
+		
+	}
 	.title{
 		// font-family: "Noto Serif", serif;
 		font-weight: 900;
 		a{
-			color: #111;
+			color: #000 !important;
+			&:hover{
+				color: #209cee !important;
+			}
 		}
 	}
 	.meta{

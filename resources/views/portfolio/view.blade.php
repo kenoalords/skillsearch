@@ -28,7 +28,7 @@
                     </div>
                     <h1 class="title is-3 is-size-4-mobile" itemprop="name">{{ ucwords(strtolower($portfolio['title'])) }}</h1> 
                     <div class="portfolio-meta">
-                        {{ $portfolio['views'] }} views, posted {{ $portfolio['date'] }}
+                        {{ $portfolio['date'] }}
                     </div>
                     <p itemprop="description">{{($portfolio['description'] != 'undefined') ? $portfolio['description'] : ''}}</p>
                     @if($portfolio['skills'])
@@ -40,9 +40,7 @@
         </div>
     </div>
     <div class="container">
-        @if ( Auth::user() && Auth::user()->is_admin === 1 )
-            <small>Duration {{ $duration }}ms</small>
-        @endif
+        
         @if($portfolio['is_public'] === 0 )
         <div class="notification is-danger">
             This portfolio is currently set to <strong class="icon"><i class="fa fa-lock"></i> Private</strong>
@@ -50,7 +48,7 @@
         @endif
 
         @if($portfolio['is_public'] === 1 || (Auth::user() && Auth::user()->id === $portfolio['user_id']))
-            <div class="section portfolio-files">
+            <div class="portfolio-files" style="margin-top: 2em;">
             @foreach ($portfolio['files'] as $file)
 
                 @if(in_array($file['file_type'], ['image/jpeg', 'image/jpg', 'image/png', 'image/gif']))
@@ -77,8 +75,8 @@
             
             
         
-            <div class="hero is-white">
-                <div class="hero-body">
+            <div class="">
+                <div style="margin: 2em 0">
                     <h3 class="title is-4 is-size-5-mobile bold">Like and share</h3>
                     <div class="level is-mobile">
                         <div class="level-left">
@@ -104,8 +102,8 @@
 
             </div>
         @endif
-        <div class="hero">
-            <div class="" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <div class="hero is-light">
+            <div class="hero-body" itemprop="author" itemscope itemtype="http://schema.org/Person">
                 
                 <div class="media">
                     <figure class="media-left">
@@ -166,8 +164,8 @@
 @if($similar)
     <div class="section is-light">
         <div class="container">
-            <h3 class="title is-4">Similar Works</h3>
-            <div class="columns is-centered is-multiline">
+            <h3 class="title is-4 bold is-size-5-mobile">Similar Works</h3>
+            <div class="columns is-multiline">
                 @each('includes.portfolio-with-user', $similar, 'portfolio')
             </div>
         </div>
@@ -175,6 +173,11 @@
 @endif
 
 @include('includes.signup-teaser')
+<div class="section">
+    <div class="container">
+        @include('blog.latest_posts')
+    </div>
+</div>
 @include('includes.skills')
 <register-view uid="{{$portfolio['uid']}}"></register-view>
 @push('script')

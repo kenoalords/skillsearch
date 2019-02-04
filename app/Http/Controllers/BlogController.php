@@ -25,6 +25,7 @@ use App\Mail\BlogSubscriptionNotification;
 use App\Mail\BlogCommentNotification;
 use App\Mail\BlogCommentReplyNotification;
 use App\Mail\BlogCommentLikeNotification;
+use App\Http\ViewComposers\ReadMoreBlogComposer;
 use Mail;
 
 class BlogController extends Controller
@@ -304,7 +305,12 @@ class BlogController extends Controller
         $log_view = $blog->views()->create([ 'ip'=> $request->ip()]);
         $blog = Blogs::get($blog);
         $duration = floor((microtime(true) - $start_time) * 1000);
-        return view('blog.single')->with(['blog'=>$blog, 'duration'=>$duration]);
+        $data = ['id'=>$blog['id']];
+        $others = fractal()->collection(Blog::whereNotIn('id', [$blog['id']])->isPublished()->take(3)->get())
+                        ->transformWith(new BlogTransformer)
+                        ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                        ->toArray();
+        return view('blog.single')->with([ 'blog'=>$blog, 'duration'=>$duration, 'others' => $others ]);
     }
 
     public function trackSocialShares(Request $request, SocialShare $share){

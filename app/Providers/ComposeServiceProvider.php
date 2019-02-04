@@ -37,6 +37,9 @@ class ComposeServiceProvider extends ServiceProvider
         view()->composer(
             ['blog.latest_posts'], \App\Http\ViewComposers\LatestBlogComposer::class
         );
+        // view()->composer(
+        //     ['blog.read_more'], \App\Http\ViewComposers\ReadMoreBlogComposer::class
+        // );
         view()->composer(
             ['includes.admin-sidebar', 'enquiry.enquiry'], \App\Http\ViewComposers\EnquiryCountComposer::class
         );

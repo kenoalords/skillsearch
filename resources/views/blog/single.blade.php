@@ -5,7 +5,6 @@
 @section('thumbnail', $blog['image'])
 
 @section('content')
-
 <div class="single-blog">
 	<article>
 		<section class="section is-dark is-">
@@ -58,11 +57,11 @@
 			</div>
 		</section>
 		
-		<section class="section is-light">
+		<section class="section ">
 			<div class="container">
 				<div class="media profile">
 					<div class="media-left">
-						<p class="image is-64x64">
+						<p class="image is-48x48">
 							<img src="{{$blog['profile']['avatar']}}" alt="{{$blog['profile']['fullname']}}">
 						</p>
 					</div>
@@ -84,7 +83,12 @@
 				</div>
 			</div>
 		</section>
-		@include('includes.signup-teaser')
+		<div class="section bold is-dark">
+			<div class="container">
+				 @include('blog.read_more')
+			</div>
+		</div>
+		
 		<section class="section">
 			<div class="container">
 				@if ( $blog['allow_comments'] === 1 )
@@ -95,7 +99,7 @@
 			</div>
 		</section>
 	</article>
-    	
+    	@include('includes.signup-teaser')
     	<div id="social-share">
 	    	<div class="share modal">
 	    		<div class="modal-background"></div>
