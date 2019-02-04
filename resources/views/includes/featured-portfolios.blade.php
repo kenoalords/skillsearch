@@ -1,6 +1,6 @@
 <div class="section is-white">
     <div class="container">
-    		<h3 class="title is-3 is-size-5-mobile has-text-centered">See what people are sharing</h3>
+    		<h3 class="title is-3 is-size-5-mobile has-text-centered bold">See what people are sharing</h3>
 		<div class="columns is-multiline is-mobile">
 			@each('includes.portfolio-with-user', $portfolios, 'portfolio')
 		</div>

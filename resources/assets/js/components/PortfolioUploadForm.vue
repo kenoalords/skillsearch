@@ -3,17 +3,17 @@
         <form action="#" id="portfolio-form" :class="{'loading' : isPosting}">
             <div class="card">
                 <div class="card-content">
-                    <h3 class="title is-5">Profile description</h3>
+                    <h3 class="title is-5 bold">Work description</h3>
                     <p>Please provide an appropriate title and description.</p>
                     <div class="field">
-                        <label for="title">Portfolio title</label>
+                        <label for="title">Work title</label>
                         <input type="text" id="title" v-model="p.title" class="input">
                     </div>
 
                     <div class="field">
-                        <label for="description">Portfolio description (optional) </label>
-                        <textarea rows="2" id="description" placeholder="Provide a short description about this portfolio" v-model="p.description" class="textarea"></textarea>
-                        <p class="help">Adding a description will make this portfolio visible to Google and increase your ranking</p>
+                        <label for="description bold">Work description </label>
+                        <textarea rows="2" id="description" placeholder="Provide a short description about this work" v-model="p.description" class="textarea"></textarea>
+                        <p class="help">Adding a description will make this work visible to Google and increase your ranking</p>
                     </div>
                 </div>
             </div>
@@ -21,8 +21,8 @@
             <div class="card">
                 <div class="card-content">
                     <div class="field" style="margin-top: 1em">
-                        <h3 class="title is-5">Upload thumbnail</h3>
-                        <p>This is the image that represents what you portfolio is about. Choose it wisely</p>
+                        <h3 class="title is-5 bold">Upload thumbnail</h3>
+                        <p>This is the image that represents what this work is about. Choose it wisely</p>
                         <figure>
                             <img v-bind:src="p.thumbnail" v-if="p.thumbnail" class="image portfolio-thumbnail">
                         </figure>
@@ -40,7 +40,7 @@
             <div class="card">
                 <div class="card-content">
                     <div class="field">
-                        <h3 class="title is-5">Upload portfolio files</h3>
+                        <h3 class="title is-5 bold">Upload work files</h3>
                         <p>You can upload multiple files formats like Images(PNG, JPG, GIF), Audio(MP3) &amp; Videos(MP4)</p>
                         <div style="margin:2em 0">
                             <div class="columns is-multiline portfolio-items">
@@ -80,12 +80,11 @@
             <div class="card">
                 <div class="card-content">
                     <div class="field">
-                        <h4 class="title is-5">Select the skill relevant to this work</h4>
-                        <div><small class="has-text-danger has-text-weight-bold">Please select at least one skill</small></div>
+                        <h3 class="title is-5 bold">Select the skill relevant to this work</h3>
                         <div class="ui relaxed horizontal list" v-if="skills">
                             <div class="item" v-for="skill in skills">
                                 <label :for="skill.skill">
-                                    <input type="checkbox" v-model="checkedSkills" :value="skill.skill" :id="skill.skill" > {{ skill.skill }}
+                                    <input type="radio" v-model="checkedSkills" :value="skill.skill" :id="skill.skill" > {{ skill.skill }}
                                 </label>
                             </div>
                         </div>

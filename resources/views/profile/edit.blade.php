@@ -44,7 +44,7 @@
             
             <div class="field">
                 <label class="label" for="bio">Tell us a little about yourself</label>
-                <textarea name="bio" id="bio" rows="2" autofocus class="textarea {{ $errors->has('bio') ? ' is-danger' : '' }}">{{ $profile->bio ? $profile->bio : old('bio') }}</textarea>
+                <textarea name="bio" id="bio" rows="2" autofocus class="textarea {{ $errors->has('bio') ? ' is-danger' : '' }}" placeholder="e.g I'm a professional makeup artist based in Lagos, Nigeria.">{{ $profile->bio ? $profile->bio : old('bio') }}</textarea>
                 @if ($errors->has('bio'))
                     <span class="help is-danger">
                         <strong>{{ $errors->first('bio') }}</strong>
@@ -71,12 +71,13 @@
                 
                 <div class="control">
                     <label class="label">Enter your location <small>(City, State)</small></label>
-                    <input type="text" name="user_location" id="geolocation" value="{{ (old('user_location')) ? old('user_location') :$profile->location}}" class="input {{ $errors->has('user_location') ? ' is-danger' : '' }}">
+                    <input type="text" name="user_location" id="geolocation" value="{{ (old('user_location')) ? old('user_location') :$profile->location}}" class="input {{ $errors->has('user_location') ? ' is-danger' : '' }}" placeholder="Ikeja, Lagos">
                     @if ($errors->has('user_location'))
                         <span class="help is-danger">
                             {{ $errors->first('user_location') }}
                         </span>
                     @endif
+                    <span class="help is-danger">Please don't enter your full address, only your city and state.</span>
                 </div>
             </div>
 
@@ -87,7 +88,7 @@
             </div>
             
             <div style="margin-top: 2em;">
-                <button type="submit" class="button is-primary">Save Profile</button>
+                <button type="submit" class="button is-info big-action-button">Save Profile</button>
             </div>
         </form>
     </div>

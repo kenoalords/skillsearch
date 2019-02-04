@@ -63,7 +63,6 @@ h1, h2, h3{
 	line-height: 1.5;
 	font-family: 'Lato', serif;
 	color: #111;
-	letter-spacing: -1px;
 	margin-bottom: 1em;
 	font-weight: 900;
 	&.bold{
@@ -330,7 +329,7 @@ img.logo{
 }
 
 .blog-excerpt{
-	margin-bottom: 2em;
+	margin-bottom: 1em;
 }
 
 .verified{
@@ -695,6 +694,8 @@ input[type="checkbox"].is-toggle:checked:after{
 .skills-list-wrapper{
 	padding: 10px;
 	border: 1px solid #eee;
+	max-height: 300px;
+	overflow-y: scroll;
 	a{
 		font-size: 14px;
 		font-weight: bold;
@@ -1200,6 +1201,18 @@ strong{
 	padding: 0.55rem 2.5rem 0.65rem 1.5rem;
 	&.is-danger{
 		background: #f00;
+	}
+	&.is-padded{
+		padding: 3em;
+	}
+	&.is-bordered-left{
+		border-left: 5px solid #ff8000;
+	}
+}
+
+#dashboard-featured{
+	.container{
+		max-width: 100%;
 	}
 }
 

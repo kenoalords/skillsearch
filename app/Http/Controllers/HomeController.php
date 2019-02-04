@@ -28,6 +28,7 @@ use App\Transformers\PortfolioTransformer;
 use App\Transformers\UserTransformers;
 use App\Transformers\SimpleUserTransformers;
 use App\Transformers\TaskTransformer;
+use App\Transformers\BlogTransformer;
 use App\Models\EmailTracker;
 
 class HomeController extends Controller
@@ -56,8 +57,8 @@ class HomeController extends Controller
                     ->toArray();
 
         // Let's get some stats
-        $portfolio_count = $request->user()->portfolio()->count();
-        $blog_count = $request->user()->blog()->count();
+        $portfolio = $request->user()->portfolio()->latestFirst();
+        $blog = $request->user()->blog();
 
         // 1. Check if user has a gmail account
         // 2. Ask them to invite their contact
@@ -74,12 +75,25 @@ class HomeController extends Controller
             }
         }
         $subscriber_count = $request->user()->subscriber()->count();
+
+        $portfolios = fractal()->collection($portfolio->take(4)->get())
+                        ->transformWith(new PortfolioTransformer)
+                        ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                        ->toArray();
+
+        $blogs = fractal()->collection($blog->take(3)->get())
+                        ->transformWith(new BlogTransformer)
+                        ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                        ->toArray();
+
         return view('home')->with([
             'gmail'             => (bool)$gmailCheck,
             'invite_status'     => $inviteStatus,
             'user'              => $user,
-            'portfolio_count'   => $portfolio_count,
-            'blog_count'        => $blog_count,
+            'portfolio_count'   => $portfolio->count(),
+            'portfolios'        => $portfolios,
+            'blog_count'        => $blog->count(),
+            'blogs'             => $blogs,
             'subscriber_count'  => $subscriber_count,
         ]);
     }

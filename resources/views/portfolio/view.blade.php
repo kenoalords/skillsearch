@@ -164,8 +164,8 @@
 </div>
 
 @if($similar)
-    <div class="hero is-primary">
-        <div class="hero-body">
+    <div class="section is-light">
+        <div class="container">
             <h3 class="title is-4">Similar Works</h3>
             <div class="columns is-centered is-multiline">
                 @each('includes.portfolio-with-user', $similar, 'portfolio')
