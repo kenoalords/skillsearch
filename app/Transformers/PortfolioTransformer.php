@@ -17,6 +17,7 @@ class PortfolioTransformer extends TransformerAbstract
 		$number = $portfolio->user->phone()->first();
 		$skills = $portfolio->user->skills()->get();
 		return [
+			'id'			=> $portfolio->id,
 			'title'		=> $portfolio->title,
 			'description'=> $portfolio->description,
 			'is_public'	=> $portfolio->is_public,

@@ -6,7 +6,7 @@
 <div class="section">
 	<div class="columns is-centered">
 		<div class="column is-7">
-			<h1 class="title is-2 bold">Enquiries</h1>
+			<h1 class="title is-2 bold is-size-5-mobile">Enquiries</h1>
 			@if( $enquiry_count > 0 )
 				<p>You have <span class="enquiry_count">{{$enquiry_count}} unread</span> {{$enquiry_count > 1 ? 'enquiries' : 'enquiry'}}</p>
 			@else

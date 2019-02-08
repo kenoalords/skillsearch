@@ -1,5 +1,5 @@
-const { mix } = require('laravel-mix');
-
+let  mix = require('laravel-mix');
+let SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -11,7 +11,7 @@ const { mix } = require('laravel-mix');
  |
  */
 
-mix.combine([
+mix.babel([
 		'node_modules/bulma/css/bulma.css',
 		'node_modules/video.js/dist/video.css',
 		'node_modules/cropperjs/dist/cropper.css',
@@ -21,4 +21,33 @@ mix.combine([
 		], 'public/css/all.css')
 	.js('resources/assets/js/app.js', 'public/js')
 	.sass('resources/assets/sass/app.scss', 'public/css')
-	.version();
+	.options({
+		processCssUrls: true,
+	})
+	.babel(['public/css/all.css', 'public/css/app.css'], 'public/css/main.css');
+
+mix.webpackConfig( webpack => {
+	return {
+		plugins: [
+			new SWPrecacheWebpackPlugin({
+				cacheId: 'ubanji_pwa_1.2',
+				filename: 'service-worker.js',
+				staticFileGlobs: ['public/**/*.{css,eot,svg,ttf,woff,woff2,js,html}'],
+				minify: true,
+				stripPrefix: 'public/',
+				handleFetch: true,
+				dynamicUrlToDependencies: {
+				  '/': ['resources/views/welcome.blade.php'],
+				},
+				staticFileGlobsIgnorePatterns: [/\.map$/, /mix-manifest\.json$/, /manifest\.json$/, /service-worker\.js$/],
+				runtimeCaching: [
+				  {
+				      urlPattern: /^https:\/\/fonts\.googleapis\.com\//,
+				      handler: 'cacheFirst'
+				  }
+				],
+				importScripts: ['./js/worker.js']
+			})
+		]
+	}
+} )

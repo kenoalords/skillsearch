@@ -2,24 +2,38 @@
   "private": true,
   "scripts": {
     "dev": "node node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --watch-poll --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "watch": "node node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --watch-poll --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch": "node node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --watch-poll --progress --hide-modules --config=webpack.config.js",
     "hot": "node node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
     "production": "node node_modules/cross-env/dist/bin/cross-env.js NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
   },
   "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-transform-object-assign": "^7.0.0",
+    "@babel/preset-env": "^7.3.1",
     "axios": "^0.15.2",
-    "jquery": "^3.3.1",
-    "laravel-mix": "^0.10.0",
-    "lodash": "^4.17.11",
-    "video.js": "^5.20.5",
-    "vue": "^2.5.22",
-    "vue-template-compiler": "^2.5.22",
-    "vue-resource": "^1.5.1",
     "babel-cli": "^6.23.0",
+    "babel-loader": "^8.0.5",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.7.0",
     "babel-preset-latest": "^6.22.0",
-    "uglify-js": "git+https://github.com/mishoo/UglifyJS2.git#harmony"
+    "cross-env": "^5.2.0",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "jquery": "^3.3.1",
+    "laravel-mix": "^4.0.14",
+    "lodash": "^4.17.11",
+    "resolve-url-loader": "^2.3.1",
+    "sass": "^1.17.0",
+    "sass-loader": "^7.1.0",
+    "sw-precache-webpack-plugin": "^0.11.5",
+    "uglify-js": "git+https://github.com/mishoo/UglifyJS2.git#harmony",
+    "uglifyjs-webpack-plugin": "^2.1.1",
+    "video.js": "^5.20.5",
+    "vue": "^2.6.3",
+    "vue-resource": "^1.5.1",
+    "vue-template-compiler": "^2.6.3",
+    "webpack": "^4.29.3",
+    "webpack-cli": "^3.2.3"
   },
   "dependencies": {
     "blazy": "^1.8.2",
@@ -27,10 +41,13 @@
     "cropperjs": "^1.4.3",
     "izitoast": "^1.4.0",
     "jquery-ui": "^1.12.1",
+    "net": "^1.0.2",
     "pluralize": "^4.0.0",
     "slick-carousel": "^1.8.1",
+    "tls": "0.0.1",
     "toastr": "^2.1.4",
-    "vue2-editor": "^2.4.3",
-    "waypoints": "^4.0.1"
+    "vue2-editor": "^2.6.6",
+    "waypoints": "^4.0.1",
+    "web-push": "^3.3.3"
   }
 }

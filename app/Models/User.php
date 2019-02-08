@@ -12,11 +12,11 @@ use App\Models\Instagram;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
+use NotificationChannels\WebPush\HasPushSubscriptions;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, HasPushSubscriptions;
 
     /**
      * The attributes that are mass assignable.
@@ -203,6 +203,11 @@ class User extends Authenticatable
     public function applications()
     {
         return $this->hasMany(Application::class);
+    }
+
+    public function pushNotification()
+    {
+        return $this->hasOne(PushNotificationModel::class);
     }
 
 }

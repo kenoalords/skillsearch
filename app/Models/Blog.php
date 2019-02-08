@@ -63,4 +63,9 @@ class Blog extends Model
     public function jsonBody(){
         return json_encode($this->body, JSON_UNESCAPED_UNICODE);
     }
+
+    public function track()
+    {
+        return $this->morphMany(UserTracker::class, 'trackable');
+    }
 }

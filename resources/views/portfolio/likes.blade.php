@@ -4,7 +4,7 @@
 
 
 <div class="">
-	<h1 class="title is-3">Likes</h1>
+	<h1 class="title is-3 is-size-5-mobile">Likes</h1>
 	<p class="subtitle is-6">List of all the portfolios you've liked</p>
 	@include('portfolio.menu')
 	@if(count($portfolios) > 0)

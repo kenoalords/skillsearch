@@ -26,7 +26,7 @@ function skill_links($skills){
         $string = '<small>Skills - </small>';
         foreach ($skills as $skill) {
             # code...
-            array_push($markup, '<a href="/work/search/?term='.urlencode(trim($skill)).'" class="tag is-primary is-small" title="'.$skill.'">'.$skill.'</a>');
+            array_push($markup, '<a href="/work/search/?term='.urlencode(trim($skill)).'" class="tag is-white is-small" title="'.$skill.'">'.$skill.'</a>');
         }
         if(!empty($markup)){
             $string .= implode(' ', $markup);
@@ -34,6 +34,14 @@ function skill_links($skills){
         return $string;
     }   
     return;
+}
+
+function extract_skills($skills){
+    $skill = '';
+    foreach ( $skills as $s ){
+        $skill .= $s['skill'] . ' ';
+    }
+    return $skill;
 }
 
 function getRatings($count){

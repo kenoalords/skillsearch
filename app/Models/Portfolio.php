@@ -9,10 +9,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Traits\Orderable;
+use Illuminate\Notifications\Notifiable;
 
 class Portfolio extends Model
 {
-    use Orderable;
+    use Orderable, Notifiable;
 
     protected $fillable = [
     	'title', 'description', 'is_public', 'uid', 'user_id', 'type', 'url', 'skills', 'thumbnail', 'completion_date'
@@ -88,6 +89,11 @@ class Portfolio extends Model
     public function comment()
     {
       return $this->morphMany(Comment::class, 'commentable');
+    }
+
+    public function track()
+    {
+      return $this->morphMany(UserTracker::class, 'trackable');
     }
 
     public function getAvatar()

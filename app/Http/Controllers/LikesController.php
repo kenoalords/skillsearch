@@ -9,7 +9,8 @@ use App\Models\Portfolio;
 use App\Services\PointService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Mail\PortfolioLikeNotification;
+use App\Notifications\PortfolioLike;
+use Facades\App\Repository\PushNotificationService;
 
 class LikesController extends Controller
 {
@@ -32,14 +33,13 @@ class LikesController extends Controller
 
     public function add(Request $request, Portfolio $portfolio, PointService $pointService)
     {
-    	// dd($portfolio);
     	$portfolio->likes()->create([
     		'user_id'		=> $request->user()->id,
     		'likeable_id'	=> $portfolio->id
     	]);
         $pointService->addPoint($request->user(), 'like');
 
-        Mail::to($portfolio->user)->queue(new PortfolioLikeNotification($request->user(), $portfolio));
+        $portfolio->user->notify(new PortfolioLike( $portfolio, $request->user()->profile->first_name ));
     	return response()->json(null, 200);
     }
 

@@ -4,8 +4,7 @@
 
 @section('content')
     @include('includes.status')
-    <h1 class="title is-2 bold">Edit Profile</h1>
-
+    <h1 class="title is-2 bold is-size-5-mobile">Edit Profile</h1>
     <div id="profile-image-wrapper" style="background: url({{ $profile->getUserBackground()  }}) no-repeat center; background-size: cover; margin-bottom: 3em;">
         <div class="hero is-medium">
             <div class="hero-body">
@@ -21,7 +20,7 @@
             {{ csrf_field() }}
             {{ method_field('PUT') }}
             
-            <div class="field is-grouped">
+            <div class="field is-grouped is-grouped-multiline">
                 <div class="control">
                     <label for="firstname" class="label">First name</label>
                     <input type="text" name="first_name" id="firstname" value="{{ $profile->first_name ? $profile->first_name : old('first_name') }}" class="input {{ ($errors->has('first_name')) ? 'is-danger' : '' }}">
@@ -51,7 +50,7 @@
                     </span>
                 @endif
             </div>
-            <div class="field is-grouped">
+            <div class="field is-grouped is-grouped-multiline">
 
                 <div class="control">
                     <label for="gender" class="label">Gender</label>

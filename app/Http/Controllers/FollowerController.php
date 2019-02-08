@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Services\PointService;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\FollowUserNotification;
 use Illuminate\Http\Request;
 
 
@@ -36,6 +37,7 @@ class FollowerController extends Controller
     		'following_id'	=> $user->id
     	]);
         $point->addPoint(Auth::user(), 'follow');
+        $user->notify(new FollowUserNotification($request->user()->profile->first_name, $request->user()->name ));
     	return response()->json(null, 200);
     }
 

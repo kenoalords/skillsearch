@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="user" class="box is-raised is-radiusless" style="padding: 1em;">
+        <div v-if="user" class="box comment-area is-raised is-radiusless" style="padding: 1em;">
             <div class="media">
                 <div class="media-left">
                     <div class="image is-64x64">

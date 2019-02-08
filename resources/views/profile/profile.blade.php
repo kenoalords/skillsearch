@@ -13,18 +13,16 @@
                 <img src="{{ $profile['avatar'] }}" data-src="" class="image is-96x96 is-rounded is-centered">
                 <meta itemprop="image" content="{{ $profile['avatar'] }}">
                 <!-- title and subtitle -->
-                <h1 class="title is-4 has-text-white">
+                <h1 class="title is-4 has-text-white" style="margin-bottom: 7px;">
                     <span itemprop="name" class="{{ ($profile['verified']) ? 'verified' : '' }}">{{ $profile['fullname'] }}</span>
                 </h1>
                 <div class="subtitle has-text-white"><span itemprop="homeLocation">{{ $profile['location'] }}</span></div>
                 <div>
                     @foreach ($profile['skills'] as $skill)
-                        <a href="/search?term={{ urlencode($skill['skill']) }}" class="tag is-primary" itemprop="jobTitle">{{ $skill['skill'] }}</a>
+                        <a href="/search?term={{ urlencode($skill['skill']) }}" class="tag is-white" itemprop="jobTitle">{{ $skill['skill'] }}</a>
                     @endforeach
                 </div>
                 <br>
-                <follow username="{{$profile['username']}}"></follow>
-
         </div>
     </div>
 </div>
@@ -58,9 +56,9 @@
         @if($profile['bio'])
             <p itemprop="description">{{$profile['bio']}}</p>
         @else
-            <p>{{ $profile['first_name'] }} has nothing to say about themselves!</p>
+            <p>{{ $profile['first_name'] }} is yet to provide a brief description about themselves!</p>
         @endif
-
+        <follow username="{{$profile['username']}}"></follow> &nbsp;&nbsp;
         @if(Auth::user() && Auth::user()->id !== $profile['user_id'])
             <a href="{{ route('make_enquiry', ['user' => $profile['username']] )}}" class="button is-info">Make enquiry</a>
         @endif

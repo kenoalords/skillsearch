@@ -13,6 +13,8 @@ use Illuminate\Http\Request;
 use App\Transformers\CommentTransformer;
 use App\Http\Requests\CommentFormRequest;
 use App\Events\CommentPostedEvent;
+use App\Notifications\PortfolioCommentNotification;
+use App\Notifications\PortfolioCommentReplyNotification;
 
 class PortfolioCommentController extends Controller
 {
@@ -30,19 +32,18 @@ class PortfolioCommentController extends Controller
     	$comment = $portfolio->comment()->create([
     		'user_id'	=> $request->user()->id,
     		'comment'	=> $request->comment,
-    		'reply_id'	=> $request->get('id', null),
+    		'reply_id'	=> ($request->id) ? $request->id : null,
     	]);
 
-        // event(new CommentPostedEvent($comment, $portfolio));
-
-        if($request->get('id') == ''){
-            if($portfolio->user_id !== $request->user()->id){
-                Mail::to( $portfolio->user )->send(new CommentNotification( $portfolio->id, $request->user()->id, $request->get('id', null) ));
+        if(!$request->id){
+            if ( $portfolio->user->id !== $request->user()->id ){
+                $portfolio->user
+                ->notify(new PortfolioCommentNotification( $portfolio, $request->user()->profile->first_name ));
             }
         } else {
-            $parent_comment = Comment::where('id', $request->get('id'))->first();
-            $user = User::where('id', $parent_comment->user_id)->first();
-            Mail::to( $user )->send(new CommentReplyNotification( $portfolio, $request->user()->id, $user ) );
+            $old_comment = Comment::where('id', $request->id)->first();
+            if ( $old_comment->user->id !== $request->user()->id )
+                $old_comment->user->notify(new PortfolioCommentReplyNotification( $portfolio, $request->user()->profile->first_name ));
         }
 
         // Add Point For Comment

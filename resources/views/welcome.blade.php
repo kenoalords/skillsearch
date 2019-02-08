@@ -10,8 +10,8 @@
     <div class="container">
         <div class="columns is-centered">
             <div class="column is-10 has-text-centered">
-                <h1 class="title is-2 bold has-text-white" style="margin-bottom: 0em">
-                    Share your creative works
+                <h1 class="title is-2 bold is-size-4-mobile has-text-white" style="margin-bottom: 10px">
+                    Upload your creative works
                 </h1>
                 <p class="has-text-white is-size-5">Find new opportunities</p>
                 @if( Auth::user() )

@@ -3,8 +3,8 @@
 @section('content')
 
 @include('includes.status')
-<h1 class="title is-2 bold">Subscribers</h1>
-<h4 class="subtitle">Here, you will find people who subscribed to your blog posts.</h4>
+<h1 class="title is-2 bold is-size-5-mobile">Subscribers</h1>
+<h4 class="subtitle is-size-6-mobile">Here, you will find people who subscribed to your blog posts.</h4>
 @include('blog.menu')
 
 <div class="notification is-info">
@@ -37,7 +37,7 @@
 		</table>
 	</form>
 @else
-	<h3 class="title is-5 has-text-danger">You don't have any subscribers yet. <a href="{{ route('add_blog') }}">Write a blog post</a></h3>
+	<h3 class="title is-5 has-text-danger is-size-6-mobile">You don't have any subscribers yet. <a href="{{ route('add_blog') }}">Write a blog post</a></h3>
 @endif
 
 @endsection

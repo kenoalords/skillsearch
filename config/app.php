@@ -182,6 +182,7 @@ return [
         \Torann\GeoIP\GeoIPServiceProvider::class,
         Unicodeveloper\Paystack\PaystackServiceProvider::class,
         Mews\Purifier\PurifierServiceProvider::class,
+        NotificationChannels\WebPush\WebPushServiceProvider::class,
         
         /*
          * Application Service Providers...

@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Models\Portfolio;
 use App\Models\Like;
 use App\Models\User;
 use App\Services\PointService;
 use Illuminate\Http\Request;
+use App\Notifications\PortfolioCommentLikeNotification;
 
 class CommentController extends Controller
 {
@@ -25,6 +27,8 @@ class CommentController extends Controller
     			'likeable_id'	=> $request->comment_id,
     		]);
     		$point->addPoint($request->user(), 'comment_like');
+            $portfolio = Portfolio::where('id', $comment->commentable_id)->first();
+            $comment->user->notify(new PortfolioCommentLikeNotification($comment, $portfolio, $request->user()->profile->first_name));
     		return response()->json([
     				'likes'	=> $comment->likes()->count()
     			]);

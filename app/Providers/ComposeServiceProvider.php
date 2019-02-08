@@ -31,7 +31,7 @@ class ComposeServiceProvider extends ServiceProvider
         );
 
         view()->composer(
-            ['includes.user-badge'],
+            ['includes.user-badge', 'includes.menu'],
             \App\Http\ViewComposers\UserImageComposer::class
         );
         view()->composer(

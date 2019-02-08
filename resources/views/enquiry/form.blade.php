@@ -20,7 +20,7 @@
 				                    </p>
 							</div>
 							<div class="media-content">
-								<h1 class="title is-5 bold">Send {{ $profile->fullname }} a message</h1>
+								<h1 class="title is-5 bold is-size-6-mobile">Send {{ $profile->fullname }} a message</h1>
 								<p class="subtitle is-size-6">Use the form below to compose your enquiry.</p>
 							</div>
 						</div>

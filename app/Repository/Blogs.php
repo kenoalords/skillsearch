@@ -13,7 +13,7 @@ class Blogs
 	public function get(Blog $blog)
 	{
 		$cache_key = $this->getCacheKey($blog->uid);
-		return cache()->remember($cache_key, Carbon::now()->addWeek(), function() use($blog) {
+		return cache()->remember($cache_key, Carbon::now()->addMinutes(15), function() use($blog) {
 			return $this->transformItem($blog);
 		});
 	}

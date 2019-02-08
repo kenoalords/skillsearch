@@ -10,12 +10,14 @@ use Illuminate\View\View;
 class UserImageComposer{
 
 	public function compose(View $view)
-	{		
-		$user = fractal()->item(User::find(Auth::user()->id))
-                        ->transformWith(new SimpleUserTransformers)
-                         ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
-                        ->toArray();
-        $view->with(['user' => $user]);
+	{	
+		if ( Auth::user() )	{
+			$user = fractal()->item(User::find(Auth::user()->id))
+	                        ->transformWith(new SimpleUserTransformers)
+	                         ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+	                        ->toArray();
+	        	$view->with(['user' => $user]);
+	     }
 	}
 
 }

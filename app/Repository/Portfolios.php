@@ -13,7 +13,7 @@ class Portfolios
 		$key = 'featured.'.$skip . '.' . $limit;
 		$cache_key = $this->getCacheKey($key);
 
-		return cache()->remember($cache_key, Carbon::now()->addDays(1), function() use($skip, $limit) {
+		return cache()->remember($cache_key, Carbon::now()->addMinutes(15), function() use($skip, $limit) {
 			$portfolios = Portfolio::where([ 'is_featured' => 1])->isPublic()->hasThumbnail()->orderBy('updated_at', 'desc')->skip($skip)->take($limit)->get();
 			return $this->transformCollection($portfolios);
 		});
@@ -24,7 +24,7 @@ class Portfolios
 		$key = 'latest.'.$skip . '.' . $limit;
 		$cache_key = $this->getCacheKey($key);
 
-		return cache()->remember($cache_key, Carbon::now()->addDays(1), function() use($skip, $limit){
+		return cache()->remember($cache_key, Carbon::now()->addMinutes(15), function() use($skip, $limit){
 			$portfolios = Portfolio::isPublic()
 							 ->hasThumbnail()
 							 ->orderBy('created_at', 'desc')

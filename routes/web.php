@@ -29,6 +29,9 @@ Route::get('/privacy', 'PagesController@privacy');
 Route::get('/community', 'PagesController@community');
 Route::get('/points', 'PagesController@points')->name('points');
 
+// Track User Activity
+Route::post('/tracker/add', 'UserTrackerController@addPageActivity');
+
 // Gigs Route
 Route::get('/gigs', 'GigsController@gigs')->name('gigs');
 Route::get('/gig/{gig}/{slug?}', 'GigsController@viewGig')->name('gig');
@@ -64,6 +67,8 @@ Route::get('/invite/success', 'InviteContactController@thankYou');
 Route::get('/logout', 'HomeController@logout')->name('logout');
 
 Route::group(['middleware'=>'auth'], function(){
+
+	Route::post('/push_notification', 'PushNotificationController@subscribe');
 
 	Route::get('/invite/delete', 'InviteContactController@deleteInvites')->name('delete_invites')->middleware('admin');
 	Route::post('/invite/delete', 'InviteContactController@delete')->middleware('admin');

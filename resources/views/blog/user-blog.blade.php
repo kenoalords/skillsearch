@@ -3,8 +3,8 @@
 @section('content')
 
 @include('includes.status')
-<h1 class="title is-2 bold">Blog</h1>
-<h4 class="subtitle">Write about your passion, business, ideas and solutions. Be engaging</h4>
+<h1 class="title is-2 bold is-size-5-mobile">Blog</h1>
+<h4 class="subtitle is-size-6-mobile">Write about your passion, business, ideas and solutions. Be engaging</h4>
 @include('blog.menu')
 
 <div class="notification is-info">

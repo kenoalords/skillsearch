@@ -6,7 +6,7 @@ use Mail;
 use App\Models\Enquiry;
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Mail\EnquiryNotification;
+use App\Notifications\UserEnquiryNotification;
 
 class EnquiryController extends Controller
 {
@@ -29,7 +29,8 @@ class EnquiryController extends Controller
 					'ip'			=> $request->ip(),
 				]);
 			if ( $post ){
-				Mail::to($user)->queue(new EnquiryNotification($user, $request->fullname, $request->email, $request->message));
+				// Mail::to($user)->queue(new EnquiryNotification($user, $request->fullname, $request->email, $request->message));
+				$user->notify(new UserEnquiryNotification($post, $request->fullname));
 				return response()->json(true, 200);
 			} else {
 				return response()->json(false, 422);

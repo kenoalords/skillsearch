@@ -13,7 +13,7 @@
 				<span class="icon">
 					<i class="fa fa-plus"></i>
 				</span>
-				<span>Add Portfolio</span>
+				<span>Add work</span>
 			</a>
 		</li>
 

@@ -6,7 +6,6 @@
 @section('type', 'portfolio')
 
 @section('content')
-
 <div  itemscope itemtype="http://schema.org/CreativeWork" style="position: relative; background: #fff">
     
     <div class="section is-dark">
@@ -75,15 +74,15 @@
             
             
         
-            <div class="">
-                <div style="margin: 2em 0">
+            <div class="profile-social-share">
+                <div style="margin: 2em 0" class="wrapper-mobile">
                     <h3 class="title is-4 is-size-5-mobile bold">Like and share</h3>
                     <div class="level is-mobile">
                         <div class="level-left">
                             <div class="level-item">
                                 <like-button id="{{$portfolio['uid']}}" likes="{{$portfolio['likes_count']}}" liked="{{$portfolio['has_liked']}}"></like-button>
                             </div>
-                            <div class="level-item" style="margin-left: 20px;">
+                            <div class="level-item">
                                 <a href="https://www.facebook.com/sharer/sharer.php?u={{ $portfolio['link']['href'] }}" class="facebook social-button" target="_blank"><i class="fa fa-facebook"></i></a>
                             </div>
                             <div class="level-item">
@@ -102,37 +101,37 @@
 
             </div>
         @endif
-        <div class="hero is-light">
-            <div class="hero-body" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    </div>
+    <div class="section is-light">
+        <div class="container" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+            <div class="media">
+                <figure class="media-left">
+                    <a href="/{{$portfolio['user']}}" itemprop="url" class="image is-64x64">
+                        <img src="{{$portfolio['user_profile']['avatar']}}" alt="{{$portfolio['user_profile']['fullname']}}" class="image is-rounded" itemprop="image">
+                    </a>
+                </figure>
                 
-                <div class="media">
-                    <figure class="media-left">
-                        <a href="/{{$portfolio['user']}}" itemprop="url" class="image is-64x64">
-                            <img src="{{$portfolio['user_profile']['avatar']}}" alt="{{$portfolio['user_profile']['fullname']}}" class="image is-rounded" itemprop="image">
-                        </a>
-                    </figure>
-                    
-                    <div class="media-content">
-                        <div class="content">
-                            <h3 class="title is-5 bold" style="margin-bottom: 5px;">
-                                <a href="/{{$portfolio['user']}}" class="{{ ($portfolio['user_profile']['verified']) ? 'verified' : '' }} has-text-dark" itemprop="url"><span itemprop="name">{{$portfolio['user_profile']['fullname']}}</span></a>
-                            </h3>
-                            <div class="subtitle is-6"><span itemprop="homeLocation">{{$portfolio['user_profile']['location']}}</span></div>
+                <div class="media-content">
+                    <div class="content">
+                        <h3 class="title is-5 bold" style="margin-bottom: 5px;">
+                            <a href="/{{$portfolio['user']}}" class="{{ ($portfolio['user_profile']['verified']) ? 'verified' : '' }}" itemprop="url"><span itemprop="name">{{$portfolio['user_profile']['fullname']}}</span></a>
+                        </h3>
+                        <div class="subtitle is-6"><span itemprop="homeLocation">{{$portfolio['user_profile']['location']}}</span></div>
 
-                            <p itemprop="description">{{$portfolio['user_profile']['bio']}}</p>
-                             @if(Auth::user() && Auth::user()->id !== $portfolio['user_id'])
-                                <a href="{{ route('make_enquiry', ['user' => $portfolio['user']] )}}" class="button is-small is-info">Make enquiry</a>
-                            @endif
+                        <p itemprop="description">{{ str_limit($portfolio['user_profile']['bio'], 120) }}</p>
+                         @if(Auth::user() && Auth::user()->id !== $portfolio['user_id'])
+                            <a href="{{ route('make_enquiry', ['user' => $portfolio['user']] )}}" class="button is-info">Make enquiry</a>
+                        @endif
 
-                            @if(!Auth::user())
-                                <a href="{{ route('make_enquiry', ['user' => $portfolio['user']] )}}" class="button is-small is-info">Make enquiry</a>
-                            @endif 
-                            <follow username="{{$portfolio['user']}}"></follow>
-                        </div>
+                        @if(!Auth::user())
+                            <a href="{{ route('make_enquiry', ['user' => $portfolio['user']] )}}" class="button is-info">Make enquiry</a>
+                        @endif 
+                        <follow username="{{$portfolio['user']}}"></follow>
                     </div>
                 </div>
-            </div>      
-        </div>
+            </div>
+        </div>      
     </div>
 </div>
 @if($others)
@@ -161,6 +160,7 @@
     </div>
 </div>
 
+<tracker :id="{{ $portfolio['id'] }}" type="portfolio" url="{{ Request::path() }}" tags="{{ $portfolio['skills'] }}"></tracker>
 @if($similar)
     <div class="section is-light">
         <div class="container">

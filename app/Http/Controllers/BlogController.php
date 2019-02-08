@@ -20,12 +20,12 @@ use Illuminate\Support\Facades\Gate;
 use App\Transformers\EditBlogTransformer;
 use Facades\App\Repository\Blogs;
 use Carbon\Carbon;
-use App\Mail\BlogLikeNotification;
-use App\Mail\BlogSubscriptionNotification;
-use App\Mail\BlogCommentNotification;
-use App\Mail\BlogCommentReplyNotification;
-use App\Mail\BlogCommentLikeNotification;
+use App\Notifications\BlogLikeNotification;
+use App\Notifications\BlogSubscriptionNotification;
+use App\Notifications\BlogCommentReplyNotification;
+use App\Notifications\BlogCommentLikeNotification;
 use App\Http\ViewComposers\ReadMoreBlogComposer;
+use App\Notifications\BlogCommentNotification;
 use Mail;
 
 class BlogController extends Controller
@@ -87,7 +87,7 @@ class BlogController extends Controller
                 cache()->forget($cache_key);
             }
 
-            cache()->remember($cache_key, Carbon::now()->addMonths(6), function() use($blog) {
+            cache()->remember($cache_key, Carbon::now()->addMinutes(15), function() use($blog) {
                 return Blogs::transformItem($blog);
             });
 
@@ -141,7 +141,7 @@ class BlogController extends Controller
                             ->transformWith(new BlogTransformer)
                             ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                             ->toArray();
-            cache()->remember($cache_key, Carbon::now()->addWeek(), function() use($blog){
+            cache()->remember($cache_key, Carbon::now()->addMinutes(15), function() use($blog){
                 return $blog;
             });
             return response()->json($blog, 200);
@@ -156,7 +156,6 @@ class BlogController extends Controller
         if($request->user()->id === $blog->user_id){
             return response()->json(['status'=>'owner'], 200);
         } else {
-            // $user = $user->where('id', $blog->user_id)->first();
             $check = Subscriber::where(['user_id'=>$blog->user->id, 'subscriber_id'=>$request->user()->id])->first();
             if(!$check){
                 // dd($request);
@@ -170,7 +169,7 @@ class BlogController extends Controller
                             'ip'            => $request->ip(),
                         ]);
                 if($subscribe){
-                    Mail::to($blog->user)->send(new BlogSubscriptionNotification($blog));
+                    $blog->user->notify(new BlogSubscriptionNotification($blog, $request->user()->profile->fullname));
                     $count = $blog->user->subscriber()->count();
                     return response()->json(['status'=>'subscribed', 'count' => $count], 200);
                 }
@@ -242,7 +241,7 @@ class BlogController extends Controller
             if($like){
                 $count = $blog->likes()->count();
                 if ( $request->user()->id !== $blog->user->id ){
-                    Mail::to($blog->user)->send(new BlogLikeNotification($request->user()->profile->first_name, $ID, $count));
+                    $blog->user->notify(new BlogLikeNotification($blog, $request->user()->profile->first_name));
                 }
                 return response()->json(['count'=>$count], 200);
             }
@@ -271,7 +270,7 @@ class BlogController extends Controller
                     ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                     ->toArray();
         if ( $request->user()->id !== $blog->user->id ){
-            Mail::to($blog->user)->send(new BlogCommentNotification($blog, $request->user(), $comment));
+            $blog->user->notify(new BlogCommentNotification($blog, $request->user()->profile->first_name));
         }
         if ( $request->ajax() ){
             return response()->json($payload, 200);
@@ -294,7 +293,7 @@ class BlogController extends Controller
                         ->toArray();
         if ( $request->ajax() ){
             $comment = Comment::where('id', $request->comment_id)->first();
-            Mail::to($comment->user)->send(new BlogCommentReplyNotification($comment, $request->user(), $reply, $blog));
+            $comment->user->notify(new BlogCommentReplyNotification($blog, $comment, $request->user()->profile->first_name));
             return response()->json($payload, 200);
         }
     }
@@ -365,7 +364,7 @@ class BlogController extends Controller
             if ( $insert ){
                 $count = $comment->likes()->count();
                 if ( $comment->user->id !== $request->user()->id ){
-                    Mail::to($comment->user)->send(new BlogCommentLikeNotification($blog, $comment, $request->user()));
+                    $comment->user->notify(new BlogCommentLikeNotification($blog, $comment, $request->user()->profile->first_name));
                 }
                 return response()->json(['status'=>true, 'count'=>$count], 200);
             }

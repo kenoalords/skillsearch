@@ -1,8 +1,8 @@
 <template>
     <span v-if="isLoaded">
         <span v-if="!is_self">
-            <a href="#" v-bind:class="{'is-light': can_follow, 'is-info' : !can_follow}" class="button is-small has-text-weight-bold" v-on:click.prevent="handle">
-                <span class="icon"><i class="fa fa-user"></i></span> <span>{{ can_follow ? 'Follow' : 'Following' }} </span> <span class="icon" v-if="!can_follow"><i class="fa fa-check"></i></span>
+            <a href="#"  class="button is-info" v-on:click.prevent="handle">
+                <span class="icon"><i class="fa " :class="{ 'fa-user': can_follow, 'fa-check' : !can_follow }"></i></span> <span>{{ can_follow ? 'Follow' : 'Following' }} </span>
             </a>
         </span>
     </span>

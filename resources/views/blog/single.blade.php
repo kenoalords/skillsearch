@@ -9,6 +9,7 @@
 	<article>
 		<section class="section is-dark is-">
 			<header class="container">
+				<p><a href="#" class="tag is-info">{{ $blog['category'] }}</a></p>
 				<h1 class="title is-1 is-size-3-mobile">{{ $blog['title'] }}</h1>
 				<div class="level is-mobile meta">
 					<div class="level-left">
@@ -18,9 +19,7 @@
 								<a href="/{{$blog['profile']['username']}}">{{$blog['profile']['fullname']}} <span itemprop="author" class="{{ ($blog['profile']['verified']) ? 'verified' : '' }} author" ></span></a>
 							</div>
 						</div>
-						<div class="level-item">
-							in <a href="#" class="tag is-info">{{ $blog['category'] }}</a>
-						</div>
+						
 						<div class="level-item">
 							Posted {{ $blog['date']['created_human'] }}
 						</div>
@@ -79,6 +78,9 @@
 						</div>
 						<p class="text-muted">{{$blog['profile']['bio']}}</p>	
 						<follow username="{{$blog['profile']['username']}}"></follow>
+						@if(!Auth::user())
+					         &nbsp;&nbsp; <a href="{{ route('make_enquiry', ['user' => $blog['profile']['username']] )}}" class="button is-info">Make enquiry</a>
+					     @endif
 					</div>
 				</div>
 			</div>
@@ -134,6 +136,7 @@
     	</div>
 
 </div>
+<tracker :id="{{ $blog['id'] }}" type="blog" url="{{ Request::path() }}" tags="{{ $blog['category'] }}"></tracker>
 @push('script')
 <script>
   fbq('track', 'ViewContent', {

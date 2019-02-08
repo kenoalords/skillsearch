@@ -1,4 +1,4 @@
-<div class="column is-4 blog-excerpt">
+<div class="column is-one-third-desktop is-half-tablet blog-excerpt">
 	<figure class="image" style="background: url({{ $blog['image'] }}) no-repeat center #ddd; background-size: cover;">
 		<a href="{{ $blog['url'] }}">
 			<img src="{{ $blog['image'] }}" alt="{{$blog['title']}}">

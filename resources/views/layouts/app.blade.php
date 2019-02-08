@@ -33,8 +33,9 @@
     
     <!-- Styles -->
     <link rel="icon" href="{{ asset('public/favicon.png') }}" type="image/png">
-    <link rel="stylesheet" href="{{ mix('/css/all.css') }}">
-    <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/all.css') }}">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="manifest" href="{{ asset('manifest.json') }}">
     <!-- Scripts -->
     <script>
         window.Laravel  = {!! json_encode([
@@ -88,11 +89,9 @@
         
         @include('includes.footer')
     </div>  
-    
-    
-    
     <!-- Scripts -->
-    <script src="{{ mix('/js/app.js') }}"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
+   
     @stack('script')
     @if ( App::environment() === 'production' )
     <script>

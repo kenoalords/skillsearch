@@ -14,46 +14,48 @@ require('./bootstrap');
  */
 
 // Vue.component('example', require('./components/Example.vue'));
-Vue.component('referral-code', require('./components/ReferralCode.vue'));
-Vue.component('referral', require('./components/Referral.vue'));
-Vue.component('contact-request', require('./components/ContactRequest.vue'));
-Vue.component('comments', require('./components/Comments.vue'));
-Vue.component('skills', require('./components/Skills.vue'));
-Vue.component('upload-image', require('./components/UploadProfileImage.vue'));
-Vue.component('portfolio-form', require('./components/PortfolioForm.vue'));
-Vue.component('portfolio-upload-form', require('./components/PortfolioUploadForm.vue'));
-Vue.component('message', require('./components/Message.vue'));
-Vue.component('send-message', require('./components/SendMessage.vue'));
-Vue.component('follow', require('./components/Follow.vue'));
-Vue.component('reviews', require('./components/Review.vue'));
-Vue.component('portfolio', require('./components/Portfolio.vue'));
-Vue.component('request-service', require('./components/RequestService.vue'));
-Vue.component('requests', require('./components/Requests.vue'));
-Vue.component('user-background', require('./components/UserBackground.vue'));
-Vue.component('like-button', require('./components/LikeButton.vue'));
-Vue.component('privacy-toggle', require('./components/PrivacyToggle.vue'));
-Vue.component('portfolio-comments', require('./components/PortfolioComments.vue'));
-Vue.component('register-view', require('./components/Views.vue'));
-Vue.component('application-actions', require('./components/ApplicationActions.vue'));
-Vue.component('video-player', require('./components/VideoPlayer.vue'));
-Vue.component('blog-form', require('./components/BlogForm.vue'));
-Vue.component('verify-users', require('./components/VerifyUsers.vue'));
-Vue.component('task-form-apply', require('./components/TaskFormApply.vue'));
-Vue.component('job-actions', require('./components/JobActions.vue'));
-Vue.component('flag-job', require('./components/FlagJob.vue'));
-Vue.component('save-job', require('./components/SaveJob.vue'));
-Vue.component('blog-like', require('./components/BlogLike.vue'));
-Vue.component('blog-subscribe', require('./components/BlogSubscribe.vue'));
-Vue.component('phone-number', require('./components/PhoneNumber.vue'));
-Vue.component('portfolio-list', require('./components/PortfolioList.vue'));
-Vue.component('portfolio-item', require('./components/PortfolioItem.vue'));
-Vue.component('gig-form', require('./components/GigForm.vue'));
-Vue.component('featured', require('./components/Featured.vue'));
-Vue.component('send-reminder', require('./components/SendReminder.vue'));
-Vue.component('blog-comment', require('./components/BlogComment.vue'));
-Vue.component('enquiry', require('./components/Enquiry.vue'));
-Vue.component('email-broadcast', require('./components/EmailBroadcast.vue'));
-Vue.component('email-subscription', require('./components/EmailSubscription.vue'));
+Vue.component('referral-code', require('./components/ReferralCode.vue').default);
+Vue.component('referral', require('./components/Referral.vue').default);
+Vue.component('contact-request', require('./components/ContactRequest.vue').default);
+Vue.component('comments', require('./components/Comments.vue').default);
+Vue.component('skills', require('./components/Skills.vue').default);
+Vue.component('upload-image', require('./components/UploadProfileImage.vue').default);
+Vue.component('portfolio-form', require('./components/PortfolioForm.vue').default);
+Vue.component('portfolio-upload-form', require('./components/PortfolioUploadForm.vue').default);
+Vue.component('message', require('./components/Message.vue').default);
+Vue.component('send-message', require('./components/SendMessage.vue').default);
+Vue.component('follow', require('./components/Follow.vue').default);
+Vue.component('reviews', require('./components/Review.vue').default);
+Vue.component('portfolio', require('./components/Portfolio.vue').default);
+Vue.component('request-service', require('./components/RequestService.vue').default);
+Vue.component('requests', require('./components/Requests.vue').default);
+Vue.component('user-background', require('./components/UserBackground.vue').default);
+Vue.component('like-button', require('./components/LikeButton.vue').default);
+Vue.component('privacy-toggle', require('./components/PrivacyToggle.vue').default);
+Vue.component('portfolio-comments', require('./components/PortfolioComments.vue').default);
+Vue.component('register-view', require('./components/Views.vue').default);
+Vue.component('application-actions', require('./components/ApplicationActions.vue').default);
+Vue.component('video-player', require('./components/VideoPlayer.vue').default);
+Vue.component('blog-form', require('./components/BlogForm.vue').default);
+Vue.component('verify-users', require('./components/VerifyUsers.vue').default);
+Vue.component('task-form-apply', require('./components/TaskFormApply.vue').default);
+Vue.component('job-actions', require('./components/JobActions.vue').default);
+Vue.component('flag-job', require('./components/FlagJob.vue').default);
+Vue.component('save-job', require('./components/SaveJob.vue').default);
+Vue.component('blog-like', require('./components/BlogLike.vue').default);
+Vue.component('blog-subscribe', require('./components/BlogSubscribe.vue').default);
+Vue.component('phone-number', require('./components/PhoneNumber.vue').default);
+Vue.component('portfolio-list', require('./components/PortfolioList.vue').default);
+Vue.component('portfolio-item', require('./components/PortfolioItem.vue').default);
+Vue.component('gig-form', require('./components/GigForm.vue').default);
+Vue.component('featured', require('./components/Featured.vue').default);
+Vue.component('send-reminder', require('./components/SendReminder.vue').default);
+Vue.component('blog-comment', require('./components/BlogComment.vue').default);
+Vue.component('enquiry', require('./components/Enquiry.vue').default);
+Vue.component('email-broadcast', require('./components/EmailBroadcast.vue').default);
+Vue.component('email-subscription', require('./components/EmailSubscription.vue').default);
+Vue.component('notification', require('./components/Notification.vue').default);
+Vue.component('tracker', require('./components/Tracker.vue').default);
 
 const app = new Vue({
     el: '#app',
@@ -100,6 +102,33 @@ $('.slick-js').slick({
 			slidesToShow: 1,
 		}
 	}], 
+});
+
+let userPrompt = null;
+window.addEventListener("beforeInstallPrompt", function(e){
+	e.preventDefault();
+	userPrompt = e;
+	return;
+});
+
+$('body').on('click tap', '#mobile-menu-tigger', (e) => {
+	e.preventDefault();
+	if ( userPrompt !== null ){
+		let confirm = confirm("Would you like to add Ubanji to your home screen for easy access?");
+		if ( confirm === true ){
+			userPrompt.prompt();
+			userPrompt = null;
+		} else {
+			$('.slide-in-menu').addClass('is-active');
+			return;
+		}
+	}
+	$('.slide-in-menu').addClass('is-active');
+});
+
+$('body').on('click tap', '.close-slide-in-menu', (e) => {
+	e.preventDefault();
+	$('.slide-in-menu').removeClass('is-active');
 });
 
 
@@ -323,15 +352,102 @@ if ( $('.blog-excerpt').length > 0 ){
 		})
 	});
 }
+let isSearchOpen = false;
+$('body').on('click tap', '#search-trigger', function(e){
+	e.preventDefault();
+	if ( !isSearchOpen ){
+		$(this).find('i').removeClass('fa-search').addClass('fa-times');
+		$('.search-wrapper').addClass('is-active');
+		isSearchOpen = true;
+	} else {
+		$(this).find('i').removeClass('fa-times').addClass('fa-search');
+		$('.search-wrapper').removeClass('is-active');
+		isSearchOpen = false;
+	}
+});
+
+const webpush = require("web-push");
+// const vapidKeys = webpush.generateVAPIDKeys();
+vapidPublicKey = "BN7vMXUSxoinsYZ0wSm9NfGt7D17FRuniWGqH0LqcpJ1eDK7mGhcbmNIZffzDtPo1sMSOV2FilOnmBh7RGKz2SE=";
 
 
+function urlB64ToUint8Array(base64String) {
+   const padding = '='.repeat((4 - base64String.length % 4) % 4);
+   const base64 = (base64String + padding)
+                   .replace(/\-/g, '+')
+                   .replace(/_/g, '/');
 
-// if ( $('#quill-editor').length > 0 ){
-// 	var quill = new Quill('#quill-editor');
-// }
+   const rawData = window.atob(base64);
+   const outputArray = new Uint8Array(rawData.length);
 
+   for (let i = 0; i < rawData.length; ++i) {
+       outputArray[i] = rawData.charCodeAt(i);
+   }
+   return outputArray;
+}
+const vapidPublicKeyConverted = urlB64ToUint8Array(vapidPublicKey);
+let sw;
+if ( 'serviceWorker' in navigator ){
+	navigator.serviceWorker.register('/service-worker.js').then( (registration) => {
+		sw = registration;
+		if ( window.Laravel.userLoggedIn === true ){
+			sw.pushManager.getSubscription().then( (subscription) => {
+				// Subscription is null
+				if ( subscription === null ){
+					$('body').on('click', '.push-notification', function(e){
+						$('body').addClass('is-loading');
+						sw.pushManager.subscribe({
+							userVisibleOnly: true,
+							applicationServerKey: vapidPublicKeyConverted
+						}).then( (subscription) => {
+							localStorage.setItem('push_notification', true);
+							let data = {
+								endpoint: JSON.stringify(subscription)
+							}
 
+							axios.post('/push_notification', data).then( (response) => {
+								$('body').removeClass('is-loading');
+								if ( $('.slide-in-menu').hasClass('is-active') ){
+									$('.slide-in-menu').removeClass('is-active')
+								}
+								$('.desktop-notification').slideUp();
+								iziToast.success({ title: "You have successfully subscribed for notification" });
+							}).catch( (error) => {
+								$('body').removeClass('is-loading');
+								localStorage.setItem('push_notification', false);
+							});
 
+						}).catch( (error) => {
+							iziToast.error({ title: "Notification subscription unsuccessful" });
+							$('body').removeClass('is-loading');
+							console.log(error);
+						})
+					});
+				} else {
+					// console.log(subscription)
+				}
+
+			}).catch( (error) => {
+				console.log(error);
+			});
+		}
+		switch ( Notification.permission ){
+			case 'granted':
+				break;
+			case 'denied':
+				$('.desktop-notification').removeClass('is-hidden');
+				break;
+			default:
+				$('.desktop-notification').removeClass('is-hidden');
+				console.log('No idea')
+		}
+	}).catch( (error) => {
+		console.log(error); 
+	});
+
+} else {
+	console.log('No service worker')
+}
 
 
 

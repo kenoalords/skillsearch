@@ -39,29 +39,9 @@
     </script>
 </head>
 <body>
-    <div id="app">
-        <nav class="navbar is-transparent is-fixed-top" id="primary-nav">
-            <div class="navbar-brand">
-                    <!-- Branding Image -->
-                    <a href="{{ url('/') }}" class="navbar-item">
-                        <img src="{{ asset('public/ubanji-logo.png') }}" alt="{{config('app.name')}} Logo">
-                    </a>
-                    <a class="navbar-burger burger" id="admin-menu-trigger">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </a>
-                </div>
-                <div class="navbar-menu">
-                    <div class="navbar-end">
-                        @include('includes.user-badge')
-                        <div class="navbar-item">
-                            <a href="{{ route('new_portfolio') }}" class="button is-info">Upload work</a>
-                        </div>
-                    </div>
-                </div>
-        </nav>
+    <div id="app" class="dashboard">
         
+        @include('includes.menu') 
         <div class="columns is-marginless">
             <aside class="column is-2-widescreen is-3-desktop is-touch is-hidden-touch is-paddingless" id="sidebar">
                 <div class="content-wrapper">
@@ -78,8 +58,7 @@
         </div>
     </div>
         
-    <script src="{{ mix('js/app.js') }}"></script>
-    
+    <script src="{{ asset('js/app.js') }}"></script>
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

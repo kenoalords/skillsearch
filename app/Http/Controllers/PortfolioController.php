@@ -24,9 +24,7 @@ use App\Jobs\UploadFileToS3;
 use App\Jobs\FileDeleteJob;
 use App\Http\Requests\PortfolioRequest;
 use Facades\App\Repository\Portfolios;
-
-// Mails
-use App\Mail\FeaturedPortfolioNotification;
+use App\Notifications\PortfolioFeaturedNotification;
 
 use App\Traits\Orderable;
 
@@ -319,13 +317,7 @@ class PortfolioController extends Controller
                         ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                         ->toArray();
 
-        $email = $portfolio->user->email;
-        $title = $work['title'];
-        $username = $work['user_profile']['username'];
-        $thumbnail = $work['thumbnail'];
-        $url = $work['link']['href'];
-        $fname = $work['user_profile']['first_name'];
-        Mail::to($email)->send(new FeaturedPortfolioNotification($title, $username, $thumbnail, $url, $fname));
+        $portfolio->user->notify(new PortfolioFeaturedNotification($portfolio));
 
         return response()->json(true, 200);
     }

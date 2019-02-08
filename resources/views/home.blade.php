@@ -4,10 +4,11 @@
 
 @section('content')
     
-    <h2 class="title is-2 bold">Hello {{ $user['first_name'] }}!</h2>
+    <h2 class="title is-2 is-size-5-mobile bold">Hello {{ $user['first_name'] }}!</h2>
     <p>Welcome to your activity board</p>
+    <div class="notification desktop-notification is-hidden is-danger">Don't miss important activities on your page, click on <strong><a href="#" class="push-notification"><span class="icon"><i class="fa fa-bell"></i></span> <span>Enable notification</span> </a></strong> now to stay updated.</div>
     @include('includes.status')
-    
+
     <div class="columns is-multiline user-stats is-mobile">
         <div class="column is-one-quater-desktop is-one-quater-tablet is-half-mobile">
             <div class="stats has-text-centered">
@@ -104,7 +105,7 @@
                 </div>
             </div>
             
-            <div class="columns is-multiline">
+            <div class="columns is-multiline is-mobile">
                 @each('blog.partials.blog',  $blogs, 'blog')
             </div>
             <p>

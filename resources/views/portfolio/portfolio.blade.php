@@ -5,8 +5,8 @@
 @section('content')
 <div class="">
     @include('includes.status')
-    <h1 class="title is-3">Portfolio</h1>
-    <h4 class="subtitle">Share your work with the world.</h4>
+    <h1 class="title is-3 is-size-5-mobile">Work</h1>
+    <h4 class="subtitle is-size-6-mobile">Share your work with the world.</h4>
     @include('portfolio.menu')
     @if ($portfolios)
         <div class="columns is-multiline is-mobile">
