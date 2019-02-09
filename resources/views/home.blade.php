@@ -5,11 +5,10 @@
 @section('content')
     
     <h2 class="title is-2 is-size-5-mobile bold">Hello {{ $user['first_name'] }}!</h2>
-    <p>Welcome to your activity board</p>
-    <div class="notification desktop-notification is-hidden is-danger">Don't miss important activities on your page, click on <strong><a href="#" class="push-notification"><span class="icon"><i class="fa fa-bell"></i></span> <span>Enable notification</span> </a></strong> now to stay updated.</div>
+    <div class="notification desktop-notification is-hidden is">Don't miss important activities on your page, click on <strong>👉🏼<a href="#" class="push-notification"><span class="icon"><i class="fa fa-bell"></i></span> <span>Enable notification</span> </a></strong> now to stay updated.</div>
     @include('includes.status')
 
-    <div class="columns is-multiline user-stats is-mobile">
+    <!-- <div class="columns is-multiline user-stats is-mobile">
         <div class="column is-one-quater-desktop is-one-quater-tablet is-half-mobile">
             <div class="stats has-text-centered">
                 <h4 class="title is-1 bold is-size-3-mobile">{{ $portfolio_count }}</h4>
@@ -34,18 +33,10 @@
                 <p><a href="{{ route('points') }}">Points</a></p>
             </div>
         </div>
-    </div>
-    @if($user['verified_email'] === 0)
-        <div class="notification is-danger">
-            <div class="title is-6"><span class="icon"><i class="fa fa-envelope"></i></span> Please verify your email address <strong>{{Request::user()->email}}</strong>. <a href="{{route('verify')}}">Resend verification link</a></div>
-        </div>
-    @endif
+    </div> -->
+    
 
-    @if(!$user['verified'])
-        <div class="notification">
-            <div class="title is-6"><span class="icon verified"></span> Verify your identity and increase your ranking instantly and improve your credibility score <a href="{{ route('verify_identity') }}">Verify my identity</a></div>
-        </div>
-    @endif
+    
 
     <!-- Portfolio section -->
     @if ( $portfolios )
@@ -72,11 +63,11 @@
         </div>
     @else
         <div class="notification is-raised is-white is-padded is-bordered-left">
-                <h2 class="title is-1">😎</h2>
-                <h3 class="title is-3 is-size-4-mobile bold">Upload your works.</h3>
-                <p class="subtitle">Express your creativity using Pictures, Videos and Audio. Upload your work today and start finding new opportunities.</p>
+                <h2 class="title is-1 is-size-3-mobile">😎</h2>
+                <h3 class="title is-3 is-size-5-mobile bold">Upload your works.</h3>
+                <p class="subtitle is-size-6-mobile">Share your creative works start exploring new opportunities</p>
                 <p>
-                    <a href="{{ route('new_portfolio') }}" class="button is-info big-action-button">Upload work</a>
+                    <a href="{{ route('new_portfolio') }}" class="button is-info big-action-button is-fullwidth-mobile">Start now</a>
                 </p>
         </div>
         <div id="dashboard-featured">
@@ -115,21 +106,32 @@
     @else
         <!-- <hr style="opacity: .2"> -->
         <div class="notification is-raised is-white is-padded is-bordered-left">
-                <h2 class="title is-1">✍🏽</h2>
-                <h3 class="title is-3 is-size-4-mobile bold">Write your first blog post.</h3>
-                <p class="subtitle">Blogging is a great way to share your ideas, passion and thoughts with the world. It's also a great way to gain recognition that positions you as an expert in your field.</p>
+                <h2 class="title is-1 is-size-3-mobile">✍🏽</h2>
+                <h3 class="title is-3 is-size-5-mobile bold">Write your first blog post.</h3>
+                <p class="subtitle is-size-6-mobile">Share your passion and creativity with the world.</p>
                 <p>
-                    <a href="{{ route('add_blog') }}" class="button is-info big-action-button">Write something interesting</a>
+                    <a href="{{ route('add_blog') }}" class="button is-info big-action-button is-fullwidth-mobile">Start now</a>
                 </p>
         </div>
         <hr style="opacity: .2">
         @include('blog.latest_posts', ['title'=> 'Latest blog post from users'])
     @endif
 
-    <!-- @if($gmail === true && $invite_status === false) -->
+    @if($user['verified_email'] === 0)
+        <div class="notification is-danger">
+            <div class="title is-6"><span class="icon"><i class="fa fa-envelope"></i></span> Please verify your email address <strong>{{Request::user()->email}}</strong>. <a href="{{route('verify')}}">Resend verification link</a></div>
+        </div>
+    @endif
+
+    @if($gmail === true && $invite_status === false)
         @include('includes.gmail-invite')
-    <!-- @endif -->
-    @include('includes.gmail-invite')
+    @endif
+
+    @if(!$user['verified'])
+        <div class="notification">
+            <div class="title is-6"><span class="icon verified"></span> Verify your identity and increase your ranking instantly and improve your credibility score <a href="{{ route('verify_identity') }}">Verify my identity</a></div>
+        </div>
+    @endif
 
     @if(Auth::user()->is_admin === 1)
     <div class="hero is-dark">

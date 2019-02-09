@@ -94,7 +94,7 @@
                 <li><a href="/register" class="navbar-item"><span class="icon"><i class="fa fa-pencil"></i></span> <span>Sign up</span></a></li>
             @else
                 <li><a href="{{ route('dashboard') }}" class="{{ (Request::path() === 'dashboard') ? 'is-active' : '' }}"><span class="icon"><i class="fa fa-tachometer"></i></span> <span>Dashboard</span></a></li>
-                <li><a href="{{ route('portfolio_index') }}" class="{{ (Request::path() == 'dashboard/portfolio') ? 'is-active' : '' }}"><span class="icon"><i class="fa fa-briefcase"></i></span> <span>Portfolio</span></a></li>
+                <li><a href="{{ route('portfolio_index') }}" class="{{ (Request::path() == 'dashboard/portfolio') ? 'is-active' : '' }}"><span class="icon"><i class="fa fa-briefcase"></i></span> <span>Work</span></a></li>
                 <li><a href="{{ route('blog') }}" class="{{ (Request::path() == 'dashboard/blog') ? 'is-active' : '' }}"><span class="icon"><i class="fa fa-pencil"></i></span> <span>Blog</span></a></li>                
 
                 <li><a href="{{ route('edit_profile') }}" class="{{ (Request::path() == 'dashboard/profile/edit') ? 'is-active' : '' }}"><span class="icon"><i class="fa fa-user"></i></span> <span>Profile</span></a></li>

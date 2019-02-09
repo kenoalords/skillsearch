@@ -3,7 +3,7 @@ self.addEventListener("push", function(event){
 		// console.log(event.data.json())
 		data = event.data.json();
 		var options = {
-			icon: '/images/icon.png',
+			icon: '/images/badge.png',
 			badge: '/images/badge.png',
 			body: data.body,
 			image: data.image,

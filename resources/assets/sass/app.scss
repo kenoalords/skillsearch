@@ -1545,6 +1545,30 @@ iframe{
 	}
 }
 
+.push-notification{
+	text-decoration: none !important;
+	span{
+		color: #209cee !important;
+	}	
+}
+
+.tabs{
+	&.dashboard-menu-tabs{
+		ul{
+			border-bottom: 1px solid #eee !important;
+		}
+		li{
+			a{
+				&.button{
+					margin-right: 5px;
+					border-bottom-left-radius: 0;
+					border-bottom-right-radius: 0;
+				}
+			}
+		}
+	}
+}
+
 .slide-in-menu{
 	position: fixed;
 	top: 0;
@@ -1765,6 +1789,23 @@ iframe{
 	.user-stats .stats{
 		padding: 1.5em 1em;
 	}
+
+	.notification.is-padded{
+		padding: 1em;
+	}
+
+	.button{
+		&.is-fullwidth-mobile{
+			width: 100%;
+		}
+	}
+
+	#dashboard-featured{
+		margin-right: -20px;
+		margin-left: -20px;
+	}
+
+
 }
 
 
