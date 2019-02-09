@@ -37,7 +37,7 @@
 
             <div class="field">
                 <div class="ui checkbox">
-                    <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }} class="is-toggle">
+                    <input type="checkbox" name="remember" checked="checked" class="is-toggle">
                     <label> Remember Me</label>
                 </div>
             </div>

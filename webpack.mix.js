@@ -1,5 +1,6 @@
 let  mix = require('laravel-mix');
 let SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
+
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -30,7 +31,7 @@ mix.webpackConfig( webpack => {
 	return {
 		plugins: [
 			new SWPrecacheWebpackPlugin({
-				cacheId: 'ubanji_pwa_1.2',
+				cacheId: 'ubanji-v1.3',
 				filename: 'service-worker.js',
 				staticFileGlobs: ['public/**/*.{css,eot,svg,ttf,woff,woff2,js,html}'],
 				minify: true,

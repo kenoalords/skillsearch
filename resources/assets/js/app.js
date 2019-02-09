@@ -14,40 +14,40 @@ require('./bootstrap');
  */
 
 // Vue.component('example', require('./components/Example.vue'));
-Vue.component('referral-code', require('./components/ReferralCode.vue').default);
-Vue.component('referral', require('./components/Referral.vue').default);
-Vue.component('contact-request', require('./components/ContactRequest.vue').default);
+// Vue.component('referral-code', require('./components/ReferralCode.vue').default);
+// Vue.component('referral', require('./components/Referral.vue').default);
+// Vue.component('contact-request', require('./components/ContactRequest.vue').default);
 Vue.component('comments', require('./components/Comments.vue').default);
 Vue.component('skills', require('./components/Skills.vue').default);
 Vue.component('upload-image', require('./components/UploadProfileImage.vue').default);
 Vue.component('portfolio-form', require('./components/PortfolioForm.vue').default);
-Vue.component('portfolio-upload-form', require('./components/PortfolioUploadForm.vue').default);
-Vue.component('message', require('./components/Message.vue').default);
-Vue.component('send-message', require('./components/SendMessage.vue').default);
+// Vue.component('portfolio-upload-form', require('./components/PortfolioUploadForm.vue').default);
+// Vue.component('message', require('./components/Message.vue').default);
+// Vue.component('send-message', require('./components/SendMessage.vue').default);
 Vue.component('follow', require('./components/Follow.vue').default);
-Vue.component('reviews', require('./components/Review.vue').default);
+// Vue.component('reviews', require('./components/Review.vue').default);
 Vue.component('portfolio', require('./components/Portfolio.vue').default);
-Vue.component('request-service', require('./components/RequestService.vue').default);
+// Vue.component('request-service', require('./components/RequestService.vue').default);
 Vue.component('requests', require('./components/Requests.vue').default);
 Vue.component('user-background', require('./components/UserBackground.vue').default);
 Vue.component('like-button', require('./components/LikeButton.vue').default);
-Vue.component('privacy-toggle', require('./components/PrivacyToggle.vue').default);
+// Vue.component('privacy-toggle', require('./components/PrivacyToggle.vue').default);
 Vue.component('portfolio-comments', require('./components/PortfolioComments.vue').default);
 Vue.component('register-view', require('./components/Views.vue').default);
-Vue.component('application-actions', require('./components/ApplicationActions.vue').default);
+// Vue.component('application-actions', require('./components/ApplicationActions.vue').default);
 Vue.component('video-player', require('./components/VideoPlayer.vue').default);
 Vue.component('blog-form', require('./components/BlogForm.vue').default);
 Vue.component('verify-users', require('./components/VerifyUsers.vue').default);
-Vue.component('task-form-apply', require('./components/TaskFormApply.vue').default);
-Vue.component('job-actions', require('./components/JobActions.vue').default);
-Vue.component('flag-job', require('./components/FlagJob.vue').default);
-Vue.component('save-job', require('./components/SaveJob.vue').default);
+// Vue.component('task-form-apply', require('./components/TaskFormApply.vue').default);
+// Vue.component('job-actions', require('./components/JobActions.vue').default);
+// Vue.component('flag-job', require('./components/FlagJob.vue').default);
+// Vue.component('save-job', require('./components/SaveJob.vue').default);
 Vue.component('blog-like', require('./components/BlogLike.vue').default);
 Vue.component('blog-subscribe', require('./components/BlogSubscribe.vue').default);
-Vue.component('phone-number', require('./components/PhoneNumber.vue').default);
+// Vue.component('phone-number', require('./components/PhoneNumber.vue').default);
 Vue.component('portfolio-list', require('./components/PortfolioList.vue').default);
 Vue.component('portfolio-item', require('./components/PortfolioItem.vue').default);
-Vue.component('gig-form', require('./components/GigForm.vue').default);
+// Vue.component('gig-form', require('./components/GigForm.vue').default);
 Vue.component('featured', require('./components/Featured.vue').default);
 Vue.component('send-reminder', require('./components/SendReminder.vue').default);
 Vue.component('blog-comment', require('./components/BlogComment.vue').default);
@@ -388,7 +388,7 @@ function urlB64ToUint8Array(base64String) {
 const vapidPublicKeyConverted = urlB64ToUint8Array(vapidPublicKey);
 let sw;
 if ( 'serviceWorker' in navigator ){
-	navigator.serviceWorker.register('/service-worker.js').then( (registration) => {
+	navigator.serviceWorker.register('service-worker.js', { scope: '/' }).then( (registration) => {
 		sw = registration;
 		if ( window.Laravel.userLoggedIn === true ){
 			sw.pushManager.getSubscription().then( (subscription) => {

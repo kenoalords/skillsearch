@@ -165,7 +165,7 @@
     <div class="section is-light">
         <div class="container">
             <h3 class="title is-4 bold is-size-5-mobile">Similar Works</h3>
-            <div class="columns is-multiline">
+            <div class="columns is-multiline is-mobile">
                 @each('includes.portfolio-with-user', $similar, 'portfolio')
             </div>
         </div>
