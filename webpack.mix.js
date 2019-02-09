@@ -31,14 +31,14 @@ mix.webpackConfig( webpack => {
 	return {
 		plugins: [
 			new SWPrecacheWebpackPlugin({
-				cacheId: 'ubanji-v2',
+				cacheId: 'ubanji-v2-2',
 				filename: 'service-worker.js',
 				staticFileGlobs: ['public/**/*.{css,eot,svg,ttf,woff,woff2,js,html}'],
 				minify: true,
 				stripPrefix: 'public/',
 				handleFetch: true,
 				dynamicUrlToDependencies: {
-				  '/': ['resources/views/welcome.blade.php'],
+				  // '/': ['resources/views/welcome.blade.php'],
 				},
 				staticFileGlobsIgnorePatterns: [/\.map$/, /mix-manifest\.json$/, /manifest\.json$/, /service-worker\.js$/],
 				runtimeCaching: [
