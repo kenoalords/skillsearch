@@ -44,7 +44,7 @@ window.axios.defaults.headers.common = {
 
 // import Echo from "laravel-echo";
 import slick from "slick-carousel";
-// import Waypoint from "waypoints/lib/noframework.waypoints";
+import Waypoint from "waypoints/lib/noframework.waypoints";
 
 // window.Echo = new Echo({
 //     broadcaster: 'pusher',

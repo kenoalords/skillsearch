@@ -31,7 +31,7 @@ mix.webpackConfig( webpack => {
 	return {
 		plugins: [
 			new SWPrecacheWebpackPlugin({
-				cacheId: 'ubanji-v1.3',
+				cacheId: 'ubanji-v1.6',
 				filename: 'service-worker.js',
 				staticFileGlobs: ['public/**/*.{css,eot,svg,ttf,woff,woff2,js,html}'],
 				minify: true,
@@ -45,6 +45,10 @@ mix.webpackConfig( webpack => {
 				  {
 				      urlPattern: /^https:\/\/fonts\.googleapis\.com\//,
 				      handler: 'cacheFirst'
+				  },
+				  {
+				  	urlPattern: /^https:\/\/cdnjs\.cloudflare\.com\//,
+				  	handler: 'cacheFirst'
 				  }
 				],
 				importScripts: ['./js/worker.js']

@@ -83,6 +83,9 @@
                                 <like-button id="{{$portfolio['uid']}}" likes="{{$portfolio['likes_count']}}" liked="{{$portfolio['has_liked']}}"></like-button>
                             </div>
                             <div class="level-item">
+                                <span class="has-text-weight-bold">Share</span>
+                            </div>
+                            <div class="level-item">
                                 <a href="https://www.facebook.com/sharer/sharer.php?u={{ $portfolio['link']['href'] }}" class="facebook social-button" target="_blank"><i class="fa fa-facebook"></i></a>
                             </div>
                             <div class="level-item">

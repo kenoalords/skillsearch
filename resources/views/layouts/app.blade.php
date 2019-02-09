@@ -33,8 +33,9 @@
     
     <!-- Styles -->
     <link rel="icon" href="{{ asset('public/favicon.png') }}" type="image/png">
-    <link rel="stylesheet" href="{{ asset('css/all.css') }}">
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:100,300,900|Noto+Serif:700,900">
+    <link rel="stylesheet" href="{{ asset('css/main.css') }}">
     <link rel="manifest" href="{{ asset('manifest.json') }}">
     <!-- Scripts -->
     <script>

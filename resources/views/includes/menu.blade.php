@@ -70,7 +70,7 @@
             @if(Auth::user())
             <div class="user-intro">
                 <div class="has-text-centered">
-                    <figure class="image is-96x96 is-rounded">
+                    <figure class="image is-64x64 is-rounded">
                         <img src="{{ $user['avatar'] }}" alt="{{ $user['fullname'] }}">
                     </figure>
                     <h4 class="title is-5 is-marginless">Hello {{ $user['first_name'] }}</h4>
@@ -80,7 +80,7 @@
             @else
             <div class="user-intro">
                 <div class="has-text-centered">
-                    <figure class="image is-96x96 is-rounded">
+                    <figure class="image is-64x64 is-rounded">
                         <img src="{{asset('public/default-user.jpg')}}" alt="Stranger">
                     </figure>
                     <h4 class="title is-5 is-marginless">Hello Stranger!</h4>

@@ -3,8 +3,8 @@ self.addEventListener("push", function(event){
 		// console.log(event.data.json())
 		data = event.data.json();
 		var options = {
-			icon: '/public/images/icon.jpg',
-			badge: '/public/images/badge.jpg',
+			icon: '/images/icon.png',
+			badge: '/images/badge.png',
 			body: data.body,
 			image: data.image,
 			vibrate: [300, 100, 800],
