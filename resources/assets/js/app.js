@@ -388,7 +388,8 @@ function urlB64ToUint8Array(base64String) {
 const vapidPublicKeyConverted = urlB64ToUint8Array(vapidPublicKey);
 let sw;
 if ( 'serviceWorker' in navigator ){
-	navigator.serviceWorker.register('/service-worker.js').then( (registration) => {
+	navigator.serviceWorker.register('/service-worker.js', { scope: '/' }).then( (registration) => {
+		console.log(registration.scope);
 		sw = registration;
 		if ( window.Laravel.userLoggedIn === true ){
 			sw.pushManager.getSubscription().then( (subscription) => {
