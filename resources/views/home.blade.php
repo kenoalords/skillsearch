@@ -5,7 +5,26 @@
 @section('content')
     
     <h2 class="title is-2 is-size-5-mobile bold">Hello {{ $user['first_name'] }}!</h2>
-    <div class="notification desktop-notification is-hidden is">Don't miss important activities on your page, click on <strong>👉🏼<a href="#" class="push-notification"><span class="icon"><i class="fa fa-bell"></i></span> <span>Enable notification</span> </a></strong> now to stay updated.</div>
+    <div class="modal push-notification-modal">
+        <div class="modal-background"></div>
+        <div class="modal-body">
+            <div class="card">
+                <div class="card-content has-text-centered">
+                    <h1 class="title is-1">🔔</h1>
+                    <h3 class="title is-4 bold">
+                        Don't miss important activities and updates on your page.
+                    </h3>
+                    <p>
+                        <a href="#" class="push-notification button is-fullwidth-mobile is-danger big-action-button"><span class="icon"><i class="fa fa-bell"></i></span> <span>Enable notification</span> </a>
+                    </p>
+                    <p>
+                        <a href="#" class="close-push-notification-modal has-text-grey">I'll do this later</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     @include('includes.status')
 
     <!-- <div class="columns is-multiline user-stats is-mobile">

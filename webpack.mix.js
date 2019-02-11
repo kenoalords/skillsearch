@@ -31,7 +31,7 @@ mix.webpackConfig( webpack => {
 	return {
 		plugins: [
 			new SWPrecacheWebpackPlugin({
-				cacheId: 'ubanji-v2.4',
+				cacheId: 'ubanji-v2.5',
 				filename: 'service-worker.js',
 				staticFileGlobs: ['public/**/*.{css,eot,svg,ttf,woff,woff2,js,html}'],
 				minify: true,

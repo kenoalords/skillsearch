@@ -333,7 +333,7 @@ img.logo{
 	&:after{
 		content: "";
 		display: inline-block;
-		background: url('/images/verified.svg') no-repeat center;
+		background: url('../images/verified.svg') no-repeat center;
 		width: 14px;
 		height: 14px;
 		background-size: 100%;
@@ -1548,8 +1548,19 @@ iframe{
 .push-notification{
 	text-decoration: none !important;
 	span{
-		color: #209cee !important;
+		color: #fff !important;
 	}	
+}
+
+.push-notification-modal{
+	.modal-body{
+		width: 320px;
+		max-width: 80%;
+		.card{
+			border-radius: 4px;
+			box-shadow: 0 0 36px rgba(0,0,0,.8);
+		}
+	}
 }
 
 .tabs{

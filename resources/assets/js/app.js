@@ -395,6 +395,7 @@ if ( 'serviceWorker' in navigator ){
 			sw.pushManager.getSubscription().then( (subscription) => {
 				// Subscription is null
 				if ( subscription === null ){
+					$('.push-notification-modal').addClass('is-active');
 					$('body').on('click', '.push-notification', function(e){
 						$('body').addClass('is-loading');
 						sw.pushManager.subscribe({
@@ -411,7 +412,7 @@ if ( 'serviceWorker' in navigator ){
 								if ( $('.slide-in-menu').hasClass('is-active') ){
 									$('.slide-in-menu').removeClass('is-active')
 								}
-								$('.desktop-notification').slideUp();
+								$('.push-notification-modal').removeClass('is-active');
 								iziToast.success({ title: "You have successfully subscribed for notification" });
 							}).catch( (error) => {
 								$('body').removeClass('is-loading');
@@ -450,7 +451,10 @@ if ( 'serviceWorker' in navigator ){
 	console.log('No service worker')
 }
 
-
+$('body').on('click tap', '.close-push-notification-modal', function(e){
+	e.preventDefault();
+	$(this).closest('.modal').removeClass('is-active');
+})
 
 
 
