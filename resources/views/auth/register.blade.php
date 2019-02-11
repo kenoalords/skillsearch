@@ -12,13 +12,15 @@
         
         <div>
             <div class="field">
-                <h4><a href="{{route('google')}}" class="button is-danger is-block">Continue with Google</a></h4>
+                <a href="{{route('google')}}" class="">
+                    <img src="{{ asset('images/btn_google_blue.png') }}" alt="Sign in with Google">
+                </a>
             </div>
             <!-- <div class="field">
                 <h4><a href="{{route('facebook')}}" class="button is-link is-block">Continue with Facebook</a></h4>
             </div> -->
         </div>
-        <h3 class="title is-5 has-text-centered" style="margin-top: 1em">Create Account</h3>
+        <h3 class="title is-5 has-text-centered" style="margin-top: 1em">or create your account</h3>
         <form class="ui form" role="form" method="POST" action="{{ route('register') }}">
             {{ csrf_field() }}
 
@@ -87,7 +89,7 @@
             </div> -->
 
             <div class="field">
-                <button type="submit" class="button is-info is-block">Register</button>
+                <button type="submit" class="button is-info is-block big-action-button">Register</button>
             </div>
             <div class="field">
                 <p>Have an account? <a href="/login" class="has-text-link">Log in</a></p>

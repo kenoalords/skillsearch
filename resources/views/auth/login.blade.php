@@ -8,13 +8,13 @@
 @section('content')
 <div class="hero">
     <div class="hero-body">
-        <form role="form" method="POST" action="{{ route('login') }}">
+        <form role="form" method="POST" action="{{ route('login') }}" class="">
             {{ csrf_field() }}
             <div class="field">
                 <div class="control has-icons-left">
                     <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus placeholder="E-Mail Address" class="{{ $errors->has('email') ? ' is-danger' : '' }} input">
                     <span class="icon is-small is-left">
-                        <i class="fa fa-envelope"></i>
+                        <i class="fa fa-at"></i>
                     </span>
                     @if ($errors->has('email'))
                         <span class="help is-danger">{{ $errors->first('email') }}</span>
@@ -43,14 +43,16 @@
             </div>
 
             <div class="field">
-                <button type="submit" class="button is-info is-block">
+                <button type="submit" class="button is-info is-block big-action-button">
                     Login
                 </button>
             </div>
             <p><a href="{{ route('password.request') }}" class="has-text-link">Forgot Your Password?</a></p>
             
             <div class="field">
-                <h4><a href="{{route('google')}}" class="button is-danger is-block">Continue with Google</a></h4>
+                <a href="{{route('google')}}" class="">
+                    <img src="{{ asset('images/btn_google_blue.png') }}" alt="Sign in with Google">
+                </a>
             </div>
            <!--  <div class="field">
                 <h4><a href="{{route('facebook')}}" class="button is-link is-block">Continue with Facebook</a></h4>

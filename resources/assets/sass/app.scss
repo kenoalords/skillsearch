@@ -1665,6 +1665,24 @@ iframe{
 	}
 }
 
+.account-form{
+	form{
+		.input{
+			height: 3em;
+		}
+		.control.has-icons-left .icon{
+			width: 3em;
+			height: 3em;
+		}
+		.control.has-icons-left .input{
+			padding-left: 3em;
+		}
+		.button{
+			font-size: 18px;
+		}
+	}
+}
+
 @media screen and (min-width: 768px) and (max-width: 1240px){
 	.account-page{
 		.column{
@@ -1804,7 +1822,10 @@ iframe{
 		margin-right: -20px;
 		margin-left: -20px;
 	}
-
+	
+	#profile-image-wrapper .profile-image{
+		margin-left: -64px;
+	}
 
 }
 

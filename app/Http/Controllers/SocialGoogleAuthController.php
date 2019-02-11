@@ -55,14 +55,14 @@ class SocialGoogleAuthController extends Controller
             } else {
 
         		$username = preg_replace('/(\s+)/', '_', $name);
-                $username =  str_replace( '-', '_', str_slug( $username ) );
+                $username =  str_replace( ['-', ' '], '', str_slug( $username ) );
         		if(User::where('name', $username)->get()->count()){
         			$username = $username. mt_rand(100, 1000);
         		}
         		// insert a new user record
         		$user = User::create([
         					'name'		=> strtolower($username),
-        					'email'		=> $email,
+        					'email'		=> strtolower($email),
         					'password' 	=> bcrypt(uniqid(true)),
         				]);
         		if($user){
@@ -72,7 +72,7 @@ class SocialGoogleAuthController extends Controller
         			]);
                     Mail::to($user)->queue(new UserRegistrationNotification($name));
         			Auth::login($user, true);
-        			return redirect()->to('/dashboard/start')->with(['name' => $username, 'fullname' => $name ]);
+        			return redirect()->to('/dashboard')->with(['name' => $username, 'fullname' => $name ]);
         		}
             }
 

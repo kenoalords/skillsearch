@@ -59,9 +59,9 @@
             <div class="columns is-centered">
                 <div class="column ">
                     <a href="{{ url('/') }}">
-                        <img src="{{ asset('public/ubanji-logo.png') }}" alt="{{config('app.name')}} Logo" class="image is-centered" id="logo" style="width: 80px; height: auto; position: relative;">
+                        <img src="{{ asset('public/ubanji-logo.png') }}" alt="{{config('app.name')}} Logo" class="image is-centered" id="logo" style="width: 120px; height: auto; position: relative;">
                     </a>
-                    <div class="card is-raised">                      
+                    <div class="card is-raised account-form">                      
                         @yield('content')
                     </div>
                 </div>

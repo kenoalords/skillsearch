@@ -26,9 +26,14 @@
             </div>
 
             <div class="field">
-                <button type="submit" class="button is-block is-info">
+                <button type="submit" class="button is-block is-info big-action-button">
                     Reset Password
                 </button>
+            </div>
+            <div class="field">
+                <p class="has-text-centered">
+                    <a href="{{ route('login') }}" class="has-text-weight-bold">Login here</a>
+                </p>
             </div>
         </form>
     </div>
