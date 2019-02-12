@@ -1,7 +1,6 @@
 @if($portfolio)
 <div class="column is-one-quarter-desktop portfolio is-half-mobile is-one-third-tablet">
     <div class="card portfolio" itemscope itemtype="http://schema.org/CreativeWork">
-        <meta itemprop="description" content="{{ str_limit($portfolio['description'], 160) }}">
         <div class="card-image">
             <figure class="image is-1x1">
                 <a href="{{ $portfolio['link']['url'] }}" itemprop="url">

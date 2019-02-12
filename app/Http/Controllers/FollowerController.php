@@ -38,7 +38,7 @@ class FollowerController extends Controller
     	]);
         $point->addPoint(Auth::user(), 'follow');
         $user->notify(new FollowUserNotification($request->user()->profile->first_name, $request->user()->name ));
-    	return response()->json(null, 200);
+    	return response()->json(true, 200);
     }
 
     public function deleteFollower(Request $request, User $user, PointService $point)

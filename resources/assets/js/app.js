@@ -396,7 +396,7 @@ if ( 'serviceWorker' in navigator ){
 				// Subscription is null
 				if ( subscription === null ){
 					$('.push-notification-modal').addClass('is-active');
-					$('body').on('click', '.push-notification', function(e){
+					$('body').on('click tap', '.push-notification', function(e){
 						$('body').addClass('is-loading');
 						sw.pushManager.subscribe({
 							userVisibleOnly: true,
@@ -454,7 +454,21 @@ if ( 'serviceWorker' in navigator ){
 $('body').on('click tap', '.close-push-notification-modal', function(e){
 	e.preventDefault();
 	$(this).closest('.modal').removeClass('is-active');
-})
+});
+
+$('body').on('submit', '.follow-user-form', function(e){
+	e.preventDefault();
+	var _this = $(this);
+	_this.find('button').addClass('is-loading');
+	axios.post(_this.attr('action')).then( (response) => {
+		if ( response.data === true ){
+			iziToast.success({ title: 'Now following' });
+			_this.closest('.user-to-follow').fadeOut();
+		}
+	}).catch( (error) => {
+		iziToast.error({ title: 'Something went wrong, please try again' })
+	});
+});
 
 
 

@@ -47,9 +47,15 @@
                 </div>
             </div>
             <div class="level-item has-text-centered">
+                @if(!Auth::user())
                 <a href="{{ url('/') }}" class="logo">
                     <img src="{{ asset('public/ubanji-logo.png') }}" alt="{{config('app.name')}} Logo">
                 </a>
+                @else
+                <a href="{{ route('dashboard') }}" class="logo">
+                    <img src="{{ asset('public/ubanji-logo.png') }}" alt="{{config('app.name')}} Logo">
+                </a>
+                @endif
             </div>
             <div class="level-right">
                 <div class="level-item">
@@ -88,12 +94,12 @@
             </div>
             @endif
             <ul class="menu-list">
-            <li><a href="{{ route('home') }}" class="{{ (Request::path() === '/') ? 'is-active' : '' }}"><span class="icon"><i class="fa fa-home"></i></span> <span>Home</span></a></li>
             @if(!Auth::user())
+                <li><a href="{{ route('home') }}" class="{{ (Request::path() === '/') ? 'is-active' : '' }}"><span class="icon"><i class="fa fa-home"></i></span> <span>Home</span></a></li>
                 <li><a href="/login" class="navbar-item"><span class="icon"><i class="fa fa-user"></i></span> <span>Login</span></a></li>
                 <li><a href="/register" class="navbar-item"><span class="icon"><i class="fa fa-pencil"></i></span> <span>Sign up</span></a></li>
             @else
-                <li><a href="{{ route('dashboard') }}" class="{{ (Request::path() === 'dashboard') ? 'is-active' : '' }}"><span class="icon"><i class="fa fa-tachometer"></i></span> <span>Dashboard</span></a></li>
+                <li><a href="{{ route('dashboard') }}" class="{{ (Request::path() === 'dashboard') ? 'is-active' : '' }}"><span class="icon"><i class="fa fa-home"></i></span> <span>Dashboard</span></a></li>
                 <li><a href="{{ route('portfolio_index') }}" class="{{ (Request::path() == 'dashboard/portfolio') ? 'is-active' : '' }}"><span class="icon"><i class="fa fa-briefcase"></i></span> <span>Work</span></a></li>
                 <li><a href="{{ route('blog') }}" class="{{ (Request::path() == 'dashboard/blog') ? 'is-active' : '' }}"><span class="icon"><i class="fa fa-pencil"></i></span> <span>Blog</span></a></li>                
 

@@ -50,7 +50,7 @@
                     @include('includes.admin-sidebar')
                 </div>
             </aside>
-            <div class="column is-10-widescreen is-9-desktop is-white" style="background: #fff; min-height: 95vh">
+            <div class="column is-10-widescreen is-9-desktop is-white" style="background: #eceef0; min-height: 95vh">
                 <div class="hero">
                     <div class="hero-body">
                         @yield('content')

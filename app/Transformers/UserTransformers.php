@@ -22,6 +22,7 @@ class UserTransformers extends TransformerAbstract
 		$point = Point::where(['user_id'=> $user->id])->first();
 		$points = ($point) ? $point->points : 0;
 		return [
+			'id'				=> $user->id,
 			'username'		=> $user->name,
 			'first_name'		=> $profile->first_name,
 			'last_name'		=> $profile->last_name,

@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use Mail;
 use App\Models\User;
 use App\Models\VerifyUser;
 use App\Models\Profile;
-use App\Models\Task;
+use App\Models\Blog;
 use App\Models\City;
 use App\Models\Skills;
-use App\Models\Activity;
 use App\Models\ContactInvite;
 use App\Models\Subscriber;
 use App\Models\Portfolio;
@@ -23,11 +23,12 @@ use Illuminate\Support\Facades\Storage;
 use League\Fractal\Resource\Collection;
 use App\Transformers\FollowersTransformer;
 use App\Jobs\UserImageJob;
+use App\Models\UserTracker;
 use App\Transformers\ProfileTransformers;
 use App\Transformers\PortfolioTransformer;
 use App\Transformers\UserTransformers;
 use App\Transformers\SimpleUserTransformers;
-use App\Transformers\TaskTransformer;
+use App\Transformers\SimplePortfolioTransformer;
 use App\Transformers\BlogTransformer;
 use App\Models\EmailTracker;
 
@@ -48,7 +49,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, ContactInvite $invite, Portfolio $portfolio, User $user, Subscriber $subscriber)
+    public function index(Request $request, ContactInvite $invite, Portfolio $portfolio, User $user, Subscriber $subscriber, UserTracker $tracker, Blog $blog)
     {
         // Get the logged in user
         $user = fractal()->item($request->user())
@@ -57,13 +58,25 @@ class HomeController extends Controller
                     ->toArray();
 
         // Let's get some stats
-        $portfolio = $request->user()->portfolio()->latestFirst();
-        $blog = $request->user()->blog();
+        $works = $portfolio->where('user_id', '!=', $user['id'])->whereNotNull('thumbnail')->isPublic()->isFeaturedFirst();
+        // if ( !empty($user['skills']) ){
+        //     $skills = collect($user['skills'])->pluck('skill')->toArray();
+        //     $interest = UserTracker::where(['user_id' => $user['id'], 'trackable_type' => 'App\Models\Portfolio'])->groupBy('tags')->pluck('tags')->toArray();
+        //     $interests = collect(array_merge($skills, []))->unique()->toArray();
+        //     $works = $portfolio->where('user_id', '!=', $user['id'])
+        //                        ->whereIn('skills',  $interests)
+        //                        ->whereNotNull('thumbnail')
+        //                        ->inRandomOrder()
+        //                        ->isPublic();
+        // } else {
+        //     $works = $portfolio->where('user_id', '!=', $user['id'])->isFeatured()->isPublic()->inRandomOrder();
+        // }
+        $blog = $blog->where('user_id', '!=', $user['id'])->isPublished()->latestFirst();
 
         // 1. Check if user has a gmail account
         // 2. Ask them to invite their contact
-        $email = $request->user()->email;
         $inviteStatus = true;
+        $email = $request->user()->email;
         $gmailCheck =  preg_match('/(@gmail.com)$/', $email); 
 
         if($gmailCheck){
@@ -74,14 +87,28 @@ class HomeController extends Controller
                 $inviteStatus = false;
             }
         }
-        $subscriber_count = $request->user()->subscriber()->count();
 
-        $portfolios = fractal()->collection($portfolio->take(4)->get())
-                        ->transformWith(new PortfolioTransformer)
+        $following = $request->user()->followers()->pluck('following_id')->toArray();
+
+        $to_follow = DB::table('users')
+                            ->join('profiles', function($join){
+                                $join->on('profiles.user_id', '=', 'users.id')
+                                    ->whereNotNull('profiles.avatar');
+                            })
+                            ->where('users.id', '!=', $user['id'])
+                            ->whereNotIn('users.id', $following)
+                            ->select('users.id', 'users.name', 'profiles.first_name', 'profiles.last_name', 'profiles.avatar')
+                            ->inRandomOrder()
+                            ->take(50)
+                            ->get();
+        // dd($to_follow->all());
+
+        $portfolios = fractal()->collection($works->take(20)->get())
+                        ->transformWith(new SimplePortfolioTransformer)
                         ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                         ->toArray();
 
-        $blogs = fractal()->collection($blog->take(3)->get())
+        $blogs = fractal()->collection($blog->take(20)->get())
                         ->transformWith(new BlogTransformer)
                         ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                         ->toArray();
@@ -90,11 +117,9 @@ class HomeController extends Controller
             'gmail'             => (bool)$gmailCheck,
             'invite_status'     => $inviteStatus,
             'user'              => $user,
-            'portfolio_count'   => $portfolio->count(),
             'portfolios'        => $portfolios,
-            'blog_count'        => $blog->count(),
             'blogs'             => $blogs,
-            'subscriber_count'  => $subscriber_count,
+            'suggestions'       => $to_follow,
         ]);
     }
 
