@@ -58,7 +58,7 @@ class HomeController extends Controller
                     ->toArray();
 
         // Let's get some stats
-        $works = $portfolio->where('user_id', '!=', $user['id'])->whereNotNull('thumbnail')->isPublic()->isFeaturedFirst();
+        $works = $portfolio->where('user_id', '!=', $user['id'])->whereNotNull('thumbnail')->isPublic()->latestFirst();
         // if ( !empty($user['skills']) ){
         //     $skills = collect($user['skills'])->pluck('skill')->toArray();
         //     $interest = UserTracker::where(['user_id' => $user['id'], 'trackable_type' => 'App\Models\Portfolio'])->groupBy('tags')->pluck('tags')->toArray();

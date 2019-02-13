@@ -76,7 +76,7 @@
                 @for( $i = 0; $i < count($suggestions); $i++ )
                     <div class="user-to-follow has-text-centered">
                         <figure class="image is-rounded is-64x64 is-centered">
-                            <img src="{{ $suggestions[$i]->avatar or '/public/default-user.jpg' }}" alt="{{ ucfirst($suggestions[$i]->first_name) }}">
+                            <img src="{{ avatar($suggestions[$i]->id) }}" alt="{{ ucfirst($suggestions[$i]->first_name) }}">
                         </figure>
                         <h4 class="title is-7" style="margin-bottom: 0.7em"><a href="{{ route('view_profile', ['user'=>$suggestions[$i]->name]) }}">{{ ucfirst($suggestions[$i]->first_name) }}</a></h4>
                         <form action="/follower/{{$suggestions[$i]->name}}" method="post" class="follow-user-form">

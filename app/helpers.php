@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 
 function getAvatar($avatar){
 	if($avatar){
@@ -7,6 +8,10 @@ function getAvatar($avatar){
     } else {
         return asset('public/default-user.jpg');
     }
+}
+
+function avatar($id){
+    return User::find($id)->profile->getAvatar();
 }
 
 function formatSkills($skills){
