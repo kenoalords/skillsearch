@@ -32,7 +32,7 @@
 			</div>
 		</div>
 		<hr style="margin: 0 0 10px 0; opacity: .4">
-		<h2 class="title is-5 is-size-6-mobile">
+		<h2 class="title is-5">
 			<a href="{{ $blog['url'] }}">
 				{{$blog['title']}}
 			</a>

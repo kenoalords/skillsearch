@@ -150,6 +150,7 @@ Route::group(['middleware'=>'auth'], function(){
 			Route::get('/edit', 'UserProfileController@edit')->name('edit_profile');
 			Route::put('/edit', 'UserProfileController@store');
 			Route::post('/upload-image', 'UserProfileController@uploadImage');
+			Route::post('/biography', 'UserProfileController@biography');
 
 			// Route::get('/phone', 'UserProfileController@phoneIndex')->name('phone');
 

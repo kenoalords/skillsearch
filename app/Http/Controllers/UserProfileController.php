@@ -257,6 +257,19 @@ class UserProfileController extends Controller
         Mail::to($user)->queue(new ApproveVerifyNotification($user));
         return response()->json(null, 200);
     }
+
+    public function biography(Request $request)
+    {
+        $this->validate($request, [
+            'bio'   => 'required',
+            'location' => 'required',
+        ]);
+        $profile = $request->user()->profile;
+        $profile->bio = $request->bio;
+        $profile->location = $request->location;
+        $profile->save();
+        return response()->json(true, 200);
+    }
 }
 
 

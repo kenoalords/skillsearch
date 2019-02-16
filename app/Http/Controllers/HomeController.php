@@ -89,11 +89,16 @@ class HomeController extends Controller
         }
 
         $following = $request->user()->followers()->pluck('following_id')->toArray();
-
+        // $hasSkills
         $to_follow = DB::table('users')
+                            ->whereExists( function($query){
+                                $query->select(DB::raw(1))
+                                    ->from('skills_relations')
+                                    ->whereRaw('skills_relations.user_id = users.id');
+                            })
                             ->join('profiles', function($join){
-                                $join->on('profiles.user_id', '=', 'users.id')
-                                    ->whereNotNull('profiles.avatar');
+                                $join->on('profiles.user_id', '=', 'users.id');
+                                    // ->whereNotNull('profiles.avatar');
                             })
                             ->where('users.id', '!=', $user['id'])
                             ->whereNotIn('users.id', $following)
@@ -101,9 +106,8 @@ class HomeController extends Controller
                             ->inRandomOrder()
                             ->take(50)
                             ->get();
-        // dd($to_follow->all());
-
-        $portfolios = fractal()->collection($works->take(20)->get())
+        // dd($to_follow);
+        $portfolios = fractal()->collection($works->take(40)->get())
                         ->transformWith(new SimplePortfolioTransformer)
                         ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                         ->toArray();

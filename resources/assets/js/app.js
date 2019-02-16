@@ -25,6 +25,7 @@ Vue.component('portfolio-upload-form', require('./components/PortfolioUploadForm
 // Vue.component('message', require('./components/Message.vue').default);
 // Vue.component('send-message', require('./components/SendMessage.vue').default);
 Vue.component('follow', require('./components/Follow.vue').default);
+Vue.component('Biography', require('./components/Biography.vue').default);
 // Vue.component('reviews', require('./components/Review.vue').default);
 Vue.component('portfolio', require('./components/Portfolio.vue').default);
 // Vue.component('request-service', require('./components/RequestService.vue').default);

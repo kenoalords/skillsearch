@@ -5,6 +5,8 @@
 @import "vendor/videojs";
 
 $darkColor: #111;
+$linkColor: #326FC0;
+
 #app{
 	min-height: 90vh;
 	margin-top: 3.6em;
@@ -601,7 +603,7 @@ ul.skills-list{
 		width: 20%;
 		padding: 5px 5px 5px 0px;
 		a{
-			color: #222;
+			color: $linkColor;
 			&:hover{
 				color: #444;
 			}
@@ -700,7 +702,7 @@ input[type="checkbox"].is-toggle:checked:after{
 	a{
 		font-size: 14px;
 		font-weight: bold;
-		padding: 5px 0;
+		padding: 10px 0;
 		display: block;
 		border-bottom: 1px solid #eee;
 		position: relative;
@@ -716,6 +718,24 @@ input[type="checkbox"].is-toggle:checked:after{
 				opacity: 1;
 			}
 		}
+	}
+}
+
+.spaced-title{
+	font-size: 13px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	display: block;
+	margin-bottom: 1em;
+}
+
+.follow-skill-lists{
+	display: block;
+	margin-bottom: 10px;
+	white-space: normal;
+	.tag{
+		margin-right: 5px;
+		margin-bottom: 2px;
 	}
 }
 
@@ -793,7 +813,7 @@ input[type="checkbox"].is-toggle:checked:after{
 }
 
 .button{
-	font-size: 0.9em;
+	font-size: 1.1em;
 }
 
 
@@ -821,6 +841,9 @@ input[type="checkbox"].is-toggle:checked:after{
 		&:after{
 			opacity: .9;
 		}
+	}
+	img{
+		margin: 0 auto;
 	}
 }
 
@@ -884,6 +907,9 @@ input[type="checkbox"].is-toggle:checked:after{
 	&.big-action-button{
 		height: auto;
 		padding: 12px 30px;
+	}
+	&.is-info{
+		background: $linkColor !important;
 	}
 }
 
@@ -1107,9 +1133,9 @@ input[type="checkbox"].is-toggle:checked:after{
 		// font-family: "Noto Serif", serif;
 		font-weight: 900;
 		a{
-			color: #000 !important;
+			color: $linkColor !important;
 			&:hover{
-				color: #209cee !important;
+				color: #62bbed !important;
 			}
 		}
 	}
@@ -1515,17 +1541,20 @@ iframe{
 	}
 	a{
 		&.logo{
-			max-width: 80px;
+			max-width: 90px;
 		}
 	}
 }
 
 .search-wrapper{
-	top: 67px;
+	top: 62px;
 	padding: 20px;
-	z-index: 8;
+	z-index: 9;
 	transform: translateY(-144px);
 	transition: all .3s ease-out;
+	.input{
+		height: 2.53em;
+	}
 	&.is-active{
 		transform: translateY(-10px);
 	}
@@ -1673,14 +1702,41 @@ iframe{
 	white-space: nowrap;
 	width: auto;
 }
+.follow-user-form{
+	position: relative;
+	top: -27px;
+}
 .user-to-follow-wrapper{
 	.user-to-follow{
 		margin: 5px;
-		width: 130px;
+		width: 160px;
 		display: inline-block;
 		padding-bottom: 20px;
 		border: 1px solid #eee;
 		border-radius: 2px;
+		align-items: stretch;
+		.user{
+			height: 100%;
+		}
+	}
+	&:after{
+		content: ".";
+		height: 0;
+		visibility: hidden;
+		display: block;
+		clear: both;
+	}
+}
+
+.user-to-follow{
+	&.step{
+		div{
+			padding: 20px 10px 40px;
+			background: #fff;
+			border: 1px solid #ddd;
+			border-radius: 3px;
+			height: 100%;
+		}
 	}
 }
 
@@ -1761,7 +1817,6 @@ iframe{
 	.dashboard-mobile-menu{
 		position: fixed;
 		top: 48px;
-		padding: 20px 10px 10px;
 		left: 0;
 		width: 100%;
 		background: #fff;
@@ -1770,8 +1825,17 @@ iframe{
 		.level{
 			width: 100%;
 			.level-item{
+				padding: 20px 10px 10px;
+				&:first-of-type{
+					margin-right: 0;
+					border-right: 1px solid #eee;
+				}
 				&:last-of-type{
 					margin: 0;
+				}
+				a{
+					color: $linkColor; 
+					font-size: 1.1em !important;
 				}
 			}
 		}

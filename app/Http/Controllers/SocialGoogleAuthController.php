@@ -72,7 +72,7 @@ class SocialGoogleAuthController extends Controller
         			]);
                     Mail::to($user)->queue(new UserRegistrationNotification($name));
         			Auth::login($user, true);
-        			return redirect()->to('/dashboard')->with(['name' => $username, 'fullname' => $name ]);
+        			return redirect()->to('/dashboard?step=1&status=follow')->with(['name' => $username, 'fullname' => $name ]);
         		}
             }
 

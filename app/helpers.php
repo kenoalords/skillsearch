@@ -137,5 +137,18 @@ function ubanji_paginate($pages)
     return $r .= '</div>';
 }
 
+function getSkills($id){
+    $skills = User::find($id)->skills()->pluck('skill')->toArray();
+    if ( count($skills) > 0 ){
+        $r = '<span class="follow-skill-lists">';
+        foreach ( $skills as $skill ){
+            $r .= '<span class="tag">'.$skill.'</span>';
+        }
+        return $r .= '</span>';
+    } else {
+        return '';
+    }
+}
+
 
 

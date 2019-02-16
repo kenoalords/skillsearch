@@ -1,7 +1,6 @@
 <template>
     <div :class="{'is-loading' : isLoading}" class="skills">
-        <div class="title is-6">Select your skills</div>
-        <div class="" id="skills-list">
+        <div class="card" id="skills-list" style="margin-bottom:10px">
             <div v-if="skills" class="skills-list-wrapper" id="skills">
                 <a v-for="skill in skills" class="item" v-on:click.prevent="addSkill(skill)">
                     <div class="content">
@@ -11,15 +10,31 @@
             </div>
         </div>
 
-        <div class="">
-            <div v-if="getUserSkills" class="selected-skills-wrapper" id="selectedSkills">
-                <!-- <div class="title is-6">Selected skills</div> -->
-                <a v-for="skill in selectedSkills" class="tag is-link" v-on:click.prevent="removeSkill(skill)">
+        <div class="" v-if="selectedSkills !== null && !isLoading" style="margin-bottom:10px">
+            <div class="box" id="selectedSkills">
+                <div class="title is-6">Selected skills</div>
+                <a v-for="skill in selectedSkills" class="tag is-link" v-on:click.prevent="removeSkill(skill)" style="margin-right: 5px;">
                     {{ skill.skill }} &nbsp; <button class="delete is-small"></button>
                 </a>
             </div>
-            <div v-if="selectedSkills == null">
-                <p>You have not selected any skills</p>
+        </div>
+
+        <div class="has-text-right" v-if="isIntro && !isLoading">
+            <div class="level is-mobile">
+                <div class="level-left">
+                    <div class="level-item">
+                        <a href="/dashboard?step=3">
+                            Skip
+                        </a>
+                    </div>
+                </div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <a href="/dashboard?step=3" class="button is-info">
+                            <span>Proceed</span> <span class="icon"><i class="fa fa-arrow-right"></i></span>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -28,23 +43,29 @@
 <script>
     export default {
         mounted() {
-            
+            this.getUserSkills();
         },
 
         data() {
             return {
                 skills : this.getSkills(),
-                selectedSkills : this.getUserSkills(),
+                selectedSkills : null,
                 isLoading: true,
+                isIntro: this.intro,
             }
+        },
+        props: {
+            intro: false,
         },
 
         methods : {
 
             getSkills(){
                 var _this = this;
+                $('body').addClass('is-loading');
                 axios.get('/skills/all').then((response)=>{
                     _this.skills = response.data;
+                    $('body').removeClass('is-loading');
                     _this.isLoading = false;
                 })
             },
@@ -57,7 +78,8 @@
             },
 
             addSkill(skill, event){
-                if(this.selectedSkills.length >= 5){
+                if(this.selectedSkills.length >= 3){
+                    iziToast.error({ title: "You can only select a maximum of 3 skills" });
                     return false;
                 }
                 var i = this.skills.indexOf(skill);
@@ -81,10 +103,6 @@
                     // console.log(response);
                 });
             }
-
-        }
-
-        
-
+        }      
     }
 </script>

@@ -2,7 +2,7 @@
     <div>
 
         <div class="profile-image">
-            <label id="user-avatar-upload" :class="{ 'is-uploading-avatar' : isUploading }" class="text-center">
+            <label id="user-avatar-upload" :class="{ 'is-uploading-avatar' : isUploading }" class="has-text-centered">
                 <img v-bind:src="imageSrc" class="image is-128x128 is-rounded">
                 <input type="file" id="fileupload" v-on:change="uploadProfileImage" style="display: none">
             </label>
@@ -69,8 +69,13 @@
                     _this.isUploading = false;
                     _this.progress = 0;
                     _this.imageSrc = response.data.filename;
+                    iziToast.success({ title: "Profile picture changed successfully" });
                     $('.is-user-profile').attr('src', response.data.filename)
                 })
+                .catch( error => {
+                    iziToast.error({ title: "An error occured while changing your profile picture" });
+                    return false;
+                } )
             },
 
         }
