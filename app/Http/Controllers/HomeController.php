@@ -97,8 +97,8 @@ class HomeController extends Controller
                                     ->whereRaw('skills_relations.user_id = users.id');
                             })
                             ->join('profiles', function($join){
-                                $join->on('profiles.user_id', '=', 'users.id');
-                                    // ->whereNotNull('profiles.avatar');
+                                $join->on('profiles.user_id', '=', 'users.id')
+                                    ->whereNotNull('profiles.avatar');
                             })
                             ->where('users.id', '!=', $user['id'])
                             ->whereNotIn('users.id', $following)
