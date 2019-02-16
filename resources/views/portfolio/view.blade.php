@@ -25,7 +25,7 @@
                         <meta itemprop="image" content="{{$portfolio['user_profile']['avatar']}}">
                         <meta itemprop="dateCreated" content="{{ $portfolio['created_at'] }}">
                     </div>
-                    <h1 class="title is-3 is-size-4-mobile" itemprop="name">{{ ucwords(strtolower($portfolio['title'])) }}</h1> 
+                    <h1 class="title is-3 is-size-4-mobile" itemprop="name">{{ ( $portfolio['title'] != 'undefined' ) ? ucwords(strtolower($portfolio['title'])) : '' }}</h1> 
                     <div class="portfolio-meta">
                         {{ $portfolio['date'] }}
                     </div>
