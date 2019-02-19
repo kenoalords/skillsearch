@@ -27,7 +27,7 @@ class SocialAccountLinkupController extends Controller
             	'provider'			=> $request->provider,
             ]);
             $request->session()->flash('status', 'You can now login with your ' . $request->provider . ' account.');
-            return redirect('/home');
+            return redirect('/dashboard');
         } else {
         	$request->session()->flash('status', 'Your password is incorrect');
         	return back();

@@ -85,7 +85,7 @@ class UserProfileController extends Controller
             $inviteCheck->delete();
         }
 
-        return redirect('/dashboard/start/skills');
+        return redirect('/dashboard?step=1');
     }
 
     public function setupUserSkills(Request $request)

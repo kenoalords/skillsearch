@@ -85,7 +85,7 @@
 				</div>
 			</div>
 		</section>
-		<div class="section bold is-dark">
+		<div class="section is-light">
 			<div class="container">
 				 @include('blog.read_more')
 			</div>
@@ -123,10 +123,7 @@
 	    							<span class="icon"><i class="fa fa-linkedin"></i></span>
 	    							<span>Share on LinkedIn</span>
 	    						</a></li>
-							<li><a href="https://plus.google.com/share?url={{$blog['url']}}" class="google" target="_blank">
-	    							<span class="icon"><i class="fa fa-google-plus"></i></span>
-	    							<span>Share on Google+</span>
-	    						</a></li>
+							
 	    					</ul>
 	    					<a href="#" class="close-share-modal">Sorry, I don't have any friends</a>
 	    				</div>
@@ -135,6 +132,25 @@
 	    	</div>
     	</div>
 
+</div>
+
+<div class="is-flex-mobile is-hidden-desktop" id="blog-social-share">
+	<div class="container">
+		<div class="level is-mobile">
+			<div class="level-item"><a href="https://www.facebook.com/sharer/sharer.php?u={{ $blog['url'] }}" class="facebook" target="_blank">
+				<span class="icon"><i class="fa fa-facebook"></i></span>
+				<span>Share</span>
+			</a></div>
+			<div class="level-item"><a href="https://twitter.com/intent/tweet?url={{$blog['url']}}&via=ubanjicreatives&text={{$blog['excerpt']}}&hashtags=ubanjicreatives" class="twitter" target="_blank">
+				<span class="icon"><i class="fa fa-twitter"></i></span>
+				<span>Tweet</span>
+			</a></div>
+			<div class="level-item"><a href="https://www.linkedin.com/shareArticle?mini=true&url={{$blog['url']}}&title={{$blog['title']}}&summary={{$blog['excerpt']}}&source=ubanji.com" class="linkedin" target="_blank">
+				<span class="icon"><i class="fa fa-linkedin"></i></span>
+				<span>Share</span>
+			</a></div>
+		</div>
+	</div>
 </div>
 <tracker :id="{{ $blog['id'] }}" type="blog" url="{{ Request::path() }}" tags="{{ $blog['category'] }}"></tracker>
 @push('script')

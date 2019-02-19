@@ -29,7 +29,7 @@ class SocialTwitterAuthController extends Controller
     	if($account){
 
     		Auth::loginUsingId($account->user_id, true);
-    		return redirect()->to('/home');
+    		return redirect()->to('/dashboard');
 
 
     	} else {

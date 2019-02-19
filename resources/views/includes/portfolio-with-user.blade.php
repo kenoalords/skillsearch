@@ -25,6 +25,9 @@
                     </div>
                 </div>
             @endif
+            @if($portfolio['is_featured'])
+            <span class="is-featured"><img src="{{ asset('images/featured-badge.png') }}" alt="featured item"></span>
+            @endif
         </div>
         <div class="card-content" style="padding: 5px;">
             <div class="level is-mobile">

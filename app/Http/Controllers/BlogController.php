@@ -305,7 +305,7 @@ class BlogController extends Controller
         $blog = Blogs::get($blog);
         $duration = floor((microtime(true) - $start_time) * 1000);
         $data = ['id'=>$blog['id']];
-        $others = fractal()->collection(Blog::whereNotIn('id', [$blog['id']])->isPublished()->take(3)->get())
+        $others = fractal()->collection(Blog::whereNotIn('id', [$blog['id']])->isPublished()->latestFirst()->take(5)->get())
                         ->transformWith(new BlogTransformer)
                         ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                         ->toArray();

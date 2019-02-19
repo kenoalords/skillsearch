@@ -73,7 +73,7 @@ class SocialAuthController extends Controller
                     ]);
                     Mail::to($user)->queue(new UserRegistrationNotification($name));
                     Auth::login($user, true);
-                    return redirect()->to('/dashboard/start')->with(['name' => $username, 'fullname' => $name ]);
+                    return redirect()->to('/dashboard?step=1')->with(['name' => $username, 'fullname' => $name ]);
                 }
             }
     	}
