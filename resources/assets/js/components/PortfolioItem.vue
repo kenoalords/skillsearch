@@ -9,6 +9,9 @@
                         <meta itemprop="thumbnailUrl" :content="portfolio.thumbnail">
                     </figure>
                 </a>
+                <span class="is-featured" v-if="portfolio.verified">
+                    <img src="/images/featured-badge.png" alt="featured work">
+                </span>
             </div>
             <div class="card-content" style="padding: 5px;">
                 <div class="level is-mobile">
