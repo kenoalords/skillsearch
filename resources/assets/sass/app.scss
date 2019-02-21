@@ -1817,6 +1817,89 @@ iframe{
 	}
 }
 
+.modal{
+	&.portfolio{
+		.modal-card{
+			max-height: 100vh;
+			height: 100vh;
+			margin: 0;
+			overflow-y: scroll;
+			.modal-card-head{
+				border-radius: 0;
+				padding: 15px;
+				background: #fff;
+				box-shadow: 0 6px 36px rgba(black, .1);
+				.modal-card-title.title{
+					margin-bottom: 0;
+				}
+				.level{
+					width: 100%;
+				}
+			}
+			.modal-card-foot{
+				padding: 10px;
+				justify-content: center;
+				background: #fff;
+				box-shadow: 0 -6px 36px rgba(black, .1);
+				border-radius: 0;
+				.like-button{
+					width: 54px;
+					height: 54px;
+					border-radius: 54px;
+					line-height: 50px;
+				}
+			}
+			.modal-card-body{
+				.files{
+					&.is-loading{
+						display: flex;
+						justify-content: center;
+						align-items: center;
+						min-height: 100px;
+						&:before{
+							content: "";
+							display: block;
+							width: 48px;
+							height: 48px;
+							border-radius: 48px;
+							border: 5px solid #111;
+							border-left-color: transparent;
+							animation: rotate .6s infinite linear;
+						}
+					}
+					.file{
+						margin-bottom: 1em;
+					}
+				}
+			}
+		}
+	}
+}
+
+// .portfolio-modal-enter,
+// .portfolio-modal-leave-active{
+// 	opacity: 0;
+// 	transform: translateY(30px);
+// 	transition: all .3s ease-in-out;
+// }
+
+.portfolio-modal-enter,
+.portfolio-modal-leave-to{
+	opacity: 0;
+	transform: translateY(30px);
+}
+
+.portfolio-modal-enter-to{
+	opacity: 1;
+	transform: translateY(0px);
+	transition: all .6s ease-in-out;
+}
+
+.portfolio-modal-enter-active,
+.portfolio-modal-leave-active{
+	transition: all .6s ease-in-out;
+}
+
 @media screen and (min-width: 768px) and (max-width: 1240px){
 	.account-page{
 		.column{
@@ -2022,7 +2105,7 @@ iframe{
 		padding: 40px 20px;
 		width: 100vw;
 	}
-	
+
 }
 
 

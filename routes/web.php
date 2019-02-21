@@ -58,6 +58,7 @@ Route::get('/portfolio/{portfolio}/comments', 'PortfolioCommentController@index'
 Route::post('/portfolio/{portfolio}/comment/add', 'PortfolioCommentController@addComment');
 
 Route::post('/portfolio/{portfolio}/views', 'ViewsController@create');
+Route::get('/portfolio/{portfolio}/files', 'PortfolioController@getFiles');
 
 Route::get('/invite', 'InviteContactController@index')->name('gmail_invite');
 Route::get('/invite/gmail', 'InviteContactController@gmailContactInvite');

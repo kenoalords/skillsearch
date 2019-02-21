@@ -3,7 +3,7 @@
 namespace App\Repository;
 use App\Models\Portfolio;
 use Carbon\Carbon;
-use App\Transformers\PortfolioTransformer;
+use App\Transformers\SimplePortfolioTransformer;
 
 class Portfolios
 {
@@ -46,7 +46,7 @@ class Portfolios
 	public function transformCollection($portfolios)
 	{
 		return fractal()->collection($portfolios)
-                        ->transformWith(new PortfolioTransformer)
+                        ->transformWith(new SimplePortfolioTransformer)
                         ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
                         ->toArray();
 	}

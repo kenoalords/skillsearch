@@ -3,7 +3,7 @@
     <div class="card portfolio" itemscope itemtype="http://schema.org/CreativeWork">
         <div class="card-image">
             <figure class="image is-1x1">
-                <a href="{{ $portfolio['link']['url'] }}" itemprop="url">
+                <a href="{{ $portfolio['link']['url'] }}" itemprop="url" class="portfolio-popup" data-id="{{ $portfolio['id'] }}" data-uid="{{ $portfolio['uid'] }}" data-description="{{ $portfolio['description'] }}" data-thumbnail="{{ $portfolio['thumbnail'] }}" data-title="{{ $portfolio['title'] }}" data-user="{{ $portfolio['user'] }}" data-fullname="{{ $portfolio['user_profile']['fullname'] }}" data-avatar="{{ $portfolio['user_profile']['avatar'] }}" data-verified="{{ $portfolio['verified'] }}" data-likes="{{ $portfolio['likes_count'] }}">
                     <img src="{{ $portfolio['thumbnail'] }}" data-src="" alt="{{$portfolio['title']}}" class="">
                     <meta itemprop="thumbnailUrl" content="{{ $portfolio['thumbnail'] }}">
                 </a>

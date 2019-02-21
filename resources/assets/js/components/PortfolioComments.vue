@@ -2,7 +2,7 @@
     <div>
         <div v-if="user" class="box comment-area is-raised is-radiusless" style="padding: 1em;">
             <div class="media">
-                <div class="media-left">
+                <div class="media-left" v-if="avatar">
                     <div class="image is-64x64">
                         <img :src="userImage" alt="Avatar" class="image is-rounded">
                     </div>
@@ -53,7 +53,7 @@
 
                         <!-- Comment reply form -->
                         <div v-if="isReplyActive === comment.id" class="media">
-                            <div class="media-left">
+                            <div class="media-left" v-if="avatar">
                                 <div class="image is-48x48">
                                     <img :src="userImage" alt="Avatar" class="image is-rounded">
                                 </div>

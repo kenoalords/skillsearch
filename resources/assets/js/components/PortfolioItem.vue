@@ -3,7 +3,7 @@
         <div class="card portfolio" itemscope itemtype="http://schema.org/CreativeWork">
             
             <div class="card-image">
-                <a :href="portfolio.link.url" style="line-height: 0; display: block;" itemprop="url">
+                <a :href="portfolio.link.url" style="line-height: 0; display: block;" itemprop="url" class="portfolio-popup" :data-id="portfolio.id" :data-uid="portfolio.uid" :data-description="portfolio.description" :data-thumbnail="portfolio.thumbnail" :data-title="portfolio.title" :data-user="portfolio.user" :data-fullname="portfolio.user_profile.fullname" :data-avatar="portfolio.user_profile.avatar" :data-verified="portfolio.verified" :data-likes="portfolio.likes_count">
                     <figure>
                         <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=" :data-src="portfolio.thumbnail" :alt="portfolio.title" class="b-lazy">
                         <meta itemprop="thumbnailUrl" :content="portfolio.thumbnail">

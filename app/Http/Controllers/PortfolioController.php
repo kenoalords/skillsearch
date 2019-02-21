@@ -345,4 +345,9 @@ class PortfolioController extends Controller
         }
         return view('portfolio.likes')->with('portfolios', $portfolios);
     }
+
+    public function getFiles(Request $request, Portfolio $portfolio)
+    {
+        return response()->json($portfolio->files()->get(), 200);
+    }
 }

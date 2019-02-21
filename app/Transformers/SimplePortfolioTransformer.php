@@ -17,6 +17,7 @@ class SimplePortfolioTransformer extends TransformerAbstract
 		return [
 			'id'			=> $portfolio->id,
 			'title'		=> $portfolio->title,
+			'description'	=> $portfolio->description,
 			'is_public'	=> $portfolio->is_public,
 			'date'		=> $portfolio->created_at->diffForHumans(),
 			'created_at'	=> $portfolio->created_at,

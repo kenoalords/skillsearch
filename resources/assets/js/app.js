@@ -57,6 +57,7 @@ Vue.component('email-broadcast', require('./components/EmailBroadcast.vue').defa
 Vue.component('email-subscription', require('./components/EmailSubscription.vue').default);
 Vue.component('notification', require('./components/Notification.vue').default);
 Vue.component('tracker', require('./components/Tracker.vue').default);
+Vue.component('portfolio-modal', require('./components/PortfolioModal.vue').default);
 
 const app = new Vue({
     el: '#app',
@@ -369,7 +370,7 @@ $('body').on('click tap', '#search-trigger', function(e){
 
 const webpush = require("web-push");
 // const vapidKeys = webpush.generateVAPIDKeys();
-vapidPublicKey = "BN7vMXUSxoinsYZ0wSm9NfGt7D17FRuniWGqH0LqcpJ1eDK7mGhcbmNIZffzDtPo1sMSOV2FilOnmBh7RGKz2SE=";
+let vapidPublicKey = "BN7vMXUSxoinsYZ0wSm9NfGt7D17FRuniWGqH0LqcpJ1eDK7mGhcbmNIZffzDtPo1sMSOV2FilOnmBh7RGKz2SE=";
 
 
 function urlB64ToUint8Array(base64String) {
@@ -469,6 +470,28 @@ $('body').on('submit', '.follow-user-form', function(e){
 	}).catch( (error) => {
 		iziToast.error({ title: 'Something went wrong, please try again' })
 	});
+});
+
+import PortfolioModal from "./components/PortfolioModal";
+$('body').on('click', '.portfolio-popup', function(e){
+	e.preventDefault();
+	let modal = Vue.extend(PortfolioModal),
+		modalComponent = new modal({
+			propsData: {
+				portfolio: $(this).data('id'),
+				uid: $(this).data('uid'),
+				active: true,
+				thumbnail: $(this).data('thumbnail'),
+				description: $(this).data('description'),
+				title: $(this).data('title'),
+				fullname: $(this).data('fullname'),
+				user: $(this).data('user'),
+				avatar: $(this).data('avatar'),
+				verified: $(this).data('verified'),
+				likes: $(this).data('likes'),
+			}
+		}).$mount();
+	$('body').append(modalComponent.$el);
 });
 
 
