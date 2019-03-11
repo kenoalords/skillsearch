@@ -9,7 +9,7 @@
                         <meta itemprop="thumbnailUrl" :content="portfolio.thumbnail">
                     </figure>
                 </a>
-                <span class="is-featured" v-if="portfolio.verified">
+                <span class="is-featured" v-if="portfolio.is_featured">
                     <img src="/images/featured-badge.png" alt="featured work">
                 </span>
             </div>
