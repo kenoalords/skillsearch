@@ -1,6 +1,6 @@
 <template>
-    <transition name="portfolio-modal">
-        <div class="modal portfolio is-active" v-if="isActive">
+    <transition name="fade">
+        <div class="modal portfolio" v-if="isActive" id="pmodal">
             <div class="modal-background"></div>
             <div class="modal-card">
                 <header class="modal-card-head">
@@ -77,6 +77,7 @@
         methods: {
             getPortfolioFiles(){
                 let _this = this;
+                $('#pmodal').fadeIn(500).css('display', 'flex');
                 axios.get('/portfolio/' + this.uid + '/files').then( response => {
                     _this.isLoading = false;
                     _this.files = response.data;
@@ -87,7 +88,11 @@
             },
         },
         mounted() {
-            this.getPortfolioFiles();
+            setTimeout(()=> {
+                this.getPortfolioFiles();
+
+            });
+
         }
     }
 </script>

@@ -259,7 +259,7 @@ img.logo{
 			top: 10px;
 			left: 10px;
 			img{
-				max-width: 32px;
+				max-width: 18px;
 			}
 		}
 	}
@@ -1619,6 +1619,10 @@ iframe{
 	}	
 }
 
+.modal-background{
+	background: rgba(10,10,10,.6);
+}
+
 .push-notification-modal{
 	.modal-body{
 		width: 320px;
@@ -1879,6 +1883,9 @@ iframe{
 
 .modal{
 	&.portfolio{
+		.delete{
+			background-color: rgba(10, 10, 10, 0.7);
+		}
 		.modal-card{
 			max-height: 100vh;
 			height: 100vh;
@@ -1936,29 +1943,14 @@ iframe{
 	}
 }
 
-// .portfolio-modal-enter,
-// .portfolio-modal-leave-active{
-// 	opacity: 0;
-// 	transform: translateY(30px);
-// 	transition: all .3s ease-in-out;
-// }
-
-.portfolio-modal-enter,
-.portfolio-modal-leave-to{
-	opacity: 0;
-	transform: translateY(30px);
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .6s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0 !important;
 }
 
-.portfolio-modal-enter-to{
-	opacity: 1;
-	transform: translateY(0px);
-	transition: all .6s ease-in-out;
-}
 
-.portfolio-modal-enter-active,
-.portfolio-modal-leave-active{
-	transition: all .6s ease-in-out;
-}
 
 @media screen and (min-width: 768px) and (max-width: 1240px){
 	.account-page{
@@ -2165,7 +2157,10 @@ iframe{
 		padding: 40px 20px;
 		width: 100vw;
 	}
-
+	.modal.portfolio .modal-card{
+		max-width: 95vw;
+		max-height: 97vh;
+	}
 }
 
 
