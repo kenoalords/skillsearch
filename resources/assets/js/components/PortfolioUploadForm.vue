@@ -6,12 +6,12 @@
                     <h3 class="title is-5 bold">Work description</h3>
                     <p>Please provide an appropriate title and description.</p>
                     <div class="field">
-                        <label for="title">Work title</label>
+                        <label for="title">Title</label>
                         <input type="text" id="title" v-model="p.title" class="input">
                     </div>
 
                     <div class="field">
-                        <label for="description bold">Work description </label>
+                        <label for="description bold">Description </label>
                         <textarea rows="2" id="description" placeholder="Provide a short description about this work" v-model="p.description" class="textarea"></textarea>
                         <p class="help">Adding a description will make this work visible to Google and increase your ranking</p>
                     </div>
@@ -22,7 +22,7 @@
                 <div class="card-content">
                     <div class="field" style="margin-top: 1em">
                         <h3 class="title is-5 bold">Upload thumbnail</h3>
-                        <p>This is the image that represents what this work is about. Choose it wisely</p>
+                        <p>Choose the best cover image</p>
                         <figure>
                             <img v-bind:src="p.thumbnail" v-if="p.thumbnail" class="image portfolio-thumbnail">
                         </figure>
@@ -98,6 +98,42 @@
                 <button class="button is-light" v-on:click.prevent="publishPortfolio('save')"  >Save &amp; continue later</button>
             </div>
         </form>
+
+        <div class="portfolio-share-modal modal is-active" v-if="isShareModalActive">
+            <div class="modal-background"></div>
+            <div class="modal-content">
+                <div class="box has-text-centered">
+                    <figure class="image">
+                        <img :src="payload.portfolio.thumbnail" :alt="payload.portfolio.title">
+                    </figure>
+                    <h4 class="title is-5 bold">😎 Get more people to see your work. Share with your friends on social media.</h4>
+                    <!-- <hr> -->
+                    <ul class="social-menu">
+                        <li><a :href="fb_share" class="facebook" target="_blank">
+                            <span class="icon"><i class="fa fa-facebook"></i></span>
+                            <span>Facebook</span>
+                        </a></li>
+                        <li><a :href="tweet" class="twitter" target="_blank">
+                            <span class="icon"><i class="fa fa-twitter"></i></span>
+                            <span>Twitter</span>
+                        </a></li>
+                    </ul>
+                    <h4 class="title is-7">OR</h4>
+                    <ul class="social-menu is-link">
+                        <li><a href="/dashboard/portfolio/new">
+                            <span class="icon"><i class="fa fa-plus"></i></span> <span>New work</span>
+                        </a></li>
+                        <li><a :href="payload.portfolio.link.href">
+                            <span class="icon"><i class="fa fa-eye"></i></span> <span>View</span>
+                        </a></li>
+                        <li><a href="/dashboard/portfolio">
+                            <span class="icon"><i class="fa fa-arrow-left"></i></span> <span>Back</span>
+                        </a></li>
+                    </ul>
+                </div>
+            </div>
+            <button class="modal-close is-large" aria-label="close" v-on:click.prevent="closeModal"></button>
+        </div>
     </div>
 </template>
 
@@ -117,6 +153,10 @@
                 isPublishing: false,
                 files: [],
                 formData: new FormData(),
+                isShareModalActive: false,
+                payload : {},
+                fb_share: 'https://www.facebook.com/sharer/sharer.php?u=',
+                tweet: null,
             }
         },
 
@@ -127,6 +167,10 @@
         },
 
         methods: {
+            closeModal: function(){
+                this.isShareModalActive = false;
+                window.location.href = '/dashboard/portfolio';
+            },
 
             uploadThumbnail: function(){
                 var thumbnail = document.getElementById('thumbnail').files[0],
@@ -138,7 +182,8 @@
                     }   
                     file.readAsDataURL(thumbnail);
                 } else {
-                    return false;
+                    iziToast.error({ title: 'Please upload a valid image file' });
+                    return;
                 }
             },
 
@@ -153,6 +198,7 @@
                             // check image file size
                             if ( files[i].size > 2000000 && ['image/jpg', 'image/jpeg', 'image/png', 'image/gif'].indexOf(files[i].type) !== -1 ){
                                 this.errors.push(files[i].name + ' is more than the allowed 2MB size limit for Images');
+                                // iziToast.error({ title: 'Please upload an' })
                                 return;
                             }
                             // check audio file size
@@ -162,12 +208,13 @@
                             }
                             // check video file size
                             if ( files[i].size > 20000000 && ['video/mp4'].indexOf(files[i].type) !== -1 ){
-                                this.errors.push(files[i].name + ' is more than the allowed 10MB size limit for Video files');
+                                this.errors.push(files[i].name + ' is more than the allowed 20MB size limit for Video files');
                                 return;
                             }
                             this.files.push(files[i]);
                             this.uploadFile(files[i]);
                         } else {
+                            iziToast.error({ title: 'Please check your file upload for errors' });
                             this.errors.push(files[i].name + ' is an invalid file format');
                         }
                     }
@@ -225,7 +272,7 @@
                 for ( let i = 0; i < this.files.length; i++ ){
                     _this.formData.append('files[]', this.files[i]);
                 }
-                _this.isPosting = true;
+                $('body').addClass('is-loading');
                 var config = {
                     headers: {'Content-Type' : 'multipart/form-data'},
                 }
@@ -249,8 +296,8 @@
 
                 axios.post(url, _this.formData, config).then( (response) => {
                     _this.isPosting = false;
-                    console.log(response);
-                    if(_this.action === 'save'){
+                    // console.log(response);
+                    if(action === 'save'){
                         if ( _this.isEditing === true ){
                             iziToast.success({
                                 title: 'Portfolio updated successfully!',
@@ -260,7 +307,8 @@
                                 title: 'Portfolio saved successfully!',
                             });
                         }
-                        
+                        window.location.href = '/dashboard/portfolio';
+                        return;
                     } else {
                         if ( _this.isEditing === true ){
                             iziToast.success({
@@ -272,8 +320,18 @@
                             });
                         }
                     }
-                    window.location.href = window.Laravel.url + '/dashboard/portfolio';
+                    $('body').removeClass('is-loading');
+                    if ( response.data.type === 'edit' || response.data.type === 'new' ){
+                        _this.isShareModalActive = true;
+                        _this.payload = response.data;
+                        _this.fb_share = _this.fb_share + response.data.portfolio.link.href;
+                        _this.tweet = 'https://twitter.com/intent/tweet?url='+response.data.portfolio.link.href+'&via=kenoalords&text=Check+out+my+recent+work+on+www.ubanji.com&hashtags=ubanjicreatives';
+                    } else {
+                        window.location.href = window.Laravel.url + '/dashboard/portfolio';
+                    }
+                    
                 }).catch( (error) => {
+                    $('body').removeClass('is-loading');
                     _this.isPosting = false;
                     // console.log(error);
                 });

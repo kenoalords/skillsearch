@@ -16,6 +16,7 @@ use App\Events\PortfolioFilesUploadEvent;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use App\Transformers\PortfolioTransformer;
+use App\Transformers\SimplePortfolioTransformer;
 use App\Transformers\SkillsTransformer;
 use App\Transformers\SimpleUserTransformers;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
@@ -91,10 +92,18 @@ class PortfolioController extends Controller
                     dispatch(new UploadFileToS3($filename));
                 }
             }
+            $url = null;
             if($is_public){
                 $pointService->addPoint($request->user(), 'upload_portfolio');
+                $payload = fractal()->item($portfolio)
+                            ->transformWith(new SimplePortfolioTransformer)
+                            ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                            ->toArray();
+                return response()->json([ 'status' => true, 'portfolio' => $payload, 'type' => 'new' ]);
+            } else {
+                return response()->json([ 'status' => true ]);
             }
-            return response()->json(true);
+            
         }
     }
 
@@ -145,7 +154,11 @@ class PortfolioController extends Controller
                 }
             }
             $portfolio->save();
-            return response()->json(true, 200);
+            $payload = fractal()->item($portfolio)
+                            ->transformWith(new SimplePortfolioTransformer)
+                            ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
+                            ->toArray();
+            return response()->json([ 'status'=>true, 'portfolio'=> $payload, 'type'=> 'edit' ]);
         }
 
         if ( $request->isMethod('delete') ){

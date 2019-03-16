@@ -4,6 +4,7 @@ namespace App\Repository;
 use App\Models\Portfolio;
 use Carbon\Carbon;
 use App\Transformers\SimplePortfolioTransformer;
+use App\Transformers\PortfolioTransformer;
 
 class Portfolios
 {

@@ -85,12 +85,6 @@
 				</div>
 			</div>
 		</section>
-		<div class="section is-light">
-			<div class="container">
-				 @include('blog.read_more')
-			</div>
-		</div>
-		
 		<section class="section">
 			<div class="container">
 				@if ( $blog['allow_comments'] === 1 )
@@ -100,6 +94,13 @@
 				@endif
 			</div>
 		</section>
+		<div class="section is-light">
+			<div class="container">
+				 @include('blog.read_more')
+			</div>
+		</div>
+		
+		
 	</article>
     	@include('includes.signup-teaser')
     	<div id="social-share">

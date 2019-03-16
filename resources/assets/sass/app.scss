@@ -972,6 +972,9 @@ input[type="checkbox"].is-toggle:checked:after{
 			transition: all .3s ease-in-out;
 		}
 	}
+	label{
+		font-weight: bold;
+	}
 	.card{
 		margin-bottom: 1em;
 	}
@@ -1630,14 +1633,22 @@ iframe{
 .tabs{
 	&.dashboard-menu-tabs{
 		ul{
-			border-bottom: 1px solid #eee !important;
+			border-bottom: 1px solid #999 !important;
 		}
 		li{
 			a{
+				opacity: .6;
 				&.button{
 					margin-right: 5px;
 					border-bottom-left-radius: 0;
 					border-bottom-right-radius: 0;
+				}
+
+			}
+			&.is-active{
+				a{
+					opacity: 1;
+					color: #fff;
 				}
 			}
 		}
@@ -1761,6 +1772,55 @@ iframe{
 			border: 1px solid #ddd;
 			border-radius: 3px;
 			height: 100%;
+		}
+	}
+}
+
+.portfolio-share-modal{
+	ul{
+		margin-bottom: 1.2em;
+		li{
+			display: inline-block;
+			margin-right: 5px;
+			a{
+				padding: 7px 20px;
+				border-radius: 50px;
+				color: #fff;
+				&.facebook{
+					background: #3b5998;
+				}
+				&.twitter{
+					background: #1da1f2;
+				}
+				&.linkedin{
+					background: #0077b5;
+				}
+			}
+		}
+		&.is-link{
+			margin-bottom: 0;
+			a{
+				font-weight: 900;
+				color: #3b5998;
+				padding: 0px 3px;
+				&:hover{
+					color: #111;
+				}
+			}
+		}
+	}
+	.modal-content{
+		max-height: calc(100vh - 100px);
+		max-width: 420px;
+		figure{
+			margin-bottom: 1em;
+		}
+		.title{
+			font-weight: 900;
+		}
+		.box{
+			padding: 0.55em;
+			padding-bottom: 1.25em;
 		}
 	}
 }
