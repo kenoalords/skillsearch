@@ -65,21 +65,21 @@
 						</p>
 					</div>
 					<div class="media-content">
-						<strong><a href="/{{$blog['profile']['username']}}">{{$blog['profile']['fullname']}}<span itemprop="author" class="{{ ($blog['profile']['verified']) ? 'verified' : '' }} author" ></span></a></strong>
-						<div class="level is-mobile">
+						<strong><a href="/{{$blog['profile']['username']}}" class="title is-4 is-size-5-mobile">{{$blog['profile']['fullname']}}<span itemprop="author" class="{{ ($blog['profile']['verified']) ? 'verified' : '' }} author" ></span></a></strong>
+						<div class="level is-mobile text-muted" style="margin-bottom: 5px;">
 							<div class="level-left">
 								<div class="level-item">
-									<span class="has-text-weight-bold is-size-7">{{$blog['profile']['followers']}} Followers</span>
+									<span class="has-text-weight-bold is-size-6">{{$blog['profile']['followers']}} Followers</span>
 								</div>
 								<div class="level-item">
-									<span class="has-text-weight-bold is-size-7">{{$blog['profile']['following']}} Following</span>
+									<span class="has-text-weight-bold is-size-6">{{$blog['profile']['following']}} Following</span>
 								</div>
 							</div>
 						</div>
 						<p class="text-muted">{{$blog['profile']['bio']}}</p>	
 						<follow username="{{$blog['profile']['username']}}"></follow>
 						@if(!Auth::user())
-					         &nbsp;&nbsp; <a href="{{ route('make_enquiry', ['user' => $blog['profile']['username']] )}}" class="button is-info">Make enquiry</a>
+					         &nbsp;&nbsp; <a href="{{ route('make_enquiry', ['user' => $blog['profile']['username']] )}}" class="button is-primary">Contact</a>
 					     @endif
 					</div>
 				</div>

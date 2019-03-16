@@ -122,15 +122,20 @@
                         </h3>
                         <div class="subtitle is-6"><span itemprop="homeLocation">{{$portfolio['user_profile']['location']}}</span></div>
 
+                        
                         <p itemprop="description">{{ str_limit($portfolio['user_profile']['bio'], 120) }}</p>
+                        <follow username="{{$portfolio['user']}}"></follow>
                          @if(Auth::user() && Auth::user()->id !== $portfolio['user_id'])
-                            <a href="{{ route('make_enquiry', ['user' => $portfolio['user']] )}}" class="button is-info">Make enquiry</a>
+                            <a href="{{ route('make_enquiry', ['user' => $portfolio['user']] )}}" class="button is-primary">
+                                <span class="icon"><i class="fa fa-envelope"></i></span> <span>Contact</span>
+                            </a>
                         @endif
 
                         @if(!Auth::user())
-                            <a href="{{ route('make_enquiry', ['user' => $portfolio['user']] )}}" class="button is-info">Make enquiry</a>
+                            <a href="{{ route('make_enquiry', ['user' => $portfolio['user']] )}}" class="button is-primary">
+                                <span class="icon"><i class="fa fa-envelope"></i></span> <span>Contact</span>
+                            </a>
                         @endif 
-                        <follow username="{{$portfolio['user']}}"></follow>
                     </div>
                 </div>
             </div>

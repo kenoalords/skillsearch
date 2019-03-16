@@ -514,7 +514,15 @@ img.logo{
 		transform: rotate(0);
 	}
 }
-
+.like-button-wrapper{
+	span{
+		&.counter{
+		    font-weight: 700 !important;
+		    position: relative;
+		    top: -3px;
+		}
+	}
+}
 .like-button{
 	display: inline-block;
 	width: 64px;
@@ -522,11 +530,12 @@ img.logo{
 	border-radius: 64px;
 	line-height: 57px;
 	text-align: center;
-	background: #209cee;
+	background: #f3f3f3;
 	// border: 5px solid #ff8887;
 	font-size: 2em;
-	color: #fff !important;
+	color: #222 !important;
 	position: relative;
+	
 	&:before{
 		content: "";
 		display: block;
@@ -558,6 +567,7 @@ img.logo{
 			transform-origin: 0 0;
 			animation-name: nod;
 			animation-duration: .4s;
+			color: #fff;
 		}
 	}
 	.fa{
@@ -1188,7 +1198,8 @@ input[type="checkbox"].is-toggle:checked:after{
 		}
 		.media-content{
 			.level{
-				margin-bottom: 0 !important;
+				margin-bottom: 10px !important;
+				font-size: 16px;
 			}
 			p{
 				font-size: 16px;
@@ -1201,6 +1212,12 @@ input[type="checkbox"].is-toggle:checked:after{
 				font-weight: bold;
 				&.view-profile{
 					font-size: 14px;
+				}
+				&.title{
+					color: #3273dc;
+					&:hover{
+						color: #222;
+					}
 				}
 			}
 		}
@@ -1905,7 +1922,6 @@ iframe{
 			}
 			.modal-card-foot{
 				padding: 10px;
-				justify-content: center;
 				background: #fff;
 				box-shadow: 0 -6px 36px rgba(black, .1);
 				border-radius: 0;
@@ -1914,6 +1930,9 @@ iframe{
 					height: 54px;
 					border-radius: 54px;
 					line-height: 50px;
+				}
+				.level{
+					width: 100%;
 				}
 			}
 			.modal-card-body{

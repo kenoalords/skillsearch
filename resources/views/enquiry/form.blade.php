@@ -28,8 +28,10 @@
 						<enquiry user="{{ $profile->user->name }}"></enquiry>
 					</div>
 				</div>
-				<div class="has-text-centered">
-					<a href="#">Go back</a>
+				<div class="has-text-centered" style="margin-top: 2em;">
+					<a href="{{ URL::previous() }}">
+						<span class="icon"><i class="fa fa-arrow-left"></i></span> <span>Go back</span>
+					</a>
 				</div>
 			</div>
 		</div>

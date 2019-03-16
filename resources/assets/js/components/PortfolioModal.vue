@@ -41,7 +41,25 @@
                 </div>
 
                 <div class="modal-card-foot">
-                    <like-button :id="uid" :likes="likes"></like-button>
+                    <div class="level is-mobile">
+                        <div class="level-left">
+                            <div class="level-item">
+                                <like-button :id="uid" :likes="likes"></like-button>
+                            </div>
+                        </div>
+                        <div class="level-right">
+                            <div class="level-item">
+                                <a :href="profile" class="button is-white">
+                                    <follow :username="user"></follow>
+                                </a>
+                            </div>
+                            <div class="level-item">
+                                <a :href="enquiry" class="button is-primary">
+                                    <span class="icon"><i class="fa fa-envelope"></i></span> <span>Contact</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -52,12 +70,15 @@
     import PortfolioComments from "./PortfolioComments";
     import LikeButton from "./LikeButton";
     import VideoPlayer from "./VideoPlayer";
+    import Follow from "./Follow";
     export default {
         data(){
             return {
                 isActive: this.active,
                 isLoading: true,
                 files: [],
+                enquiry: '/' + this.user + '/enquiry',
+                profile: '/' + this.user,
             }
         },
         props:{

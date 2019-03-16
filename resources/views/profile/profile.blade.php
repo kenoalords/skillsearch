@@ -60,11 +60,15 @@
         @endif
         <follow username="{{$profile['username']}}"></follow> &nbsp;&nbsp;
         @if(Auth::user() && Auth::user()->id !== $profile['user_id'])
-            <a href="{{ route('make_enquiry', ['user' => $profile['username']] )}}" class="button is-info">Make enquiry</a>
+            <a href="{{ route('make_enquiry', ['user' => $profile['username']] )}}" class="button is-primary">
+                <span class="icon"><i class="fa fa-envelope"></i></span> <span>Contact</span>
+            </a>
         @endif
 
         @if(!Auth::user())
-            <a href="{{ route('make_enquiry', ['user' => $profile['username']] )}}" class="button is-info">Make enquiry</a>
+            <a href="{{ route('make_enquiry', ['user' => $profile['username']] )}}" class="button is-primary">
+                <span class="icon"><i class="fa fa-envelope"></i></span> <span>Contact</span>
+            </a>
         @endif
         <div style="margin-top: 3em">
             @include('includes.share.profile', ['url'=>Request::url(), 'text'=>$profile['bio']])

@@ -1,7 +1,7 @@
 <template>
     <span v-if="isLoaded">
         <span v-if="!is_self">
-            <a href="#"  class="button is-info" v-on:click.prevent="handle">
+            <a href="#"  class="button" v-on:click.prevent="handle" :class="{ 'is-info': !can_follow }">
                 <span class="icon"><i class="fa " :class="{ 'fa-user': can_follow, 'fa-check' : !can_follow }"></i></span> <span>{{ can_follow ? 'Follow' : 'Following' }} </span>
             </a>
         </span>
