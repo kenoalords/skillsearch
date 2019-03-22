@@ -325,7 +325,7 @@
                         _this.isShareModalActive = true;
                         _this.payload = response.data;
                         _this.fb_share = _this.fb_share + response.data.portfolio.link.href;
-                        _this.tweet = 'https://twitter.com/intent/tweet?url='+response.data.portfolio.link.href+'&via=kenoalords&text=Check+out+my+recent+work+on+www.ubanji.com&hashtags=ubanjicreatives';
+                        _this.tweet = 'https://twitter.com/intent/tweet?url='+response.data.portfolio.link.href+'&via=ubanjicreatives&text=Check+out+my+recent+creative+work+on+ubanji.com&hashtags=ubanjicreatives';
                     } else {
                         window.location.href = window.Laravel.url + '/dashboard/portfolio';
                     }

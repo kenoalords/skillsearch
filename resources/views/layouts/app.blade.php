@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ config('app.locale') }}">
+<html lang="{{ config('app.locale') }}" prefix="og: http://ogp.me/ns#">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,8 +15,8 @@
     <title>@yield('title') - {{ config('app.name', 'Ubanji') }}</title>
     @yield('seometa')
 
-    <meta name="twitter:card" content="@yield('metadescription')">
-    <meta name="twitter:site" content="{{ config('app.url') }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ubanjicreatives">
     <meta name="twitter:title" content="@yield('title')">
     <meta name="twitter:description" content="@yield('metadescription')">
     <meta name="twitter:creator" content="@ubanjicreatives">

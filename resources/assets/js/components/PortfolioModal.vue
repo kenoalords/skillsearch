@@ -1,7 +1,7 @@
 <template>
     <transition name="fade">
         <div class="modal portfolio" v-if="isActive" id="pmodal">
-            <div class="modal-background"></div>
+            <div class="modal-background" @click.prevent="isActive = false"></div>
             <div class="modal-card">
                 <header class="modal-card-head">
                     <div class="level is-mobile">

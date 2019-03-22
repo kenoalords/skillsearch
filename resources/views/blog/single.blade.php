@@ -3,6 +3,7 @@
 @section('title', $blog['title'])
 @section('metadescription', $blog['excerpt'])
 @section('thumbnail', $blog['image'])
+@section('type', 'article')
 
 @section('content')
 <div class="single-blog">
@@ -79,7 +80,8 @@
 						<p class="text-muted">{{$blog['profile']['bio']}}</p>	
 						<follow username="{{$blog['profile']['username']}}"></follow>
 						@if(!Auth::user())
-					         &nbsp;&nbsp; <a href="{{ route('make_enquiry', ['user' => $blog['profile']['username']] )}}" class="button is-primary">Contact</a>
+					         &nbsp;&nbsp; <a href="{{ route('make_enquiry', ['user' => $blog['profile']['username']] )}}" class="button is-primary"><span class="icon"><i class="fa fa-envelope"></i></span> <span>Contact</span>
+</a>
 					     @endif
 					</div>
 				</div>
@@ -94,14 +96,15 @@
 				@endif
 			</div>
 		</section>
-		<div class="section is-light">
-			<div class="container">
-				 @include('blog.read_more')
-			</div>
-		</div>
+		
 		
 		
 	</article>
+	<div class="section is-light">
+		<div class="container" style="max-width: 1024px;">
+			 @include('blog.read_more')
+		</div>
+	</div>
     	@include('includes.signup-teaser')
     	<div id="social-share">
 	    	<div class="share modal">
