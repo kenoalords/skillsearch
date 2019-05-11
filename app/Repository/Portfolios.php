@@ -20,6 +20,18 @@ class Portfolios
 		});
 	}
 
+	public function loadPortfolios($category='', $limit=20)
+	{
+		$key = $category . '.' . $limit;
+		$cache_key = $this->getCacheKey($key);
+
+		return cache()->remember($cache_key, Carbon::now()->addMinutes(15), function() use($category, $limit) {
+			// Get portfolios by category
+			$portfolios = Portfolio::where('skills', 'like', '%'.$category)->where(['is_featured' => 1])->isPublic()->hasThumbnail()->inRandomOrder()->take($limit)->get();
+			return $this->transformCollection($portfolios);
+		});
+	}
+
 	public function latest($skip, $limit)
 	{
 		$key = 'latest.'.$skip . '.' . $limit;
@@ -60,7 +72,7 @@ class Portfolios
                         ->toArray();
 	}
 
-	
+
 
 	public function getCacheKey($key)
 	{

@@ -36,7 +36,7 @@ class PortfolioController extends Controller
     // private $storage = Storage::disk('s3images');
     public function index(Request $request)
     {
-        
+
         $portfolios = fractal()->collection($request->user()->portfolio()->latestFirst()->get())
                             ->transformWith(new PortfolioTransformer)
                             ->serializeWith(new \Spatie\Fractalistic\ArraySerializer())
@@ -67,7 +67,7 @@ class PortfolioController extends Controller
                 dispatch(new UploadFileToS3($thumbnail));
             } else {
                 $thumbnail = null;
-            }           
+            }
             $uid = uniqid(true);
             $title = ($request->title) ? $request->title : 'Draft Portfolio';
             $description = ($request->description) ? $request->description : '';
@@ -79,8 +79,8 @@ class PortfolioController extends Controller
                     'is_public'     => $is_public,
                     'skills'        => $request->skills,
                     'thumbnail'     => $thumbnail,
-                ]);        
-            
+                ]);
+
             if ( $request->hasFile('files') ){
                 $files = $request->file('files');
                 foreach ( $files as $item ){
@@ -103,7 +103,7 @@ class PortfolioController extends Controller
             } else {
                 return response()->json([ 'status' => true ]);
             }
-            
+
         }
     }
 
@@ -174,7 +174,7 @@ class PortfolioController extends Controller
                 } else {
                     dispatch(new DeleteFileFromS3Storage($file->file));
                     $file->delete();
-                }               
+                }
             });
 
             // Delete portfolio and thumbnail
@@ -271,19 +271,21 @@ class PortfolioController extends Controller
 
     public function homepagePortfolioAjax(Request $request, Portfolio $portfolio)
     {
-        $start_time = microtime(true);
-        $skip = (int)($request->page) * (int)$request->limit;
-        $limit = (int)$request->limit;
+        // $start_time = microtime(true);
+        // $skip = (int)($request->page) * (int)$request->limit;
+        // $limit = (int)$request->limit;
+        //
+        // if ( $request->get('type') === "featured" ){
+        //     $portfolios = Portfolios::featured($skip, $limit);
+        // } else if ( $request->get('type') === "latest" ){
+        //     $portfolios = Portfolios::latest($skip, $limit);
+        // }
 
-        if ( $request->get('type') === "featured" ){
-            $portfolios = Portfolios::featured($skip, $limit);
-        } else if ( $request->get('type') === "latest" ){
-            $portfolios = Portfolios::latest($skip, $limit);
-        }
+        $category = $request->get('category');
+        $portfolios = Portfolios::loadPortfolios($category, 20);
 
         if($portfolios){
-            $duration = (microtime(true) - $start_time) * 1000;
-            return response()->json(['portfolios'=>$portfolios, 'duration'=>$duration], 200);
+            return response()->json(['portfolios'=>$portfolios], 200);
         }else{
             return response()->json(false, 422);
         }
@@ -313,7 +315,7 @@ class PortfolioController extends Controller
         } else {
             return;
         }
-        
+
     }
 
     public function makeFeaturedPortfolio(Request $request, Portfolio $portfolio)

@@ -208,7 +208,7 @@ img.logo{
 	.card-content{
 		padding: 1em 0;
 	}
-	.card-footer{		
+	.card-footer{
 		a{
 			background-color: #209cee;
 			color: #fff !important;
@@ -535,7 +535,7 @@ img.logo{
 	font-size: 2em;
 	color: #222 !important;
 	position: relative;
-	
+
 	&:before{
 		content: "";
 		display: block;
@@ -1149,7 +1149,7 @@ input[type="checkbox"].is-toggle:checked:after{
 			min-height: 100px;
 			margin-bottom: 0px;
 		}
-		
+
 	}
 	.title{
 		// font-family: "Noto Serif", serif;
@@ -1458,7 +1458,7 @@ span.spinner{
 					}
 				}
 			}
-			
+
 		}
 	}
 }
@@ -1495,7 +1495,7 @@ span.spinner{
 		min-height: 400px;
 		position: relative;
 		li{
-			
+
 			display: none;
 			&.is-active{
 				display: block;
@@ -1632,7 +1632,7 @@ iframe{
 	text-decoration: none !important;
 	span{
 		color: #fff !important;
-	}	
+	}
 }
 
 .modal-background{
@@ -1968,6 +1968,11 @@ iframe{
   opacity: 0 !important;
 }
 
+.portfolio-tabs{
+	.tabs{
+		background: #fff;
+	}
+}
 
 
 @media screen and (min-width: 768px) and (max-width: 1240px){
@@ -2012,7 +2017,7 @@ iframe{
 					margin: 0;
 				}
 				a{
-					color: $linkColor; 
+					color: $linkColor;
 					font-size: 1.1em !important;
 				}
 			}
@@ -2043,7 +2048,7 @@ iframe{
 		max-width: 100%;
 		min-height: 200px;
 	}
-	
+
 	#primary-nav{
 		.navbar-brand{
 			border-bottom: 1px solid #eee;
@@ -2138,11 +2143,11 @@ iframe{
 		margin-right: -20px;
 		margin-left: -20px;
 	}
-	
+
 	#profile-image-wrapper .profile-image{
 		margin-left: -64px;
 	}
-	
+
 	.button{
 		&.big-action-button{
 			padding: 8px 30px;
@@ -2152,7 +2157,7 @@ iframe{
 			padding-right: 1.5em;
 		}
 	}
-	
+
 	.dashboard{
 		background: #e7f4fd;
 	}
@@ -2180,5 +2185,3 @@ iframe{
 		max-height: 97vh;
 	}
 }
-
-

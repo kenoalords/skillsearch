@@ -23,7 +23,7 @@ mix.babel([
 	.js('resources/assets/js/app.js', 'public/js')
 	.sass('resources/assets/sass/app.scss', 'public/css')
 	.options({
-		processCssUrls: true,
+		processCssUrls: false,
 	})
 	.babel(['public/css/all.css', 'public/css/app.css'], 'public/css/main.css');
 
@@ -31,7 +31,7 @@ mix.webpackConfig( webpack => {
 	return {
 		plugins: [
 			new SWPrecacheWebpackPlugin({
-				cacheId: 'ubanji-v2.8.7',
+				cacheId: 'ubanji-v2.9',
 				filename: 'service-worker.js',
 				staticFileGlobs: ['public/**/*.{css,eot,svg,ttf,woff,woff2,js,html}'],
 				minify: true,

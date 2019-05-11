@@ -27,18 +27,19 @@
         </div>
     </div>
 </div>
-<div class="tabs is-centered is-boxed homepage-tabs">
+<!-- <div class="tabs is-centered is-boxed homepage-tabs">
     <ul>
         <li class="is-active"><a href="javascript:;">Featured</a></li>
         <li><a href="javascript:;">Latest</a></li>
     </ul>
-</div>
-<div id="tabs">
+</div> -->
+<!-- <div id="tabs">
     <ul>
-        <li><portfolio-list type="featured" :key="1"></portfolio-list></li>
+        <li></li>
         <li><portfolio-list type="latest" :key="2"></portfolio-list></li>
     </ul>
-</div>
+</div> -->
+<portfolio-list type="featured"></portfolio-list>
 {{-- @include('includes.featured-portfolios') --}}
 
 @include('includes.signup-teaser')

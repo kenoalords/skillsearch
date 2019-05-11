@@ -12,7 +12,7 @@
 */
 
 Route::get('/', 'PortfolioController@homepagePortfolio')->name('home');
-Route::get('/load-portfolio/{page?}/{limit?}', 'PortfolioController@homepagePortfolioAjax');
+Route::get('/load-portfolio', 'PortfolioController@homepagePortfolioAjax');
 
 Route::get('/search', 'SearchController@searchPortfolios');
 Route::get('/search/jobs', 'SearchController@searchJobs')->name('job_search');
@@ -73,7 +73,7 @@ Route::group(['middleware'=>'auth'], function(){
 
 	Route::get('/invite/delete', 'InviteContactController@deleteInvites')->name('delete_invites')->middleware('admin');
 	Route::post('/invite/delete', 'InviteContactController@delete')->middleware('admin');
-	
+
 
 	Route::post('/comment/{comment}/like', 'CommentController@likeComment');
 	Route::delete('/comment/{comment}/delete', 'CommentController@deleteComment');
@@ -140,7 +140,7 @@ Route::group(['middleware'=>'auth'], function(){
 			Route::delete('/{portfolio}/files/{file}/delete', 'FileController@deleteFile');
 		});
 
-		
+
 
 		/*
 		*	Profile links
@@ -201,7 +201,7 @@ Route::group(['middleware'=>'auth'], function(){
 		Route::group(['prefix'=>'enquiries'], function(){
 			Route::match(['get', 'put'], '/', 'EnquiryController@enquiries')->name('enquiries');
 		});
-		
+
 
 		/*
 		*	Gigs Routes
@@ -214,7 +214,7 @@ Route::group(['middleware'=>'auth'], function(){
 			Route::post('/add', 'GigsController@submit')->name('add_gig');
 		});
 	});
-	
+
 	// Send Message Routes
 	Route::get('/{user}/message', 'MessageController@message')->name('send_message');
 	Route::post('/{user}/message', 'MessageController@sendMessage');
@@ -291,14 +291,3 @@ Route::get('/likes/{portfolio}', 'LikesController@get');
 
 // Track social shares
 Route::post('/blog/track-social-shares', 'BlogController@trackSocialShares');
-
-
-
-
-
-
-
-
-
-
-
