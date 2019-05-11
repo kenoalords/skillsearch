@@ -2,16 +2,17 @@
     <div class="portfolio-tabs">
         <div class="section is-white">
             <div class="container">
-                <div class="tabs">
+                <div class="tabs is-fullwidth">
                     <ul>
-                        <li><a href="javascript:;" @click.prevent="getPortfolioByCategory('photography')">Photography</a></li>
-                        <li><a href="javascript:;" @click.prevent="getPortfolioByCategory('makeup')">Makeup</a></li>
-                        <li><a href="javascript:;" @click.prevent="getPortfolioByCategory('graphics design')">Graphics Design</a></li>
-                        <li><a href="javascript:;" @click.prevent="getPortfolioByCategory('website design')">Website Design</a></li>
-                        <li><a href="javascript:;" @click.prevent="getPortfolioByCategory('branding')">Branding</a></li>
-                        <li><a href="javascript:;" @click.prevent="getPortfolioByCategory('advertising')">Advertising</a></li>
+                        <li><a href="javascript:;" @click.prevent="getPortfolioByCategory('Photography')">Photography</a></li>
+                        <li><a href="javascript:;" @click.prevent="getPortfolioByCategory('Makeup Artist')">Makeup Artist</a></li>
+                        <li><a href="javascript:;" @click.prevent="getPortfolioByCategory('Graphics Designer')">Graphics Designer</a></li>
+                        <li><a href="javascript:;" @click.prevent="getPortfolioByCategory('Website Developer')">Website Designer</a></li>
+                        <li><a href="javascript:;" @click.prevent="getPortfolioByCategory('Branding')">Branding</a></li>
+                        <li><a href="javascript:;" @click.prevent="getPortfolioByCategory('Advertising')">Advertising</a></li>
                     </ul>
                 </div>
+                <h2 v-if="title" class="title is-4">{{ title }}</h2>
                 <div class="columns is-multiline is-mobile">
                     <portfolio-item v-for="portfolio in portfolios" :data="portfolio" :key="portfolio.uid"></portfolio-item>
                 </div>
@@ -42,6 +43,7 @@
                 duration: 0,
                 category: '',
                 moreLink: null,
+                title: null,
             };
         },
 
@@ -62,6 +64,7 @@
                     _this.portfolios = [];
                     _this.category = category;
                 _this.loadPortfolios(category);
+                console.log(_this);
             },
             loadPortfolios(category=''){
                 let _this = this;
@@ -70,6 +73,7 @@
                     _this.portfolios = [];
                     if ( _this.category !== '' ){
                         _this.moreLink = '/search/?term='+ category;
+                        _this.title = category;
                     }
                     response.data.portfolios.forEach( function(value, key) {
                         _this.portfolios.push(value);

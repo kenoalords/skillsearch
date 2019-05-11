@@ -27,7 +27,7 @@ class Portfolios
 
 		return cache()->remember($cache_key, Carbon::now()->addMinutes(15), function() use($category, $limit) {
 			// Get portfolios by category
-			$portfolios = Portfolio::where('skills', 'like', '%'.$category)->where(['is_featured' => 1])->isPublic()->hasThumbnail()->inRandomOrder()->take($limit)->get();
+			$portfolios = Portfolio::where('skills', 'like', '%'.$category)->isPublic()->hasThumbnail()->orderBy('is_featured', 'desc')->take($limit)->get();
 			return $this->transformCollection($portfolios);
 		});
 	}

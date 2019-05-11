@@ -28,9 +28,9 @@
     <meta property="og:type" content="@yield('type')" />
     <meta property="og:url" content="{{Request::url()}}" />
     <meta property="og:image" content="@yield('thumbnail')" />
-    <meta property="og:description" content="@yield('metadescription')" /> 
+    <meta property="og:description" content="@yield('metadescription')" />
     <meta property="og:site_name" content="{{config('app.name')}}" />
-    
+
     <!-- Styles -->
     <link rel="icon" href="{{ asset('favicon.png') }}" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
@@ -49,7 +49,7 @@
             'search'        => Request::get('term'),
         ]) !!};
 
-        window.skillsearch = {!! 
+        window.skillsearch = {!!
             json_encode([
                 's3images' => config('skillsearch.s3.images')
             ])
@@ -75,7 +75,7 @@
     /></noscript>
     <!-- End Facebook Pixel Code -->
     @endif
-    
+
 </head>
 <body>
     <div id="app">
@@ -84,15 +84,15 @@
             JavaScript Disabled: This website requires JavaScript to function properly. To enable JavaScript on your browser, <a href="https://enablejavascript.co/">please click here</a>.
           </div>
         </noscript>
-        @include('includes.menu') 
-        
+        @include('includes.menu')
+
         @yield('content')
-        
+
         @include('includes.footer')
-    </div>  
+    </div>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
-   
+
     @stack('script')
     @if ( App::environment() === 'production' )
     <script>
